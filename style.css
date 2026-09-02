@@ -211,7 +211,7 @@ h2 em,
     max-width:none !important;
     object-fit:contain !important;
     object-position:70% top !important;
-    transform:translateX(-15px) !important;
+    transform:translate(-15px, -180px) !important;
     margin-left:0;
     opacity:1;
 }
