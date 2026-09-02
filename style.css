@@ -205,16 +205,16 @@ h2 em,
     align-items:flex-start;
   }
 
-  .hero-image{
-    width:50% !important;
+.hero-image{
+    width:60% !important;
     height:auto !important;
     max-width:none !important;
     object-fit:contain !important;
     object-position:70% top !important;
-    transform:translateX(-28px) !important;
+    transform:translateX(-15px) !important;
     margin-left:0;
     opacity:1;
-  }
+}
 
   .hero-image-wrap:after{
     background:
