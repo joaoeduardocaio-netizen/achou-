@@ -206,15 +206,16 @@ h2 em,
   }
 
 .hero-image{
-    width:50% !important;
+    width:65% !important;
     height:auto !important;
     max-width:none !important;
     object-fit:contain !important;
-    object-position:70% top !important;
-    transform:translate(-15px, -120px) !important;
+    object-position:center center !important;
+    transform:translate(0, -40px) !important;
     margin-left:0;
     opacity:1;
 }
+
 
   .hero-image-wrap:after{
     background:
