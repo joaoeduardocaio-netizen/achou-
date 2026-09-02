@@ -201,7 +201,7 @@ h2 em,
     object-fit:contain !important;
     object-position:70% top  !important;
     transform:none !important;
-    margin-left:auto;
+    margin-left:0;
     opacity:1;
   }
   .hero-image-wrap:after{
