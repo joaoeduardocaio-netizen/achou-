@@ -1,0 +1,9 @@
+{
+  "name": "ACHOU! — Compare antes de comprar",
+  "short_name": "ACHOU!",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "lang": "pt-BR"
+}

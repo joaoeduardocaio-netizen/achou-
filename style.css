@@ -1,0 +1,172 @@
+:root{
+  --yellow:#FFD400;
+  --black:#000;
+  --white:#fff;
+  --muted:#9b9b9b;
+  --line:#252525;
+  --card:#050505;
+  --font:Inter,Arial,Helvetica,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:var(--font);
+  overflow-x:hidden;
+}
+button,input{font:inherit}
+button,a{ -webkit-tap-highlight-color:transparent }
+a{text-decoration:none;color:inherit}
+.site-header{
+  min-height:96px;
+  padding:17px 18px 15px;
+  border-bottom:1px solid #222;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.brand{display:flex;flex-direction:column;line-height:1}
+.brand strong{font-size:28px;letter-spacing:-1.8px}
+.brand strong span,.brand-yellow{color:var(--yellow)}
+.brand small{font-size:9px;margin-top:5px;color:#ddd}
+.brand .brand-yellow{margin-top:3px}
+.header-actions{display:flex;align-items:center;gap:18px}
+.login{
+  border:1px solid var(--yellow);
+  border-radius:25px;
+  padding:11px 24px;
+  font-size:12px;
+  font-weight:800;
+}
+.menu-button{
+  border:0;background:transparent;width:32px;padding:4px 0;
+  display:flex;flex-direction:column;gap:5px;cursor:pointer
+}
+.menu-button i{display:block;height:2px;background:#fff;border-radius:4px}
+ .hero-section{
+  position:relative;
+  min-height:1160px;
+  padding:0 8px;
+  overflow:hidden;
+  background:#000;
+}
+.hero-image-wrap{
+  position:absolute;inset:0;z-index:0;overflow:hidden;margin:0;
+}
+.hero-image-wrap:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(0,0,0,1) 0%,rgba(0,0,0,.94) 25%,rgba(0,0,0,.42) 58%,rgba(0,0,0,.12) 100%),
+             linear-gradient(180deg,#000 0%,rgba(0,0,0,.04) 30%,rgba(0,0,0,.12) 60%,#000 100%);
+}
+.hero-image{
+  display:block;width:100%;height:100%;object-fit:cover;object-position:58% center;
+  filter:saturate(1.04) contrast(1.04);
+  transform:scale(1.05);
+}
+.hero-copy{position:relative;z-index:2;padding:120px 18px 0;max-width:620px}
+.eyebrow{color:var(--yellow);font-size:9px;letter-spacing:3px;font-weight:900;display:flex;align-items:center;gap:14px;text-transform:uppercase}
+.hero-copy .eyebrow span{display:block;width:44px;height:2px;background:var(--yellow)}
+h1{font-size:54px;line-height:.93;letter-spacing:-3px;margin:31px 0 25px;font-weight:950}
+h1 em,h2 em{font-style:normal;color:var(--yellow)}
+.hero-copy p{color:#aaa;font-size:12px;line-height:1.45;max-width:520px;margin-bottom:25px}
+.search-box{
+  position:relative;z-index:3;margin:0 8px;min-height:60px;border:1px solid #444;border-radius:14px;
+  display:flex;align-items:center;padding:4px 5px 4px 15px;background:rgba(0,0,0,.86);
+  box-shadow:0 0 28px rgba(255,212,0,.05);
+}
+.search-icon{color:var(--yellow);font-size:28px;line-height:1}.search-box input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:#fff;padding:0 12px;font-size:11px}.search-box input::placeholder{color:#aaa}
+.search-box button,.cta-button{border:0;background:var(--yellow);color:#000;border-radius:11px;padding:16px 25px;font-size:10px;font-weight:950;cursor:pointer}
+.popular{display:none}
+.hero-tag{display:none}
+.benefits{position:relative;z-index:3;display:grid;grid-template-columns:repeat(3,1fr);border:0;margin:35px 8px 0;gap:8px}
+.benefits article{min-height:92px;padding:13px 8px;border:1px solid #292929;border-radius:13px;background:rgba(5,5,5,.9);display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;gap:4px}
+.benefits b{color:var(--yellow);font-size:18px}.benefits strong{font-size:8px}.benefits span{font-size:7px;color:#777}
+.products-section,.categories-section,.how-section,.cta-section{padding:74px 8px 0}
+.section-heading,.categories-section>*,.how-section>*,.cta-section>*{margin-left:0}
+h2{font-size:20px;letter-spacing:-.7px;margin:13px 0 8px;line-height:1}
+.section-heading p,.cta-section p{
+  color:#999;font-size:8px;line-height:1.5;margin:0 0 17px
+}
+.product-list{display:flex;flex-direction:column;gap:12px}
+.product-card{
+  position:relative;border:1px solid #292929;border-radius:11px;
+  padding:8px;background:#030303;box-shadow:inset 0 0 0 1px #111;
+}
+.deal{
+  position:absolute;top:9px;left:9px;
+  background:var(--yellow);color:#000;border-radius:5px;
+  padding:5px 7px;font-size:6px;font-weight:950;z-index:2
+}
+.product-photo{
+  height:180px;border-radius:8px;background:#000;
+  display:flex;align-items:center;justify-content:center;margin-bottom:13px;
+}
+.product-photo span{font-size:52px;filter:drop-shadow(0 5px 10px #222)}
+.product-card small{font-size:6px;color:#777;letter-spacing:.5px}
+.product-card h3{font-size:11px;margin:6px 0 5px}
+.rating{font-size:7px;color:var(--yellow)}
+.rating span{color:#777}
+.product-card p{font-size:7px;color:#888;margin:10px 0 2px}
+.price{display:block;font-size:15px;letter-spacing:-.4px;margin-bottom:13px}
+.offer{
+  display:block;text-align:center;border:1px solid #444;border-radius:8px;
+  padding:9px;color:var(--yellow);font-size:6px;font-weight:900
+}
+.categories{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:15px}
+.categories button{
+  min-height:75px;background:#050505;border:1px solid #292929;border-radius:8px;
+  color:#fff;text-align:left;padding:11px;display:flex;flex-direction:column;gap:4px
+}
+.categories button b{font-size:8px}
+.categories button span{font-size:6px;color:#777}
+.how-section{padding-bottom:5px}
+.steps{margin-top:18px;border:1px solid #292929;border-radius:10px;overflow:hidden}
+.steps article{display:grid;grid-template-columns:34px 1fr;column-gap:8px;padding:12px;border-bottom:1px solid #222}
+.steps article:last-child{border-bottom:0}
+.steps b{grid-row:span 2;color:var(--yellow);font-size:10px}
+.steps strong{font-size:8px}
+.steps span{font-size:7px;color:#777;margin-top:4px}
+.cta-section{
+  margin-top:72px;
+  padding:58px 18px 62px;
+  border-top:1px solid #222;border-bottom:1px solid #222;
+  text-align:center;
+}
+.cta-section .eyebrow{justify-content:center}
+.cta-section h2{font-size:26px;line-height:1.05;margin:14px 0 9px}
+.cta-section p{max-width:280px;margin:0 auto 18px}
+.cta-button{font-size:7px;padding:12px 17px}
+footer{padding:35px 18px 40px}
+footer strong{font-size:24px;letter-spacing:-1px}
+footer strong span{color:var(--yellow)}
+footer p{font-size:8px;color:#777;line-height:1.5}
+footer small{font-size:6px;color:#555}
+@media(min-width:700px){
+  .site-header{padding:20px 40px}
+  .hero-section{max-width:980px;margin:auto;padding-top:90px}
+  .hero-copy{padding:0 25px}
+  h1{font-size:64px}
+  .search-box{margin-left:25px;margin-right:25px}
+  .popular{margin-left:25px}
+  .hero-image{max-height:520px}
+  .product-list{display:grid;grid-template-columns:repeat(3,1fr)}
+  .products-section,.categories-section,.how-section,.cta-section{max-width:980px;margin:auto}
+}
+
+@media(max-width:600px){
+  .site-header{min-height:76px;padding:13px 14px}.brand strong{font-size:26px}.brand small{font-size:8px}
+  .hero-section{min-height:1040px;padding:0 8px}
+  .hero-image{object-position:36% center;transform:scale(1.32)}
+  .hero-image-wrap:after{background:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.88) 31%,rgba(0,0,0,.28) 66%,rgba(0,0,0,.12) 100%),linear-gradient(180deg,#000 0%,rgba(0,0,0,.03) 28%,rgba(0,0,0,.10) 62%,#000 100%)}
+  .hero-copy{padding:94px 18px 0;max-width:100%}
+  .hero-copy .eyebrow{font-size:8px;letter-spacing:2.5px}.hero-copy .eyebrow span{width:50px}
+  h1{font-size:48px;line-height:.93;letter-spacing:-3px;margin:28px 0 23px}
+  .hero-copy p{font-size:11px;max-width:310px;margin-bottom:23px}
+  .search-box{margin:0 8px;min-height:58px;border-radius:12px;grid-template-columns:30px 1fr 96px}
+  .search-icon{font-size:25px}.search-box input{font-size:10px;padding:0 8px}.search-box button{height:48px;padding:0 14px;font-size:9px;border-radius:10px}
+  .benefits{margin:34px 8px 0;gap:6px}.benefits article{min-height:86px;padding:10px 5px;border-radius:11px}.benefits b{font-size:17px}.benefits strong{font-size:7px}.benefits span{font-size:6.5px}
+  .products-section,.categories-section,.how-section,.cta-section{padding-top:65px}
+}
