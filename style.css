@@ -170,3 +170,25 @@ footer small{font-size:6px;color:#555}
   .benefits{margin:34px 8px 0;gap:6px}.benefits article{min-height:86px;padding:10px 5px;border-radius:11px}.benefits b{font-size:17px}.benefits strong{font-size:7px}.benefits span{font-size:6.5px}
   .products-section,.categories-section,.how-section,.cta-section{padding-top:65px}
 }
+
+/* FINAL MOBILE HERO CORRECTION */
+:root{--yellow:#FFD400 !important;}
+.brand strong span,.brand-yellow,.eyebrow,h1 em,h2 em,.search-icon,.benefits b,.rating,.offer,footer strong span{color:#FFD400 !important;}
+.search-box button,.cta-button,.deal{background:#FFD400 !important;color:#000 !important;}
+
+@media(max-width:600px){
+  .hero-image-wrap{inset:0;display:flex;justify-content:flex-end;align-items:flex-start;}
+  .hero-image{
+    width:76% !important;
+    height:auto !important;
+    max-width:none !important;
+    object-fit:contain !important;
+    object-position:top right !important;
+    transform:none !important;
+    margin-left:auto;
+    opacity:1;
+  }
+  .hero-image-wrap:after{
+    background:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.82) 34%,rgba(0,0,0,.22) 68%,rgba(0,0,0,.05) 100%),linear-gradient(180deg,#000 0%,rgba(0,0,0,.02) 25%,rgba(0,0,0,.08) 62%,#000 100%) !important;
+  }
+}
