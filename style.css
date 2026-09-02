@@ -195,7 +195,7 @@ h2 em,
 @media(max-width:600px){
   .hero-image-wrap{inset:0;display:flex;justify-content:flex-end;align-items:flex-start;}
   .hero-image{
-    width:35% !important;
+    width:48% !important;
     height:auto !important;
     max-width:none !important;
     object-fit:contain !important;
@@ -207,4 +207,27 @@ h2 em,
   .hero-image-wrap:after{
     background:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.82) 34%,rgba(0,0,0,.22) 68%,rgba(0,0,0,.05) 100%),linear-gradient(180deg,#000 0%,rgba(0,0,0,.02) 25%,rgba(0,0,0,.08) 62%,#000 100%) !important;
   }
+}
+/* AMARELO VIVO FINAL */
+h1 em,
+h2 em,
+.eyebrow,
+.eyebrow span,
+.brand-yellow,
+.brand strong span,
+.search-icon,
+.benefits b,
+.rating,
+.offer,
+footer strong span {
+    color: #FFD400 !important;
+    opacity: 1 !important;
+}
+
+.search-box button,
+.cta-button,
+.deal {
+    background: #FFD400 !important;
+    color: #000000 !important;
+    opacity: 1 !important;
 }
