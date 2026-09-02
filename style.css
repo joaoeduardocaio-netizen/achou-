@@ -174,12 +174,12 @@ footer small{font-size:6px;color:#555}
 /* FINAL MOBILE HERO CORRECTION */
 :root{--yellow:#FFD400 !important;}
 .brand strong span,.brand-yellow,.eyebrow,h1 em,h2 em,.search-icon,.benefits b,.rating,.offer,footer strong span{color:#FFD400 !important;}
-.search-box button,.cta-button,.deal{background:#FFD400 !important;color:#000 !important;}
+.search-box button,.cta-button,.deal{background:#FFD400 !important;color:#FF400 !important;}
 
 @media(max-width:600px){
   .hero-image-wrap{inset:0;display:flex;justify-content:flex-end;align-items:flex-start;}
   .hero-image{
-    width:76% !important;
+    width:58% !important;
     height:auto !important;
     max-width:none !important;
     object-fit:contain !important;
