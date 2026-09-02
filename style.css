@@ -206,12 +206,12 @@ h2 em,
   }
 
 .hero-image{
-    width:40% !important;
+    width:50% !important;
     height:auto !important;
     max-width:none !important;
     object-fit:contain !important;
     object-position:70% top !important;
-    transform:translate(-15px, -180px) !important;
+    transform:translate(-15px, -120px) !important;
     margin-left:0;
     opacity:1;
 }
