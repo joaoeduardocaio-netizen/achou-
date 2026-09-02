@@ -193,6 +193,7 @@ h2 em,
   color: #000 !important;
 }
 @media(max-width:600px){
+@media(max-width:600px){
   .hero-section{
     min-height:660px;
     padding:0 8px;
@@ -205,16 +206,16 @@ h2 em,
     align-items:flex-start;
   }
 
-.hero-image{
-    width:65% !important;
+  .hero-image{
+    width:55% !important;
     height:auto !important;
     max-width:none !important;
     object-fit:contain !important;
     object-position:center center !important;
-    transform:translate(0, -40px) !important;
+    transform:translate(0, -20px) !important;
     margin-left:0;
     opacity:1;
-}
+  }
 
 
 .hero-image{
