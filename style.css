@@ -195,7 +195,7 @@ h2 em,
 @media(max-width:600px){
   .hero-image-wrap{inset:0;display:flex;justify-content:flex-end;align-items:flex-start;}
   .hero-image{
-    width:42% !important;
+    width:35% !important;
     height:auto !important;
     max-width:none !important;
     object-fit:contain !important;
