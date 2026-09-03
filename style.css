@@ -39,7 +39,10 @@ a{
   color:inherit;
 }
 
-/* HEADER */
+
+/* =========================
+   HEADER
+========================= */
 
 .site-header{
   min-height:96px;
@@ -109,7 +112,10 @@ a{
   border-radius:4px;
 }
 
-/* HERO */
+
+/* =========================
+   HERO
+========================= */
 
 .hero-section{
   position:relative;
@@ -131,6 +137,8 @@ a{
   content:"";
   position:absolute;
   inset:0;
+  pointer-events:none;
+
   background:
     linear-gradient(
       90deg,
@@ -146,7 +154,6 @@ a{
       rgba(0,0,0,.12) 60%,
       #000 100%
     );
-  pointer-events:none;
 }
 
 .hero-image{
@@ -206,7 +213,10 @@ h2 em{
   margin-bottom:25px;
 }
 
-/* SEARCH */
+
+/* =========================
+   SEARCH
+========================= */
 
 .search-box{
   position:relative;
@@ -263,7 +273,10 @@ h2 em{
   display:none;
 }
 
-/* BENEFITS */
+
+/* =========================
+   BENEFITS
+========================= */
 
 .benefits{
   position:relative;
@@ -303,7 +316,10 @@ h2 em{
   color:#777;
 }
 
-/* SECTIONS */
+
+/* =========================
+   SECTIONS
+========================= */
 
 .products-section,
 .categories-section,
@@ -334,7 +350,10 @@ h2{
   margin:0 0 17px;
 }
 
-/* PRODUCTS */
+
+/* =========================
+   PRODUCTS
+========================= */
 
 .product-list{
   display:flex;
@@ -423,7 +442,10 @@ h2{
   font-weight:900;
 }
 
-/* CATEGORIES */
+
+/* =========================
+   CATEGORIES
+========================= */
 
 .categories{
   display:grid;
@@ -454,7 +476,10 @@ h2{
   color:#777;
 }
 
-/* HOW */
+
+/* =========================
+   HOW
+========================= */
 
 .how-section{
   padding-bottom:5px;
@@ -495,7 +520,10 @@ h2{
   margin-top:4px;
 }
 
-/* CTA */
+
+/* =========================
+   CTA
+========================= */
 
 .cta-section{
   margin-top:72px;
@@ -525,7 +553,10 @@ h2{
   padding:12px 17px;
 }
 
-/* FOOTER */
+
+/* =========================
+   FOOTER
+========================= */
 
 footer{
   padding:35px 18px 40px;
@@ -551,7 +582,10 @@ footer small{
   color:#555;
 }
 
-/* TABLET / DESKTOP */
+
+/* =========================
+   TABLET / DESKTOP
+========================= */
 
 @media(min-width:700px){
 
@@ -600,7 +634,10 @@ footer small{
   }
 }
 
-/* MOBILE */
+
+/* =================================================
+   MOBILE
+   ================================================= */
 
 @media(max-width:600px){
 
@@ -617,105 +654,212 @@ footer small{
     font-size:8px;
   }
 
-  /* HERO MOBILE */
+
+  /* =========================
+     HERO MOBILE
+  ========================= */
 
   .hero-section{
+    position:relative;
     min-height:1040px;
     padding:0 8px;
+    overflow:hidden;
+    background:#000;
   }
 
-  /*
-    A imagem fica no canto superior direito,
-    visível e sem ocupar a tela inteira.
-  */
+
+  /* IMAGEM GRANDE ATRÁS DO TEXTO */
 
   .hero-image-wrap{
-    position:absolute;
-    top:0;
-    right:0;
-    left:auto;
-    width:62%;
-    height:430px;
-    display:block;
-    overflow:hidden;
-    z-index:1;
+    position:absolute !important;
+
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+
+    width:100% !important;
+    height:760px !important;
+
+    display:block !important;
+    overflow:hidden !important;
+
+    z-index:1 !important;
   }
+
 
   .hero-image{
-    display:block;
+    position:absolute !important;
+
+    top:0 !important;
+    left:0 !important;
+
     width:100% !important;
     height:100% !important;
+
     max-width:none !important;
-    object-fit:contain !important;
-    object-position:center top !important;
-    transform:translate(0,-10px) !important;
-    margin:0;
-    opacity:1;
-    filter:saturate(1.04) contrast(1.04);
+
+    object-fit:cover !important;
+
+    /*
+      Homem mais para cima.
+      Mantém o rosto e a caixa grandes.
+    */
+    object-position:63% top !important;
+
+    transform:scale(1.03) !important;
+
+    opacity:1 !important;
+
+    filter:
+      saturate(1.15)
+      contrast(1.05)
+      brightness(1.02) !important;
   }
 
+
   /*
-    Escurece principalmente o lado esquerdo,
-    mas NÃO apaga o homem do lado direito.
+    SUAVIZAÇÃO DA IMAGEM
+
+    A esquerda fica preta para o texto aparecer.
+    O centro mantém o amarelo forte.
+    Embaixo a imagem desaparece suavemente no preto.
   */
 
   .hero-image-wrap:after{
+    display:block !important;
+
+    content:"" !important;
+
+    position:absolute !important;
+
+    inset:0 !important;
+
+    pointer-events:none !important;
+
     background:
+
+      /* Fundo preto vindo da esquerda */
       linear-gradient(
         90deg,
-        rgba(0,0,0,.98) 0%,
-        rgba(0,0,0,.72) 32%,
-        rgba(0,0,0,.18) 72%,
-        rgba(0,0,0,.05) 100%
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,.94) 18%,
+        rgba(0,0,0,.70) 34%,
+        rgba(0,0,0,.25) 58%,
+        rgba(0,0,0,.03) 82%,
+        rgba(0,0,0,0) 100%
       ),
+
+      /* Escurecimento suave no topo */
       linear-gradient(
         180deg,
-        rgba(0,0,0,.15) 0%,
-        rgba(0,0,0,0) 55%,
-        rgba(0,0,0,.85) 100%
+        rgba(0,0,0,.35) 0%,
+        rgba(0,0,0,0) 18%,
+        rgba(0,0,0,0) 62%,
+        rgba(0,0,0,.35) 76%,
+        rgba(0,0,0,.95) 100%
+      ),
+
+      /* Brilho amarelo no centro */
+      radial-gradient(
+        ellipse at 67% 42%,
+        rgba(255,212,0,.20) 0%,
+        rgba(255,180,0,.10) 30%,
+        rgba(0,0,0,0) 65%
       );
+
+    z-index:2 !important;
   }
 
+
+  /* =========================
+     TEXTO SOBRE A IMAGEM
+  ========================= */
+
   .hero-copy{
-    padding:94px 18px 0;
-    max-width:100%;
-    position:relative;
-    z-index:3;
+    position:relative !important;
+
+    z-index:4 !important;
+
+    padding:94px 18px 0 !important;
+
+    max-width:100% !important;
   }
 
   .hero-copy .eyebrow{
     font-size:8px;
     letter-spacing:2.5px;
+
+    position:relative;
+    z-index:5;
   }
 
   .hero-copy .eyebrow span{
     width:50px;
   }
 
+
+  /*
+    TEXTO GRANDE FICA NA FRENTE
+    DO HOMEM
+  */
+
   h1{
+    position:relative;
+    z-index:5;
+
     font-size:48px;
+
     line-height:.93;
+
     letter-spacing:-3px;
+
     margin:28px 0 23px;
+
+    font-weight:950;
   }
 
+  h1 em{
+    color:#FFD400 !important;
+  }
+
+
   .hero-copy p{
+    position:relative;
+    z-index:5;
+
     font-size:11px;
+
     max-width:310px;
+
+    line-height:1.45;
+
     margin-bottom:23px;
   }
 
-  /* SEARCH MOBILE */
+
+  /* =========================
+     SEARCH MOBILE
+  ========================= */
 
   .search-box{
+    position:relative !important;
+
+    z-index:6 !important;
+
     margin:0 8px;
+
     min-height:58px;
+
     border-radius:12px;
+
     display:flex;
+
+    background:rgba(0,0,0,.88);
   }
 
   .search-icon{
     font-size:25px;
+    color:#FFD400 !important;
   }
 
   .search-box input{
@@ -725,26 +869,47 @@ footer small{
 
   .search-box button{
     height:48px;
+
     padding:0 14px;
+
     font-size:9px;
+
     border-radius:10px;
+
+    background:#FFD400 !important;
+
+    color:#000 !important;
   }
 
-  /* BENEFITS MOBILE */
+
+  /* =========================
+     BENEFITS MOBILE
+  ========================= */
 
   .benefits{
+    position:relative !important;
+
+    z-index:6 !important;
+
     margin:34px 8px 0;
+
     gap:6px;
   }
 
   .benefits article{
     min-height:86px;
+
     padding:10px 5px;
+
     border-radius:11px;
+
+    background:rgba(5,5,5,.90);
   }
 
   .benefits b{
     font-size:17px;
+
+    color:#FFD400 !important;
   }
 
   .benefits strong{
@@ -755,6 +920,11 @@ footer small{
     font-size:6.5px;
   }
 
+
+  /* =========================
+     RESTANTE DO SITE
+  ========================= */
+
   .products-section,
   .categories-section,
   .how-section,
@@ -762,7 +932,8 @@ footer small{
     padding-top:65px;
   }
 
-  /* AMARELO FINAL */
+
+  /* AMARELO */
 
   h1 em,
   h2 em,
@@ -786,64 +957,5 @@ footer small{
     color:#000 !important;
     opacity:1 !important;
   }
-  }
-/* ===== CORREÇÃO DEFINITIVA DA IMAGEM MOBILE ===== */
 
-@media (max-width: 600px){
-
-  .hero-section{
-    position:relative;
-    min-height:1040px;
-    overflow:hidden;
-  }
-
-  .hero-image-wrap{
-    position:absolute !important;
-    top:0 !important;
-    right:0 !important;
-    left:auto !important;
-
-    width:75% !important;
-    height:520px !important;
-
-    display:block !important;
-    overflow:hidden !important;
-
-    z-index:1 !important;
-  }
-
-  .hero-image{
-    display:block !important;
-
-    width:100% !important;
-    height:100% !important;
-
-    max-width:none !important;
-
-    object-fit:cover !important;
-    object-position:center center !important;
-
-    transform:none !important;
-
-    opacity:1 !important;
-
-    filter:none !important;
-  }
-
-  /* Tira completamente o filtro preto que pode estar escondendo a imagem */
-  .hero-image-wrap:after{
-    display:none !important;
-  }
-
-  .hero-copy{
-    position:relative !important;
-    z-index:3 !important;
-  }
-
-  .search-box,
-  .benefits{
-    position:relative !important;
-    z-index:4 !important;
-  }
-
-}
+    }
