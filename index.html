@@ -2,38 +2,113 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="ACHOU! A gente procura. Você economiza tempo. Compare preços entre as principais lojas.">
+
+  <meta
+    name="description"
+    content="ACHOU! Compare preços entre as principais lojas e encontre as melhores ofertas."
+  >
+
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css?v=20260902-3">
-  <title>ACHOU! — A gente procura. Você economiza tempo.</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=20260903-2"
+  >
+
+  <title>ACHOU! — Compare antes de comprar.</title>
 </head>
 
 <body>
 
-  <header class="site-header">
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
 
-    <a class="brand" href="#" aria-label="ACHOU! início">
-      <strong>ACHOU<span>!</span></strong>
-      <small>A gente procura.</small>
-      <small class="brand-yellow">Você economiza tempo.</small>
-    </a>
+  <header class="top-header">
 
-    <div class="header-actions">
-
-      <a class="login" href="#" id="loginButton">
-        Entrar
-      </a>
+    <div class="header-left">
 
       <button
         class="menu-button"
+        id="menuButton"
+        type="button"
         aria-label="Abrir menu"
         aria-expanded="false"
       >
-        <i></i>
-        <i></i>
-        <i></i>
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <a
+        href="#"
+        class="brand"
+        aria-label="ACHOU! início"
+      >
+        <strong>
+          ACHOU<span>!</span>
+        </strong>
+
+        <small>
+          COMPARE ANTES DE COMPRAR
+        </small>
+      </a>
+
+    </div>
+
+
+    <div class="header-user">
+
+      <button
+        type="button"
+        class="account-button"
+        id="loginButton"
+      >
+
+        <span class="account-greeting">
+          <small>Olá,</small>
+          <strong>João</strong>
+        </span>
+
+        <span class="account-link">
+          Ver minha conta
+        </span>
+
+        <span class="account-avatar">
+          J
+        </span>
+
+      </button>
+
+
+      <button
+        type="button"
+        class="header-icon favorite-header"
+        aria-label="Favoritos"
+      >
+        ♡
+        <span class="notification-badge">
+          5
+        </span>
+      </button>
+
+
+      <button
+        type="button"
+        class="header-icon notification-header"
+        aria-label="Notificações"
+      >
+        ♧
+        <span class="notification-badge">
+          2
+        </span>
       </button>
 
     </div>
@@ -41,382 +116,1261 @@
   </header>
 
 
-  <main>
-
-    <!-- =========================
-         HERO
-    ========================= -->
-
-    <section class="hero-section">
-
-      <div class="hero-image-wrap">
-
-        <img
-          class="hero-image"
-          src="achou-homem-caixa-1.png"
-          alt="Pessoa feliz segurando uma caixa do ACHOU!"
-        >
-
-      </div>
-
-
-      <div class="hero-copy">
-
-        <div class="eyebrow">
-          <span></span>
-          COMPARE ANTES DE COMPRAR
-        </div>
-
-        <h1>
-          A gente<br>
-          procura.<br>
-          <em>Você economiza<br>tempo.</em>
-        </h1>
-
-        <p>
-          Compare preços entre as principais lojas e encontre sempre a melhor oferta.
-        </p>
-
-      </div>
-
-
-      <form class="search-box" id="searchForm">
-
-        <span class="search-icon">⌕</span>
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="O que você procura?"
-          autocomplete="off"
-        >
-
-        <button type="submit">
-          Buscar
-        </button>
-
-      </form>
-
-
-      <div class="benefits">
-
-        <article>
-          <b>✦</b>
-          <strong>Compare preços</strong>
-          <span>e condições</span>
-        </article>
-
-        <article>
-          <b>⌕</b>
-          <strong>A gente procura</strong>
-          <span>nas melhores lojas</span>
-        </article>
-
-        <article>
-          <b>◷</b>
-          <strong>Você economiza</strong>
-          <span>tempo e dinheiro</span>
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         PRODUTOS
-    ========================= -->
-
-    <section class="products-section">
-
-      <div class="section-heading">
-
-        <div class="eyebrow">
-          OFERTAS EM DESTAQUE
-        </div>
-
-        <h2>
-          Compare antes de <em>comprar.</em>
-        </h2>
-
-        <p>
-          Encontre diferentes ofertas para o mesmo produto e escolha a que faz mais sentido para você.
-        </p>
-
-      </div>
-
-
-      <div class="product-list" id="productList">
-
-
-        <article
-          class="product-card"
-          data-name="smartphone celular"
-        >
-
-          <span class="deal">
-            MELHOR PREÇO
-          </span>
-
-          <div class="product-photo">
-            <span>📱</span>
-          </div>
-
-          <small>
-            MERCADO LIVRE
-          </small>
-
-          <h3>
-            Smartphone
-          </h3>
-
-          <div class="rating">
-            ★★★★★ <span>4.8</span>
-          </div>
-
-          <p>
-            A partir de
-          </p>
-
-          <strong class="price">
-            R$ 1.899,00
-          </strong>
-
-          <a href="#" class="offer">
-            VER OFERTA →
-          </a>
-
-        </article>
-
-
-        <article
-          class="product-card"
-          data-name="notebook computador"
-        >
-
-          <div class="product-photo">
-            <span>💻</span>
-          </div>
-
-          <small>
-            AMAZON
-          </small>
-
-          <h3>
-            Notebook
-          </h3>
-
-          <div class="rating">
-            ★★★★★ <span>4.7</span>
-          </div>
-
-          <p>
-            A partir de
-          </p>
-
-          <strong class="price">
-            R$ 2.499,00
-          </strong>
-
-          <a href="#" class="offer">
-            VER OFERTA →
-          </a>
-
-        </article>
-
-
-        <article
-          class="product-card"
-          data-name="fone bluetooth headphone"
-        >
-
-          <div class="product-photo">
-            <span>🎧</span>
-          </div>
-
-          <small>
-            SHOPEE
-          </small>
-
-          <h3>
-            Fone Bluetooth
-          </h3>
-
-          <div class="rating">
-            ★★★★★ <span>4.9</span>
-          </div>
-
-          <p>
-            A partir de
-          </p>
-
-          <strong class="price">
-            R$ 149,90
-          </strong>
-
-          <a href="#" class="offer">
-            VER OFERTA →
-          </a>
-
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         CATEGORIAS
-    ========================= -->
-
-    <section class="categories-section">
-
-      <div class="eyebrow">
-        ENCONTRE O QUE PROCURA
-      </div>
-
-      <h2>
-        Explore por <em>categoria.</em>
-      </h2>
-
-      <div class="categories">
-
-        <button>
-          📱
-          <b>Eletrônicos</b>
-          <span>Celulares e tablets</span>
-        </button>
-
-        <button>
-          💻
-          <b>Informática</b>
-          <span>Notebooks e acessórios</span>
-        </button>
-
-        <button>
-          🏠
-          <b>Casa</b>
-          <span>Produtos para casa</span>
-        </button>
-
-        <button>
-          👕
-          <b>Moda</b>
-          <span>Roupas e acessórios</span>
-        </button>
-
-        <button>
-          🎮
-          <b>Games</b>
-          <span>Jogos e consoles</span>
-        </button>
-
-        <button>
-          ⚽
-          <b>Esportes</b>
-          <span>Equipamentos e acessórios</span>
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         COMO FUNCIONA
-    ========================= -->
-
-    <section class="how-section">
-
-      <div class="eyebrow">
-        SIMPLES. RÁPIDO. INTELIGENTE.
-      </div>
-
-      <h2>
-        Como o <em>ACHOU!</em> funciona?
-      </h2>
-
-      <div class="steps">
-
-        <article>
-          <b>01</b>
-          <strong>Você pesquisa</strong>
-          <span>Digite o produto que procura.</span>
-        </article>
-
-        <article>
-          <b>02</b>
-          <strong>A gente compara</strong>
-          <span>Encontramos ofertas em diferentes lojas.</span>
-        </article>
-
-        <article>
-          <b>03</b>
-          <strong>Você escolhe</strong>
-          <span>Compare e escolha a melhor oferta.</span>
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         CTA
-    ========================= -->
-
-    <section class="cta-section">
-
-      <div class="eyebrow">
-        PRONTO PARA ECONOMIZAR?
-      </div>
-
-      <h2>
-        Antes de comprar,<br>
-        <em>ACHOU!</em>
-      </h2>
-
-      <p>
-        Compare preços. Encontre a melhor oferta. Economize seu tempo.
-      </p>
+  <!-- =====================================================
+       BUSCA
+  ====================================================== -->
+
+  <section class="search-section">
+
+    <form
+      class="search-box"
+      id="searchForm"
+    >
+
+      <span
+        class="search-icon"
+        aria-hidden="true"
+      >
+        ⌕
+      </span>
+
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Buscar produto, marca ou loja..."
+        autocomplete="off"
+        aria-label="Buscar produto, marca ou loja"
+      >
 
       <button
-        class="cta-button"
-        onclick="document.getElementById('searchInput').focus()"
+        type="submit"
       >
-        COMEÇAR AGORA →
+        Buscar
+      </button>
+
+    </form>
+
+  </section>
+
+
+  <!-- =====================================================
+       CATEGORIAS DO TOPO
+  ====================================================== -->
+
+  <nav
+    class="category-nav"
+    aria-label="Categorias principais"
+  >
+
+    <button
+      class="category-nav-item active"
+      type="button"
+      data-category="Tudo"
+    >
+      Tudo
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Celulares"
+    >
+      Celulares
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Informática"
+    >
+      Informática
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Eletrônicos"
+    >
+      Eletrônicos
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Casa"
+    >
+      Casa
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Moda"
+    >
+      Moda
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Veículos"
+    >
+      Veículos
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Beleza"
+    >
+      Beleza
+    </button>
+
+    <button
+      class="category-nav-item"
+      type="button"
+      data-category="Games"
+    >
+      Games
+    </button>
+
+  </nav>
+
+
+  <main>
+
+
+    <!-- =====================================================
+         BANNER PRINCIPAL
+    ====================================================== -->
+
+    <section class="hero-marketplace">
+
+      <button
+        type="button"
+        class="hero-arrow hero-prev"
+        aria-label="Oferta anterior"
+      >
+        ‹
+      </button>
+
+
+      <div class="hero-banner">
+
+        <div class="hero-banner-content">
+
+          <span class="hero-small-title">
+            COMPARE E ECONOMIZE
+          </span>
+
+          <h1>
+            OFERTAS
+            <strong>
+              IMPERDÍVEIS
+            </strong>
+          </h1>
+
+          <p>
+            Os melhores preços<br>
+            de várias lojas,<br>
+            em um só lugar!
+          </p>
+
+          <button
+            type="button"
+            class="hero-cta"
+          >
+            VER OFERTAS
+          </button>
+
+        </div>
+
+
+        <div class="hero-products">
+
+          <div class="hero-phone">
+            📱
+          </div>
+
+          <div class="hero-laptop">
+            💻
+          </div>
+
+          <div class="hero-headphone">
+            🎧
+          </div>
+
+        </div>
+
+
+        <div class="hero-discount">
+
+          <small>
+            ATÉ
+          </small>
+
+          <strong>
+            40%
+          </strong>
+
+          <span>
+            OFF
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="hero-arrow hero-next"
+        aria-label="Próxima oferta"
+      >
+        ›
+      </button>
+
+
+      <div class="hero-dots">
+
+        <button
+          class="hero-dot active"
+          type="button"
+          aria-label="Banner 1"
+        ></button>
+
+        <button
+          class="hero-dot"
+          type="button"
+          aria-label="Banner 2"
+        ></button>
+
+        <button
+          class="hero-dot"
+          type="button"
+          aria-label="Banner 3"
+        ></button>
+
+        <button
+          class="hero-dot"
+          type="button"
+          aria-label="Banner 4"
+        ></button>
+
+        <button
+          class="hero-dot"
+          type="button"
+          aria-label="Banner 5"
+        ></button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CATEGORIAS CIRCULARES
+    ====================================================== -->
+
+    <section class="quick-categories">
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Celulares"
+      >
+        <span class="quick-category-icon">
+          ▣
+        </span>
+
+        <strong>
+          Celulares
+        </strong>
+      </button>
+
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Informática"
+      >
+        <span class="quick-category-icon">
+          ▱
+        </span>
+
+        <strong>
+          Informática
+        </strong>
+      </button>
+
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Eletrônicos"
+      >
+        <span class="quick-category-icon">
+          ▣
+        </span>
+
+        <strong>
+          Eletrônicos
+        </strong>
+      </button>
+
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Casa"
+      >
+        <span class="quick-category-icon">
+          ♢
+        </span>
+
+        <strong>
+          Casa
+        </strong>
+      </button>
+
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Moda"
+      >
+        <span class="quick-category-icon">
+          ♧
+        </span>
+
+        <strong>
+          Moda
+        </strong>
+      </button>
+
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Veículos"
+      >
+        <span class="quick-category-icon">
+          ♧
+        </span>
+
+        <strong>
+          Veículos
+        </strong>
+      </button>
+
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Beleza"
+      >
+        <span class="quick-category-icon">
+          ♙
+        </span>
+
+        <strong>
+          Beleza
+        </strong>
+      </button>
+
+
+      <button
+        type="button"
+        class="quick-category"
+        data-category="Games"
+      >
+        <span class="quick-category-icon">
+          ♧
+        </span>
+
+        <strong>
+          Games
+        </strong>
       </button>
 
     </section>
 
+
+    <!-- =====================================================
+         OFERTAS RELÂMPAGO
+    ====================================================== -->
+
+    <section class="market-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            ⚡
+          </span>
+
+          <h2>
+            OFERTAS RELÂMPAGO
+          </h2>
+
+          <div class="deal-timer">
+            ⏱
+            <strong>
+              08 : 45 : 32
+            </strong>
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          class="see-all"
+        >
+          VER TODAS ›
+        </button>
+
+      </div>
+
+
+      <div
+        class="flash-deals"
+        id="productList"
+      >
+
+
+        <!-- PRODUTO 1 -->
+
+        <article
+          class="flash-card product-card"
+          data-name="smartwatch xiaomi redmi watch 5 active"
+        >
+
+          <span class="discount">
+            -35%
+          </span>
+
+          <button
+            type="button"
+            class="product-favorite"
+            aria-label="Adicionar aos favoritos"
+          >
+            ♡
+          </button>
+
+          <div class="flash-photo">
+            ⌚
+          </div>
+
+          <h3>
+            Smartwatch Xiaomi
+            Redmi Watch 5 Active
+          </h3>
+
+          <div class="old-price">
+            R$ 399,90
+          </div>
+
+          <strong class="flash-price">
+            R$ 259,90
+          </strong>
+
+          <div class="product-bottom">
+
+            <span class="rating">
+              ★ 4,8
+            </span>
+
+            <span>
+              1,2mil vendidos
+            </span>
+
+          </div>
+
+          <a
+            href="#"
+            class="offer"
+          >
+            VER OFERTA
+          </a>
+
+        </article>
+
+
+        <!-- PRODUTO 2 -->
+
+        <article
+          class="flash-card product-card"
+          data-name="fone bluetooth i12 tws"
+        >
+
+          <span class="discount">
+            -28%
+          </span>
+
+          <button
+            type="button"
+            class="product-favorite"
+            aria-label="Adicionar aos favoritos"
+          >
+            ♡
+          </button>
+
+          <div class="flash-photo">
+            🎧
+          </div>
+
+          <h3>
+            Fone Bluetooth
+            i12 TWS
+          </h3>
+
+          <div class="old-price">
+            R$ 139,90
+          </div>
+
+          <strong class="flash-price">
+            R$ 99,90
+          </strong>
+
+          <div class="product-bottom">
+
+            <span class="rating">
+              ★ 4,6
+            </span>
+
+            <span>
+              2mil vendidos
+            </span>
+
+          </div>
+
+          <a
+            href="#"
+            class="offer"
+          >
+            VER OFERTA
+          </a>
+
+        </article>
+
+
+        <!-- PRODUTO 3 -->
+
+        <article
+          class="flash-card product-card"
+          data-name="cafeteira expresso tres coracoes"
+        >
+
+          <span class="discount">
+            -22%
+          </span>
+
+          <button
+            type="button"
+            class="product-favorite"
+            aria-label="Adicionar aos favoritos"
+          >
+            ♡
+          </button>
+
+          <div class="flash-photo">
+            ☕
+          </div>
+
+          <h3>
+            Cafeteira Espresso
+            3 Corações
+          </h3>
+
+          <div class="old-price">
+            R$ 499,90
+          </div>
+
+          <strong class="flash-price">
+            R$ 389,90
+          </strong>
+
+          <div class="product-bottom">
+
+            <span class="rating">
+              ★ 4,7
+            </span>
+
+            <span>
+              890 vendidos
+            </span>
+
+          </div>
+
+          <a
+            href="#"
+            class="offer"
+          >
+            VER OFERTA
+          </a>
+
+        </article>
+
+
+        <!-- PRODUTO 4 -->
+
+        <article
+          class="flash-card product-card"
+          data-name="tenis nike air max exceed masculino"
+        >
+
+          <span class="discount">
+            -31%
+          </span>
+
+          <button
+            type="button"
+            class="product-favorite"
+            aria-label="Adicionar aos favoritos"
+          >
+            ♡
+          </button>
+
+          <div class="flash-photo">
+            👟
+          </div>
+
+          <h3>
+            Tênis Nike Air Max
+            Excee Masculino
+          </h3>
+
+          <div class="old-price">
+            R$ 599,90
+          </div>
+
+          <strong class="flash-price">
+            R$ 409,90
+          </strong>
+
+          <div class="product-bottom">
+
+            <span class="rating">
+              ★ 4,9
+            </span>
+
+            <span>
+              1,5mil vendidos
+            </span>
+
+          </div>
+
+          <a
+            href="#"
+            class="offer"
+          >
+            VER OFERTA
+          </a>
+
+        </article>
+
+
+        <!-- PRODUTO 5 -->
+
+        <article
+          class="flash-card product-card"
+          data-name="smart tv samsung 50 polegadas"
+        >
+
+          <span class="discount">
+            -25%
+          </span>
+
+          <button
+            type="button"
+            class="product-favorite"
+            aria-label="Adicionar aos favoritos"
+          >
+            ♡
+          </button>
+
+          <div class="flash-photo">
+            📺
+          </div>
+
+          <h3>
+            Smart TV Samsung
+            50 polegadas
+          </h3>
+
+          <div class="old-price">
+            R$ 2.299,90
+          </div>
+
+          <strong class="flash-price">
+            R$ 1.699,90
+          </strong>
+
+          <div class="product-bottom">
+
+            <span class="rating">
+              ★ 4,8
+            </span>
+
+            <span>
+              760 vendidos
+            </span>
+
+          </div>
+
+          <a
+            href="#"
+            class="offer"
+          >
+            VER OFERTA
+          </a>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MAIS PROCURADOS
+    ====================================================== -->
+
+    <section class="market-section popular-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            🔥
+          </span>
+
+          <h2>
+            MAIS PROCURADOS
+          </h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="see-all"
+        >
+          VER TODOS ›
+        </button>
+
+      </div>
+
+
+      <div class="popular-tags">
+
+        <button type="button">
+          ⌕ iphone 15
+        </button>
+
+        <button type="button">
+          ⌕ notebook gamer
+        </button>
+
+        <button type="button">
+          ⌕ airfryer
+        </button>
+
+        <button type="button">
+          ⌕ tv 4k
+        </button>
+
+        <button type="button">
+          ⌕ playstation 5
+        </button>
+
+        <button type="button">
+          ⌕ geladeira
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MENOR PREÇO ENCONTRADO
+    ====================================================== -->
+
+    <section class="market-section best-price-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            🏆
+          </span>
+
+          <h2>
+            MENOR PREÇO ENCONTRADO
+          </h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="see-all"
+        >
+          VER TODOS ›
+        </button>
+
+      </div>
+
+
+      <article class="best-price-card">
+
+        <div class="best-product-image">
+          📱
+        </div>
+
+
+        <div class="best-product-info">
+
+          <h3>
+            Samsung Galaxy A55
+            256GB Azul Escuro
+          </h3>
+
+          <div class="best-rating">
+            ★ 4,8
+          </div>
+
+          <small>
+            2.452 avaliações
+          </small>
+
+        </div>
+
+
+        <div class="store-prices">
+
+          <div class="store-price">
+
+            <small>
+              Amazon
+            </small>
+
+            <strong>
+              R$ 1.799,00
+            </strong>
+
+          </div>
+
+
+          <div class="store-price">
+
+            <small>
+              Magalu
+            </small>
+
+            <strong>
+              R$ 1.749,00
+            </strong>
+
+          </div>
+
+
+          <div class="store-price">
+
+            <small>
+              Mercado Livre
+            </small>
+
+            <strong>
+              R$ 1.699,00
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="best-deal">
+
+          <span>
+            ACHOU!
+            <small>
+              MENOR PREÇO
+            </small>
+          </span>
+
+          <strong>
+            R$ 1.699,00
+          </strong>
+
+          <a
+            href="#"
+            class="best-offer"
+          >
+            VER OFERTA ↗
+          </a>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         LOJAS EM DESTAQUE
+    ====================================================== -->
+
+    <section class="market-section stores-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            🏪
+          </span>
+
+          <h2>
+            LOJAS EM DESTAQUE
+          </h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="see-all"
+        >
+          VER TODAS ›
+        </button>
+
+      </div>
+
+
+      <div class="featured-stores">
+
+        <button
+          type="button"
+          class="store-card amazon"
+        >
+          <strong>
+            amazon
+          </strong>
+        </button>
+
+
+        <button
+          type="button"
+          class="store-card mercado"
+        >
+          <strong>
+            mercado
+            <span>livre</span>
+          </strong>
+        </button>
+
+
+        <button
+          type="button"
+          class="store-card magalu"
+        >
+          <strong>
+            Magalu
+          </strong>
+        </button>
+
+
+        <button
+          type="button"
+          class="store-card shopee"
+        >
+          <strong>
+            🛍 Shopee
+          </strong>
+        </button>
+
+
+        <button
+          type="button"
+          class="store-card kabum"
+        >
+          <strong>
+            KaBuM!
+          </strong>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         BENEFÍCIOS
+    ====================================================== -->
+
+    <section class="achou-benefits">
+
+      <article>
+
+        <span>
+          ♢
+        </span>
+
+        <div>
+          <strong>
+            Compra segura
+          </strong>
+
+          <small>
+            Só lojas confiáveis
+          </small>
+        </div>
+
+      </article>
+
+
+      <article>
+
+        <span>
+          $
+        </span>
+
+        <div>
+          <strong>
+            Melhor preço
+          </strong>
+
+          <small>
+            Compare e economize
+          </small>
+        </div>
+
+      </article>
+
+
+      <article>
+
+        <span>
+          ♧
+        </span>
+
+        <div>
+          <strong>
+            Alertas de preço
+          </strong>
+
+          <small>
+            Receba ofertas
+          </small>
+        </div>
+
+      </article>
+
+
+      <article>
+
+        <span>
+          ♡
+        </span>
+
+        <div>
+          <strong>
+            Seus favoritos
+          </strong>
+
+          <small>
+            Salvos na sua conta
+          </small>
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         COMO FUNCIONA
+    ====================================================== -->
+
+    <section class="how-section">
+
+      <div class="section-heading">
+
+        <span class="section-label">
+          COMO FUNCIONA
+        </span>
+
+        <h2>
+          Compare.
+          <em>Escolha.</em>
+          Economize.
+        </h2>
+
+      </div>
+
+
+      <div class="how-steps">
+
+        <article>
+
+          <strong>
+            01
+          </strong>
+
+          <div>
+            <h3>
+              Você pesquisa
+            </h3>
+
+            <p>
+              Digite o produto que você procura.
+            </p>
+          </div>
+
+        </article>
+
+
+        <article>
+
+          <strong>
+            02
+          </strong>
+
+          <div>
+            <h3>
+              A gente compara
+            </h3>
+
+            <p>
+              Encontramos ofertas em diferentes lojas.
+            </p>
+          </div>
+
+        </article>
+
+
+        <article>
+
+          <strong>
+            03
+          </strong>
+
+          <div>
+            <h3>
+              Você escolhe
+            </h3>
+
+            <p>
+              Compare os preços e escolha a melhor oferta.
+            </p>
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
   </main>
 
 
-  <!-- =========================
-       FOOTER
-  ========================= -->
+  <!-- =====================================================
+       NAVEGAÇÃO INFERIOR MOBILE
+  ====================================================== -->
 
-  <footer>
+  <nav class="bottom-nav">
 
-    <strong>
-      ACHOU<span>!</span>
-    </strong>
+    <button
+      type="button"
+      class="bottom-nav-item active"
+    >
 
-    <p>
-      A gente procura.<br>
-      Você economiza tempo.
-    </p>
+      <span>
+        ◆
+      </span>
 
-    <small>
-      © 2026 ACHOU! — Compare antes de comprar.
-    </small>
+      <strong>
+        Início
+      </strong>
 
-  </footer>
+    </button>
 
 
-  <!-- =========================
-       LOGIN DO CLIENTE
-  ========================= -->
+    <button
+      type="button"
+      class="bottom-nav-item"
+    >
+
+      <span>
+        ▦
+      </span>
+
+      <strong>
+        Categorias
+      </strong>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="bottom-nav-item"
+    >
+
+      <span>
+        ♨
+      </span>
+
+      <strong>
+        Ofertas
+      </strong>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="bottom-nav-item favorites-bottom"
+    >
+
+      <span>
+        ♡
+        <i>
+          5
+        </i>
+      </span>
+
+      <strong>
+        Favoritos
+      </strong>
+
+    </button>
+
+
+    <button
+      type="button"
+      class="bottom-nav-item"
+    >
+
+      <span>
+        ◷
+      </span>
+
+      <strong>
+        Histórico
+      </strong>
+
+    </button>
+
+  </nav>
+
+
+  <!-- =====================================================
+       LOGIN
+  ====================================================== -->
 
   <div
     class="login-modal"
@@ -505,9 +1459,9 @@
   </div>
 
 
-  <!-- =========================
-       CADASTRO DO CLIENTE
-  ========================= -->
+  <!-- =====================================================
+       CADASTRO
+  ====================================================== -->
 
   <div
     class="signup-modal"
@@ -624,8 +1578,13 @@
   </div>
 
 
+  <!-- =====================================================
+       SUPABASE
+  ====================================================== -->
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="script.js?v=20260903-1"></script>
+
+  <script src="script.js?v=20260903-2"></script>
 
 </body>
-          </html>
+  </html>
