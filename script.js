@@ -59,8 +59,6 @@ function searchProducts(query) {
       .trim()
       .toLowerCase();
 
-  let found = 0;
-
   productCards.forEach(card => {
 
     const name =
@@ -79,8 +77,6 @@ function searchProducts(query) {
     if (match) {
 
       card.style.display = "";
-
-      found++;
 
     } else {
 
@@ -169,20 +165,12 @@ popularButtons.forEach(button => {
    ========================================================= */
 
 const menuToggle =
-  document.querySelector(
-    ".menu-toggle"
-  );
+  document.querySelector(".menu-toggle");
 
 const menu =
-  document.querySelector(
-    ".nav-menu"
-  ) ||
-  document.querySelector(
-    ".mobile-menu"
-  ) ||
-  document.querySelector(
-    "header nav"
-  );
+  document.querySelector(".nav-menu") ||
+  document.querySelector(".mobile-menu") ||
+  document.querySelector("header nav");
 
 
 if (menuToggle) {
@@ -255,6 +243,401 @@ offerLinks.forEach(link => {
   );
 
 });
+
+
+/* =========================================================
+   SISTEMA DE MENSAGENS DO ACHOU!
+   ========================================================= */
+
+let achouMessageModal = null;
+let achouMessageTitle = null;
+let achouMessageText = null;
+let achouMessageButton = null;
+let achouMessageIcon = null;
+
+
+/* =========================================================
+   CRIAR ESTILO DAS MENSAGENS
+   ========================================================= */
+
+function createAchouMessageStyles() {
+
+  if (
+    document.getElementById(
+      "achouMessageStyles"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  const style =
+    document.createElement("style");
+
+  style.id =
+    "achouMessageStyles";
+
+  style.textContent = `
+
+    #achouMessageModal{
+      position:fixed;
+      inset:0;
+      z-index:20000;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:rgba(0,0,0,.84);
+      backdrop-filter:blur(9px);
+      -webkit-backdrop-filter:blur(9px);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transition:
+        opacity .2s ease,
+        visibility .2s ease;
+    }
+
+    #achouMessageModal.active{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+    }
+
+    .achou-message-box{
+      position:relative;
+      width:100%;
+      max-width:370px;
+      padding:30px 24px 24px;
+      background:#050505;
+      border:1px solid #292929;
+      border-radius:16px;
+      box-shadow:
+        0 20px 70px rgba(0,0,0,.85),
+        0 0 35px rgba(255,212,0,.05);
+      text-align:center;
+      transform:translateY(15px) scale(.98);
+      transition:transform .2s ease;
+    }
+
+    #achouMessageModal.active
+    .achou-message-box{
+      transform:translateY(0) scale(1);
+    }
+
+    .achou-message-logo{
+      font-size:25px;
+      font-weight:950;
+      letter-spacing:-1.5px;
+      color:#fff;
+      margin-bottom:18px;
+    }
+
+    .achou-message-logo span{
+      color:#FFD400;
+    }
+
+    .achou-message-icon{
+      width:54px;
+      height:54px;
+      margin:0 auto 16px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:2px solid #FFD400;
+      color:#FFD400;
+      font-size:27px;
+      font-weight:900;
+    }
+
+    .achou-message-title{
+      margin:0 0 10px;
+      color:#fff;
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:-.4px;
+    }
+
+    .achou-message-text{
+      margin:0 auto 22px;
+      max-width:290px;
+      color:#999;
+      font-size:10px;
+      line-height:1.55;
+      white-space:pre-line;
+    }
+
+    .achou-message-button{
+      width:100%;
+      height:44px;
+      border:0;
+      border-radius:9px;
+      background:#FFD400;
+      color:#000;
+      font-size:9px;
+      font-weight:950;
+      cursor:pointer;
+    }
+
+    .achou-message-button:active{
+      transform:scale(.98);
+    }
+
+    @media(max-width:420px){
+
+      #achouMessageModal{
+        padding:16px;
+      }
+
+      .achou-message-box{
+        padding:28px 20px 21px;
+        border-radius:15px;
+      }
+
+    }
+
+  `;
+
+  document.head.appendChild(style);
+
+}
+
+
+/* =========================================================
+   CRIAR MODAL DE MENSAGEM
+   ========================================================= */
+
+function createAchouMessageModal() {
+
+  if (
+    document.getElementById(
+      "achouMessageModal"
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  createAchouMessageStyles();
+
+
+  const modal =
+    document.createElement("div");
+
+  modal.id =
+    "achouMessageModal";
+
+  modal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  modal.innerHTML = `
+
+    <div
+      class="achou-message-box"
+      role="dialog"
+      aria-modal="true"
+    >
+
+      <div class="achou-message-logo">
+        ACHOU<span>!</span>
+      </div>
+
+      <div class="achou-message-icon">
+        ✓
+      </div>
+
+      <h3 class="achou-message-title">
+        Tudo certo!
+      </h3>
+
+      <p class="achou-message-text">
+        Mensagem
+      </p>
+
+      <button
+        type="button"
+        class="achou-message-button"
+      >
+        OK, ENTENDI
+      </button>
+
+    </div>
+
+  `;
+
+
+  document.body.appendChild(modal);
+
+
+  achouMessageModal =
+    modal;
+
+  achouMessageTitle =
+    modal.querySelector(
+      ".achou-message-title"
+    );
+
+  achouMessageText =
+    modal.querySelector(
+      ".achou-message-text"
+    );
+
+  achouMessageButton =
+    modal.querySelector(
+      ".achou-message-button"
+    );
+
+  achouMessageIcon =
+    modal.querySelector(
+      ".achou-message-icon"
+    );
+
+
+  achouMessageButton.addEventListener(
+    "click",
+    closeAchouMessage
+  );
+
+
+  modal.addEventListener(
+    "click",
+    event => {
+
+      if (
+        event.target === modal
+      ) {
+
+        closeAchouMessage();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   ABRIR MENSAGEM
+   ========================================================= */
+
+function showAchouMessage(
+  title,
+  message,
+  type = "success",
+  buttonText = "OK, ENTENDI"
+) {
+
+  createAchouMessageModal();
+
+
+  if (achouMessageTitle) {
+
+    achouMessageTitle.textContent =
+      title;
+
+  }
+
+
+  if (achouMessageText) {
+
+    achouMessageText.textContent =
+      message;
+
+  }
+
+
+  if (achouMessageButton) {
+
+    achouMessageButton.textContent =
+      buttonText;
+
+  }
+
+
+  if (achouMessageIcon) {
+
+    if (type === "error") {
+
+      achouMessageIcon.textContent =
+        "!";
+
+      achouMessageIcon.style.color =
+        "#FFD400";
+
+      achouMessageIcon.style.borderColor =
+        "#FFD400";
+
+    } else {
+
+      achouMessageIcon.textContent =
+        "✓";
+
+      achouMessageIcon.style.color =
+        "#FFD400";
+
+      achouMessageIcon.style.borderColor =
+        "#FFD400";
+
+    }
+
+  }
+
+
+  if (achouMessageModal) {
+
+    achouMessageModal.classList.add(
+      "active"
+    );
+
+    achouMessageModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+  }
+
+
+  document.body.classList.add(
+    "login-open"
+  );
+
+}
+
+
+/* =========================================================
+   FECHAR MENSAGEM
+   ========================================================= */
+
+function closeAchouMessage() {
+
+  if (achouMessageModal) {
+
+    achouMessageModal.classList.remove(
+      "active"
+    );
+
+    achouMessageModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+
+  document.body.classList.remove(
+    "login-open"
+  );
+
+}
 
 
 /* =========================================================
@@ -348,6 +731,9 @@ const signupLogin =
 
 function openLogin() {
 
+  closeAchouMessage();
+
+
   if (signupModal) {
 
     signupModal.classList.remove(
@@ -429,6 +815,9 @@ function closeLogin() {
    ========================================================= */
 
 function openSignup() {
+
+  closeAchouMessage();
+
 
   if (loginModal) {
 
@@ -613,8 +1002,10 @@ if (loginForm) {
 
       if (!supabaseClient) {
 
-        alert(
-          "O sistema de login não foi carregado. Atualize a página e tente novamente."
+        showAchouMessage(
+          "Sistema indisponível",
+          "O sistema de login não foi carregado.\n\nAtualize a página e tente novamente.",
+          "error"
         );
 
         return;
@@ -635,8 +1026,10 @@ if (loginForm) {
 
       if (!email || !password) {
 
-        alert(
-          "Digite seu e-mail e sua senha."
+        showAchouMessage(
+          "Preencha os campos",
+          "Digite seu e-mail e sua senha para entrar.",
+          "error"
         );
 
         return;
@@ -695,14 +1088,20 @@ if (loginForm) {
             )
           ) {
 
-            alert(
-              "Seu e-mail ainda não foi confirmado. Confira sua caixa de entrada e confirme o cadastro."
+            showAchouMessage(
+              "E-mail não confirmado",
+              "Seu e-mail ainda não foi confirmado.\n\nConfira sua caixa de entrada e clique no link de confirmação antes de fazer login.",
+              "error",
+              "ENTENDI"
             );
 
           } else {
 
-            alert(
-              "E-mail ou senha incorretos."
+            showAchouMessage(
+              "Não foi possível entrar",
+              "O e-mail ou a senha estão incorretos.\n\nConfira seus dados e tente novamente.",
+              "error",
+              "TENTAR NOVAMENTE"
             );
 
           }
@@ -720,14 +1119,19 @@ if (loginForm) {
 
           closeLogin();
 
-          alert(
-            "Login realizado com sucesso!"
+          showAchouMessage(
+            "Login realizado!",
+            "Você entrou na sua conta do ACHOU! com sucesso.",
+            "success",
+            "CONTINUAR"
           );
 
         } else {
 
-          alert(
-            "Não foi possível iniciar sua sessão. Tente novamente."
+          showAchouMessage(
+            "Não foi possível entrar",
+            "Não conseguimos iniciar sua sessão.\n\nTente novamente.",
+            "error"
           );
 
         }
@@ -739,8 +1143,11 @@ if (loginForm) {
           error
         );
 
-        alert(
-          "Ocorreu um erro ao tentar entrar. Tente novamente."
+
+        showAchouMessage(
+          "Ocorreu um erro",
+          "Não foi possível realizar o login agora.\n\nTente novamente.",
+          "error"
         );
 
       } finally {
@@ -777,8 +1184,10 @@ if (signupForm) {
 
       if (!supabaseClient) {
 
-        alert(
-          "O sistema de cadastro não foi carregado. Atualize a página e tente novamente."
+        showAchouMessage(
+          "Sistema indisponível",
+          "O sistema de cadastro não foi carregado.\n\nAtualize a página e tente novamente.",
+          "error"
         );
 
         return;
@@ -809,8 +1218,10 @@ if (signupForm) {
 
       if (!name) {
 
-        alert(
-          "Digite seu nome completo."
+        showAchouMessage(
+          "Nome obrigatório",
+          "Digite seu nome completo para criar sua conta.",
+          "error"
         );
 
         return;
@@ -820,8 +1231,10 @@ if (signupForm) {
 
       if (!email) {
 
-        alert(
-          "Digite seu e-mail."
+        showAchouMessage(
+          "E-mail obrigatório",
+          "Digite um e-mail válido para continuar.",
+          "error"
         );
 
         return;
@@ -831,8 +1244,10 @@ if (signupForm) {
 
       if (password.length < 6) {
 
-        alert(
-          "A senha precisa ter pelo menos 6 caracteres."
+        showAchouMessage(
+          "Senha muito curta",
+          "A senha precisa ter pelo menos 6 caracteres.",
+          "error"
         );
 
         return;
@@ -845,8 +1260,10 @@ if (signupForm) {
         passwordConfirm
       ) {
 
-        alert(
-          "As senhas não são iguais."
+        showAchouMessage(
+          "Senhas diferentes",
+          "As duas senhas precisam ser iguais.",
+          "error"
         );
 
         return;
@@ -906,10 +1323,44 @@ if (signupForm) {
           );
 
 
-          alert(
-            "Não foi possível criar sua conta.\n\n" +
-            error.message
-          );
+          const errorMessage =
+            String(
+              error.message || ""
+            );
+
+
+          const lowerMessage =
+            errorMessage.toLowerCase();
+
+
+          if (
+            lowerMessage.includes(
+              "already registered"
+            ) ||
+            lowerMessage.includes(
+              "already exists"
+            )
+          ) {
+
+            showAchouMessage(
+              "E-mail já cadastrado",
+              "Esse e-mail já possui uma conta no ACHOU!.\n\nTente fazer login ou use outro e-mail.",
+              "error",
+              "ENTENDI"
+            );
+
+          } else {
+
+            showAchouMessage(
+              "Não foi possível criar a conta",
+              errorMessage ||
+              "Ocorreu um erro ao criar sua conta.\n\nTente novamente.",
+              "error",
+              "TENTAR NOVAMENTE"
+            );
+
+          }
+
 
           return;
 
@@ -919,27 +1370,32 @@ if (signupForm) {
         closeSignup();
 
 
+        signupForm.reset();
+
+
         if (
           data &&
           data.session
         ) {
 
-          alert(
-            "Conta criada com sucesso!"
+          showAchouMessage(
+            "Conta criada!",
+            "Sua conta foi criada com sucesso.\n\nVocê já pode começar a usar o ACHOU!",
+            "success",
+            "CONTINUAR"
           );
 
         } else {
 
-          alert(
-            "Conta criada com sucesso!\n\n" +
-            "Enviamos um e-mail para confirmar seu cadastro. " +
-            "Abra seu e-mail e clique no link de confirmação antes de fazer login."
+          showAchouMessage(
+            "Conta criada!",
+            "Sua conta foi criada com sucesso!\n\nEnviamos um e-mail de confirmação para você.\n\nAbra seu e-mail e clique no link de confirmação antes de fazer login.",
+            "success",
+            "OK, ENTENDI"
           );
 
         }
 
-
-        signupForm.reset();
 
       } catch (error) {
 
@@ -948,8 +1404,11 @@ if (signupForm) {
           error
         );
 
-        alert(
-          "Ocorreu um erro ao criar sua conta. Tente novamente."
+
+        showAchouMessage(
+          "Ocorreu um erro",
+          "Não foi possível criar sua conta agora.\n\nTente novamente.",
+          "error"
         );
 
       } finally {
@@ -972,7 +1431,7 @@ if (signupForm) {
 
 
 /* =========================================================
-   CLICAR FORA DO LOGIN
+   FECHAR MODAIS AO CLICAR FORA
    ========================================================= */
 
 if (loginModal) {
@@ -982,8 +1441,7 @@ if (loginModal) {
     event => {
 
       if (
-        event.target ===
-        loginModal
+        event.target === loginModal
       ) {
 
         closeLogin();
@@ -996,10 +1454,6 @@ if (loginModal) {
 }
 
 
-/* =========================================================
-   CLICAR FORA DO CADASTRO
-   ========================================================= */
-
 if (signupModal) {
 
   signupModal.addEventListener(
@@ -1007,8 +1461,7 @@ if (signupModal) {
     event => {
 
       if (
-        event.target ===
-        signupModal
+        event.target === signupModal
       ) {
 
         closeSignup();
@@ -1030,9 +1483,36 @@ document.addEventListener(
   event => {
 
     if (
-      event.key !==
-      "Escape"
+      event.key !== "Escape"
     ) {
+
+      return;
+
+    }
+
+
+    if (
+      achouMessageModal &&
+      achouMessageModal.classList.contains(
+        "active"
+      )
+    ) {
+
+      closeAchouMessage();
+
+      return;
+
+    }
+
+
+    if (
+      signupModal &&
+      signupModal.classList.contains(
+        "active"
+      )
+    ) {
+
+      closeSignup();
 
       return;
 
@@ -1050,27 +1530,53 @@ document.addEventListener(
 
     }
 
-
-    if (
-      signupModal &&
-      signupModal.classList.contains(
-        "active"
-      )
-    ) {
-
-      closeSignup();
-
-    }
-
   }
 );
 
 
 /* =========================================================
-   VERIFICAR SESSÃO ATUAL
+   ESTADO DE AUTENTICAÇÃO
    ========================================================= */
 
 if (supabaseClient) {
+
+  supabaseClient.auth.onAuthStateChange(
+    (
+      event,
+      session
+    ) => {
+
+      console.log(
+        "Estado de autenticação:",
+        event
+      );
+
+
+      if (
+        event === "SIGNED_OUT"
+      ) {
+
+        console.log(
+          "Usuário desconectado."
+        );
+
+      }
+
+
+      if (
+        event === "SIGNED_IN" &&
+        session
+      ) {
+
+        console.log(
+          "Usuário autenticado."
+        );
+
+      }
+
+    }
+  );
+
 
   supabaseClient.auth.getSession()
     .then(
@@ -1094,38 +1600,13 @@ if (supabaseClient) {
         ) {
 
           console.log(
-            "Usuário já está autenticado:",
-            data.session.user.email
+            "Sessão ativa."
           );
 
         }
 
       }
     );
-
-
-  supabaseClient.auth.onAuthStateChange(
-    (event, session) => {
-
-      console.log(
-        "Estado da autenticação:",
-        event
-      );
-
-
-      if (
-        event ===
-        "SIGNED_OUT"
-      ) {
-
-        console.log(
-          "Usuário saiu da conta."
-        );
-
-      }
-
-    }
-  );
 
 }
 
