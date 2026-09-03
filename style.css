@@ -755,3 +755,214 @@ footer small{
   }
 
 }       
+/* =========================
+   LOGIN DO CLIENTE
+========================= */
+
+.login-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  transition:
+    opacity .2s ease,
+    visibility .2s ease;
+}
+
+.login-modal.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.login-modal-box{
+  position:relative;
+
+  width:100%;
+  max-width:380px;
+
+  padding:34px 25px 27px;
+
+  background:#050505;
+  border:1px solid #292929;
+  border-radius:16px;
+
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.8),
+    0 0 30px rgba(255,212,0,.04);
+
+  transform:translateY(15px) scale(.98);
+  transition:transform .2s ease;
+}
+
+.login-modal.active .login-modal-box{
+  transform:translateY(0) scale(1);
+}
+
+.login-close{
+  position:absolute;
+
+  top:10px;
+  right:13px;
+
+  width:32px;
+  height:32px;
+
+  border:0;
+  background:transparent;
+
+  color:#777;
+
+  font-size:27px;
+  line-height:1;
+
+  cursor:pointer;
+}
+
+.login-close:hover{
+  color:#fff;
+}
+
+.login-logo{
+  text-align:center;
+
+  font-size:28px;
+  font-weight:950;
+  letter-spacing:-1.8px;
+
+  color:#fff;
+}
+
+.login-logo span{
+  color:var(--yellow);
+}
+
+.login-subtitle{
+  margin:7px 0 25px;
+
+  text-align:center;
+
+  color:#888;
+  font-size:10px;
+}
+
+#loginForm{
+  display:flex;
+  flex-direction:column;
+}
+
+#loginForm label{
+  margin:0 0 6px;
+
+  color:#aaa;
+
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+#loginForm input{
+  width:100%;
+  height:46px;
+
+  margin:0 0 16px;
+  padding:0 13px;
+
+  border:1px solid #292929;
+  border-radius:9px;
+
+  outline:none;
+
+  background:#000;
+  color:#fff;
+
+  font-size:11px;
+
+  transition:border-color .2s ease;
+}
+
+#loginForm input:focus{
+  border-color:var(--yellow);
+}
+
+#loginForm input::placeholder{
+  color:#555;
+}
+
+.login-submit{
+  width:100%;
+  height:46px;
+
+  margin-top:3px;
+
+  border:0;
+  border-radius:9px;
+
+  background:var(--yellow);
+  color:#000;
+
+  font-size:9px;
+  font-weight:950;
+
+  cursor:pointer;
+}
+
+.login-submit:active{
+  transform:scale(.98);
+}
+
+.create-account{
+  width:100%;
+
+  margin-top:16px;
+  padding:8px;
+
+  border:0;
+  background:transparent;
+
+  color:#aaa;
+
+  font-size:8px;
+  font-weight:700;
+
+  cursor:pointer;
+}
+
+.create-account:hover{
+  color:var(--yellow);
+}
+
+
+/* =========================
+   BLOQUEIO DO FUNDO
+========================= */
+
+body.login-open{
+  overflow:hidden;
+}
+
+
+/* =========================
+   LOGIN — TELAS PEQUENAS
+========================= */
+
+@media(max-width:420px){
+
+  .login-modal{
+    padding:16px;
+ 
