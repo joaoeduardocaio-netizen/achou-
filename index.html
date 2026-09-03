@@ -20,7 +20,7 @@
     </a>
 
     <div class="header-actions">
-      <a class="login" href="#">Entrar</a>
+      <a class="login" href="#" id="loginButton">Entrar</a>
 
       <button class="menu-button" aria-label="Abrir menu" aria-expanded="false">
         <i></i>
@@ -362,7 +362,89 @@
   </footer>
 
 
+  <!-- =========================
+       LOGIN DO CLIENTE
+  ========================= -->
+
+  <div
+    class="login-modal"
+    id="loginModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="login-modal-box"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="loginTitle"
+    >
+
+      <button
+        type="button"
+        class="login-close"
+        id="loginClose"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+
+      <div class="login-logo">
+        ACHOU<span>!</span>
+      </div>
+
+      <p class="login-subtitle">
+        Entre na sua conta
+      </p>
+
+      <form id="loginForm">
+
+        <label for="loginEmail">
+          E-mail
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="seu@email.com"
+          autocomplete="email"
+          required
+        >
+
+        <label for="loginPassword">
+          Senha
+        </label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Sua senha"
+          autocomplete="current-password"
+          required
+        >
+
+        <button
+          type="submit"
+          class="login-submit"
+        >
+          ENTRAR
+        </button>
+
+      </form>
+
+      <button
+        type="button"
+        class="create-account"
+        id="createAccount"
+      >
+        Ainda não tenho conta
+      </button>
+
+    </div>
+
+  </div>
+
+
   <script src="script.js?v=20260902-3"></script>
 
 </body>
-          </html>
+</html>
