@@ -666,14 +666,14 @@ footer small{
       linear-gradient(
         to bottom,
         #000 0%,
-        #000 65%,
+        #000 85%,
         transparent 100%
       );
     mask-image:
       linear-gradient(
         to bottom,
         #000 0%,
-        #000 65%,
+        #000 85%,
         transparent 100%
       );
   }
