@@ -37,9 +37,6 @@ function searchProducts(term){
       matches ? "" : "none";
   });
 
-  /* Se pesquisou alguma coisa,
-     leva até as ofertas */
-
   if(query){
 
     const productList =
@@ -149,15 +146,212 @@ document
       "click",
       event => {
 
-        /*
-          Por enquanto os links
-          não levam para nenhuma loja.
-          Evita recarregar a página.
-        */
-
         event.preventDefault();
 
       }
     );
 
   });
+
+
+/* =========================
+   LOGIN DO CLIENTE
+========================= */
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const loginModal =
+  document.getElementById("loginModal");
+
+const loginClose =
+  document.getElementById("loginClose");
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const createAccount =
+  document.getElementById("createAccount");
+
+
+/* =========================
+   ABRIR LOGIN
+========================= */
+
+function openLogin(){
+
+  if(!loginModal) return;
+
+  loginModal.classList.add("active");
+
+  loginModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "login-open"
+  );
+
+  const email =
+    document.getElementById("loginEmail");
+
+  if(email){
+
+    setTimeout(() => {
+      email.focus();
+    }, 200);
+
+  }
+
+}
+
+
+/* =========================
+   FECHAR LOGIN
+========================= */
+
+function closeLogin(){
+
+  if(!loginModal) return;
+
+  loginModal.classList.remove("active");
+
+  loginModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.classList.remove(
+    "login-open"
+  );
+
+}
+
+
+/* =========================
+   BOTÃO ENTRAR
+========================= */
+
+if(loginButton){
+
+  loginButton.addEventListener(
+    "click",
+    event => {
+
+      event.preventDefault();
+
+      openLogin();
+
+    }
+  );
+
+}
+
+
+/* =========================
+   BOTÃO FECHAR
+========================= */
+
+if(loginClose){
+
+  loginClose.addEventListener(
+    "click",
+    closeLogin
+  );
+
+}
+
+
+/* =========================
+   CLICAR FORA DO LOGIN
+========================= */
+
+if(loginModal){
+
+  loginModal.addEventListener(
+    "click",
+    event => {
+
+      if(event.target === loginModal){
+
+        closeLogin();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =========================
+   TECLA ESC
+========================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.key === "Escape" &&
+      loginModal &&
+      loginModal.classList.contains("active")
+    ){
+
+      closeLogin();
+
+    }
+
+  }
+);
+
+
+/* =========================
+   FORMULÁRIO DE LOGIN
+========================= */
+
+if(loginForm){
+
+  loginForm.addEventListener(
+    "submit",
+    event => {
+
+      event.preventDefault();
+
+      /*
+        A autenticação real será
+        conectada posteriormente.
+
+        Por enquanto apenas impedimos
+        o formulário de recarregar a página.
+      */
+
+      alert(
+        "O sistema de login será conectado em breve."
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   CRIAR CONTA
+========================= */
+
+if(createAccount){
+
+  createAccount.addEventListener(
+    "click",
+    () => {
+
+      alert(
+        "A criação de conta será implementada na próxima etapa."
+      );
+
+    }
+  );
+
+         }
