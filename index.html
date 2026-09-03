@@ -13,6 +13,7 @@
 <body>
 
   <header class="site-header">
+
     <a class="brand" href="#" aria-label="ACHOU! início">
       <strong>ACHOU<span>!</span></strong>
       <small>A gente procura.</small>
@@ -20,27 +21,44 @@
     </a>
 
     <div class="header-actions">
-      <a class="login" href="#" id="loginButton">Entrar</a>
 
-      <button class="menu-button" aria-label="Abrir menu" aria-expanded="false">
+      <a class="login" href="#" id="loginButton">
+        Entrar
+      </a>
+
+      <button
+        class="menu-button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+      >
         <i></i>
         <i></i>
         <i></i>
       </button>
+
     </div>
+
   </header>
 
+
   <main>
+
+    <!-- =========================
+         HERO
+    ========================= -->
 
     <section class="hero-section">
 
       <div class="hero-image-wrap">
+
         <img
           class="hero-image"
           src="achou-homem-caixa-1.png"
           alt="Pessoa feliz segurando uma caixa do ACHOU!"
         >
+
       </div>
+
 
       <div class="hero-copy">
 
@@ -61,6 +79,7 @@
 
       </div>
 
+
       <form class="search-box" id="searchForm">
 
         <span class="search-icon">⌕</span>
@@ -72,9 +91,12 @@
           autocomplete="off"
         >
 
-        <button type="submit">Buscar</button>
+        <button type="submit">
+          Buscar
+        </button>
 
       </form>
+
 
       <div class="benefits">
 
@@ -101,6 +123,10 @@
     </section>
 
 
+    <!-- =========================
+         PRODUTOS
+    ========================= -->
+
     <section class="products-section">
 
       <div class="section-heading">
@@ -122,7 +148,11 @@
 
       <div class="product-list" id="productList">
 
-        <article class="product-card" data-name="smartphone celular">
+
+        <article
+          class="product-card"
+          data-name="smartphone celular"
+        >
 
           <span class="deal">
             MELHOR PREÇO
@@ -159,7 +189,10 @@
         </article>
 
 
-        <article class="product-card" data-name="notebook computador">
+        <article
+          class="product-card"
+          data-name="notebook computador"
+        >
 
           <div class="product-photo">
             <span>💻</span>
@@ -192,7 +225,10 @@
         </article>
 
 
-        <article class="product-card" data-name="fone bluetooth headphone">
+        <article
+          class="product-card"
+          data-name="fone bluetooth headphone"
+        >
 
           <div class="product-photo">
             <span>🎧</span>
@@ -228,6 +264,10 @@
 
     </section>
 
+
+    <!-- =========================
+         CATEGORIAS
+    ========================= -->
 
     <section class="categories-section">
 
@@ -282,6 +322,10 @@
     </section>
 
 
+    <!-- =========================
+         COMO FUNCIONA
+    ========================= -->
+
     <section class="how-section">
 
       <div class="eyebrow">
@@ -317,6 +361,10 @@
     </section>
 
 
+    <!-- =========================
+         CTA
+    ========================= -->
+
     <section class="cta-section">
 
       <div class="eyebrow">
@@ -343,6 +391,10 @@
 
   </main>
 
+
+  <!-- =========================
+       FOOTER
+  ========================= -->
 
   <footer>
 
@@ -388,13 +440,19 @@
         ×
       </button>
 
-      <div class="login-logo">
+
+      <div
+        class="login-logo"
+        id="loginTitle"
+      >
         ACHOU<span>!</span>
       </div>
+
 
       <p class="login-subtitle">
         Entre na sua conta
       </p>
+
 
       <form id="loginForm">
 
@@ -410,6 +468,7 @@
           required
         >
 
+
         <label for="loginPassword">
           Senha
         </label>
@@ -422,6 +481,7 @@
           required
         >
 
+
         <button
           type="submit"
           class="login-submit"
@@ -430,6 +490,7 @@
         </button>
 
       </form>
+
 
       <button
         type="button"
@@ -444,7 +505,126 @@
   </div>
 
 
+  <!-- =========================
+       CADASTRO DO CLIENTE
+  ========================= -->
+
+  <div
+    class="signup-modal"
+    id="signupModal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="signup-modal-box"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="signupTitle"
+    >
+
+      <button
+        type="button"
+        class="signup-close"
+        id="signupClose"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+
+
+      <div
+        class="signup-logo"
+        id="signupTitle"
+      >
+        ACHOU<span>!</span>
+      </div>
+
+
+      <p class="signup-subtitle">
+        Crie sua conta
+      </p>
+
+
+      <form id="signupForm">
+
+        <label for="signupName">
+          Nome completo
+        </label>
+
+        <input
+          id="signupName"
+          type="text"
+          placeholder="Seu nome"
+          autocomplete="name"
+          required
+        >
+
+
+        <label for="signupEmail">
+          E-mail
+        </label>
+
+        <input
+          id="signupEmail"
+          type="email"
+          placeholder="seu@email.com"
+          autocomplete="email"
+          required
+        >
+
+
+        <label for="signupPassword">
+          Senha
+        </label>
+
+        <input
+          id="signupPassword"
+          type="password"
+          placeholder="Crie uma senha"
+          autocomplete="new-password"
+          minlength="6"
+          required
+        >
+
+
+        <label for="signupPasswordConfirm">
+          Confirmar senha
+        </label>
+
+        <input
+          id="signupPasswordConfirm"
+          type="password"
+          placeholder="Digite a senha novamente"
+          autocomplete="new-password"
+          minlength="6"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="signup-submit"
+        >
+          CRIAR CONTA
+        </button>
+
+      </form>
+
+
+      <button
+        type="button"
+        class="signup-login"
+        id="signupLogin"
+      >
+        Já tenho uma conta
+      </button>
+
+    </div>
+
+  </div>
+
+
   <script src="script.js?v=20260902-3"></script>
 
 </body>
-</html>
+          </html>
