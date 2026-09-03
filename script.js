@@ -35,7 +35,9 @@ function searchProducts(term){
 
     card.style.display =
       matches ? "" : "none";
+
   });
+
 
   if(query){
 
@@ -50,7 +52,9 @@ function searchProducts(term){
       });
 
     }
+
   }
+
 }
 
 
@@ -118,10 +122,12 @@ if(menuButton){
           "aria-expanded"
         ) === "true";
 
+
       menuButton.setAttribute(
         "aria-expanded",
         String(!isOpen)
       );
+
 
       menuButton.classList.toggle(
         "open",
@@ -155,7 +161,7 @@ document
 
 
 /* =========================
-   LOGIN DO CLIENTE
+   LOGIN
 ========================= */
 
 const loginButton =
@@ -175,12 +181,42 @@ const createAccount =
 
 
 /* =========================
+   CADASTRO
+========================= */
+
+const signupModal =
+  document.getElementById("signupModal");
+
+const signupClose =
+  document.getElementById("signupClose");
+
+const signupForm =
+  document.getElementById("signupForm");
+
+const signupLogin =
+  document.getElementById("signupLogin");
+
+
+/* =========================
    ABRIR LOGIN
 ========================= */
 
 function openLogin(){
 
   if(!loginModal) return;
+
+
+  if(signupModal){
+
+    signupModal.classList.remove("active");
+
+    signupModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
 
   loginModal.classList.add("active");
 
@@ -189,17 +225,22 @@ function openLogin(){
     "false"
   );
 
+
   document.body.classList.add(
     "login-open"
   );
 
+
   const email =
     document.getElementById("loginEmail");
+
 
   if(email){
 
     setTimeout(() => {
+
       email.focus();
+
     }, 200);
 
   }
@@ -215,12 +256,89 @@ function closeLogin(){
 
   if(!loginModal) return;
 
+
   loginModal.classList.remove("active");
 
   loginModal.setAttribute(
     "aria-hidden",
     "true"
   );
+
+
+  document.body.classList.remove(
+    "login-open"
+  );
+
+}
+
+
+/* =========================
+   ABRIR CADASTRO
+========================= */
+
+function openSignup(){
+
+  if(!signupModal) return;
+
+
+  if(loginModal){
+
+    loginModal.classList.remove("active");
+
+    loginModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+  }
+
+
+  signupModal.classList.add("active");
+
+  signupModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  document.body.classList.add(
+    "login-open"
+  );
+
+
+  const name =
+    document.getElementById("signupName");
+
+
+  if(name){
+
+    setTimeout(() => {
+
+      name.focus();
+
+    }, 200);
+
+  }
+
+}
+
+
+/* =========================
+   FECHAR CADASTRO
+========================= */
+
+function closeSignup(){
+
+  if(!signupModal) return;
+
+
+  signupModal.classList.remove("active");
+
+  signupModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
 
   document.body.classList.remove(
     "login-open"
@@ -250,7 +368,7 @@ if(loginButton){
 
 
 /* =========================
-   BOTÃO FECHAR
+   FECHAR LOGIN
 ========================= */
 
 if(loginClose){
@@ -258,6 +376,56 @@ if(loginClose){
   loginClose.addEventListener(
     "click",
     closeLogin
+  );
+
+}
+
+
+/* =========================
+   LOGIN → CADASTRO
+========================= */
+
+if(createAccount){
+
+  createAccount.addEventListener(
+    "click",
+    () => {
+
+      openSignup();
+
+    }
+  );
+
+}
+
+
+/* =========================
+   FECHAR CADASTRO
+========================= */
+
+if(signupClose){
+
+  signupClose.addEventListener(
+    "click",
+    closeSignup
+  );
+
+}
+
+
+/* =========================
+   CADASTRO → LOGIN
+========================= */
+
+if(signupLogin){
+
+  signupLogin.addEventListener(
+    "click",
+    () => {
+
+      openLogin();
+
+    }
   );
 
 }
@@ -286,50 +454,20 @@ if(loginModal){
 
 
 /* =========================
-   TECLA ESC
+   CLICAR FORA DO CADASTRO
 ========================= */
 
-document.addEventListener(
-  "keydown",
-  event => {
+if(signupModal){
 
-    if(
-      event.key === "Escape" &&
-      loginModal &&
-      loginModal.classList.contains("active")
-    ){
-
-      closeLogin();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   FORMULÁRIO DE LOGIN
-========================= */
-
-if(loginForm){
-
-  loginForm.addEventListener(
-    "submit",
+  signupModal.addEventListener(
+    "click",
     event => {
 
-      event.preventDefault();
+      if(event.target === signupModal){
 
-      /*
-        A autenticação real será
-        conectada posteriormente.
+        closeSignup();
 
-        Por enquanto apenas impedimos
-        o formulário de recarregar a página.
-      */
-
-      alert(
-        "O sistema de login será conectado em breve."
-      );
+      }
 
     }
   );
@@ -338,20 +476,28 @@ if(loginForm){
 
 
 /* =========================
-   CRIAR CONTA
+   TECLA ESC
 ========================= */
 
-if(createAccount){
+document.addEventListener(
+  "keydown",
+  event => {
 
-  createAccount.addEventListener(
-    "click",
-    () => {
+    if(event.key !== "Escape"){
+      return;
+    }
 
-      alert(
-        "A criação de conta será implementada na próxima etapa."
-      );
+
+    if(
+      loginModal &&
+      loginModal.classList.contains("active")
+    ){
+
+      closeLogin();
 
     }
-  );
 
-         }
+
+    if(
+      signupModal &&
+     
