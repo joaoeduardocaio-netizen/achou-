@@ -1,5 +1,5 @@
 /* =========================================================
-   ACHOU! - SCRIPT PRINCIPAL
+   ACHOU! — SCRIPT PRINCIPAL
    ========================================================= */
 
 
@@ -16,23 +16,19 @@ const SUPABASE_PUBLISHABLE_KEY =
 let supabaseClient = null;
 
 if (window.supabase && window.supabase.createClient) {
-
   supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
-
 } else {
-
   console.error(
-    "Supabase não foi carregado. Verifique o script do CDN no index.html."
+    "Supabase não foi carregado. Verifique o CDN no index.html."
   );
-
 }
 
 
 /* =========================================================
-   ELEMENTOS
+   ELEMENTOS DA BUSCA
    ========================================================= */
 
 const searchForm =
@@ -59,6 +55,8 @@ function searchProducts(query) {
       .trim()
       .toLowerCase();
 
+  let found = false;
+
   productCards.forEach(card => {
 
     const name =
@@ -75,17 +73,13 @@ function searchProducts(query) {
       cardText.includes(text);
 
     if (match) {
-
       card.style.display = "";
-
+      found = true;
     } else {
-
       card.style.display = "none";
-
     }
 
   });
-
 
   if (text) {
 
@@ -103,6 +97,7 @@ function searchProducts(query) {
 
   }
 
+  return found;
 }
 
 
@@ -147,9 +142,7 @@ popularButtons.forEach(button => {
         button.textContent.trim();
 
       if (searchInput) {
-
         searchInput.value = text;
-
       }
 
       searchProducts(text);
@@ -161,7 +154,7 @@ popularButtons.forEach(button => {
 
 
 /* =========================================================
-   MENU
+   MENU MOBILE
    ========================================================= */
 
 const menuToggle =
@@ -171,7 +164,6 @@ const menu =
   document.querySelector(".nav-menu") ||
   document.querySelector(".mobile-menu") ||
   document.querySelector("header nav");
-
 
 if (menuToggle) {
 
@@ -220,7 +212,6 @@ const offerLinks =
     ".deal, .offer, .offer-link"
   );
 
-
 offerLinks.forEach(link => {
 
   link.addEventListener(
@@ -230,13 +221,8 @@ offerLinks.forEach(link => {
       const href =
         link.getAttribute("href");
 
-      if (
-        !href ||
-        href === "#"
-      ) {
-
+      if (!href || href === "#") {
         event.preventDefault();
-
       }
 
     }
@@ -257,7 +243,7 @@ let achouMessageIcon = null;
 
 
 /* =========================================================
-   CRIAR ESTILO DAS MENSAGENS
+   ESTILO DAS MENSAGENS
    ========================================================= */
 
 function createAchouMessageStyles() {
@@ -267,11 +253,8 @@ function createAchouMessageStyles() {
       "achouMessageStyles"
     )
   ) {
-
     return;
-
   }
-
 
   const style =
     document.createElement("style");
@@ -417,14 +400,10 @@ function createAchouMessageModal() {
       "achouMessageModal"
     )
   ) {
-
     return;
-
   }
 
-
   createAchouMessageStyles();
-
 
   const modal =
     document.createElement("div");
@@ -436,7 +415,6 @@ function createAchouMessageModal() {
     "aria-hidden",
     "true"
   );
-
 
   modal.innerHTML = `
 
@@ -473,9 +451,7 @@ function createAchouMessageModal() {
 
   `;
 
-
   document.body.appendChild(modal);
-
 
   achouMessageModal =
     modal;
@@ -500,12 +476,10 @@ function createAchouMessageModal() {
       ".achou-message-icon"
     );
 
-
   achouMessageButton.addEventListener(
     "click",
     closeAchouMessage
   );
-
 
   modal.addEventListener(
     "click",
@@ -514,9 +488,7 @@ function createAchouMessageModal() {
       if (
         event.target === modal
       ) {
-
         closeAchouMessage();
-
       }
 
     }
@@ -538,59 +510,35 @@ function showAchouMessage(
 
   createAchouMessageModal();
 
-
   if (achouMessageTitle) {
-
     achouMessageTitle.textContent =
       title;
-
   }
-
 
   if (achouMessageText) {
-
     achouMessageText.textContent =
       message;
-
   }
-
 
   if (achouMessageButton) {
-
     achouMessageButton.textContent =
       buttonText;
-
   }
-
 
   if (achouMessageIcon) {
 
-    if (type === "error") {
+    achouMessageIcon.textContent =
+      type === "error"
+        ? "!"
+        : "✓";
 
-      achouMessageIcon.textContent =
-        "!";
+    achouMessageIcon.style.color =
+      "#FFD400";
 
-      achouMessageIcon.style.color =
-        "#FFD400";
-
-      achouMessageIcon.style.borderColor =
-        "#FFD400";
-
-    } else {
-
-      achouMessageIcon.textContent =
-        "✓";
-
-      achouMessageIcon.style.color =
-        "#FFD400";
-
-      achouMessageIcon.style.borderColor =
-        "#FFD400";
-
-    }
+    achouMessageIcon.style.borderColor =
+      "#FFD400";
 
   }
-
 
   if (achouMessageModal) {
 
@@ -604,7 +552,6 @@ function showAchouMessage(
     );
 
   }
-
 
   document.body.classList.add(
     "login-open"
@@ -632,7 +579,6 @@ function closeAchouMessage() {
 
   }
 
-
   document.body.classList.remove(
     "login-open"
   );
@@ -641,7 +587,7 @@ function closeAchouMessage() {
 
 
 /* =========================================================
-   LOGIN
+   ELEMENTOS DO LOGIN
    ========================================================= */
 
 const loginButton =
@@ -681,7 +627,7 @@ const createAccount =
 
 
 /* =========================================================
-   CADASTRO
+   ELEMENTOS DO CADASTRO
    ========================================================= */
 
 const signupModal =
@@ -733,7 +679,6 @@ function openLogin() {
 
   closeAchouMessage();
 
-
   if (signupModal) {
 
     signupModal.classList.remove(
@@ -746,7 +691,6 @@ function openLogin() {
     );
 
   }
-
 
   if (loginModal) {
 
@@ -761,24 +705,17 @@ function openLogin() {
 
   }
 
-
   document.body.classList.add(
     "login-open"
   );
 
+  setTimeout(() => {
 
-  setTimeout(
-    () => {
+    if (loginEmail) {
+      loginEmail.focus();
+    }
 
-      if (loginEmail) {
-
-        loginEmail.focus();
-
-      }
-
-    },
-    200
-  );
+  }, 200);
 
 }
 
@@ -802,7 +739,6 @@ function closeLogin() {
 
   }
 
-
   document.body.classList.remove(
     "login-open"
   );
@@ -818,7 +754,6 @@ function openSignup() {
 
   closeAchouMessage();
 
-
   if (loginModal) {
 
     loginModal.classList.remove(
@@ -831,7 +766,6 @@ function openSignup() {
     );
 
   }
-
 
   if (signupModal) {
 
@@ -846,24 +780,17 @@ function openSignup() {
 
   }
 
-
   document.body.classList.add(
     "login-open"
   );
 
+  setTimeout(() => {
 
-  setTimeout(
-    () => {
+    if (signupName) {
+      signupName.focus();
+    }
 
-      if (signupName) {
-
-        signupName.focus();
-
-      }
-
-    },
-    200
-  );
+  }, 200);
 
 }
 
@@ -886,7 +813,6 @@ function closeSignup() {
     );
 
   }
-
 
   document.body.classList.remove(
     "login-open"
@@ -916,18 +842,14 @@ if (loginButton) {
 
 
 /* =========================================================
-   FECHAR LOGIN PELO X
+   FECHAR LOGIN
    ========================================================= */
 
 if (loginClose) {
 
   loginClose.addEventListener(
     "click",
-    () => {
-
-      closeLogin();
-
-    }
+    closeLogin
   );
 
 }
@@ -941,29 +863,21 @@ if (createAccount) {
 
   createAccount.addEventListener(
     "click",
-    () => {
-
-      openSignup();
-
-    }
+    openSignup
   );
 
 }
 
 
 /* =========================================================
-   FECHAR CADASTRO PELO X
+   FECHAR CADASTRO
    ========================================================= */
 
 if (signupClose) {
 
   signupClose.addEventListener(
     "click",
-    () => {
-
-      closeSignup();
-
-    }
+    closeSignup
   );
 
 }
@@ -977,18 +891,14 @@ if (signupLogin) {
 
   signupLogin.addEventListener(
     "click",
-    () => {
-
-      openLogin();
-
-    }
+    openLogin
   );
 
 }
 
 
 /* =========================================================
-   LOGIN REAL PELO SUPABASE
+   LOGIN REAL — SUPABASE
    ========================================================= */
 
 if (loginForm) {
@@ -999,7 +909,6 @@ if (loginForm) {
 
       event.preventDefault();
 
-
       if (!supabaseClient) {
 
         showAchouMessage(
@@ -1009,9 +918,7 @@ if (loginForm) {
         );
 
         return;
-
       }
-
 
       const email =
         loginEmail
@@ -1023,7 +930,6 @@ if (loginForm) {
           ? loginPassword.value
           : "";
 
-
       if (!email || !password) {
 
         showAchouMessage(
@@ -1033,15 +939,12 @@ if (loginForm) {
         );
 
         return;
-
       }
-
 
       const submitButton =
         loginForm.querySelector(
           ".login-submit"
         );
-
 
       if (submitButton) {
 
@@ -1052,21 +955,17 @@ if (loginForm) {
 
       }
 
-
       try {
 
         const {
           data,
           error
         } =
-          await supabaseClient.auth.signInWithPassword({
-
-            email: email,
-
-            password: password
-
-          });
-
+          await supabaseClient.auth
+            .signInWithPassword({
+              email,
+              password
+            });
 
         if (error) {
 
@@ -1075,12 +974,10 @@ if (loginForm) {
             error
           );
 
-
           const message =
             String(
               error.message || ""
             ).toLowerCase();
-
 
           if (
             message.includes(
@@ -1106,11 +1003,8 @@ if (loginForm) {
 
           }
 
-
           return;
-
         }
-
 
         if (
           data &&
@@ -1124,6 +1018,10 @@ if (loginForm) {
             "Você entrou na sua conta do ACHOU! com sucesso.",
             "success",
             "CONTINUAR"
+          );
+
+          updateLoginButton(
+            data.session.user
           );
 
         } else {
@@ -1143,7 +1041,6 @@ if (loginForm) {
           error
         );
 
-
         showAchouMessage(
           "Ocorreu um erro",
           "Não foi possível realizar o login agora.\n\nTente novamente.",
@@ -1154,7 +1051,8 @@ if (loginForm) {
 
         if (submitButton) {
 
-          submitButton.disabled = false;
+          submitButton.disabled =
+            false;
 
           submitButton.textContent =
             "ENTRAR";
@@ -1170,7 +1068,7 @@ if (loginForm) {
 
 
 /* =========================================================
-   CADASTRO REAL PELO SUPABASE
+   CADASTRO REAL — SUPABASE
    ========================================================= */
 
 if (signupForm) {
@@ -1181,7 +1079,6 @@ if (signupForm) {
 
       event.preventDefault();
 
-
       if (!supabaseClient) {
 
         showAchouMessage(
@@ -1191,9 +1088,7 @@ if (signupForm) {
         );
 
         return;
-
       }
-
 
       const name =
         signupName
@@ -1215,7 +1110,6 @@ if (signupForm) {
           ? signupPasswordConfirm.value
           : "";
 
-
       if (!name) {
 
         showAchouMessage(
@@ -1225,9 +1119,7 @@ if (signupForm) {
         );
 
         return;
-
       }
-
 
       if (!email) {
 
@@ -1238,9 +1130,7 @@ if (signupForm) {
         );
 
         return;
-
       }
-
 
       if (password.length < 6) {
 
@@ -1251,14 +1141,9 @@ if (signupForm) {
         );
 
         return;
-
       }
 
-
-      if (
-        password !==
-        passwordConfirm
-      ) {
+      if (password !== passwordConfirm) {
 
         showAchouMessage(
           "Senhas diferentes",
@@ -1267,25 +1152,22 @@ if (signupForm) {
         );
 
         return;
-
       }
-
 
       const submitButton =
         signupForm.querySelector(
           ".signup-submit"
         );
 
-
       if (submitButton) {
 
-        submitButton.disabled = true;
+        submitButton.disabled =
+          true;
 
         submitButton.textContent =
           "CRIANDO...";
 
       }
-
 
       try {
 
@@ -1293,27 +1175,25 @@ if (signupForm) {
           data,
           error
         } =
-          await supabaseClient.auth.signUp({
+          await supabaseClient.auth
+            .signUp({
 
-            email: email,
+              email,
 
-            password: password,
+              password,
 
-            options: {
+              options: {
 
-              data: {
+                data: {
+                  full_name: name
+                },
 
-                full_name: name
+                emailRedirectTo:
+                  "https://joaoeduardocaio-netizen.github.io/achou-/"
 
-              },
+              }
 
-              emailRedirectTo:
-                "https://joaoeduardocaio-netizen.github.io/achou-/"
-
-            }
-
-          });
-
+            });
 
         if (error) {
 
@@ -1322,16 +1202,13 @@ if (signupForm) {
             error
           );
 
-
           const errorMessage =
             String(
               error.message || ""
             );
 
-
           const lowerMessage =
             errorMessage.toLowerCase();
-
 
           if (
             lowerMessage.includes(
@@ -1361,22 +1238,21 @@ if (signupForm) {
 
           }
 
-
           return;
-
         }
-
 
         closeSignup();
 
-
         signupForm.reset();
-
 
         if (
           data &&
           data.session
         ) {
+
+          updateLoginButton(
+            data.user
+          );
 
           showAchouMessage(
             "Conta criada!",
@@ -1396,14 +1272,12 @@ if (signupForm) {
 
         }
 
-
       } catch (error) {
 
         console.error(
           "Erro inesperado no cadastro:",
           error
         );
-
 
         showAchouMessage(
           "Ocorreu um erro",
@@ -1415,7 +1289,8 @@ if (signupForm) {
 
         if (submitButton) {
 
-          submitButton.disabled = false;
+          submitButton.disabled =
+            false;
 
           submitButton.textContent =
             "CRIAR CONTA";
@@ -1431,7 +1306,149 @@ if (signupForm) {
 
 
 /* =========================================================
-   FECHAR MODAIS AO CLICAR FORA
+   ATUALIZAR BOTÃO DE LOGIN
+   ========================================================= */
+
+function updateLoginButton(user) {
+
+  if (!loginButton || !user) {
+    return;
+  }
+
+  const metadata =
+    user.user_metadata || {};
+
+  const fullName =
+    metadata.full_name ||
+    metadata.name ||
+    "";
+
+  let firstName =
+    fullName
+      .trim()
+      .split(/\s+/)[0];
+
+  if (!firstName) {
+
+    firstName =
+      String(
+        user.email || ""
+      ).split("@")[0];
+
+  }
+
+  if (!firstName) {
+    firstName = "Usuário";
+  }
+
+  loginButton.textContent =
+    `Olá, ${firstName}`;
+
+  loginButton.setAttribute(
+    "title",
+    "Clique para sair da conta"
+  );
+
+  loginButton.dataset.loggedIn =
+    "true";
+
+}
+
+
+/* =========================================================
+   VOLTAR BOTÃO PARA ENTRAR
+   ========================================================= */
+
+function resetLoginButton() {
+
+  if (!loginButton) {
+    return;
+  }
+
+  loginButton.textContent =
+    "Entrar";
+
+  loginButton.removeAttribute(
+    "title"
+  );
+
+  loginButton.dataset.loggedIn =
+    "false";
+
+}
+
+
+/* =========================================================
+   CLIQUE NO BOTÃO QUANDO LOGADO
+   ========================================================= */
+
+if (loginButton) {
+
+  loginButton.addEventListener(
+    "click",
+    async event => {
+
+      if (
+        loginButton.dataset.loggedIn !==
+        "true"
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const confirmLogout =
+        window.confirm(
+          "Deseja sair da sua conta?"
+        );
+
+      if (!confirmLogout) {
+        return;
+      }
+
+      if (!supabaseClient) {
+        return;
+      }
+
+      const {
+        error
+      } =
+        await supabaseClient.auth
+          .signOut();
+
+      if (error) {
+
+        console.error(
+          "Erro ao sair:",
+          error
+        );
+
+        showAchouMessage(
+          "Não foi possível sair",
+          "Ocorreu um erro ao encerrar sua sessão.\n\nTente novamente.",
+          "error"
+        );
+
+        return;
+      }
+
+      resetLoginButton();
+
+      showAchouMessage(
+        "Sessão encerrada",
+        "Você saiu da sua conta do ACHOU!.",
+        "success",
+        "CONTINUAR"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   FECHAR MODAIS CLICANDO FORA
    ========================================================= */
 
 if (loginModal) {
@@ -1441,18 +1458,16 @@ if (loginModal) {
     event => {
 
       if (
-        event.target === loginModal
+        event.target ===
+        loginModal
       ) {
-
         closeLogin();
-
       }
 
     }
   );
 
 }
-
 
 if (signupModal) {
 
@@ -1461,11 +1476,10 @@ if (signupModal) {
     event => {
 
       if (
-        event.target === signupModal
+        event.target ===
+        signupModal
       ) {
-
         closeSignup();
-
       }
 
     }
@@ -1483,13 +1497,11 @@ document.addEventListener(
   event => {
 
     if (
-      event.key !== "Escape"
+      event.key !==
+      "Escape"
     ) {
-
       return;
-
     }
-
 
     if (
       achouMessageModal &&
@@ -1499,11 +1511,9 @@ document.addEventListener(
     ) {
 
       closeAchouMessage();
-
       return;
 
     }
-
 
     if (
       signupModal &&
@@ -1513,11 +1523,9 @@ document.addEventListener(
     ) {
 
       closeSignup();
-
       return;
 
     }
-
 
     if (
       loginModal &&
@@ -1551,25 +1559,31 @@ if (supabaseClient) {
         event
       );
 
-
       if (
-        event === "SIGNED_OUT"
+        event ===
+        "SIGNED_IN" &&
+        session
       ) {
 
+        updateLoginButton(
+          session.user
+        );
+
         console.log(
-          "Usuário desconectado."
+          "Usuário autenticado."
         );
 
       }
 
-
       if (
-        event === "SIGNED_IN" &&
-        session
+        event ===
+        "SIGNED_OUT"
       ) {
 
+        resetLoginButton();
+
         console.log(
-          "Usuário autenticado."
+          "Usuário desconectado."
         );
 
       }
@@ -1578,7 +1592,8 @@ if (supabaseClient) {
   );
 
 
-  supabaseClient.auth.getSession()
+  supabaseClient.auth
+    .getSession()
     .then(
       ({ data, error }) => {
 
@@ -1593,15 +1608,22 @@ if (supabaseClient) {
 
         }
 
-
         if (
           data &&
           data.session
         ) {
 
+          updateLoginButton(
+            data.session.user
+          );
+
           console.log(
             "Sessão ativa."
           );
+
+        } else {
+
+          resetLoginButton();
 
         }
 
