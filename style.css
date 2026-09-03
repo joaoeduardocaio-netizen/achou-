@@ -641,7 +641,7 @@ footer small{
 
   .hero-section{
     position:relative;
-    min-height:800px;
+    min-height:700px;
     padding:0 8px;
     overflow:hidden;
     background:#000;
@@ -653,8 +653,8 @@ footer small{
     right:0 !important;
     left:auto !important;
 
-    width:72% !important;
-    height:480px !important;
+    width:68% !important;
+    height:450px !important;
 
     display:block !important;
     overflow:hidden !important;
