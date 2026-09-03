@@ -965,6 +965,184 @@ body.login-open{
 
   .login-modal{
     padding:16px;
+  }
+
+}
+
+
+/* =========================
+   CADASTRO DO CLIENTE
+========================= */
+
+.signup-modal{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.82);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .2s ease, visibility .2s ease;
+}
+
+.signup-modal.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.signup-modal-box{
+  position:relative;
+  width:100%;
+  max-width:380px;
+  max-height:90vh;
+  overflow-y:auto;
+  padding:32px 25px 24px;
+  background:#050505;
+  border:1px solid #292929;
+  border-radius:16px;
+  box-shadow:
+    0 20px 70px rgba(0,0,0,.8),
+    0 0 30px rgba(255,212,0,.04);
+  transform:translateY(15px) scale(.98);
+  transition:transform .2s ease;
+}
+
+.signup-modal.active .signup-modal-box{
+  transform:translateY(0) scale(1);
+}
+
+.signup-close{
+  position:absolute;
+  top:10px;
+  right:13px;
+  width:32px;
+  height:32px;
+  border:0;
+  background:transparent;
+  color:#777;
+  font-size:27px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.signup-close:hover{
+  color:#fff;
+}
+
+.signup-logo{
+  text-align:center;
+  font-size:28px;
+  font-weight:950;
+  letter-spacing:-1.8px;
+  color:#fff;
+}
+
+.signup-logo span{
+  color:var(--yellow);
+}
+
+.signup-subtitle{
+  margin:7px 0 22px;
+  text-align:center;
+  color:#888;
+  font-size:10px;
+}
+
+#signupForm{
+  display:flex;
+  flex-direction:column;
+}
+
+#signupForm label{
+  margin:0 0 6px;
+  color:#aaa;
+  font-size:8px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+#signupForm input{
+  width:100%;
+  height:43px;
+  margin:0 0 12px;
+  padding:0 13px;
+  border:1px solid #292929;
+  border-radius:9px;
+  outline:none;
+  background:#000;
+  color:#fff;
+  font-size:11px;
+  box-sizing:border-box;
+  transition:border-color .2s ease;
+}
+
+#signupForm input:focus{
+  border-color:var(--yellow);
+}
+
+#signupForm input::placeholder{
+  color:#555;
+}
+
+.signup-submit{
+  width:100%;
+  height:46px;
+  margin-top:4px;
+  border:0;
+  border-radius:9px;
+  background:var(--yellow);
+  color:#000;
+  font-size:9px;
+  font-weight:950;
+  cursor:pointer;
+}
+
+.signup-submit:active{
+  transform:scale(.98);
+}
+
+.signup-login{
+  width:100%;
+  margin-top:13px;
+  padding:8px;
+  border:0;
+  background:transparent;
+  color:#aaa;
+  font-size:8px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.signup-login:hover{
+  color:var(--yellow);
+}
+
+@media(max-width:420px){
+
+  .signup-modal{
+    padding:16px;
+  }
+
+  .signup-modal-box{
+    max-height:92vh;
+    padding:30px 20px 22px;
+    border-radius:15px;
+  }
+
+  #signupForm input{
+    height:42px;
+    margin-bottom:11px;
+  }
+
+  }
  
 /* =========================
    CADASTRO DO CLIENTE
