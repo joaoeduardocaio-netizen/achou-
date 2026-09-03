@@ -206,27 +206,15 @@ h2 em,
     align-items:flex-start;
   }
 
-  .hero-image{
-    width:55% !important;
-    height:auto !important;
-    max-width:none !important;
-    object-fit:contain !important;
-    object-position:center center !important;
-    transform:translate(0, -20px) !important;
-    margin-left:0;
-    opacity:1;
-  }
-
-
-.hero-image{
-    width:20% !important;
-    height:auto !important;
-    max-width:none !important;
-    object-fit:contain !important;
-    object-position:70% top !important;
-    transform:translate(-10px, -80px) !important;
-    margin-left:0;
-    opacity:1;
+ .hero-image{
+  width:55% !important;
+  height:auto !important;
+  max-width:none !important;
+  object-fit:contain !important;
+  object-position:center center !important;
+  transform:translate(0, -20px) !important;
+  margin-left:0;
+  opacity:1;
 }
 /* AMARELO VIVO FINAL */
 h1 em,
