@@ -694,9 +694,9 @@ footer small{
     opacity:1 !important;
 
     filter:
-      saturate(1.09)
-      contrast(1.08)
-      brightness(1) !important;
+      saturate(1.10)
+      contrast(1.12)
+      brightness(1.08) !important;
   }
 
   /* dourado suave + transição para o preto */
@@ -708,25 +708,25 @@ footer small{
     pointer-events:none !important;
 
     background:
-      linear-gradient(
-        90deg,
-        rgba(0,0,0,.96) 0%,
-        rgba(0,0,0,.68) 30%,
-        rgba(0,0,0,.20) 68%,
-        rgba(0,0,0,.04) 100%
-      ),
-      linear-gradient(
-        180deg,
-        rgba(0,0,0,.05) 0%,
-        rgba(0,0,0,0) 55%,
-        rgba(0,0,0,.95) 100%
-      ) !important;
+  linear-gradient(
+    90deg,
+    rgba(0,0,0,.72) 0%,
+    rgba(0,0,0,.32) 35%,
+    rgba(0,0,0,.06) 75%,
+    rgba(0,0,0,0) 100%
+  ),
+  linear-gradient(
+    180deg,
+    rgba(0,0,0,.03) 0%,
+    rgba(0,0,0,0) 55%,
+    rgba(0,0,0,.45) 100%
+  ) !important;
   }
 
   .hero-copy{
     position:relative !important;
     z-index:3 !important;
-    padding:32px 18px 0 !important;
+    padding:15px 18px 0 !important;
   }
 
   .search-box{
