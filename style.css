@@ -694,9 +694,9 @@ footer small{
     opacity:1 !important;
 
     filter:
-      saturate(1.15)
-      contrast(1.03)
-      brightness(.92) !important;
+      saturate(1.12)
+      contrast(1.08)
+      brightness(1) !important;
   }
 
   /* dourado suave + transição para o preto */
@@ -726,7 +726,7 @@ footer small{
   .hero-copy{
     position:relative !important;
     z-index:3 !important;
-    padding:42px 18px 0 !important;
+    padding:38px 18px 0 !important;
   }
 
   .search-box{
