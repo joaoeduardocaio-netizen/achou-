@@ -16,14 +16,18 @@ const SUPABASE_PUBLISHABLE_KEY =
 let supabaseClient = null;
 
 if (window.supabase && window.supabase.createClient) {
+
   supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
+
 } else {
+
   console.error(
     "Supabase não foi carregado. Verifique o CDN no index.html."
   );
+
 }
 
 
@@ -55,8 +59,6 @@ function searchProducts(query) {
       .trim()
       .toLowerCase();
 
-  let found = false;
-
   productCards.forEach(card => {
 
     const name =
@@ -73,13 +75,17 @@ function searchProducts(query) {
       cardText.includes(text);
 
     if (match) {
+
       card.style.display = "";
-      found = true;
+
     } else {
+
       card.style.display = "none";
+
     }
 
   });
+
 
   if (text) {
 
@@ -97,7 +103,6 @@ function searchProducts(query) {
 
   }
 
-  return found;
 }
 
 
@@ -142,7 +147,9 @@ popularButtons.forEach(button => {
         button.textContent.trim();
 
       if (searchInput) {
+
         searchInput.value = text;
+
       }
 
       searchProducts(text);
@@ -164,6 +171,7 @@ const menu =
   document.querySelector(".nav-menu") ||
   document.querySelector(".mobile-menu") ||
   document.querySelector("header nav");
+
 
 if (menuToggle) {
 
@@ -212,6 +220,7 @@ const offerLinks =
     ".deal, .offer, .offer-link"
   );
 
+
 offerLinks.forEach(link => {
 
   link.addEventListener(
@@ -221,8 +230,13 @@ offerLinks.forEach(link => {
       const href =
         link.getAttribute("href");
 
-      if (!href || href === "#") {
+      if (
+        !href ||
+        href === "#"
+      ) {
+
         event.preventDefault();
+
       }
 
     }
@@ -243,7 +257,7 @@ let achouMessageIcon = null;
 
 
 /* =========================================================
-   ESTILO DAS MENSAGENS
+   CRIAR ESTILO DAS MENSAGENS
    ========================================================= */
 
 function createAchouMessageStyles() {
@@ -253,14 +267,19 @@ function createAchouMessageStyles() {
       "achouMessageStyles"
     )
   ) {
+
     return;
+
   }
+
 
   const style =
     document.createElement("style");
 
+
   style.id =
     "achouMessageStyles";
+
 
   style.textContent = `
 
@@ -384,6 +403,7 @@ function createAchouMessageStyles() {
 
   `;
 
+
   document.head.appendChild(style);
 
 }
@@ -400,21 +420,28 @@ function createAchouMessageModal() {
       "achouMessageModal"
     )
   ) {
+
     return;
+
   }
 
+
   createAchouMessageStyles();
+
 
   const modal =
     document.createElement("div");
 
+
   modal.id =
     "achouMessageModal";
+
 
   modal.setAttribute(
     "aria-hidden",
     "true"
   );
+
 
   modal.innerHTML = `
 
@@ -451,35 +478,43 @@ function createAchouMessageModal() {
 
   `;
 
+
   document.body.appendChild(modal);
+
 
   achouMessageModal =
     modal;
+
 
   achouMessageTitle =
     modal.querySelector(
       ".achou-message-title"
     );
 
+
   achouMessageText =
     modal.querySelector(
       ".achou-message-text"
     );
+
 
   achouMessageButton =
     modal.querySelector(
       ".achou-message-button"
     );
 
+
   achouMessageIcon =
     modal.querySelector(
       ".achou-message-icon"
     );
 
+
   achouMessageButton.addEventListener(
     "click",
     closeAchouMessage
   );
+
 
   modal.addEventListener(
     "click",
@@ -488,7 +523,9 @@ function createAchouMessageModal() {
       if (
         event.target === modal
       ) {
+
         closeAchouMessage();
+
       }
 
     }
@@ -510,27 +547,46 @@ function showAchouMessage(
 
   createAchouMessageModal();
 
+
   if (achouMessageTitle) {
+
     achouMessageTitle.textContent =
       title;
+
   }
+
 
   if (achouMessageText) {
+
     achouMessageText.textContent =
       message;
+
   }
 
+
   if (achouMessageButton) {
+
     achouMessageButton.textContent =
       buttonText;
+
   }
+
 
   if (achouMessageIcon) {
 
-    achouMessageIcon.textContent =
+    if (
       type === "error"
-        ? "!"
-        : "✓";
+    ) {
+
+      achouMessageIcon.textContent =
+        "!";
+
+    } else {
+
+      achouMessageIcon.textContent =
+        "✓";
+
+    }
 
     achouMessageIcon.style.color =
       "#FFD400";
@@ -539,6 +595,7 @@ function showAchouMessage(
       "#FFD400";
 
   }
+
 
   if (achouMessageModal) {
 
@@ -552,6 +609,7 @@ function showAchouMessage(
     );
 
   }
+
 
   document.body.classList.add(
     "login-open"
@@ -579,6 +637,7 @@ function closeAchouMessage() {
 
   }
 
+
   document.body.classList.remove(
     "login-open"
   );
@@ -595,30 +654,36 @@ const loginButton =
     "loginButton"
   );
 
+
 const loginModal =
   document.getElementById(
     "loginModal"
   );
+
 
 const loginClose =
   document.getElementById(
     "loginClose"
   );
 
+
 const loginForm =
   document.getElementById(
     "loginForm"
   );
+
 
 const loginEmail =
   document.getElementById(
     "loginEmail"
   );
 
+
 const loginPassword =
   document.getElementById(
     "loginPassword"
   );
+
 
 const createAccount =
   document.getElementById(
@@ -635,35 +700,42 @@ const signupModal =
     "signupModal"
   );
 
+
 const signupClose =
   document.getElementById(
     "signupClose"
   );
+
 
 const signupForm =
   document.getElementById(
     "signupForm"
   );
 
+
 const signupName =
   document.getElementById(
     "signupName"
   );
+
 
 const signupEmail =
   document.getElementById(
     "signupEmail"
   );
 
+
 const signupPassword =
   document.getElementById(
     "signupPassword"
   );
 
+
 const signupPasswordConfirm =
   document.getElementById(
     "signupPasswordConfirm"
   );
+
 
 const signupLogin =
   document.getElementById(
@@ -679,6 +751,7 @@ function openLogin() {
 
   closeAchouMessage();
 
+
   if (signupModal) {
 
     signupModal.classList.remove(
@@ -691,6 +764,7 @@ function openLogin() {
     );
 
   }
+
 
   if (loginModal) {
 
@@ -705,17 +779,24 @@ function openLogin() {
 
   }
 
+
   document.body.classList.add(
     "login-open"
   );
 
-  setTimeout(() => {
 
-    if (loginEmail) {
-      loginEmail.focus();
-    }
+  setTimeout(
+    () => {
 
-  }, 200);
+      if (loginEmail) {
+
+        loginEmail.focus();
+
+      }
+
+    },
+    200
+  );
 
 }
 
@@ -739,6 +820,7 @@ function closeLogin() {
 
   }
 
+
   document.body.classList.remove(
     "login-open"
   );
@@ -754,6 +836,7 @@ function openSignup() {
 
   closeAchouMessage();
 
+
   if (loginModal) {
 
     loginModal.classList.remove(
@@ -766,6 +849,7 @@ function openSignup() {
     );
 
   }
+
 
   if (signupModal) {
 
@@ -780,17 +864,24 @@ function openSignup() {
 
   }
 
+
   document.body.classList.add(
     "login-open"
   );
 
-  setTimeout(() => {
 
-    if (signupName) {
-      signupName.focus();
-    }
+  setTimeout(
+    () => {
 
-  }, 200);
+      if (signupName) {
+
+        signupName.focus();
+
+      }
+
+    },
+    200
+  );
 
 }
 
@@ -814,6 +905,7 @@ function closeSignup() {
 
   }
 
+
   document.body.classList.remove(
     "login-open"
   );
@@ -822,18 +914,117 @@ function closeSignup() {
 
 
 /* =========================================================
-   BOTÃO ENTRAR
+   BOTÃO ENTRAR / CONTA
    ========================================================= */
 
 if (loginButton) {
 
   loginButton.addEventListener(
     "click",
-    event => {
+    async event => {
 
       event.preventDefault();
 
-      openLogin();
+
+      /* =========================
+         NÃO LOGADO
+      ========================= */
+
+      if (
+        loginButton.dataset.loggedIn !==
+        "true"
+      ) {
+
+        openLogin();
+
+        return;
+
+      }
+
+
+      /* =========================
+         LOGADO
+      ========================= */
+
+      const confirmLogout =
+        window.confirm(
+          "Deseja sair da sua conta?"
+        );
+
+
+      if (!confirmLogout) {
+
+        return;
+
+      }
+
+
+      if (!supabaseClient) {
+
+        showAchouMessage(
+          "Sistema indisponível",
+          "Não foi possível acessar o sistema de conta agora.\n\nAtualize a página e tente novamente.",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient.auth.signOut();
+
+
+        if (error) {
+
+          console.error(
+            "Erro ao sair:",
+            error
+          );
+
+
+          showAchouMessage(
+            "Não foi possível sair",
+            "Ocorreu um erro ao encerrar sua sessão.\n\nTente novamente.",
+            "error"
+          );
+
+          return;
+
+        }
+
+
+        resetLoginButton();
+
+
+        showAchouMessage(
+          "Sessão encerrada",
+          "Você saiu da sua conta do ACHOU!.",
+          "success",
+          "CONTINUAR"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Erro inesperado ao sair:",
+          error
+        );
+
+
+        showAchouMessage(
+          "Ocorreu um erro",
+          "Não foi possível encerrar sua sessão agora.\n\nTente novamente.",
+          "error"
+        );
+
+      }
 
     }
   );
@@ -842,7 +1033,7 @@ if (loginButton) {
 
 
 /* =========================================================
-   FECHAR LOGIN
+   FECHAR LOGIN PELO X
    ========================================================= */
 
 if (loginClose) {
@@ -870,7 +1061,7 @@ if (createAccount) {
 
 
 /* =========================================================
-   FECHAR CADASTRO
+   FECHAR CADASTRO PELO X
    ========================================================= */
 
 if (signupClose) {
@@ -898,7 +1089,7 @@ if (signupLogin) {
 
 
 /* =========================================================
-   LOGIN REAL — SUPABASE
+   LOGIN REAL PELO SUPABASE
    ========================================================= */
 
 if (loginForm) {
@@ -909,6 +1100,7 @@ if (loginForm) {
 
       event.preventDefault();
 
+
       if (!supabaseClient) {
 
         showAchouMessage(
@@ -918,19 +1110,26 @@ if (loginForm) {
         );
 
         return;
+
       }
+
 
       const email =
         loginEmail
           ? loginEmail.value.trim()
           : "";
 
+
       const password =
         loginPassword
           ? loginPassword.value
           : "";
 
-      if (!email || !password) {
+
+      if (
+        !email ||
+        !password
+      ) {
 
         showAchouMessage(
           "Preencha os campos",
@@ -939,21 +1138,26 @@ if (loginForm) {
         );
 
         return;
+
       }
+
 
       const submitButton =
         loginForm.querySelector(
           ".login-submit"
         );
 
+
       if (submitButton) {
 
-        submitButton.disabled = true;
+        submitButton.disabled =
+          true;
 
         submitButton.textContent =
           "ENTRANDO...";
 
       }
+
 
       try {
 
@@ -963,676 +1167,11 @@ if (loginForm) {
         } =
           await supabaseClient.auth
             .signInWithPassword({
-              email,
-              password
-            });
 
-        if (error) {
+              email:
+                email,
 
-          console.error(
-            "Erro no login:",
-            error
-          );
-
-          const message =
-            String(
-              error.message || ""
-            ).toLowerCase();
-
-          if (
-            message.includes(
-              "email not confirmed"
-            )
-          ) {
-
-            showAchouMessage(
-              "E-mail não confirmado",
-              "Seu e-mail ainda não foi confirmado.\n\nConfira sua caixa de entrada e clique no link de confirmação antes de fazer login.",
-              "error",
-              "ENTENDI"
-            );
-
-          } else {
-
-            showAchouMessage(
-              "Não foi possível entrar",
-              "O e-mail ou a senha estão incorretos.\n\nConfira seus dados e tente novamente.",
-              "error",
-              "TENTAR NOVAMENTE"
-            );
-
-          }
-
-          return;
-        }
-
-        if (
-          data &&
-          data.session
-        ) {
-
-          closeLogin();
-
-          showAchouMessage(
-            "Login realizado!",
-            "Você entrou na sua conta do ACHOU! com sucesso.",
-            "success",
-            "CONTINUAR"
-          );
-
-          updateLoginButton(
-            data.session.user
-          );
-
-        } else {
-
-          showAchouMessage(
-            "Não foi possível entrar",
-            "Não conseguimos iniciar sua sessão.\n\nTente novamente.",
-            "error"
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Erro inesperado no login:",
-          error
-        );
-
-        showAchouMessage(
-          "Ocorreu um erro",
-          "Não foi possível realizar o login agora.\n\nTente novamente.",
-          "error"
-        );
-
-      } finally {
-
-        if (submitButton) {
-
-          submitButton.disabled =
-            false;
-
-          submitButton.textContent =
-            "ENTRAR";
-
-        }
-
-      }
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   CADASTRO REAL — SUPABASE
-   ========================================================= */
-
-if (signupForm) {
-
-  signupForm.addEventListener(
-    "submit",
-    async event => {
-
-      event.preventDefault();
-
-      if (!supabaseClient) {
-
-        showAchouMessage(
-          "Sistema indisponível",
-          "O sistema de cadastro não foi carregado.\n\nAtualize a página e tente novamente.",
-          "error"
-        );
-
-        return;
-      }
-
-      const name =
-        signupName
-          ? signupName.value.trim()
-          : "";
-
-      const email =
-        signupEmail
-          ? signupEmail.value.trim()
-          : "";
-
-      const password =
-        signupPassword
-          ? signupPassword.value
-          : "";
-
-      const passwordConfirm =
-        signupPasswordConfirm
-          ? signupPasswordConfirm.value
-          : "";
-
-      if (!name) {
-
-        showAchouMessage(
-          "Nome obrigatório",
-          "Digite seu nome completo para criar sua conta.",
-          "error"
-        );
-
-        return;
-      }
-
-      if (!email) {
-
-        showAchouMessage(
-          "E-mail obrigatório",
-          "Digite um e-mail válido para continuar.",
-          "error"
-        );
-
-        return;
-      }
-
-      if (password.length < 6) {
-
-        showAchouMessage(
-          "Senha muito curta",
-          "A senha precisa ter pelo menos 6 caracteres.",
-          "error"
-        );
-
-        return;
-      }
-
-      if (password !== passwordConfirm) {
-
-        showAchouMessage(
-          "Senhas diferentes",
-          "As duas senhas precisam ser iguais.",
-          "error"
-        );
-
-        return;
-      }
-
-      const submitButton =
-        signupForm.querySelector(
-          ".signup-submit"
-        );
-
-      if (submitButton) {
-
-        submitButton.disabled =
-          true;
-
-        submitButton.textContent =
-          "CRIANDO...";
-
-      }
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth
-            .signUp({
-
-              email,
-
-              password,
-
-              options: {
-
-                data: {
-                  full_name: name
-                },
-
-                emailRedirectTo:
-                  "https://joaoeduardocaio-netizen.github.io/achou-/"
-
-              }
+              password:
+                password
 
             });
-
-        if (error) {
-
-          console.error(
-            "Erro no cadastro:",
-            error
-          );
-
-          const errorMessage =
-            String(
-              error.message || ""
-            );
-
-          const lowerMessage =
-            errorMessage.toLowerCase();
-
-          if (
-            lowerMessage.includes(
-              "already registered"
-            ) ||
-            lowerMessage.includes(
-              "already exists"
-            )
-          ) {
-
-            showAchouMessage(
-              "E-mail já cadastrado",
-              "Esse e-mail já possui uma conta no ACHOU!.\n\nTente fazer login ou use outro e-mail.",
-              "error",
-              "ENTENDI"
-            );
-
-          } else {
-
-            showAchouMessage(
-              "Não foi possível criar a conta",
-              errorMessage ||
-              "Ocorreu um erro ao criar sua conta.\n\nTente novamente.",
-              "error",
-              "TENTAR NOVAMENTE"
-            );
-
-          }
-
-          return;
-        }
-
-        closeSignup();
-
-        signupForm.reset();
-
-        if (
-          data &&
-          data.session
-        ) {
-
-          updateLoginButton(
-            data.user
-          );
-
-          showAchouMessage(
-            "Conta criada!",
-            "Sua conta foi criada com sucesso.\n\nVocê já pode começar a usar o ACHOU!",
-            "success",
-            "CONTINUAR"
-          );
-
-        } else {
-
-          showAchouMessage(
-            "Conta criada!",
-            "Sua conta foi criada com sucesso!\n\nEnviamos um e-mail de confirmação para você.\n\nAbra seu e-mail e clique no link de confirmação antes de fazer login.",
-            "success",
-            "OK, ENTENDI"
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Erro inesperado no cadastro:",
-          error
-        );
-
-        showAchouMessage(
-          "Ocorreu um erro",
-          "Não foi possível criar sua conta agora.\n\nTente novamente.",
-          "error"
-        );
-
-      } finally {
-
-        if (submitButton) {
-
-          submitButton.disabled =
-            false;
-
-          submitButton.textContent =
-            "CRIAR CONTA";
-
-        }
-
-      }
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   ATUALIZAR BOTÃO DE LOGIN
-   ========================================================= */
-
-function updateLoginButton(user) {
-
-  if (!loginButton || !user) {
-    return;
-  }
-
-  const metadata =
-    user.user_metadata || {};
-
-  const fullName =
-    metadata.full_name ||
-    metadata.name ||
-    "";
-
-  let firstName =
-    fullName
-      .trim()
-      .split(/\s+/)[0];
-
-  if (!firstName) {
-
-    firstName =
-      String(
-        user.email || ""
-      ).split("@")[0];
-
-  }
-
-  if (!firstName) {
-    firstName = "Usuário";
-  }
-
-  loginButton.textContent =
-    `Olá, ${firstName}`;
-
-  loginButton.setAttribute(
-    "title",
-    "Clique para sair da conta"
-  );
-
-  loginButton.dataset.loggedIn =
-    "true";
-
-}
-
-
-/* =========================================================
-   VOLTAR BOTÃO PARA ENTRAR
-   ========================================================= */
-
-function resetLoginButton() {
-
-  if (!loginButton) {
-    return;
-  }
-
-  loginButton.textContent =
-    "Entrar";
-
-  loginButton.removeAttribute(
-    "title"
-  );
-
-  loginButton.dataset.loggedIn =
-    "false";
-
-}
-
-
-/* =========================================================
-   CLIQUE NO BOTÃO QUANDO LOGADO
-   ========================================================= */
-
-if (loginButton) {
-
-  loginButton.addEventListener(
-    "click",
-    async event => {
-
-      if (
-        loginButton.dataset.loggedIn !==
-        "true"
-      ) {
-        return;
-      }
-
-      event.preventDefault();
-
-      const confirmLogout =
-        window.confirm(
-          "Deseja sair da sua conta?"
-        );
-
-      if (!confirmLogout) {
-        return;
-      }
-
-      if (!supabaseClient) {
-        return;
-      }
-
-      const {
-        error
-      } =
-        await supabaseClient.auth
-          .signOut();
-
-      if (error) {
-
-        console.error(
-          "Erro ao sair:",
-          error
-        );
-
-        showAchouMessage(
-          "Não foi possível sair",
-          "Ocorreu um erro ao encerrar sua sessão.\n\nTente novamente.",
-          "error"
-        );
-
-        return;
-      }
-
-      resetLoginButton();
-
-      showAchouMessage(
-        "Sessão encerrada",
-        "Você saiu da sua conta do ACHOU!.",
-        "success",
-        "CONTINUAR"
-      );
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   FECHAR MODAIS CLICANDO FORA
-   ========================================================= */
-
-if (loginModal) {
-
-  loginModal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target ===
-        loginModal
-      ) {
-        closeLogin();
-      }
-
-    }
-  );
-
-}
-
-if (signupModal) {
-
-  signupModal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target ===
-        signupModal
-      ) {
-        closeSignup();
-      }
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   TECLA ESC
-   ========================================================= */
-
-document.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key !==
-      "Escape"
-    ) {
-      return;
-    }
-
-    if (
-      achouMessageModal &&
-      achouMessageModal.classList.contains(
-        "active"
-      )
-    ) {
-
-      closeAchouMessage();
-      return;
-
-    }
-
-    if (
-      signupModal &&
-      signupModal.classList.contains(
-        "active"
-      )
-    ) {
-
-      closeSignup();
-      return;
-
-    }
-
-    if (
-      loginModal &&
-      loginModal.classList.contains(
-        "active"
-      )
-    ) {
-
-      closeLogin();
-
-    }
-
-  }
-);
-
-
-/* =========================================================
-   ESTADO DE AUTENTICAÇÃO
-   ========================================================= */
-
-if (supabaseClient) {
-
-  supabaseClient.auth.onAuthStateChange(
-    (
-      event,
-      session
-    ) => {
-
-      console.log(
-        "Estado de autenticação:",
-        event
-      );
-
-      if (
-        event ===
-        "SIGNED_IN" &&
-        session
-      ) {
-
-        updateLoginButton(
-          session.user
-        );
-
-        console.log(
-          "Usuário autenticado."
-        );
-
-      }
-
-      if (
-        event ===
-        "SIGNED_OUT"
-      ) {
-
-        resetLoginButton();
-
-        console.log(
-          "Usuário desconectado."
-        );
-
-      }
-
-    }
-  );
-
-
-  supabaseClient.auth
-    .getSession()
-    .then(
-      ({ data, error }) => {
-
-        if (error) {
-
-          console.error(
-            "Erro ao verificar sessão:",
-            error
-          );
-
-          return;
-
-        }
-
-        if (
-          data &&
-          data.session
-        ) {
-
-          updateLoginButton(
-            data.session.user
-          );
-
-          console.log(
-            "Sessão ativa."
-          );
-
-        } else {
-
-          resetLoginButton();
-
-        }
-
-      }
-    );
-
-}
-
-
-/* =========================================================
-   FIM DO SCRIPT
-   ========================================================= */
