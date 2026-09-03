@@ -635,8 +635,8 @@ footer small{
 }
 
 
-/* =========================
-   HERO MOBILE CORRIGIDO
+ /* =========================
+   HERO MOBILE - IMAGEM INTEIRA
 ========================= */
 
 @media(max-width:600px){
@@ -649,29 +649,29 @@ footer small{
     background:#000;
   }
 
-  /* ÁREA DA IMAGEM */
   .hero-image-wrap{
     position:absolute !important;
 
     top:0 !important;
-    right:0 !important;
+    right:-8% !important;
     left:auto !important;
 
-    width:64% !important;
+    /*
+      Aumentamos bastante a área da imagem
+      para revelar também o celular.
+    */
+    width:82% !important;
     height:520px !important;
 
     display:block !important;
-    overflow:hidden !important;
+    overflow:visible !important;
 
     z-index:1 !important;
 
-    /* NÃO usa máscara para não suavizar a imagem */
     -webkit-mask-image:none !important;
     mask-image:none !important;
   }
 
-
-  /* IMAGEM INTEIRA, SEM CORTAR */
   .hero-image{
     display:block !important;
 
@@ -681,19 +681,22 @@ footer small{
     max-width:none !important;
 
     /*
-      contain = mostra a imagem inteira
-      sem cortar o celular, caixa ou mão
+      Mostra a foto inteira sem cortar.
     */
     object-fit:contain !important;
 
-    object-position:center top !important;
+    /*
+      Puxa a foto um pouco para a esquerda
+      para revelar o celular.
+    */
+    object-position:left top !important;
 
     transform:none !important;
 
     opacity:1 !important;
 
     /*
-      Mais definição e menos aparência lavada
+      Mantém a imagem nítida.
     */
     filter:
       saturate(1.12)
@@ -701,8 +704,6 @@ footer small{
       brightness(1.05) !important;
   }
 
-
-  /* SOMENTE UMA TRANSIÇÃO LEVE PARA O PRETO */
   .hero-image-wrap:after{
     content:"" !important;
 
@@ -711,44 +712,46 @@ footer small{
 
     pointer-events:none !important;
 
+    /*
+      Só escurece a esquerda o suficiente
+      para o texto continuar legível.
+    */
     background:
       linear-gradient(
         90deg,
-        rgba(0,0,0,.48) 0%,
-        rgba(0,0,0,.18) 32%,
-        rgba(0,0,0,.03) 72%,
+        rgba(0,0,0,.72) 0%,
+        rgba(0,0,0,.38) 28%,
+        rgba(0,0,0,.08) 62%,
         rgba(0,0,0,0) 100%
       ),
       linear-gradient(
         180deg,
         rgba(0,0,0,.02) 0%,
-        rgba(0,0,0,0) 70%,
+        rgba(0,0,0,0) 75%,
         rgba(0,0,0,.18) 100%
       ) !important;
   }
 
-
-  /* ESCRITA: APENAS 5PX PARA DESCER UM POUQUINHO */
   .hero-copy{
     position:relative !important;
-
     z-index:3 !important;
 
+    /*
+      Exatamente os 5px que você pediu.
+    */
     padding:5px 18px 0 !important;
 
     max-width:100% !important;
   }
-
 
   .search-box{
     position:relative !important;
     z-index:4 !important;
   }
 
-
   .benefits{
     position:relative !important;
     z-index:4 !important;
   }
 
-  }
+}       
