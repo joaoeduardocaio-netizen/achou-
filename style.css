@@ -666,14 +666,14 @@ footer small{
       linear-gradient(
         to bottom,
         #000 0%,
-        #000 85%,
+        #000 95%,
         transparent 100%
       );
     mask-image:
       linear-gradient(
         to bottom,
         #000 0%,
-        #000 85%,
+        #000 95%,
         transparent 100%
       );
   }
@@ -726,7 +726,7 @@ footer small{
   .hero-copy{
     position:relative !important;
     z-index:3 !important;
-    padding:48px 18px 0 !important;
+    padding:42px 18px 0 !important;
   }
 
   .search-box{
