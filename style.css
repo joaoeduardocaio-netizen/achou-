@@ -1339,9 +1339,14 @@ body.login-open{
 
 @media(max-width:420px){
 
-  .signup-modal{
+  .login-modal{
     padding:16px;
   }
+}
+
+/* =========================
+   CADASTRO DO CLIENTE
+========================= */
 
   .signup-modal-box{
     max-height:92vh;
