@@ -1,482 +1,378 @@
 /* =========================================================
    ACHOU! — SCRIPT PRINCIPAL
+   Busca + Supabase + Conta do cliente + Mensagens
    ========================================================= */
 
-
-/* =========================================================
-   SUPABASE
-   ========================================================= */
-
-const SUPABASE_URL =
-  "https://wulhcgkphclwgidqlvtr.supabase.co";
-
-const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_Wi0Kz5aB4LeLnlxQE_34Yw_1KwA8ebc";
+const SUPABASE_URL = "https://wulhcgkphclwgidqlvtr.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Wi0Kz5aB4LeLnlxQE_34Yw_1KwA8ebc";
+const SITE_URL = "https://joaoeduardocaio-netizen.github.io/achou-/";
 
 let supabaseClient = null;
 
 if (window.supabase && window.supabase.createClient) {
-
   supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
-
 } else {
-
-  console.error(
-    "Supabase não foi carregado. Verifique o CDN no index.html."
-  );
-
+  console.error("Supabase não foi carregado.");
 }
 
-
 /* =========================================================
-   ELEMENTOS DA BUSCA
+   ELEMENTOS PRINCIPAIS
    ========================================================= */
 
 const searchForm =
+  document.querySelector(".search-box") ||
   document.querySelector(".search-form");
 
 const searchInput =
+  document.getElementById("searchInput") ||
+  document.querySelector(".search-box input") ||
   document.querySelector(".search-form input");
 
-const productCards =
-  document.querySelectorAll(".product-card");
+const productCards = document.querySelectorAll(".product-card");
 
-const popularButtons =
-  document.querySelectorAll(".popular button");
+const popularButtons = document.querySelectorAll(".popular button");
 
+const categoryButtons = document.querySelectorAll(".categories button");
+
+const loginButton = document.getElementById("loginButton");
+
+const loginModal = document.getElementById("loginModal");
+const loginClose = document.getElementById("loginClose");
+const loginForm = document.getElementById("loginForm");
+const loginEmail = document.getElementById("loginEmail");
+const loginPassword = document.getElementById("loginPassword");
+const createAccount = document.getElementById("createAccount");
+
+const signupModal = document.getElementById("signupModal");
+const signupClose = document.getElementById("signupClose");
+const signupForm = document.getElementById("signupForm");
+const signupName = document.getElementById("signupName");
+const signupEmail = document.getElementById("signupEmail");
+const signupPassword = document.getElementById("signupPassword");
+const signupPasswordConfirm =
+  document.getElementById("signupPasswordConfirm");
+const signupLogin = document.getElementById("signupLogin");
 
 /* =========================================================
-   BUSCA DE PRODUTOS
+   HISTÓRICO DE PESQUISAS
    ========================================================= */
 
-function searchProducts(query) {
+function saveSearchHistory(query) {
+  const value = String(query || "").trim();
 
-  const text =
-    String(query || "")
-      .trim()
-      .toLowerCase();
+  if (!value) return;
+
+  let history = [];
+
+  try {
+    history = JSON.parse(
+      localStorage.getItem("achou_search_history") || "[]"
+    );
+  } catch (_) {
+    history = [];
+  }
+
+  history = history.filter(
+    item => item.toLowerCase() !== value.toLowerCase()
+  );
+
+  history.unshift(value);
+
+  localStorage.setItem(
+    "achou_search_history",
+    JSON.stringify(history.slice(0, 10))
+  );
+}
+
+/* =========================================================
+   BUSCA
+   ========================================================= */
+
+function searchProducts(query, shouldScroll = true) {
+  const text = String(query || "").trim().toLowerCase();
 
   productCards.forEach(card => {
-
-    const name =
-      String(card.dataset.name || "")
-        .toLowerCase();
-
-    const cardText =
-      String(card.textContent || "")
-        .toLowerCase();
+    const name = String(card.dataset.name || "").toLowerCase();
+    const content = String(card.textContent || "").toLowerCase();
 
     const match =
       !text ||
       name.includes(text) ||
-      cardText.includes(text);
+      content.includes(text);
 
-    if (match) {
-
-      card.style.display = "";
-
-    } else {
-
-      card.style.display = "none";
-
-    }
-
+    card.style.display = match ? "" : "none";
   });
 
-
   if (text) {
+    saveSearchHistory(query);
+  }
 
-    const productList =
-      document.getElementById("productList");
+  if (text && shouldScroll) {
+    const list = document.getElementById("productList");
 
-    if (productList) {
-
-      productList.scrollIntoView({
+    if (list) {
+      list.scrollIntoView({
         behavior: "smooth",
         block: "start"
       });
-
     }
-
   }
-
 }
-
-
-/* =========================================================
-   FORMULÁRIO DE BUSCA
-   ========================================================= */
 
 if (searchForm) {
+  searchForm.addEventListener("submit", event => {
+    event.preventDefault();
 
-  searchForm.addEventListener(
-    "submit",
-    event => {
-
-      event.preventDefault();
-
-      const query =
-        searchInput
-          ? searchInput.value
-          : "";
-
-      searchProducts(query);
-
-    }
-  );
-
+    searchProducts(
+      searchInput ? searchInput.value : ""
+    );
+  });
 }
-
 
 /* =========================================================
    BOTÕES POPULARES
    ========================================================= */
 
 popularButtons.forEach(button => {
+  button.addEventListener("click", event => {
+    event.preventDefault();
 
-  button.addEventListener(
-    "click",
-    event => {
+    const text = button.textContent.trim();
 
-      event.preventDefault();
-
-      const text =
-        button.textContent.trim();
-
-      if (searchInput) {
-
-        searchInput.value = text;
-
-      }
-
-      searchProducts(text);
-
+    if (searchInput) {
+      searchInput.value = text;
     }
-  );
 
+    searchProducts(text);
+  });
 });
 
+/* =========================================================
+   CATEGORIAS
+   ========================================================= */
+
+categoryButtons.forEach(button => {
+  button.addEventListener("click", event => {
+    event.preventDefault();
+
+    const text =
+      button.querySelector("b")?.textContent?.trim() ||
+      button.textContent.trim();
+
+    if (searchInput) {
+      searchInput.value = text;
+    }
+
+    searchProducts(text);
+  });
+});
 
 /* =========================================================
    MENU MOBILE
    ========================================================= */
 
-const menuToggle =
-  document.querySelector(".menu-toggle");
+const menuButton = document.querySelector(".menu-button");
 
-const menu =
-  document.querySelector(".nav-menu") ||
-  document.querySelector(".mobile-menu") ||
-  document.querySelector("header nav");
+if (menuButton) {
+  menuButton.addEventListener("click", event => {
+    event.preventDefault();
 
+    const expanded =
+      menuButton.getAttribute("aria-expanded") === "true";
 
-if (menuToggle) {
+    menuButton.setAttribute(
+      "aria-expanded",
+      String(!expanded)
+    );
 
-  menuToggle.addEventListener(
-    "click",
-    event => {
-
-      event.preventDefault();
-
-      const isOpen =
-        menuToggle.getAttribute(
-          "aria-expanded"
-        ) === "true";
-
-      menuToggle.setAttribute(
-        "aria-expanded",
-        String(!isOpen)
-      );
-
-      menuToggle.classList.toggle(
-        "open",
-        !isOpen
-      );
-
-      if (menu) {
-
-        menu.classList.toggle(
-          "open",
-          !isOpen
-        );
-
-      }
-
-    }
-  );
-
+    menuButton.classList.toggle(
+      "open",
+      !expanded
+    );
+  });
 }
 
-
 /* =========================================================
-   LINKS DE OFERTAS
+   LINKS DE OFERTA
    ========================================================= */
 
-const offerLinks =
-  document.querySelectorAll(
-    ".deal, .offer, .offer-link"
-  );
+document
+  .querySelectorAll(".deal, .offer, .offer-link")
+  .forEach(element => {
+    element.addEventListener("click", event => {
+      const href = element.getAttribute("href");
 
-
-offerLinks.forEach(link => {
-
-  link.addEventListener(
-    "click",
-    event => {
-
-      const href =
-        link.getAttribute("href");
-
-      if (
-        !href ||
-        href === "#"
-      ) {
-
+      if (!href || href === "#") {
         event.preventDefault();
-
       }
-
-    }
-  );
-
-});
-
+    });
+  });
 
 /* =========================================================
-   SISTEMA DE MENSAGENS DO ACHOU!
+   MODAL DE MENSAGENS ACHOU!
    ========================================================= */
 
-let achouMessageModal = null;
-let achouMessageTitle = null;
-let achouMessageText = null;
-let achouMessageButton = null;
-let achouMessageIcon = null;
+let messageModal = null;
+let messageTitle = null;
+let messageText = null;
+let messageButton = null;
+let messageIcon = null;
 
+function createMessageModal() {
+  if (messageModal) return;
 
-/* =========================================================
-   ESTILO DAS MENSAGENS
-   ========================================================= */
+  const style = document.createElement("style");
 
-function createAchouMessageStyles() {
-
-  if (
-    document.getElementById(
-      "achouMessageStyles"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  const style =
-    document.createElement("style");
-
-
-  style.id =
-    "achouMessageStyles";
-
+  style.id = "achouMessageStyles";
 
   style.textContent = `
-
-    #achouMessageModal{
-      position:fixed;
-      inset:0;
-      z-index:20000;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      background:rgba(0,0,0,.84);
-      backdrop-filter:blur(9px);
-      -webkit-backdrop-filter:blur(9px);
-      opacity:0;
-      visibility:hidden;
-      pointer-events:none;
-      transition:
-        opacity .2s ease,
-        visibility .2s ease;
+    #achouMessageModal {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,.84);
+      backdrop-filter: blur(9px);
+      -webkit-backdrop-filter: blur(9px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: .2s ease;
     }
 
-    #achouMessageModal.active{
-      opacity:1;
-      visibility:visible;
-      pointer-events:auto;
+    #achouMessageModal.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
 
-    .achou-message-box{
-      position:relative;
-      width:100%;
-      max-width:370px;
-      padding:30px 24px 24px;
-      background:#050505;
-      border:1px solid #292929;
-      border-radius:16px;
+    .achou-message-box {
+      width: 100%;
+      max-width: 370px;
+      padding: 30px 24px 24px;
+      background: #050505;
+      border: 1px solid #292929;
+      border-radius: 16px;
       box-shadow:
         0 20px 70px rgba(0,0,0,.85),
         0 0 35px rgba(255,212,0,.05);
-      text-align:center;
-      transform:translateY(15px) scale(.98);
-      transition:transform .2s ease;
+      text-align: center;
+      transform: translateY(15px) scale(.98);
+      transition: .2s ease;
     }
 
-    #achouMessageModal.active
-    .achou-message-box{
-      transform:translateY(0) scale(1);
+    #achouMessageModal.active .achou-message-box {
+      transform: none;
     }
 
-    .achou-message-logo{
-      font-size:25px;
-      font-weight:950;
-      letter-spacing:-1.5px;
-      color:#fff;
-      margin-bottom:18px;
+    .achou-message-logo {
+      font-size: 25px;
+      font-weight: 950;
+      letter-spacing: -1.5px;
+      color: #fff;
+      margin-bottom: 18px;
     }
 
-    .achou-message-logo span{
-      color:#FFD400;
+    .achou-message-logo span {
+      color: #FFD400;
     }
 
-    .achou-message-icon{
-      width:54px;
-      height:54px;
-      margin:0 auto 16px;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border:2px solid #FFD400;
-      color:#FFD400;
-      font-size:27px;
-      font-weight:900;
+    .achou-message-icon {
+      width: 54px;
+      height: 54px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #FFD400;
+      color: #FFD400;
+      font-size: 27px;
+      font-weight: 900;
     }
 
-    .achou-message-title{
-      margin:0 0 10px;
-      color:#fff;
-      font-size:18px;
-      font-weight:900;
-      letter-spacing:-.4px;
+    .achou-message-title {
+      margin: 0 0 10px;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
     }
 
-    .achou-message-text{
-      margin:0 auto 22px;
-      max-width:290px;
-      color:#999;
-      font-size:10px;
-      line-height:1.55;
-      white-space:pre-line;
+    .achou-message-text {
+      margin: 0 auto 22px;
+      max-width: 290px;
+      color: #999;
+      font-size: 10px;
+      line-height: 1.55;
+      white-space: pre-line;
     }
 
-    .achou-message-button{
-      width:100%;
-      height:44px;
-      border:0;
-      border-radius:9px;
-      background:#FFD400;
-      color:#000;
-      font-size:9px;
-      font-weight:950;
-      cursor:pointer;
+    .achou-message-button {
+      width: 100%;
+      height: 44px;
+      border: 0;
+      border-radius: 9px;
+      background: #FFD400;
+      color: #000;
+      font-size: 9px;
+      font-weight: 950;
+      cursor: pointer;
     }
 
-    .achou-message-button:active{
-      transform:scale(.98);
+    .achou-confirm-buttons {
+      display: flex;
+      gap: 10px;
+      width: 100%;
     }
 
-    .achou-confirm-buttons{
-      display:flex;
-      gap:10px;
-      width:100%;
+    .achou-confirm-button {
+      flex: 1;
+      height: 44px;
+      border-radius: 9px;
+      font-size: 9px;
+      font-weight: 950;
+      cursor: pointer;
     }
 
-    .achou-confirm-button{
-      flex:1;
-      height:44px;
-      border-radius:9px;
-      font-size:9px;
-      font-weight:950;
-      cursor:pointer;
-      transition:.15s ease;
+    .achou-confirm-cancel {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #444;
     }
 
-    .achou-confirm-cancel{
-      background:transparent;
-      color:#fff;
-      border:1px solid #444;
+    .achou-confirm-logout {
+      background: #FFD400;
+      color: #000;
+      border: 1px solid #FFD400;
     }
 
-    .achou-confirm-logout{
-      background:#FFD400;
-      color:#000;
-      border:1px solid #FFD400;
-    }
+    @media(max-width:420px) {
 
-    .achou-confirm-button:active{
-      transform:scale(.98);
-    }
-
-    @media(max-width:420px){
-
-      #achouMessageModal{
-        padding:16px;
+      #achouMessageModal {
+        padding: 16px;
       }
 
-      .achou-message-box{
-        padding:28px 20px 21px;
-        border-radius:15px;
+      .achou-message-box {
+        padding: 28px 20px 21px;
+        border-radius: 15px;
       }
-
     }
-
   `;
-
 
   document.head.appendChild(style);
 
-}
+  messageModal = document.createElement("div");
 
+  messageModal.id = "achouMessageModal";
+  messageModal.setAttribute("aria-hidden", "true");
 
-/* =========================================================
-   CRIAR MODAL DE MENSAGEM
-   ========================================================= */
-
-function createAchouMessageModal() {
-
-  if (
-    document.getElementById(
-      "achouMessageModal"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  createAchouMessageStyles();
-
-
-  const modal =
-    document.createElement("div");
-
-
-  modal.id =
-    "achouMessageModal";
-
-
-  modal.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-
-  modal.innerHTML = `
-
+  messageModal.innerHTML = `
     <div
       class="achou-message-box"
       role="dialog"
@@ -507,57 +403,878 @@ function createAchouMessageModal() {
       </button>
 
     </div>
-
   `;
 
+  document.body.appendChild(messageModal);
 
-  document.body.appendChild(modal);
-
-
-  achouMessageModal =
-    modal;
-
-
-  achouMessageTitle =
-    modal.querySelector(
+  messageTitle =
+    messageModal.querySelector(
       ".achou-message-title"
     );
 
-
-  achouMessageText =
-    modal.querySelector(
+  messageText =
+    messageModal.querySelector(
       ".achou-message-text"
     );
 
-
-  achouMessageButton =
-    modal.querySelector(
+  messageButton =
+    messageModal.querySelector(
       ".achou-message-button"
     );
 
-
-  achouMessageIcon =
-    modal.querySelector(
+  messageIcon =
+    messageModal.querySelector(
       ".achou-message-icon"
     );
 
-
-  achouMessageButton.addEventListener(
+  messageButton.addEventListener(
     "click",
-    closeAchouMessage
+    closeMessage
   );
 
+  messageModal.addEventListener(
+    "click",
+    event => {
+      if (event.target === messageModal) {
+        closeMessage();
+      }
+    }
+  );
+}
 
-  modal.addEventListener(
+function showMessage(
+  title,
+  text,
+  type = "success",
+  buttonText = "OK, ENTENDI"
+) {
+  createMessageModal();
+
+  messageTitle.textContent = title;
+  messageText.textContent = text;
+
+  messageIcon.textContent =
+    type === "error" ? "!" : "✓";
+
+  messageButton.textContent =
+    buttonText;
+
+  messageButton.style.display =
+    "block";
+
+  const old =
+    messageModal.querySelector(
+      ".achou-confirm-buttons"
+    );
+
+  if (old) {
+    old.remove();
+  }
+
+  messageModal.classList.add("active");
+
+  messageModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "login-open"
+  );
+}
+
+function closeMessage() {
+  if (!messageModal) return;
+
+  messageModal.classList.remove(
+    "active"
+  );
+
+  messageModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.classList.remove(
+    "login-open"
+  );
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+function openLogin() {
+  closeMessage();
+
+  if (signupModal) {
+    signupModal.classList.remove(
+      "active"
+    );
+
+    signupModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }
+
+  if (loginModal) {
+    loginModal.classList.add(
+      "active"
+    );
+
+    loginModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+  }
+
+  document.body.classList.add(
+    "login-open"
+  );
+
+  setTimeout(() => {
+    loginEmail?.focus();
+  }, 150);
+}
+
+function closeLogin() {
+  if (loginModal) {
+    loginModal.classList.remove(
+      "active"
+    );
+
+    loginModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }
+
+  document.body.classList.remove(
+    "login-open"
+  );
+}
+
+/* =========================================================
+   CADASTRO
+   ========================================================= */
+
+function openSignup() {
+  closeMessage();
+
+  if (loginModal) {
+    loginModal.classList.remove(
+      "active"
+    );
+
+    loginModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }
+
+  if (signupModal) {
+    signupModal.classList.add(
+      "active"
+    );
+
+    signupModal.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+  }
+
+  document.body.classList.add(
+    "login-open"
+  );
+
+  setTimeout(() => {
+    signupName?.focus();
+  }, 150);
+}
+
+function closeSignup() {
+  if (signupModal) {
+    signupModal.classList.remove(
+      "active"
+    );
+
+    signupModal.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+  }
+
+  document.body.classList.remove(
+    "login-open"
+  );
+}
+
+if (loginClose) {
+  loginClose.addEventListener(
+    "click",
+    closeLogin
+  );
+}
+
+if (createAccount) {
+  createAccount.addEventListener(
+    "click",
+    openSignup
+  );
+}
+
+if (signupClose) {
+  signupClose.addEventListener(
+    "click",
+    closeSignup
+  );
+}
+
+if (signupLogin) {
+  signupLogin.addEventListener(
+    "click",
+    openLogin
+  );
+}
+
+if (loginModal) {
+  loginModal.addEventListener(
+    "click",
+    event => {
+      if (event.target === loginModal) {
+        closeLogin();
+      }
+    }
+  );
+}
+
+if (signupModal) {
+  signupModal.addEventListener(
+    "click",
+    event => {
+      if (event.target === signupModal) {
+        closeSignup();
+      }
+    }
+  );
+}
+
+/* =========================================================
+   MINHA CONTA
+   ========================================================= */
+
+let accountModal = null;
+let currentUser = null;
+
+function createAccountPanel() {
+  if (accountModal) return;
+
+  const style =
+    document.createElement("style");
+
+  style.id =
+    "achouAccountStyles";
+
+  style.textContent = `
+    #achouAccountModal {
+      position: fixed;
+      inset: 0;
+      z-index: 19000;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-end;
+      padding: 82px 18px 18px;
+      background: rgba(0,0,0,.68);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: .2s ease;
+    }
+
+    #achouAccountModal.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .achou-account-box {
+      width: 100%;
+      max-width: 360px;
+      background: #050505;
+      border: 1px solid #383838;
+      border-radius: 16px;
+      box-shadow: 0 25px 80px rgba(0,0,0,.8);
+      overflow: hidden;
+      transform: translateY(-10px);
+      transition: .2s ease;
+    }
+
+    #achouAccountModal.active
+    .achou-account-box {
+      transform: none;
+    }
+
+    .achou-account-head {
+      padding: 24px 22px 20px;
+      border-bottom: 1px solid #202020;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .achou-account-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid #FFD400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFD400;
+      font-weight: 900;
+      font-size: 19px;
+      flex: none;
+    }
+
+    .achou-account-name {
+      margin: 0;
+      color: #fff;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .achou-account-email {
+      display: block;
+      margin-top: 4px;
+      color: #777;
+      font-size: 9px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 245px;
+    }
+
+    .achou-account-close {
+      margin-left: auto;
+      background: transparent;
+      border: 0;
+      color: #777;
+      font-size: 25px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .achou-account-list {
+      padding: 8px;
+    }
+
+    .achou-account-item {
+      width: 100%;
+      min-height: 54px;
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid #171717;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .achou-account-item:last-child {
+      border-bottom: 0;
+    }
+
+    .achou-account-item:hover {
+      background: #0d0d0d;
+    }
+
+    .achou-account-item-icon {
+      width: 29px;
+      color: #FFD400;
+      text-align: center;
+      font-size: 17px;
+    }
+
+    .achou-account-item strong {
+      display: block;
+      font-size: 11px;
+    }
+
+    .achou-account-item span {
+      display: block;
+      color: #666;
+      font-size: 8px;
+      margin-top: 3px;
+    }
+
+    .achou-account-footer {
+      padding: 14px 18px;
+      border-top: 1px solid #202020;
+      color: #555;
+      font-size: 8px;
+      text-align: center;
+    }
+
+    @media(max-width:600px) {
+
+      #achouAccountModal {
+        align-items: flex-start;
+        justify-content: center;
+        padding: 76px 12px 12px;
+      }
+
+      .achou-account-box {
+        max-width: 390px;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+  accountModal =
+    document.createElement("div");
+
+  accountModal.id =
+    "achouAccountModal";
+
+  accountModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  accountModal.innerHTML = `
+    <div
+      class="achou-account-box"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Minha conta"
+    >
+
+      <div class="achou-account-head">
+
+        <div
+          class="achou-account-avatar"
+          id="accountAvatar"
+        >
+          J
+        </div>
+
+        <div>
+
+          <h3
+            class="achou-account-name"
+            id="accountName"
+          >
+            Olá!
+          </h3>
+
+          <span
+            class="achou-account-email"
+            id="accountEmail"
+          ></span>
+
+        </div>
+
+        <button
+          class="achou-account-close"
+          id="accountClose"
+          type="button"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="achou-account-list">
+
+        <button
+          class="achou-account-item"
+          type="button"
+          data-account-action="profile"
+        >
+          <div class="achou-account-item-icon">
+            ◉
+          </div>
+
+          <div>
+            <strong>
+              Minha conta
+            </strong>
+
+            <span>
+              Dados e informações da sua conta
+            </span>
+          </div>
+        </button>
+
+        <button
+          class="achou-account-item"
+          type="button"
+          data-account-action="favorites"
+        >
+          <div class="achou-account-item-icon">
+            ♥
+          </div>
+
+          <div>
+            <strong>
+              Meus favoritos
+            </strong>
+
+            <span>
+              Seus produtos favoritos
+            </span>
+          </div>
+        </button>
+
+        <button
+          class="achou-account-item"
+          type="button"
+          data-account-action="history"
+        >
+          <div class="achou-account-item-icon">
+            ↺
+          </div>
+
+          <div>
+            <strong>
+              Histórico
+            </strong>
+
+            <span>
+              Pesquisas recentes no ACHOU!
+            </span>
+          </div>
+        </button>
+
+        <button
+          class="achou-account-item"
+          type="button"
+          data-account-action="alerts"
+        >
+          <div class="achou-account-item-icon">
+            ♢
+          </div>
+
+          <div>
+            <strong>
+              Alertas de preço
+            </strong>
+
+            <span>
+              Prepare seus alertas para acompanhar ofertas
+            </span>
+          </div>
+        </button>
+
+        <button
+          class="achou-account-item"
+          type="button"
+          data-account-action="logout"
+        >
+          <div class="achou-account-item-icon">
+            ↪
+          </div>
+
+          <div>
+            <strong>
+              Sair da conta
+            </strong>
+
+            <span>
+              Encerrar sua sessão
+            </span>
+          </div>
+        </button>
+
+      </div>
+
+      <div class="achou-account-footer">
+        ACHOU! — Compare antes de comprar.
+      </div>
+
+    </div>
+  `;
+
+  document.body.appendChild(
+    accountModal
+  );
+
+  accountModal
+    .querySelector("#accountClose")
+    .addEventListener(
+      "click",
+      closeAccountPanel
+    );
+
+  accountModal.addEventListener(
+    "click",
+    event => {
+      if (event.target === accountModal) {
+        closeAccountPanel();
+      }
+    }
+  );
+
+  accountModal
+    .querySelectorAll(
+      "[data-account-action]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+          handleAccountAction(
+            button.dataset.accountAction
+          );
+        }
+      );
+
+    });
+}
+
+/* =========================================================
+   ATUALIZAR PAINEL DA CONTA
+   ========================================================= */
+
+function updateAccountPanel(user) {
+  createAccountPanel();
+
+  const metadata =
+    user?.user_metadata || {};
+
+  const name =
+    metadata.full_name ||
+    metadata.name ||
+    user?.email?.split("@")[0] ||
+    "Usuário";
+
+  const firstName =
+    name.trim().split(/\s+/)[0] ||
+    "Usuário";
+
+  document.getElementById(
+    "accountName"
+  ).textContent =
+    `Olá, ${firstName}`;
+
+  document.getElementById(
+    "accountEmail"
+  ).textContent =
+    user?.email || "";
+
+  document.getElementById(
+    "accountAvatar"
+  ).textContent =
+    firstName
+      .charAt(0)
+      .toUpperCase();
+}
+
+/* =========================================================
+   ABRIR MINHA CONTA
+   ========================================================= */
+
+function openAccountPanel() {
+  if (!currentUser) {
+    return openLogin();
+  }
+
+  updateAccountPanel(
+    currentUser
+  );
+
+  accountModal.classList.add(
+    "active"
+  );
+
+  accountModal.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  document.body.classList.add(
+    "login-open"
+  );
+}
+
+/* =========================================================
+   FECHAR MINHA CONTA
+   ========================================================= */
+
+function closeAccountPanel() {
+  if (!accountModal) return;
+
+  accountModal.classList.remove(
+    "active"
+  );
+
+  accountModal.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  document.body.classList.remove(
+    "login-open"
+  );
+}
+
+/* =========================================================
+   AÇÕES DA CONTA
+   ========================================================= */
+
+function handleAccountAction(action) {
+
+  if (action === "logout") {
+
+    closeAccountPanel();
+
+    showLogoutConfirmation();
+
+    return;
+  }
+
+  if (action === "history") {
+
+    let history = [];
+
+    try {
+      history = JSON.parse(
+        localStorage.getItem(
+          "achou_search_history"
+        ) || "[]"
+      );
+    } catch (_) {
+      history = [];
+    }
+
+    showMessage(
+      "Seu histórico",
+      history.length
+        ? history
+            .map(
+              (item, i) =>
+                `${i + 1}. ${item}`
+            )
+            .join("\n")
+        : "Você ainda não fez nenhuma pesquisa.",
+      "success",
+      "FECHAR"
+    );
+
+    return;
+  }
+
+  if (action === "favorites") {
+
+    showMessage(
+      "Meus favoritos",
+      "A área de favoritos já está preparada no ACHOU!.\n\nO próximo passo será permitir salvar produtos diretamente nos seus favoritos.",
+      "success",
+      "ENTENDI"
+    );
+
+    return;
+  }
+
+  if (action === "alerts") {
+
+    showMessage(
+      "Alertas de preço",
+      "Essa função está preparada para a próxima fase.\n\nEm breve você poderá acompanhar quando o preço de um produto baixar.",
+      "success",
+      "ENTENDI"
+    );
+
+    return;
+  }
+
+  if (action === "profile") {
+
+    const name =
+      currentUser?.user_metadata?.full_name ||
+      currentUser?.email?.split("@")[0] ||
+      "Usuário";
+
+    showMessage(
+      "Minha conta",
+      `Nome: ${name}\n\nE-mail: ${currentUser?.email || ""}\n\nConta ativa no ACHOU!`,
+      "success",
+      "FECHAR"
+    );
+
+    return;
+  }
+}
+
+/* =========================================================
+   BOTÃO ENTRAR / OLÁ, NOME
+   ========================================================= */
+
+function updateLoginButton(user) {
+
+  currentUser = user || null;
+
+  if (!loginButton) return;
+
+  if (!user) {
+
+    loginButton.textContent =
+      "Entrar";
+
+    loginButton.dataset.loggedIn =
+      "false";
+
+    loginButton.removeAttribute(
+      "title"
+    );
+
+    return;
+  }
+
+  const metadata =
+    user.user_metadata || {};
+
+  const name =
+    metadata.full_name ||
+    metadata.name ||
+    user.email?.split("@")[0] ||
+    "Usuário";
+
+  const firstName =
+    name.trim().split(/\s+/)[0] ||
+    "Usuário";
+
+  loginButton.textContent =
+    `Olá, ${firstName}`;
+
+  loginButton.dataset.loggedIn =
+    "true";
+
+  loginButton.title =
+    "Minha conta";
+}
+
+if (loginButton) {
+
+  loginButton.addEventListener(
     "click",
     event => {
 
-      if (
-        event.target === modal
-      ) {
+      event.preventDefault();
 
-        closeAchouMessage();
-
+      if (currentUser) {
+        openAccountPanel();
+      } else {
+        openLogin();
       }
 
     }
@@ -565,166 +1282,42 @@ function createAchouMessageModal() {
 
 }
 
-
 /* =========================================================
-   ABRIR MENSAGEM
-   ========================================================= */
-
-function showAchouMessage(
-  title,
-  message,
-  type = "success",
-  buttonText = "OK, ENTENDI"
-) {
-
-  createAchouMessageModal();
-
-
-  if (achouMessageTitle) {
-
-    achouMessageTitle.textContent =
-      title;
-
-  }
-
-
-  if (achouMessageText) {
-
-    achouMessageText.textContent =
-      message;
-
-  }
-
-
-  if (achouMessageButton) {
-
-    achouMessageButton.textContent =
-      buttonText;
-
-    achouMessageButton.style.display =
-      "block";
-
-  }
-
-
-  if (achouMessageIcon) {
-
-    achouMessageIcon.textContent =
-      type === "error"
-        ? "!"
-        : "✓";
-
-    achouMessageIcon.style.color =
-      "#FFD400";
-
-    achouMessageIcon.style.borderColor =
-      "#FFD400";
-
-  }
-
-
-  const confirmButtons =
-    document.querySelector(
-      ".achou-confirm-buttons"
-    );
-
-  if (confirmButtons) {
-
-    confirmButtons.remove();
-
-  }
-
-
-  if (achouMessageModal) {
-
-    achouMessageModal.classList.add(
-      "active"
-    );
-
-    achouMessageModal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  }
-
-
-  document.body.classList.add(
-    "login-open"
-  );
-
-}
-
-
-/* =========================================================
-   CONFIRMAÇÃO PERSONALIZADA DE SAÍDA
+   CONFIRMAÇÃO DE LOGOUT
    ========================================================= */
 
 function showLogoutConfirmation() {
 
-  createAchouMessageModal();
+  createMessageModal();
 
+  messageTitle.textContent =
+    "Sair da conta?";
 
-  if (achouMessageTitle) {
+  messageText.textContent =
+    "Você deseja realmente sair da sua conta do ACHOU!?";
 
-    achouMessageTitle.textContent =
-      "Sair da conta?";
+  messageIcon.textContent =
+    "?";
 
-  }
+  messageButton.style.display =
+    "none";
 
-
-  if (achouMessageText) {
-
-    achouMessageText.textContent =
-      "Você deseja realmente sair da sua conta do ACHOU!?";
-
-  }
-
-
-  if (achouMessageIcon) {
-
-    achouMessageIcon.textContent =
-      "?";
-
-    achouMessageIcon.style.color =
-      "#FFD400";
-
-    achouMessageIcon.style.borderColor =
-      "#FFD400";
-
-  }
-
-
-  if (achouMessageButton) {
-
-    achouMessageButton.style.display =
-      "none";
-
-  }
-
-
-  const oldConfirm =
-    document.querySelector(
+  const old =
+    messageModal.querySelector(
       ".achou-confirm-buttons"
     );
 
-  if (oldConfirm) {
-
-    oldConfirm.remove();
-
+  if (old) {
+    old.remove();
   }
-
 
   const buttons =
     document.createElement("div");
 
-
   buttons.className =
     "achou-confirm-buttons";
 
-
   buttons.innerHTML = `
-
     <button
       type="button"
       class="achou-confirm-button achou-confirm-cancel"
@@ -740,560 +1333,106 @@ function showLogoutConfirmation() {
     >
       SAIR DA CONTA
     </button>
-
   `;
 
-
-  const box =
-    achouMessageModal.querySelector(
+  messageModal
+    .querySelector(
       ".achou-message-box"
-    );
+    )
+    .appendChild(buttons);
 
-
-  if (box) {
-
-    box.appendChild(buttons);
-
-  }
-
-
-  const cancelButton =
-    document.getElementById(
+  document
+    .getElementById(
       "achouLogoutCancel"
-    );
-
-
-  const confirmButton =
-    document.getElementById(
-      "achouLogoutConfirm"
-    );
-
-
-  if (cancelButton) {
-
-    cancelButton.addEventListener(
+    )
+    .addEventListener(
       "click",
-      closeAchouMessage
+      closeMessage
     );
 
-  }
-
-
-  if (confirmButton) {
-
-    confirmButton.addEventListener(
+  document
+    .getElementById(
+      "achouLogoutConfirm"
+    )
+    .addEventListener(
       "click",
       performLogout
     );
 
-  }
-
-
-  achouMessageModal.classList.add(
+  messageModal.classList.add(
     "active"
   );
 
-
-  achouMessageModal.setAttribute(
+  messageModal.setAttribute(
     "aria-hidden",
     "false"
   );
 
-
   document.body.classList.add(
     "login-open"
   );
-
 }
 
-
 /* =========================================================
-   EXECUTAR LOGOUT
+   LOGOUT REAL
    ========================================================= */
 
 async function performLogout() {
 
-  if (!supabaseClient) {
-
-    showAchouMessage(
-      "Sistema indisponível",
-      "Não foi possível acessar o sistema de conta agora.\n\nAtualize a página e tente novamente.",
-      "error"
-    );
-
-    return;
-
-  }
-
-
-  const confirmButton =
+  const button =
     document.getElementById(
       "achouLogoutConfirm"
     );
 
+  if (button) {
 
-  if (confirmButton) {
+    button.disabled = true;
 
-    confirmButton.disabled =
-      true;
-
-    confirmButton.textContent =
+    button.textContent =
       "SAINDO...";
-
   }
 
+  if (!supabaseClient) {
 
-  try {
-
-    const {
-      error
-    } =
-      await supabaseClient.auth.signOut();
-
-
-    if (error) {
-
-      console.error(
-        "Erro ao sair:",
-        error
-      );
-
-
-      showAchouMessage(
-        "Não foi possível sair",
-        "Ocorreu um erro ao encerrar sua sessão.\n\nTente novamente.",
-        "error"
-      );
-
-      return;
-
-    }
-
-
-    resetLoginButton();
-
-
-    showAchouMessage(
-      "Sessão encerrada",
-      "Você saiu da sua conta do ACHOU!.",
-      "success",
-      "CONTINUAR"
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Erro inesperado ao sair:",
-      error
-    );
-
-
-    showAchouMessage(
-      "Ocorreu um erro",
-      "Não foi possível encerrar sua sessão agora.\n\nTente novamente.",
+    showMessage(
+      "Sistema indisponível",
+      "Não foi possível acessar sua conta agora.\n\nAtualize a página e tente novamente.",
       "error"
     );
 
+    return;
   }
 
-}
+  const {
+    error
+  } =
+    await supabaseClient.auth.signOut();
 
+  if (error) {
 
-/* =========================================================
-   FECHAR MENSAGEM
-   ========================================================= */
+    console.error(error);
 
-function closeAchouMessage() {
-
-  if (achouMessageModal) {
-
-    achouMessageModal.classList.remove(
-      "active"
+    showMessage(
+      "Não foi possível sair",
+      "Ocorreu um erro ao encerrar sua sessão.\n\nTente novamente.",
+      "error"
     );
 
-    achouMessageModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
+    return;
   }
 
+  updateLoginButton(null);
 
-  document.body.classList.remove(
-    "login-open"
+  showMessage(
+    "Sessão encerrada",
+    "Você saiu da sua conta do ACHOU!.",
+    "success",
+    "CONTINUAR"
   );
-
 }
 
-
 /* =========================================================
-   ELEMENTOS DO LOGIN
-   ========================================================= */
-
-const loginButton =
-  document.getElementById(
-    "loginButton"
-  );
-
-
-const loginModal =
-  document.getElementById(
-    "loginModal"
-  );
-
-
-const loginClose =
-  document.getElementById(
-    "loginClose"
-  );
-
-
-const loginForm =
-  document.getElementById(
-    "loginForm"
-  );
-
-
-const loginEmail =
-  document.getElementById(
-    "loginEmail"
-  );
-
-
-const loginPassword =
-  document.getElementById(
-    "loginPassword"
-  );
-
-
-const createAccount =
-  document.getElementById(
-    "createAccount"
-  );
-
-
-/* =========================================================
-   ELEMENTOS DO CADASTRO
-   ========================================================= */
-
-const signupModal =
-  document.getElementById(
-    "signupModal"
-  );
-
-
-const signupClose =
-  document.getElementById(
-    "signupClose"
-  );
-
-
-const signupForm =
-  document.getElementById(
-    "signupForm"
-  );
-
-
-const signupName =
-  document.getElementById(
-    "signupName"
-  );
-
-
-const signupEmail =
-  document.getElementById(
-    "signupEmail"
-  );
-
-
-const signupPassword =
-  document.getElementById(
-    "signupPassword"
-  );
-
-
-const signupPasswordConfirm =
-  document.getElementById(
-    "signupPasswordConfirm"
-  );
-
-
-const signupLogin =
-  document.getElementById(
-    "signupLogin"
-  );
-
-
-/* =========================================================
-   ABRIR LOGIN
-   ========================================================= */
-
-function openLogin() {
-
-  closeAchouMessage();
-
-
-  if (signupModal) {
-
-    signupModal.classList.remove(
-      "active"
-    );
-
-    signupModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-  }
-
-
-  if (loginModal) {
-
-    loginModal.classList.add(
-      "active"
-    );
-
-    loginModal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  }
-
-
-  document.body.classList.add(
-    "login-open"
-  );
-
-
-  setTimeout(
-    () => {
-
-      if (loginEmail) {
-
-        loginEmail.focus();
-
-      }
-
-    },
-    200
-  );
-
-}
-
-
-/* =========================================================
-   FECHAR LOGIN
-   ========================================================= */
-
-function closeLogin() {
-
-  if (loginModal) {
-
-    loginModal.classList.remove(
-      "active"
-    );
-
-    loginModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-  }
-
-
-  document.body.classList.remove(
-    "login-open"
-  );
-
-}
-
-
-/* =========================================================
-   ABRIR CADASTRO
-   ========================================================= */
-
-function openSignup() {
-
-  closeAchouMessage();
-
-
-  if (loginModal) {
-
-    loginModal.classList.remove(
-      "active"
-    );
-
-    loginModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-  }
-
-
-  if (signupModal) {
-
-    signupModal.classList.add(
-      "active"
-    );
-
-    signupModal.setAttribute(
-      "aria-hidden",
-      "false"
-    );
-
-  }
-
-
-  document.body.classList.add(
-    "login-open"
-  );
-
-
-  setTimeout(
-    () => {
-
-      if (signupName) {
-
-        signupName.focus();
-
-      }
-
-    },
-    200
-  );
-
-}
-
-
-/* =========================================================
-   FECHAR CADASTRO
-   ========================================================= */
-
-function closeSignup() {
-
-  if (signupModal) {
-
-    signupModal.classList.remove(
-      "active"
-    );
-
-    signupModal.setAttribute(
-      "aria-hidden",
-      "true"
-    );
-
-  }
-
-
-  document.body.classList.remove(
-    "login-open"
-  );
-
-}
-
-
-/* =========================================================
-   BOTÃO ENTRAR / CONTA
-   ========================================================= */
-
-if (loginButton) {
-
-  loginButton.addEventListener(
-    "click",
-    event => {
-
-      event.preventDefault();
-
-
-      /* =========================
-         NÃO LOGADO
-      ========================= */
-
-      if (
-        loginButton.dataset.loggedIn !==
-        "true"
-      ) {
-
-        openLogin();
-
-        return;
-
-      }
-
-
-      /* =========================
-         LOGADO
-      ========================= */
-
-      showLogoutConfirmation();
-
-    }
-  );
-
-}
-
-
-/* =========================================================
-   FECHAR LOGIN PELO X
-   ========================================================= */
-
-if (loginClose) {
-
-  loginClose.addEventListener(
-    "click",
-    closeLogin
-  );
-
-}
-
-
-/* =========================================================
-   ABRIR CADASTRO
-   ========================================================= */
-
-if (createAccount) {
-
-  createAccount.addEventListener(
-    "click",
-    openSignup
-  );
-
-}
-
-
-/* =========================================================
-   FECHAR CADASTRO PELO X
-   ========================================================= */
-
-if (signupClose) {
-
-  signupClose.addEventListener(
-    "click",
-    closeSignup
-  );
-
-}
-
-
-/* =========================================================
-   CADASTRO → LOGIN
-   ========================================================= */
-
-if (signupLogin) {
-
-  signupLogin.addEventListener(
-    "click",
-    openLogin
-  );
-
-}
-
-
-/* =========================================================
-   LOGIN REAL — SUPABASE
+   LOGIN REAL
    ========================================================= */
 
 if (loginForm) {
@@ -1304,64 +1443,42 @@ if (loginForm) {
 
       event.preventDefault();
 
-
       if (!supabaseClient) {
 
-        showAchouMessage(
+        return showMessage(
           "Sistema indisponível",
           "O sistema de login não foi carregado.\n\nAtualize a página e tente novamente.",
           "error"
         );
-
-        return;
-
       }
 
-
       const email =
-        loginEmail
-          ? loginEmail.value.trim()
-          : "";
-
+        loginEmail?.value.trim() || "";
 
       const password =
-        loginPassword
-          ? loginPassword.value
-          : "";
+        loginPassword?.value || "";
 
+      if (!email || !password) {
 
-      if (
-        !email ||
-        !password
-      ) {
-
-        showAchouMessage(
+        return showMessage(
           "Preencha os campos",
           "Digite seu e-mail e sua senha para entrar.",
           "error"
         );
-
-        return;
-
       }
 
-
-      const submitButton =
+      const button =
         loginForm.querySelector(
           ".login-submit"
         );
 
+      if (button) {
 
-      if (submitButton) {
+        button.disabled = true;
 
-        submitButton.disabled =
-          true;
-
-        submitButton.textContent =
+        button.textContent =
           "ENTRANDO...";
-
       }
-
 
       try {
 
@@ -1369,39 +1486,25 @@ if (loginForm) {
           data,
           error
         } =
-          await supabaseClient.auth
-            .signInWithPassword({
-
-              email:
-                email,
-
-              password:
-                password
-
-            });
-
+          await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+          });
 
         if (error) {
 
-          console.error(
-            "Erro no login:",
-            error
-          );
-
-
-          const message =
+          const text =
             String(
               error.message || ""
             ).toLowerCase();
 
-
           if (
-            message.includes(
+            text.includes(
               "email not confirmed"
             )
           ) {
 
-            showAchouMessage(
+            showMessage(
               "E-mail não confirmado",
               "Seu e-mail ainda não foi confirmado.\n\nConfira sua caixa de entrada e clique no link de confirmação antes de fazer login.",
               "error",
@@ -1410,7 +1513,7 @@ if (loginForm) {
 
           } else {
 
-            showAchouMessage(
+            showMessage(
               "Não foi possível entrar",
               "O e-mail ou a senha estão incorretos.\n\nConfira seus dados e tente novamente.",
               "error",
@@ -1419,80 +1522,52 @@ if (loginForm) {
 
           }
 
-
           return;
-
         }
 
-
-        if (
-          data &&
-          data.session
-        ) {
+        if (data?.session) {
 
           updateLoginButton(
-            data.session.user
+            data.user
           );
-
 
           closeLogin();
 
-
-          showAchouMessage(
+          showMessage(
             "Login realizado!",
             "Você entrou na sua conta do ACHOU! com sucesso.",
             "success",
             "CONTINUAR"
           );
-
-        } else {
-
-          showAchouMessage(
-            "Não foi possível entrar",
-            "Não conseguimos iniciar sua sessão.\n\nTente novamente.",
-            "error"
-          );
-
         }
-
 
       } catch (error) {
 
-        console.error(
-          "Erro inesperado no login:",
-          error
-        );
+        console.error(error);
 
-
-        showAchouMessage(
+        showMessage(
           "Ocorreu um erro",
           "Não foi possível realizar o login agora.\n\nTente novamente.",
           "error"
         );
 
-
       } finally {
 
-        if (submitButton) {
+        if (button) {
 
-          submitButton.disabled =
-            false;
+          button.disabled = false;
 
-          submitButton.textContent =
+          button.textContent =
             "ENTRAR";
-
         }
-
       }
 
     }
   );
-
 }
 
-
 /* =========================================================
-   CADASTRO REAL — SUPABASE
+   CADASTRO REAL
    ========================================================= */
 
 if (signupForm) {
@@ -1503,117 +1578,75 @@ if (signupForm) {
 
       event.preventDefault();
 
-
       if (!supabaseClient) {
 
-        showAchouMessage(
+        return showMessage(
           "Sistema indisponível",
           "O sistema de cadastro não foi carregado.\n\nAtualize a página e tente novamente.",
           "error"
         );
-
-        return;
-
       }
 
-
       const name =
-        signupName
-          ? signupName.value.trim()
-          : "";
-
+        signupName?.value.trim() || "";
 
       const email =
-        signupEmail
-          ? signupEmail.value.trim()
-          : "";
-
+        signupEmail?.value.trim() || "";
 
       const password =
-        signupPassword
-          ? signupPassword.value
-          : "";
+        signupPassword?.value || "";
 
-
-      const passwordConfirm =
-        signupPasswordConfirm
-          ? signupPasswordConfirm.value
-          : "";
-
+      const confirm =
+        signupPasswordConfirm?.value || "";
 
       if (!name) {
 
-        showAchouMessage(
+        return showMessage(
           "Nome obrigatório",
           "Digite seu nome completo para criar sua conta.",
           "error"
         );
-
-        return;
-
       }
-
 
       if (!email) {
 
-        showAchouMessage(
+        return showMessage(
           "E-mail obrigatório",
           "Digite um e-mail válido para continuar.",
           "error"
         );
-
-        return;
-
       }
 
+      if (password.length < 6) {
 
-      if (
-        password.length < 6
-      ) {
-
-        showAchouMessage(
+        return showMessage(
           "Senha muito curta",
           "A senha precisa ter pelo menos 6 caracteres.",
           "error"
         );
-
-        return;
-
       }
 
+      if (password !== confirm) {
 
-      if (
-        password !==
-        passwordConfirm
-      ) {
-
-        showAchouMessage(
+        return showMessage(
           "Senhas diferentes",
           "As duas senhas precisam ser iguais.",
           "error"
         );
-
-        return;
-
       }
 
-
-      const submitButton =
+      const button =
         signupForm.querySelector(
           ".signup-submit"
         );
 
+      if (button) {
 
-      if (submitButton) {
+        button.disabled = true;
 
-        submitButton.disabled =
-          true;
-
-        submitButton.textContent =
+        button.textContent =
           "CRIANDO...";
-
       }
-
 
       try {
 
@@ -1621,60 +1654,41 @@ if (signupForm) {
           data,
           error
         } =
-          await supabaseClient.auth
-            .signUp({
+          await supabaseClient.auth.signUp({
 
-              email:
-                email,
+            email,
 
-              password:
-                password,
+            password,
 
-              options: {
+            options: {
 
-                data: {
+              data: {
+                full_name: name
+              },
 
-                  full_name:
-                    name
+              emailRedirectTo:
+                SITE_URL
+            }
 
-                },
-
-                emailRedirectTo:
-                  "https://joaoeduardocaio-netizen.github.io/achou-/"
-
-              }
-
-            });
-
+          });
 
         if (error) {
 
-          console.error(
-            "Erro no cadastro:",
-            error
-          );
-
-
-          const errorMessage =
+          const text =
             String(
               error.message || ""
-            );
-
-
-          const lowerMessage =
-            errorMessage.toLowerCase();
-
+            ).toLowerCase();
 
           if (
-            lowerMessage.includes(
+            text.includes(
               "already registered"
             ) ||
-            lowerMessage.includes(
+            text.includes(
               "already exists"
             )
           ) {
 
-            showAchouMessage(
+            showMessage(
               "E-mail já cadastrado",
               "Esse e-mail já possui uma conta no ACHOU!.\n\nTente fazer login ou use outro e-mail.",
               "error",
@@ -1683,39 +1697,29 @@ if (signupForm) {
 
           } else {
 
-            showAchouMessage(
+            showMessage(
               "Não foi possível criar a conta",
-              errorMessage ||
-              "Ocorreu um erro ao criar sua conta.\n\nTente novamente.",
-              "error",
-              "TENTAR NOVAMENTE"
+              error.message ||
+                "Ocorreu um erro ao criar sua conta.",
+              "error"
             );
 
           }
 
-
           return;
-
         }
-
 
         closeSignup();
 
-
         signupForm.reset();
 
-
-        if (
-          data &&
-          data.session
-        ) {
+        if (data?.session) {
 
           updateLoginButton(
             data.user
           );
 
-
-          showAchouMessage(
+          showMessage(
             "Conta criada!",
             "Sua conta foi criada com sucesso.\n\nVocê já pode começar a usar o ACHOU!",
             "success",
@@ -1724,7 +1728,7 @@ if (signupForm) {
 
         } else {
 
-          showAchouMessage(
+          showMessage(
             "Conta criada!",
             "Sua conta foi criada com sucesso!\n\nEnviamos um e-mail de confirmação para você.\n\nAbra seu e-mail e clique no link de confirmação antes de fazer login.",
             "success",
@@ -1733,16 +1737,11 @@ if (signupForm) {
 
         }
 
-
       } catch (error) {
 
-        console.error(
-          "Erro inesperado no cadastro:",
-          error
-        );
+        console.error(error);
 
-
-        showAchouMessage(
+        showMessage(
           "Ocorreu um erro",
           "Não foi possível criar sua conta agora.\n\nTente novamente.",
           "error"
@@ -1750,163 +1749,18 @@ if (signupForm) {
 
       } finally {
 
-        if (submitButton) {
+        if (button) {
 
-          submitButton.disabled =
-            false;
+          button.disabled = false;
 
-          submitButton.textContent =
+          button.textContent =
             "CRIAR CONTA";
-
         }
-
       }
 
     }
   );
-
 }
-
-
-/* =========================================================
-   ATUALIZAR BOTÃO DE LOGIN
-   ========================================================= */
-
-function updateLoginButton(user) {
-
-  if (
-    !loginButton ||
-    !user
-  ) {
-
-    return;
-
-  }
-
-
-  const metadata =
-    user.user_metadata || {};
-
-
-  const fullName =
-    metadata.full_name ||
-    metadata.name ||
-    "";
-
-
-  let firstName =
-    fullName
-      .trim()
-      .split(/\s+/)[0];
-
-
-  if (!firstName) {
-
-    firstName =
-      String(
-        user.email || ""
-      ).split("@")[0];
-
-  }
-
-
-  if (!firstName) {
-
-    firstName =
-      "Usuário";
-
-  }
-
-
-  loginButton.textContent =
-    `Olá, ${firstName}`;
-
-
-  loginButton.setAttribute(
-    "title",
-    "Clique para sair da conta"
-  );
-
-
-  loginButton.dataset.loggedIn =
-    "true";
-
-}
-
-
-/* =========================================================
-   RESETAR BOTÃO DE LOGIN
-   ========================================================= */
-
-function resetLoginButton() {
-
-  if (!loginButton) {
-
-    return;
-
-  }
-
-
-  loginButton.textContent =
-    "Entrar";
-
-
-  loginButton.removeAttribute(
-    "title"
-  );
-
-
-  loginButton.dataset.loggedIn =
-    "false";
-
-}
-
-
-/* =========================================================
-   FECHAR MODAIS CLICANDO FORA
-   ========================================================= */
-
-if (loginModal) {
-
-  loginModal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target ===
-        loginModal
-      ) {
-
-        closeLogin();
-
-      }
-
-    }
-  );
-
-}
-
-
-if (signupModal) {
-
-  signupModal.addEventListener(
-    "click",
-    event => {
-
-      if (
-        event.target ===
-        signupModal
-      ) {
-
-        closeSignup();
-
-      }
-
-    }
-  );
-
-}
-
 
 /* =========================================================
    TECLA ESC
@@ -1916,155 +1770,91 @@ document.addEventListener(
   "keydown",
   event => {
 
-    if (
-      event.key !==
-      "Escape"
-    ) {
-
+    if (event.key !== "Escape") {
       return;
-
     }
 
-
     if (
-      achouMessageModal &&
-      achouMessageModal.classList.contains(
+      messageModal?.classList.contains(
         "active"
       )
     ) {
-
-      closeAchouMessage();
-
-      return;
-
+      return closeMessage();
     }
 
-
     if (
-      signupModal &&
-      signupModal.classList.contains(
+      accountModal?.classList.contains(
         "active"
       )
     ) {
-
-      closeSignup();
-
-      return;
-
+      return closeAccountPanel();
     }
 
-
     if (
-      loginModal &&
-      loginModal.classList.contains(
+      signupModal?.classList.contains(
         "active"
       )
     ) {
+      return closeSignup();
+    }
 
-      closeLogin();
-
+    if (
+      loginModal?.classList.contains(
+        "active"
+      )
+    ) {
+      return closeLogin();
     }
 
   }
 );
 
-
 /* =========================================================
-   ESTADO DE AUTENTICAÇÃO
+   ESTADO DE AUTENTICAÇÃO SUPABASE
    ========================================================= */
 
 if (supabaseClient) {
 
   supabaseClient.auth.onAuthStateChange(
-    (
-      event,
-      session
-    ) => {
+    (event, session) => {
 
-      console.log(
-        "Estado de autenticação:",
-        event
-      );
-
-
-      if (
-        event ===
-        "SIGNED_IN" &&
-        session
-      ) {
+      if (session?.user) {
 
         updateLoginButton(
           session.user
         );
 
-
-        console.log(
-          "Usuário autenticado."
-        );
-
-      }
-
-
-      if (
-        event ===
-        "SIGNED_OUT"
+      } else if (
+        event === "SIGNED_OUT"
       ) {
 
-        resetLoginButton();
-
-
-        console.log(
-          "Usuário desconectado."
-        );
-
+        updateLoginButton(null);
       }
 
     }
   );
 
-
   supabaseClient.auth
     .getSession()
-    .then(
-      ({ data, error }) => {
+    .then(({ data, error }) => {
 
-        if (error) {
+      if (error) {
 
-          console.error(
-            "Erro ao verificar sessão:",
-            error
-          );
+        console.error(
+          "Erro ao verificar sessão:",
+          error
+        );
 
-          return;
-
-        }
-
-
-        if (
-          data &&
-          data.session
-        ) {
-
-          updateLoginButton(
-            data.session.user
-          );
-
-
-          console.log(
-            "Sessão ativa."
-          );
-
-        } else {
-
-          resetLoginButton();
-
-        }
-
+        return;
       }
-    );
+
+      updateLoginButton(
+        data?.session?.user || null
+      );
+
+    });
 
 }
-
 
 /* =========================================================
    FIM DO SCRIPT
