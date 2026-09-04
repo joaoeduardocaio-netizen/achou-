@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>ACHOU! — Conectando Mercado Livre</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}.card{width:100%;max-width:420px;padding:32px 24px;border:1px solid #282828;border-radius:22px;background:#080808;text-align:center}.logo{margin-bottom:24px;font-size:36px;font-weight:900}.logo span{color:#FFD400}h1{font-size:22px}p{color:#aaa}.status{margin-top:24px;padding:16px;border-radius:14px;background:#111}.success{border:1px solid #1f8f4c;color:#5ee58c}.error{border:1px solid #a83232;color:#ff7d7d}.loading{border:1px solid #444}a{display:inline-block;margin-top:22px;padding:13px 20px;border-radius:12px;background:#FFD400;color:#000;font-weight:800;text-decoration:none}
+</style>
+</head>
+<body>
+<main class="card">
+<div class="logo">ACHOU<span>!</span></div>
+<h1>Conectando Mercado Livre</h1>
+<p>Aguarde enquanto finalizamos a autorização.</p>
+<div id="status" class="status loading">Processando autorização...</div>
+<a id="homeButton" href="https://joaoeduardocaio-netizen.github.io/achou/" style="display:none">Voltar para o ACHOU!</a>
+</main>
+<script>
+const OAUTH_FUNCTION="https://wulhcgkphclwgidqlvtr.supabase.co/functions/v1/mercadolivre-oauth";
+const statusBox=document.getElementById("status");
+const homeButton=document.getElementById("homeButton");
+function ok(m){statusBox.className="status success";statusBox.textContent="✅ "+m;homeButton.style.display="inline-block"}
+function fail(m){statusBox.className="status error";statusBox.textContent="❌ "+m;homeButton.style.display="inline-block"}
+(async()=>{
+try{
+const p=new URLSearchParams(location.search),code=p.get("code"),err=p.get("error");
+if(err){fail(p.get("error_description")||"O Mercado Livre recusou a autorização.");return}
+if(!code){fail("O Mercado Livre não retornou o código de autorização.");return}
+const verifier=sessionStorage.getItem("ml_code_verifier")||localStorage.getItem("ml_code_verifier");
+if(!verifier){fail("Código PKCE não encontrado. Inicie a conexão novamente pelo ACHOU!.");return}
+const r=await fetch(OAUTH_FUNCTION,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code,code_verifier:verifier})});
+const d=await r.json();
+if(!r.ok||!d.ok){console.error(d);fail("Não foi possível concluir a autorização do Mercado Livre.");return}
+sessionStorage.removeItem("ml_code_verifier");localStorage.removeItem("ml_code_verifier");
+history.replaceState({},document.title,location.pathname);
+ok("Mercado Livre conectado com sucesso ao ACHOU!");
+}catch(e){console.error(e);fail("Erro inesperado ao concluir a conexão.")}
+})();
+</script>
+</body>
+</html>
