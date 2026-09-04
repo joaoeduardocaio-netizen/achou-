@@ -266,7 +266,7 @@ img{
 
 
 /* =========================================================
-   CATEGORIAS DO TOPO
+   CATEGORIAS SUPERIORES
    ========================================================= */
 
 .category-nav{
@@ -303,7 +303,7 @@ img{
 
 
 /* =========================================================
-   HERO
+   HERO / BANNER
    ========================================================= */
 
 .hero-marketplace{
@@ -314,17 +314,18 @@ img{
 
 .hero-banner{
   position:relative;
-  min-height:590px;
+  height:320px;
+  min-height:320px;
   border:1px solid #242424;
   border-radius:16px;
   overflow:hidden;
   background:
     radial-gradient(
-      circle at 82% 55%,
-      rgba(255,212,0,.18) 0%,
-      rgba(255,212,0,.07) 28%,
-      rgba(7,7,7,.92) 58%,
-      #030303 78%
+      circle at 85% 50%,
+      rgba(255,212,0,.20) 0%,
+      rgba(255,212,0,.07) 30%,
+      #080700 48%,
+      #030303 72%
     );
 }
 
@@ -338,34 +339,36 @@ img{
     linear-gradient(
       90deg,
       rgba(0,0,0,.98) 0%,
-      rgba(0,0,0,.90) 38%,
-      rgba(0,0,0,.48) 56%,
-      rgba(0,0,0,.10) 78%,
-      rgba(0,0,0,.02) 100%
+      rgba(0,0,0,.86) 40%,
+      rgba(0,0,0,.36) 66%,
+      rgba(0,0,0,.04) 100%
     );
 }
+
+
+/* TEXTO */
 
 .hero-banner-content{
   position:relative;
   z-index:12;
-  width:66%;
-  padding:62px 28px 42px;
+  width:62%;
+  padding:34px 18px;
 }
 
 .hero-small-title{
   display:block;
   color:var(--yellow);
-  font-size:9px;
+  font-size:8px;
   font-weight:900;
-  letter-spacing:2.3px;
-  margin-bottom:25px;
+  letter-spacing:2px;
+  margin-bottom:18px;
 }
 
 .hero-banner h1{
-  font-size:52px;
-  line-height:.88;
-  letter-spacing:-3.1px;
-  margin:0 0 34px;
+  margin:0 0 18px;
+  font-size:42px;
+  line-height:.87;
+  letter-spacing:-2.6px;
   font-weight:950;
 }
 
@@ -375,116 +378,143 @@ img{
 }
 
 .hero-banner p{
-  max-width:330px;
-  font-size:13px;
-  line-height:1.45;
+  max-width:235px;
+  margin:0 0 20px;
   color:#aaa;
-  margin:0 0 34px;
+  font-size:10px;
+  line-height:1.4;
 }
 
 .hero-cta{
-  min-height:58px;
-  padding:0 28px;
-  font-size:10px;
+  min-height:40px;
+  padding:0 16px;
+  font-size:8px;
 }
+
+
+/* ÁREA DOS PRODUTOS */
 
 .hero-products{
   position:absolute;
-  right:0;
   top:0;
-  width:54%;
+  right:0;
+  width:55%;
   height:100%;
   z-index:4;
-  pointer-events:none;
   overflow:hidden;
+  pointer-events:none;
 }
+
+
+/* GLOW */
 
 .hero-glow{
   position:absolute;
-  width:360px;
-  height:360px;
-  right:-70px;
-  top:47%;
+  z-index:1;
+  width:230px;
+  height:230px;
+  right:-30px;
+  top:50%;
   transform:translateY(-50%);
   border-radius:50%;
   background:
     radial-gradient(
       circle,
-      rgba(255,212,0,.24) 0%,
+      rgba(255,212,0,.25) 0%,
       rgba(255,212,0,.10) 38%,
-      rgba(255,212,0,.03) 62%,
-      transparent 75%
+      rgba(255,212,0,.025) 63%,
+      transparent 76%
     );
-  filter:blur(7px);
-  z-index:1;
+  filter:blur(6px);
 }
+
+
+/* SOMBREAMENTO DO LADO ESQUERDO DOS PRODUTOS */
+
+.hero-products::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3,3,3,.88) 0%,
+      rgba(3,3,3,.25) 28%,
+      transparent 52%
+    );
+}
+
+
+/* BASE DAS 3 IMAGENS */
 
 .hero-real-laptop,
 .hero-real-headphone,
 .hero-real-phone{
   position:absolute;
   display:block;
+  max-width:none;
   object-fit:contain;
   user-select:none;
   -webkit-user-drag:none;
   transform-origin:center;
 }
 
+
+/* NOTEBOOK — FUNDO */
+
 .hero-real-laptop{
-  width:295px;
-  right:-12px;
-  top:177px;
-  z-index:3;
-  transform:rotate(-1deg);
+  width:185px;
+  right:-14px;
+  top:88px;
+  z-index:4;
+  transform:rotate(-2deg);
   filter:
-    drop-shadow(0 22px 24px rgba(0,0,0,.80))
-    drop-shadow(0 0 18px rgba(255,212,0,.06));
-}
-
-.hero-real-phone{
-  width:142px;
-  right:18px;
-  top:115px;
-  z-index:8;
-  transform:rotate(4deg);
-  filter:
-    drop-shadow(0 18px 20px rgba(0,0,0,.82))
-    drop-shadow(0 0 12px rgba(255,212,0,.07));
-}
-
-.hero-real-headphone{
-  width:148px;
-  right:112px;
-  bottom:48px;
-  z-index:7;
-  transform:rotate(-5deg);
-  filter:
-    drop-shadow(0 18px 20px rgba(0,0,0,.82))
+    drop-shadow(0 15px 18px rgba(0,0,0,.82))
     drop-shadow(0 0 12px rgba(255,212,0,.06));
 }
 
-.hero-products::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:10;
-  pointer-events:none;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(3,3,3,.74) 0%,
-      rgba(3,3,3,.25) 27%,
-      transparent 48%
-    );
+
+/* CELULAR — NA FRENTE */
+
+.hero-real-phone{
+  width:76px;
+  right:10px;
+  top:47px;
+  z-index:8;
+  transform:rotate(5deg);
+  opacity:1;
+  visibility:visible;
+  filter:
+    drop-shadow(0 14px 17px rgba(0,0,0,.85))
+    drop-shadow(0 0 10px rgba(255,212,0,.07));
 }
+
+
+/* FONE — PARTE INFERIOR */
+
+.hero-real-headphone{
+  width:88px;
+  right:73px;
+  bottom:23px;
+  z-index:7;
+  transform:rotate(-6deg);
+  filter:
+    drop-shadow(0 14px 17px rgba(0,0,0,.85))
+    drop-shadow(0 0 9px rgba(255,212,0,.06));
+}
+
+
+/* SELO */
 
 .hero-discount{
   position:absolute;
   z-index:15;
-  right:28px;
-  bottom:28px;
-  width:96px;
-  height:96px;
+  right:13px;
+  bottom:13px;
+  width:64px;
+  height:64px;
   border-radius:50%;
   background:var(--yellow);
   color:#000;
@@ -492,58 +522,64 @@ img{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  line-height:.82;
-  box-shadow:0 0 28px rgba(255,212,0,.22);
+  line-height:.8;
+  box-shadow:0 0 22px rgba(255,212,0,.23);
 }
 
 .hero-discount small{
-  font-size:9px;
+  font-size:6px;
   font-weight:900;
 }
 
 .hero-discount strong{
-  font-size:30px;
+  font-size:20px;
   font-weight:950;
 }
 
 .hero-discount span{
-  font-size:9px;
+  font-size:6px;
   font-weight:950;
 }
+
+
+/* SETAS */
 
 .hero-arrow{
   position:absolute;
   z-index:18;
   top:50%;
   transform:translateY(-50%);
-  width:40px;
-  height:56px;
+  width:28px;
+  height:38px;
   border:1px solid #444;
   background:rgba(5,5,5,.94);
   color:#fff;
-  border-radius:10px;
-  font-size:28px;
+  border-radius:7px;
+  font-size:20px;
   line-height:1;
 }
 
 .hero-prev{
-  left:18px;
+  left:10px;
 }
 
 .hero-next{
-  right:18px;
+  right:10px;
 }
+
+
+/* BOLINHAS */
 
 .hero-dots{
   display:flex;
   justify-content:center;
-  gap:8px;
-  padding:14px 0;
+  gap:5px;
+  padding:9px 0;
 }
 
 .hero-dot{
-  width:10px;
-  height:10px;
+  width:6px;
+  height:6px;
   border:0;
   border-radius:50%;
   padding:0;
@@ -551,8 +587,8 @@ img{
 }
 
 .hero-dot.active{
-  width:34px;
-  border-radius:6px;
+  width:18px;
+  border-radius:5px;
   background:var(--yellow);
 }
 
@@ -660,7 +696,7 @@ img{
 
 
 /* =========================================================
-   CARDS DE PRODUTOS REAIS
+   CARDS DE PRODUTO
    ========================================================= */
 
 .flash-deals{
@@ -1246,63 +1282,6 @@ img{
 
 
 /* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media(max-width:600px){
-
-  .hero-banner{
-    min-height:590px;
-  }
-
-  .hero-banner-content{
-    width:62%;
-    padding:62px 28px 42px;
-  }
-
-  .hero-banner h1{
-    font-size:52px;
-  }
-
-  .hero-banner p{
-    font-size:13px;
-  }
-
-  .hero-products{
-    width:54%;
-  }
-
-  .hero-real-laptop{
-    width:295px;
-    right:-12px;
-    top:177px;
-    z-index:3;
-  }
-
-  .hero-real-phone{
-    width:142px;
-    right:18px;
-    top:115px;
-    z-index:8;
-  }
-
-  .hero-real-headphone{
-    width:148px;
-    right:112px;
-    bottom:48px;
-    z-index:7;
-  }
-
-  .hero-glow{
-    width:360px;
-    height:360px;
-    right:-70px;
-  }
-
-}
-
-
-/* =========================================================
    DESKTOP
    ========================================================= */
 
@@ -1311,7 +1290,6 @@ img{
   body{
     max-width:1180px;
     margin:auto;
-    background:#000;
   }
 
   .top-header{
@@ -1352,49 +1330,57 @@ img{
   }
 
   .hero-banner{
-    min-height:520px;
+    height:390px;
+    min-height:390px;
   }
 
   .hero-banner-content{
     width:58%;
-    padding:80px 55px;
+    padding:58px 44px;
   }
 
   .hero-banner h1{
-    font-size:64px;
+    font-size:58px;
   }
 
   .hero-banner p{
-    font-size:14px;
+    font-size:12px;
+    max-width:350px;
   }
 
   .hero-products{
     width:48%;
   }
 
+  .hero-glow{
+    width:340px;
+    height:340px;
+    right:-20px;
+  }
+
   .hero-real-laptop{
-    width:360px;
-    right:16px;
-    top:118px;
+    width:310px;
+    right:0;
+    top:84px;
   }
 
   .hero-real-phone{
-    width:165px;
-    right:40px;
-    top:68px;
+    width:125px;
+    right:34px;
+    top:38px;
   }
 
   .hero-real-headphone{
-    width:175px;
-    right:175px;
-    bottom:42px;
+    width:135px;
+    right:150px;
+    bottom:24px;
   }
 
   .hero-discount{
-    width:105px;
-    height:105px;
-    right:34px;
-    bottom:28px;
+    width:82px;
+    height:82px;
+    right:24px;
+    bottom:22px;
   }
 
   .quick-categories{
@@ -1440,7 +1426,7 @@ img{
 
 
 /* =========================================================
-   TELAS PEQUENAS
+   CELULARES BEM PEQUENOS
    ========================================================= */
 
 @media(max-width:380px){
@@ -1458,50 +1444,52 @@ img{
   }
 
   .hero-banner{
-    min-height:560px;
+    height:310px;
+    min-height:310px;
   }
 
   .hero-banner-content{
-    width:64%;
-    padding:56px 20px 38px;
+    width:63%;
+    padding:31px 15px;
   }
 
   .hero-banner h1{
-    font-size:45px;
+    font-size:37px;
+    letter-spacing:-2.2px;
   }
 
   .hero-banner p{
-    font-size:11px;
+    font-size:9px;
+    max-width:190px;
   }
 
   .hero-real-laptop{
-    width:255px;
+    width:165px;
     right:-18px;
-    top:178px;
+    top:91px;
   }
 
   .hero-real-phone{
-    width:118px;
-    right:12px;
-    top:120px;
-    z-index:8;
+    width:68px;
+    right:7px;
+    top:51px;
   }
 
   .hero-real-headphone{
-    width:128px;
-    right:84px;
-    bottom:54px;
+    width:78px;
+    right:59px;
+    bottom:25px;
   }
 
   .hero-discount{
-    width:82px;
-    height:82px;
-    right:18px;
-    bottom:26px;
+    width:58px;
+    height:58px;
+    right:10px;
+    bottom:11px;
   }
 
   .hero-discount strong{
-    font-size:26px;
+    font-size:18px;
   }
 
   .flash-card{
@@ -1517,4 +1505,4 @@ img{
     font-size:6px;
   }
 
-  }
+    }
