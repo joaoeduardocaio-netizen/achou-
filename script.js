@@ -105,7 +105,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return (
         parsed.protocol === "https:" &&
-        parsed.hostname === "meli.la"
+        (
+          parsed.hostname === "meli.la" ||
+          parsed.hostname.endsWith(".mercadolivre.com.br") ||
+          parsed.hostname === "mercadolivre.com.br"
+        )
       );
 
     } catch {
@@ -378,10 +382,17 @@ document.addEventListener("DOMContentLoaded", () => {
         group.best =
           group.offers[0];
 
+        /*
+          IMPORTANTE:
+          Agora o ACHOU! libera a oferta
+          sempre que houver um link válido.
+
+          Não depende mais de can_buy === true.
+        */
+
         group.bestBuyable =
           group.offers.find(
             offer =>
-              offer.canBuy === true &&
               validAffiliateLink(
                 offer.link
               )
@@ -666,8 +677,12 @@ document.addEventListener("DOMContentLoaded", () => {
                   offerIndex
                 ) => {
 
+                  /*
+                    IMPORTANTE:
+                    basta existir link válido.
+                  */
+
                   const buyable =
-                    offer.canBuy === true &&
                     validAffiliateLink(
                       offer.link
                     );
@@ -1063,10 +1078,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========================================================
      BUSCA INICIAL
-
-     IMPORTANTE:
-     Carrega ofertas de iPhone 15,
-     mas NÃO escreve iPhone 15 no campo.
      ======================================================== */
 
   function loadInitialDeals() {
@@ -1221,11 +1232,6 @@ document.addEventListener("DOMContentLoaded", () => {
             map[text] ||
             rawText;
 
-
-          /*
-             "Todos" volta para as ofertas iniciais,
-             mas mantém a caixa limpa.
-          */
 
           if (
             text === "todos"
@@ -1684,11 +1690,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /*
-     Login/Cadastro visual por enquanto.
-     Evita recarregar a página.
-  */
-
   if (loginForm) {
 
     loginForm.addEventListener(
@@ -1760,10 +1761,6 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
 
-          /*
-             Categorias
-          */
-
           if (index === 1) {
 
             document
@@ -1776,10 +1773,6 @@ document.addEventListener("DOMContentLoaded", () => {
               });
           }
 
-
-          /*
-             Buscar
-          */
 
           if (index === 2) {
 
@@ -1798,10 +1791,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
 
-          /*
-             Favoritos
-          */
-
           if (index === 3) {
 
             marketSection
@@ -1811,10 +1800,6 @@ document.addEventListener("DOMContentLoaded", () => {
               });
           }
 
-
-          /*
-             Perfil
-          */
 
           if (index === 4) {
 
@@ -1889,19 +1874,10 @@ document.addEventListener("DOMContentLoaded", () => {
   updateFavoriteCounter();
 
 
-  /*
-     A busca fica visualmente vazia.
-  */
-
   if (searchInput) {
     searchInput.value = "";
   }
 
-
-  /*
-     Produtos reais são carregados
-     sem escrever "iPhone 15" na busca.
-  */
 
   loadInitialDeals();
 
