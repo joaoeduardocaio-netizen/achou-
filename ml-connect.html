@@ -1,63 +1,12 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#000000">
-<title>ACHOU! — Autorizar Mercado Livre</title>
-<style>
-*{box-sizing:border-box}
-body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#000;color:#fff;font-family:Arial,Helvetica,sans-serif}
-.card{width:100%;max-width:420px;padding:32px 24px;border:1px solid #282828;border-radius:22px;background:#080808;text-align:center}
-.logo{font-size:36px;font-weight:900;margin-bottom:20px}.logo span{color:#FFD400}
-h1{font-size:22px;margin:0 0 12px}p{color:#aaa;line-height:1.5}
-button{width:100%;margin-top:22px;padding:15px;border:0;border-radius:12px;background:#FFD400;color:#000;font-size:16px;font-weight:800;cursor:pointer}
-#error{display:none;margin-top:18px;padding:14px;border:1px solid #a83232;border-radius:12px;color:#ff7d7d}
-</style>
-</head>
-<body>
-<main class="card">
-<div class="logo">ACHOU<span>!</span></div>
-<h1>Conectar Mercado Livre</h1>
-<p>Autorize novamente o ACHOU! para aplicar as permissões atualizadas.</p>
-<button id="connect">Autorizar Mercado Livre</button>
-<div id="error"></div>
-</main>
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ACHOU! — Conectar Mercado Livre</title>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#000;color:#fff;font-family:Arial}main{max-width:420px;padding:32px;text-align:center;border:1px solid #333;border-radius:22px}b{font-size:38px}b i{color:#FFD400;font-style:normal}button{margin-top:20px;padding:15px 22px;border:0;border-radius:12px;background:#FFD400;font-weight:800;font-size:16px}</style></head>
+<body><main><b>ACHOU<i>!</i></b><h2>Conectar Mercado Livre</h2><p>Autorize novamente o ACHOU! para aplicar as permissões atualizadas.</p><button id="go">Autorizar Mercado Livre</button></main>
 <script>
-const CLIENT_ID="4433631292282705";
-const REDIRECT_URI="https://joaoeduardocaio-netizen.github.io/achou-/callback.html";
-
-function base64url(bytes){
-  let s="";
-  bytes.forEach(b=>s+=String.fromCharCode(b));
-  return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
-}
-async function startOAuth(){
-  try{
-    const bytes=new Uint8Array(64);
-    crypto.getRandomValues(bytes);
-    const verifier=base64url(bytes);
-    const digest=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(verifier));
-    const challenge=base64url(new Uint8Array(digest));
-
-    sessionStorage.setItem("ml_code_verifier",verifier);
-    localStorage.setItem("ml_code_verifier",verifier);
-
-    const auth=new URL("https://auth.mercadolivre.com.br/authorization");
-    auth.searchParams.set("response_type","code");
-    auth.searchParams.set("client_id",CLIENT_ID);
-    auth.searchParams.set("redirect_uri",REDIRECT_URI);
-    auth.searchParams.set("code_challenge",challenge);
-    auth.searchParams.set("code_challenge_method","S256");
-    location.href=auth.toString();
-  }catch(e){
-    console.error(e);
-    const box=document.getElementById("error");
-    box.style.display="block";
-    box.textContent="Não foi possível iniciar a autorização.";
-  }
-}
-document.getElementById("connect").addEventListener("click",startOAuth);
-</script>
-</body>
-</html>
+const CLIENT_ID="4433631292282705", REDIRECT_URI="https://joaoeduardocaio-netizen.github.io/achou-/callback.html";
+function b64u(a){let s="";a.forEach(x=>s+=String.fromCharCode(x));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+go.onclick=async()=>{const a=new Uint8Array(64);crypto.getRandomValues(a);const v=b64u(a);const d=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(v));const c=b64u(new Uint8Array(d));
+const state=b64u(crypto.getRandomValues(new Uint8Array(18)));
+document.cookie="ml_pkce="+encodeURIComponent(v)+"; Max-Age=600; Path=/achou-/; SameSite=Lax; Secure";
+document.cookie="ml_state="+encodeURIComponent(state)+"; Max-Age=600; Path=/achou-/; SameSite=Lax; Secure";
+const u=new URL("https://auth.mercadolivre.com.br/authorization");u.searchParams.set("response_type","code");u.searchParams.set("client_id",CLIENT_ID);u.searchParams.set("redirect_uri",REDIRECT_URI);u.searchParams.set("code_challenge",c);u.searchParams.set("code_challenge_method","S256");u.searchParams.set("state",state);location.assign(u)};
+</script></body></html>
