@@ -1,6 +1,7 @@
 /* =========================================================
    ACHOU! — COMPARADOR PROFISSIONAL
    Produtos, preços, imagens e links reais.
+   Somente ofertas acessíveis são exibidas ao usuário.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -29,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     ELEMENTOS PRINCIPAIS
+     ELEMENTOS
      ======================================================== */
 
   const searchInput =
@@ -92,7 +93,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function validAffiliateLink(url) {
+  /* ========================================================
+     VALIDAÇÃO DE LINKS
+     ======================================================== */
+
+  function validProductLink(url) {
 
     if (!url) {
       return false;
@@ -103,13 +108,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const parsed =
         new URL(url);
 
+      if (parsed.protocol !== "https:") {
+        return false;
+      }
+
+      const host =
+        parsed.hostname.toLowerCase();
+
       return (
-        parsed.protocol === "https:" &&
-        (
-          parsed.hostname === "meli.la" ||
-          parsed.hostname.endsWith(".mercadolivre.com.br") ||
-          parsed.hostname === "mercadolivre.com.br"
-        )
+        host === "meli.la" ||
+        host === "mercadolivre.com.br" ||
+        host.endsWith(".mercadolivre.com.br") ||
+        host === "mercadolibre.com" ||
+        host.endsWith(".mercadolibre.com")
       );
 
     } catch {
@@ -120,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     RESUMO DA BUSCA
+     RESUMO
      ======================================================== */
 
   function createSummary() {
@@ -177,11 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
           ${offerCount}
           ${
             offerCount === 1
-              ? "oferta real"
-              : "ofertas reais"
+              ? "oferta disponível"
+              : "ofertas disponíveis"
           }
-          para
-          “${escapeHtml(query)}”
+          para “${escapeHtml(query)}”
         </span>
 
       </div>
@@ -194,7 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     STATUS DE BUSCA
+     STATUS
      ======================================================== */
 
   function showLoading() {
@@ -252,11 +262,12 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="achou-search-status">
 
         <strong>
-          Nenhuma oferta encontrada
+          Nenhuma oferta disponível
         </strong>
 
         <span>
-          Tente pesquisar outro produto.
+          Encontramos resultados, mas nenhuma oferta
+          com link disponível no momento.
         </span>
 
       </div>
@@ -265,10 +276,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     NORMALIZAÇÃO DOS PRODUTOS
+     NORMALIZAÇÃO DA API
      ======================================================== */
 
   function normalizeApiProduct(item) {
+
+    const possibleLink =
+      item.affiliate_url ||
+      item.permalink ||
+      item.url ||
+      item.item_url ||
+      null;
 
     return {
 
@@ -300,6 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       image:
         item.thumbnail ||
+        item.image ||
         null,
 
       sellerId:
@@ -318,18 +337,17 @@ document.addEventListener("DOMContentLoaded", () => {
         null,
 
       link:
-        item.affiliate_url ||
-        item.permalink ||
-        null,
-
-      canBuy:
-        item.can_buy === true
+        possibleLink
     };
   }
 
 
   /* ========================================================
      AGRUPAMENTO
+
+     O grupo continua sendo criado pelo product_id.
+     Porém, somente ofertas que realmente possuam
+     link utilizável ficam disponíveis ao cliente.
      ======================================================== */
 
   function groupProducts(list) {
@@ -337,11 +355,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const map =
       new Map();
 
+
     list.forEach(item => {
 
       const key =
         item.productId ||
         item.id;
+
+      if (!key) {
+        return;
+      }
+
 
       if (!map.has(key)) {
 
@@ -351,55 +375,91 @@ document.addEventListener("DOMContentLoaded", () => {
             productId: key,
             title: item.title,
             image: item.image || null,
-            offers: []
+            allOffers: []
           }
         );
       }
 
-      const currentGroup =
+
+      const group =
         map.get(key);
 
+
       if (
-        !currentGroup.image &&
+        !group.image &&
         item.image
       ) {
-        currentGroup.image =
+
+        group.image =
           item.image;
       }
 
-      currentGroup.offers.push(item);
+
+      group.allOffers.push(item);
+
     });
 
 
-    return Array.from(map.values())
+    return Array
+      .from(map.values())
+
       .map(group => {
 
-        group.offers.sort(
-          (a, b) =>
-            a.price - b.price
-        );
-
-        group.best =
-          group.offers[0];
-
         /*
-          IMPORTANTE:
-          Agora o ACHOU! libera a oferta
-          sempre que houver um link válido.
-
-          Não depende mais de can_buy === true.
+          Guarda somente ofertas que tenham
+          preço válido + link utilizável.
         */
 
-        group.bestBuyable =
-          group.offers.find(
-            offer =>
-              validAffiliateLink(
-                offer.link
-              )
-          ) || null;
+        group.offers =
+          group.allOffers
+            .filter(offer => {
+
+              return (
+                Number.isFinite(offer.price) &&
+                offer.price > 0 &&
+                validProductLink(
+                  offer.link
+                )
+              );
+            })
+            .sort(
+              (a, b) =>
+                a.price - b.price
+            );
+
+
+        /*
+          Melhor oferta é obrigatoriamente
+          uma oferta que pode ser aberta.
+        */
+
+        group.best =
+          group.offers[0] ||
+          null;
+
 
         return group;
+
       })
+
+      /*
+        Remove completamente grupos
+        que não possuem nenhuma oferta acessível.
+      */
+
+      .filter(group => {
+
+        return (
+          group.best &&
+          group.offers.length > 0
+        );
+      })
+
+      /*
+        Ordena os produtos pelo menor
+        preço realmente acessível.
+      */
+
       .sort(
         (a, b) =>
           a.best.price -
@@ -444,11 +504,14 @@ document.addEventListener("DOMContentLoaded", () => {
       getFavorites();
 
     document
-      .querySelectorAll(".favorite-count")
+      .querySelectorAll(
+        ".favorite-count"
+      )
       .forEach(counter => {
 
         counter.textContent =
           favorites.length;
+
       });
   }
 
@@ -464,6 +527,7 @@ document.addEventListener("DOMContentLoaded", () => {
       getFavorites()
         .map(String);
 
+
     buttons.forEach(button => {
 
       const id =
@@ -471,12 +535,15 @@ document.addEventListener("DOMContentLoaded", () => {
           button.dataset.favorite
         );
 
+
       if (
         favorites.includes(id)
       ) {
+
         button.textContent =
           "♥";
       }
+
 
       button.addEventListener(
         "click",
@@ -485,6 +552,7 @@ document.addEventListener("DOMContentLoaded", () => {
           let current =
             getFavorites()
               .map(String);
+
 
           if (
             current.includes(id)
@@ -507,17 +575,20 @@ document.addEventListener("DOMContentLoaded", () => {
               "♥";
           }
 
+
           saveFavorites(current);
 
           updateFavoriteCounter();
+
         }
       );
+
     });
   }
 
 
   /* ========================================================
-     PAINÉIS DAS OFERTAS
+     EXPANSÃO DAS OFERTAS
      ======================================================== */
 
   function bindOfferPanels() {
@@ -535,32 +606,38 @@ document.addEventListener("DOMContentLoaded", () => {
             const id =
               button.dataset.toggleOffers;
 
+
             const panel =
               document.querySelector(
                 `[data-offers-panel="${CSS.escape(id)}"]`
               );
 
+
             if (!panel) {
               return;
             }
+
 
             const open =
               panel.classList.toggle(
                 "open"
               );
 
+
             button.textContent =
               open
                 ? "OCULTAR OFERTAS"
                 : `VER ${panel.children.length} OFERTAS`;
+
           }
         );
+
       });
   }
 
 
   /* ========================================================
-     RENDERIZAÇÃO DOS PRODUTOS
+     PRODUTOS
      ======================================================== */
 
   function renderGroupedProducts(groups) {
@@ -568,6 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!dealsContainer) {
       return;
     }
+
 
     if (
       !Array.isArray(groups) ||
@@ -606,6 +684,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   loading="lazy"
                   decoding="async"
                   referrerpolicy="no-referrer"
+
                   onerror="
                     this.style.display='none';
                     this.nextElementSibling.style.display='flex';
@@ -633,41 +712,31 @@ document.addEventListener("DOMContentLoaded", () => {
               `;
 
 
-          const bestBuyable =
-            group.bestBuyable;
-
+          /*
+            Agora o principal botão sempre
+            possui um link real.
+          */
 
           const bestLink =
-            bestBuyable &&
-            validAffiliateLink(
-              bestBuyable.link
-            )
-              ? bestBuyable.link
-              : null;
+            best.link;
 
 
-          const mainButton =
-            bestLink
-              ? `
-                <a
-                  href="${escapeHtml(bestLink)}"
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                  class="offer"
-                >
-                  VER MELHOR OFERTA
-                </a>
-              `
-              : `
-                <button
-                  type="button"
-                  class="offer"
-                  disabled
-                >
-                  MELHOR OFERTA SEM LINK
-                </button>
-              `;
+          const mainButton = `
+            <a
+              href="${escapeHtml(bestLink)}"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+              class="offer"
+            >
+              VER MELHOR OFERTA
+            </a>
+          `;
 
+
+          /*
+            Todas as linhas abaixo também
+            possuem link real.
+          */
 
           const rows =
             group.offers
@@ -676,38 +745,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   offer,
                   offerIndex
                 ) => {
-
-                  /*
-                    IMPORTANTE:
-                    basta existir link válido.
-                  */
-
-                  const buyable =
-                    validAffiliateLink(
-                      offer.link
-                    );
-
-
-                  const button =
-                    buyable
-                      ? `
-                        <a
-                          class="achou-mini-buy"
-                          href="${escapeHtml(offer.link)}"
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                        >
-                          VER OFERTA
-                        </a>
-                      `
-                      : `
-                        <span
-                          class="achou-mini-buy disabled"
-                        >
-                          SEM LINK
-                        </span>
-                      `;
-
 
                   return `
                     <div
@@ -723,18 +760,24 @@ document.addEventListener("DOMContentLoaded", () => {
                         ${
                           offerIndex === 0
                             ? `
-                              <span class="achou-best-label">
+                              <span
+                                class="achou-best-label"
+                              >
                                 MENOR PREÇO
                               </span>
                             `
                             : ""
                         }
 
-                        <strong class="achou-offer-price">
+                        <strong
+                          class="achou-offer-price"
+                        >
                           ${money(offer.price)}
                         </strong>
 
-                        <div class="achou-offer-meta">
+                        <div
+                          class="achou-offer-meta"
+                        >
 
                           <span>
                             Mercado Livre
@@ -743,7 +786,9 @@ document.addEventListener("DOMContentLoaded", () => {
                           ${
                             offer.freeShipping
                               ? `
-                                <span class="achou-free">
+                                <span
+                                  class="achou-free"
+                                >
                                   Frete grátis
                                 </span>
                               `
@@ -754,7 +799,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                       </div>
 
-                      ${button}
+
+                      <a
+                        class="achou-mini-buy"
+                        href="${escapeHtml(offer.link)}"
+                        target="_blank"
+                        rel="noopener noreferrer sponsored"
+                      >
+                        VER OFERTA
+                      </a>
 
                     </div>
                   `;
@@ -779,6 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   : ""
               }
 
+
               <button
                 class="product-favorite"
                 type="button"
@@ -799,9 +853,13 @@ document.addEventListener("DOMContentLoaded", () => {
               </h3>
 
 
-              <div class="achou-group-info">
+              <div
+                class="achou-group-info"
+              >
 
-                <span class="achou-offer-count">
+                <span
+                  class="achou-offer-count"
+                >
                   ${group.offers.length}
                   ${
                     group.offers.length === 1
@@ -809,6 +867,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       : "ofertas"
                   }
                 </span>
+
 
                 ${
                   best.freeShipping
@@ -830,6 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 A partir de
               </span>
 
+
               <strong class="flash-price">
                 ${money(best.price)}
               </strong>
@@ -843,7 +903,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <span>
                   ${group.offers.length}
-                  preços comparados
+                  ${
+                    group.offers.length === 1
+                      ? "preço disponível"
+                      : "preços comparados"
+                  }
                 </span>
 
               </div>
@@ -853,12 +917,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 ${mainButton}
 
+
                 <button
                   class="achou-see-offers"
                   type="button"
                   data-toggle-offers="${escapeHtml(group.productId)}"
                 >
-                  VER ${group.offers.length} OFERTAS
+                  VER ${group.offers.length}
+                  ${
+                    group.offers.length === 1
+                      ? "OFERTA"
+                      : "OFERTAS"
+                  }
                 </button>
 
               </div>
@@ -873,6 +943,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             </article>
           `;
+
         }
       )
       .join("");
@@ -883,18 +954,25 @@ document.addEventListener("DOMContentLoaded", () => {
         ".achou-affiliate-note"
       )
       .forEach(note => {
+
         note.remove();
+
       });
 
 
     const note =
-      document.createElement("div");
+      document.createElement(
+        "div"
+      );
+
 
     note.className =
       "achou-affiliate-note";
 
+
     note.textContent =
       "O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.";
+
 
     dealsContainer
       .parentElement
@@ -904,11 +982,12 @@ document.addEventListener("DOMContentLoaded", () => {
     bindFavorites();
 
     bindOfferPanels();
+
   }
 
 
   /* ========================================================
-     BUSCA PRINCIPAL
+     BUSCA
      ======================================================== */
 
   async function searchProducts(
@@ -945,6 +1024,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (summaryBox) {
+
       summaryBox.style.display =
         "none";
     }
@@ -967,6 +1047,7 @@ document.addEventListener("DOMContentLoaded", () => {
           `${CONFIG.api}?q=${encodeURIComponent(term)}`,
           {
             method: "GET",
+
             headers: {
               Accept:
                 "application/json"
@@ -1001,6 +1082,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
 
+      /*
+        Mantemos todos os produtos válidos
+        recebidos da API.
+      */
+
       products =
         data.results
           .map(
@@ -1016,8 +1102,14 @@ document.addEventListener("DOMContentLoaded", () => {
               ) &&
               product.price > 0
             );
+
           });
 
+
+      /*
+        Depois agrupamos e eliminamos
+        os grupos sem link utilizável.
+      */
 
       groupedProducts =
         groupProducts(
@@ -1025,9 +1117,21 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
+      const availableOfferCount =
+        groupedProducts.reduce(
+          (
+            total,
+            group
+          ) =>
+            total +
+            group.offers.length,
+          0
+        );
+
+
       updateSummary(
         groupedProducts.length,
-        products.length,
+        availableOfferCount,
         term
       );
 
@@ -1056,8 +1160,10 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       );
 
+
       products = [];
       groupedProducts = [];
+
 
       showError();
 
@@ -1086,7 +1192,19 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    searchInput.value = "";
+
+    /*
+      Mantém o campo visualmente vazio.
+    */
+
+    searchInput.value =
+      "";
+
+
+    /*
+      Busca inicial acontece somente
+      nos bastidores.
+    */
 
     searchProducts(
       CONFIG.initialQuery,
@@ -1098,7 +1216,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     BOTÃO BUSCAR / ENTER
+     CAMPO DE BUSCA
      ======================================================== */
 
   if (searchButton) {
@@ -1106,7 +1224,9 @@ document.addEventListener("DOMContentLoaded", () => {
     searchButton.addEventListener(
       "click",
       () => {
+
         searchProducts();
+
       }
     );
   }
@@ -1152,6 +1272,7 @@ document.addEventListener("DOMContentLoaded", () => {
             button.textContent
               .trim();
 
+
           const text =
             normalizeText(
               rawText
@@ -1167,6 +1288,7 @@ document.addEventListener("DOMContentLoaded", () => {
               item.classList.remove(
                 "active"
               );
+
             });
 
 
@@ -1225,6 +1347,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fone:
               "fone bluetooth"
+
           };
 
 
@@ -1238,12 +1361,16 @@ document.addEventListener("DOMContentLoaded", () => {
           ) {
 
             if (searchInput) {
-              searchInput.value = "";
+
+              searchInput.value =
+                "";
             }
+
 
             searchProducts(
               CONFIG.initialQuery
             );
+
 
             return;
           }
@@ -1256,8 +1383,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             searchProducts();
           }
+
         }
       );
+
     }
   );
 
@@ -1300,6 +1429,7 @@ document.addEventListener("DOMContentLoaded", () => {
       text:
         "Menos tempo procurando. Mais dinheiro economizado."
     }
+
   ];
 
 
@@ -1378,8 +1508,10 @@ document.addEventListener("DOMContentLoaded", () => {
           "active",
           index === heroIndex
         );
+
       }
     );
+
   }
 
 
@@ -1392,6 +1524,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderHero(
           heroIndex - 1
         );
+
       }
     );
   }
@@ -1406,6 +1539,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderHero(
           heroIndex + 1
         );
+
       }
     );
   }
@@ -1419,8 +1553,10 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
           renderHero(index);
+
         }
       );
+
     }
   );
 
@@ -1433,6 +1569,7 @@ document.addEventListener("DOMContentLoaded", () => {
         renderHero(
           heroIndex + 1
         );
+
       },
       CONFIG.heroInterval
     );
@@ -1440,7 +1577,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     CTA DO HERO
+     HERO CTA
      ======================================================== */
 
   if (heroCTA) {
@@ -1462,17 +1599,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(
           () => {
+
             searchInput.focus();
+
           },
           400
         );
+
       }
     );
   }
 
 
   /* ========================================================
-     LOGIN / CADASTRO
+     LOGIN
      ======================================================== */
 
   const loginModal =
@@ -1535,6 +1675,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(
         ".login-modal.active, .signup-modal.active"
       );
+
 
     if (!modalOpen) {
 
@@ -1637,6 +1778,7 @@ document.addEventListener("DOMContentLoaded", () => {
         closeLogin();
 
         openSignup();
+
       }
     );
   }
@@ -1651,6 +1793,7 @@ document.addEventListener("DOMContentLoaded", () => {
         closeSignup();
 
         openLogin();
+
       }
     );
   }
@@ -1697,6 +1840,7 @@ document.addEventListener("DOMContentLoaded", () => {
       event => {
 
         event.preventDefault();
+
       }
     );
   }
@@ -1709,6 +1853,7 @@ document.addEventListener("DOMContentLoaded", () => {
       event => {
 
         event.preventDefault();
+
       }
     );
   }
@@ -1723,6 +1868,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ) {
 
         closeLogin();
+
         closeSignup();
       }
     }
@@ -1752,6 +1898,7 @@ document.addEventListener("DOMContentLoaded", () => {
               nav.classList.remove(
                 "active"
               );
+
             }
           );
 
@@ -1771,6 +1918,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 behavior: "smooth",
                 block: "center"
               });
+
           }
 
 
@@ -1782,9 +1930,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 block: "center"
               });
 
+
             setTimeout(
               () => {
+
                 searchInput?.focus();
+
               },
               400
             );
@@ -1804,15 +1955,18 @@ document.addEventListener("DOMContentLoaded", () => {
           if (index === 4) {
 
             openLogin();
+
           }
+
         }
       );
+
     }
   );
 
 
   /* ========================================================
-     FAVORITO DO HEADER
+     FAVORITOS HEADER
      ======================================================== */
 
   const headerFavorite =
@@ -1832,6 +1986,7 @@ document.addEventListener("DOMContentLoaded", () => {
             behavior: "smooth",
             block: "start"
           });
+
       }
     );
   }
@@ -1858,6 +2013,7 @@ document.addEventListener("DOMContentLoaded", () => {
             behavior: "smooth",
             block: "center"
           });
+
       }
     );
   }
@@ -1875,7 +2031,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   if (searchInput) {
-    searchInput.value = "";
+
+    searchInput.value =
+      "";
   }
 
 
