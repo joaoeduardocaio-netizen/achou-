@@ -1,979 +1,219 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="theme-color" content="#000000">
-
-  <meta
-    name="description"
-    content="ACHOU! Compare preços e encontre as melhores ofertas."
-  >
-
+  <meta name="description" content="ACHOU! Compare preços e encontre ofertas reais nas lojas parceiras.">
   <title>ACHOU! — Compare antes de comprar</title>
-
-  <link
-    rel="stylesheet"
-    href="style.css?v=20260904-8"
-  >
+  <link rel="stylesheet" href="style.css?v=20260904-9">
 </head>
-
 <body>
 
-  <!-- =====================================================
-       HEADER
-       ===================================================== -->
-
   <header class="top-header">
-
     <div class="header-left">
-
-      <button
-        class="menu-button"
-        type="button"
-        aria-label="Abrir menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
+      <button class="menu-button" type="button" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
       </button>
 
-      <a
-        class="brand"
-        href="#"
-        aria-label="ACHOU início"
-      >
-        <strong>
-          ACHOU<span>!</span>
-        </strong>
-
-        <small>
-          A gente procura. Você economiza tempo.
-        </small>
+      <a class="brand" href="#" aria-label="ACHOU início">
+        <strong>ACHOU<span>!</span></strong>
+        <small>A gente procura. Você economiza tempo.</small>
       </a>
-
     </div>
 
-
     <div class="header-user">
-
-      <button
-        class="header-icon"
-        type="button"
-        aria-label="Favoritos"
-      >
+      <button class="header-icon favorites-shortcut" type="button" aria-label="Favoritos">
         ♡
-
-        <span class="notification-badge favorite-count">
-          0
-        </span>
+        <span class="notification-badge favorite-count">0</span>
       </button>
 
-
-      <button
-        class="account-button"
-        type="button"
-      >
-
-        <span class="account-avatar">
-          ?
-        </span>
-
+      <button class="account-button" type="button">
+        <span class="account-avatar">?</span>
         <span class="account-greeting">
           <small>Olá!</small>
           <strong>Entrar</strong>
         </span>
-
-        <span class="account-link">
-          Minha conta
-        </span>
-
+        <span class="account-link">Minha conta</span>
       </button>
-
     </div>
-
   </header>
 
-
-  <!-- =====================================================
-       BUSCA
-       ===================================================== -->
-
-  <section class="search-section">
-
-    <div class="search-box">
-
-      <span class="search-icon">
-        ⌕
-      </span>
-
-      <input
-        type="search"
-        placeholder="Busque iPhone, notebook, TV..."
-        autocomplete="off"
-        aria-label="Pesquisar produtos"
-      >
-
-      <button type="button">
-        BUSCAR
-      </button>
-
-    </div>
-
+  <section class="search-section" id="buscar">
+    <form class="search-box" id="searchForm" role="search">
+      <span class="search-icon" aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" placeholder="Busque iPhone, notebook, TV..." autocomplete="off" aria-label="Pesquisar produtos">
+      <button type="submit">BUSCAR</button>
+    </form>
   </section>
 
-
-  <!-- =====================================================
-       CATEGORIAS SUPERIORES
-       ===================================================== -->
-
-  <nav
-    class="category-nav"
-    aria-label="Categorias"
-  >
-
-    <button
-      class="category-nav-item active"
-      type="button"
-    >
-      Todos
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Celulares
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Informática
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      TV
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Games
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Áudio
-    </button>
-
+  <nav class="category-nav" aria-label="Categorias">
+    <button class="category-nav-item active" type="button">Todos</button>
+    <button class="category-nav-item" type="button">Celulares</button>
+    <button class="category-nav-item" type="button">Informática</button>
+    <button class="category-nav-item" type="button">TV</button>
+    <button class="category-nav-item" type="button">Games</button>
+    <button class="category-nav-item" type="button">Áudio</button>
   </nav>
-
 
   <main>
-
-    <!-- ===================================================
-         HERO
-         =================================================== -->
-
     <section class="hero-marketplace">
-
       <div class="hero-banner">
-
         <div class="hero-banner-content">
-
-          <span class="hero-small-title">
-            OFERTAS SELECIONADAS
-          </span>
-
-          <h1>
-            <strong>
-              COMPARE ANTES DE COMPRAR
-            </strong>
-          </h1>
-
-          <p>
-            A gente procura os melhores preços
-            para você economizar.
-          </p>
-
-          <button
-            class="hero-cta"
-            type="button"
-          >
-            PROCURAR PRODUTO
-          </button>
-
+          <span class="hero-small-title">OFERTAS SELECIONADAS</span>
+          <h1><strong>COMPARE ANTES DE COMPRAR</strong></h1>
+          <p>A gente procura os melhores preços para você economizar.</p>
+          <button class="hero-cta" type="button">PROCURAR PRODUTO</button>
         </div>
 
-
-        <!-- =================================================
-             PRODUTOS REAIS DO BANNER
-             ================================================= -->
-
-        <div
-          class="hero-products"
-          aria-hidden="true"
-        >
-
+        <div class="hero-products" aria-hidden="true">
           <div class="hero-glow"></div>
-
-
-          <!-- CELULAR -->
-
-          <img
-            src="./file_0000000045e0820e864bd3e97b3a8de2.png?v=20260904-8"
-            class="hero-real-phone"
-            alt=""
-            draggable="false"
-          >
-
-
-          <!-- NOTEBOOK -->
-
-          <img
-            src="./file_00000000d40c820ea6f7a477eb429009.png?v=20260904-8"
-            class="hero-real-laptop"
-            alt=""
-            draggable="false"
-          >
-
-
-          <!-- FONE -->
-
-          <img
-            src="./file_00000000bd34820e8cc682ea72542717.png?v=20260904-8"
-            class="hero-real-headphone"
-            alt=""
-            draggable="false"
-          >
-
+          <img src="./file_0000000045e0820e864bd3e97b3a8de2.png?v=20260904-8" class="hero-real-phone" alt="" draggable="false">
+          <img src="./file_00000000d40c820ea6f7a477eb429009.png?v=20260904-8" class="hero-real-laptop" alt="" draggable="false">
+          <img src="./file_00000000bd34820e8cc682ea72542717.png?v=20260904-8" class="hero-real-headphone" alt="" draggable="false">
         </div>
-
 
         <div class="hero-discount">
-
-          <small>
-            ATÉ
-          </small>
-
-          <strong>
-            50
-          </strong>
-
-          <span>
-            % OFF
-          </span>
-
+          <small>ATÉ</small>
+          <strong>50</strong>
+          <span>% OFF</span>
         </div>
 
-
-        <button
-          class="hero-arrow hero-prev"
-          type="button"
-          aria-label="Banner anterior"
-        >
-          ‹
-        </button>
-
-        <button
-          class="hero-arrow hero-next"
-          type="button"
-          aria-label="Próximo banner"
-        >
-          ›
-        </button>
-
+        <button class="hero-arrow hero-prev" type="button" aria-label="Banner anterior">‹</button>
+        <button class="hero-arrow hero-next" type="button" aria-label="Próximo banner">›</button>
       </div>
-
 
       <div class="hero-dots">
+        <button class="hero-dot active" type="button" aria-label="Banner 1"></button>
+        <button class="hero-dot" type="button" aria-label="Banner 2"></button>
+        <button class="hero-dot" type="button" aria-label="Banner 3"></button>
+      </div>
+    </section>
 
-        <button
-          class="hero-dot active"
-          type="button"
-          aria-label="Banner 1"
-        ></button>
+    <section class="quick-categories" aria-label="Categorias rápidas" id="categorias">
+      <button class="quick-category" type="button"><span class="quick-category-icon">📱</span><strong>Celulares</strong></button>
+      <button class="quick-category" type="button"><span class="quick-category-icon">💻</span><strong>Informática</strong></button>
+      <button class="quick-category" type="button"><span class="quick-category-icon">📺</span><strong>TV</strong></button>
+      <button class="quick-category" type="button"><span class="quick-category-icon">🎮</span><strong>Games</strong></button>
+      <button class="quick-category" type="button"><span class="quick-category-icon">🎧</span><strong>Áudio</strong></button>
+      <button class="quick-category" type="button"><span class="quick-category-icon">🏠</span><strong>Casa</strong></button>
+      <button class="quick-category" type="button"><span class="quick-category-icon">👟</span><strong>Moda</strong></button>
+      <button class="quick-category" type="button"><span class="quick-category-icon">🔧</span><strong>Ferramentas</strong></button>
+    </section>
 
-        <button
-          class="hero-dot"
-          type="button"
-          aria-label="Banner 2"
-        ></button>
-
-        <button
-          class="hero-dot"
-          type="button"
-          aria-label="Banner 3"
-        ></button>
-
+    <section class="market-section" id="ofertas">
+      <div class="market-section-heading">
+        <div class="section-title">
+          <span class="section-icon">⚡</span>
+          <h2>Ofertas em destaque</h2>
+        </div>
+        <button class="see-all" type="button">VER TODAS</button>
       </div>
 
+      <div class="search-summary" id="searchSummary" hidden></div>
+      <div class="flash-deals" id="productList" aria-live="polite"></div>
+      <p class="affiliate-note" id="affiliateNote" hidden>O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.</p>
     </section>
-
-
-    <!-- ===================================================
-         CATEGORIAS RÁPIDAS
-         =================================================== -->
-
-    <section
-      class="quick-categories"
-      aria-label="Categorias rápidas"
-    >
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">📱</span>
-        <strong>Celulares</strong>
-      </button>
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">💻</span>
-        <strong>Informática</strong>
-      </button>
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">📺</span>
-        <strong>TV</strong>
-      </button>
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">🎮</span>
-        <strong>Games</strong>
-      </button>
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">🎧</span>
-        <strong>Áudio</strong>
-      </button>
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">🏠</span>
-        <strong>Casa</strong>
-      </button>
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">👟</span>
-        <strong>Moda</strong>
-      </button>
-
-      <button class="quick-category" type="button">
-        <span class="quick-category-icon">🔧</span>
-        <strong>Ferramentas</strong>
-      </button>
-
-    </section>
-
-
-    <!-- ===================================================
-         OFERTAS
-         =================================================== -->
 
     <section class="market-section">
-
       <div class="market-section-heading">
-
         <div class="section-title">
-
-          <span class="section-icon">
-            ⚡
-          </span>
-
-          <h2>
-            Ofertas relâmpago
-          </h2>
-
+          <span class="section-icon">🔥</span>
+          <h2>Mais procurados</h2>
         </div>
-
-
-        <button
-          class="see-all"
-          type="button"
-        >
-          VER TODAS
-        </button>
-
       </div>
-
-
-      <div class="flash-deals"></div>
-
-    </section>
-
-
-    <!-- ===================================================
-         MAIS PROCURADOS
-         =================================================== -->
-
-    <section class="market-section">
-
-      <div class="market-section-heading">
-
-        <div class="section-title">
-
-          <span class="section-icon">
-            🔥
-          </span>
-
-          <h2>
-            Mais procurados
-          </h2>
-
-        </div>
-
-      </div>
-
 
       <div class="popular-tags">
-
-        <button type="button">
-          Todos
-        </button>
-
-        <button type="button">
-          iPhone
-        </button>
-
-        <button type="button">
-          Notebook
-        </button>
-
-        <button type="button">
-          PlayStation
-        </button>
-
-        <button type="button">
-          Smart TV
-        </button>
-
-        <button type="button">
-          Fone
-        </button>
-
+        <button type="button">Todos</button>
+        <button type="button">iPhone</button>
+        <button type="button">Notebook</button>
+        <button type="button">PlayStation</button>
+        <button type="button">Smart TV</button>
+        <button type="button">Fone</button>
       </div>
-
     </section>
-
-
-    <!-- ===================================================
-         LOJAS
-         =================================================== -->
 
     <section class="market-section">
-
       <div class="market-section-heading">
-
         <div class="section-title">
-
-          <span class="section-icon">
-            🛍
-          </span>
-
-          <h2>
-            Lojas no ACHOU!
-          </h2>
-
+          <span class="section-icon">🛍</span>
+          <h2>Lojas no ACHOU!</h2>
         </div>
-
       </div>
-
 
       <div class="featured-stores">
-
-        <article class="store-card mercado">
-          <strong>
-            mercado
-            <span>livre</span>
-          </strong>
-        </article>
-
-        <article class="store-card">
-          <strong>
-            amazon
-          </strong>
-        </article>
-
-        <article class="store-card shopee">
-          <strong>
-            Shopee
-          </strong>
-        </article>
-
-        <article class="store-card magalu">
-          <strong>
-            Magalu
-          </strong>
-        </article>
-
-        <article class="store-card kabum">
-          <strong>
-            KaBuM!
-          </strong>
-        </article>
-
+        <article class="store-card mercado"><strong>mercado<span>livre</span></strong></article>
+        <article class="store-card amazon"><strong>amazon</strong></article>
+        <article class="store-card shopee"><strong>Shopee</strong></article>
+        <article class="store-card magalu"><strong>Magalu</strong></article>
+        <article class="store-card kabum"><strong>KaBuM!</strong></article>
       </div>
-
     </section>
-
-
-    <!-- ===================================================
-         BENEFÍCIOS
-         =================================================== -->
 
     <section class="achou-benefits">
-
-      <article>
-        <span>⌕</span>
-
-        <div>
-          <strong>
-            Busca simples
-          </strong>
-
-          <small>
-            Encontre ofertas rapidamente.
-          </small>
-        </div>
-      </article>
-
-
-      <article>
-        <span>$</span>
-
-        <div>
-          <strong>
-            Compare preços
-          </strong>
-
-          <small>
-            Veja diferentes lojas.
-          </small>
-        </div>
-      </article>
-
-
-      <article>
-        <span>♡</span>
-
-        <div>
-          <strong>
-            Favoritos
-          </strong>
-
-          <small>
-            Guarde produtos para depois.
-          </small>
-        </div>
-      </article>
-
-
-      <article>
-        <span>↗</span>
-
-        <div>
-          <strong>
-            Compra na loja
-          </strong>
-
-          <small>
-            Você finaliza na loja parceira.
-          </small>
-        </div>
-      </article>
-
+      <article><span>⌕</span><div><strong>Busca simples</strong><small>Encontre ofertas rapidamente.</small></div></article>
+      <article><span>$</span><div><strong>Compare preços</strong><small>Veja diferentes lojas.</small></div></article>
+      <article><span>♡</span><div><strong>Favoritos</strong><small>Guarde produtos para depois.</small></div></article>
+      <article><span>↗</span><div><strong>Compra na loja</strong><small>Você finaliza na loja parceira.</small></div></article>
     </section>
-
-
-    <!-- ===================================================
-         COMO FUNCIONA
-         =================================================== -->
 
     <section class="how-section">
-
-      <span class="section-label">
-        COMO FUNCIONA
-      </span>
-
-      <h2>
-        Compare.
-        <em>Escolha.</em>
-        Economize.
-      </h2>
-
+      <span class="section-label">COMO FUNCIONA</span>
+      <h2>Compare. <em>Escolha.</em> Economize.</h2>
 
       <div class="how-steps">
-
-        <article>
-
-          <strong>
-            01
-          </strong>
-
-          <div>
-            <h3>
-              Você pesquisa
-            </h3>
-
-            <p>
-              Digite o produto que você procura.
-            </p>
-          </div>
-
-        </article>
-
-
-        <article>
-
-          <strong>
-            02
-          </strong>
-
-          <div>
-            <h3>
-              O ACHOU! compara
-            </h3>
-
-            <p>
-              Encontramos ofertas disponíveis
-              nas lojas parceiras.
-            </p>
-          </div>
-
-        </article>
-
-
-        <article>
-
-          <strong>
-            03
-          </strong>
-
-          <div>
-            <h3>
-              Você escolhe
-            </h3>
-
-            <p>
-              Compare preços e escolha
-              a melhor oportunidade.
-            </p>
-          </div>
-
-        </article>
-
-
-        <article>
-
-          <strong>
-            04
-          </strong>
-
-          <div>
-            <h3>
-              Você compra
-            </h3>
-
-            <p>
-              Clique na oferta e finalize
-              diretamente na loja.
-            </p>
-          </div>
-
-        </article>
-
+        <article><strong>01</strong><div><h3>Você pesquisa</h3><p>Digite o produto que você procura.</p></div></article>
+        <article><strong>02</strong><div><h3>O ACHOU! compara</h3><p>Encontramos ofertas disponíveis nas lojas parceiras.</p></div></article>
+        <article><strong>03</strong><div><h3>Você escolhe</h3><p>Compare preços e escolha a melhor oportunidade.</p></div></article>
+        <article><strong>04</strong><div><h3>Você compra</h3><p>Clique na oferta e finalize diretamente na loja.</p></div></article>
       </div>
-
     </section>
-
   </main>
 
-
-  <!-- =====================================================
-       MENU INFERIOR
-       ===================================================== -->
-
-  <nav class="bottom-nav">
-
-    <button
-      class="bottom-nav-item active"
-      type="button"
-    >
-      <span>
-        ◆
-      </span>
-
-      <strong>
-        Início
-      </strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-    >
-      <span>
-        ▤
-      </span>
-
-      <strong>
-        Categorias
-      </strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-    >
-      <span>
-        ⌕
-      </span>
-
-      <strong>
-        Buscar
-      </strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-    >
-
-      <span>
-        ♡
-
-        <i class="favorite-count">
-          0
-        </i>
-      </span>
-
-      <strong>
-        Favoritos
-      </strong>
-
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-    >
-      <span>
-        ☺
-      </span>
-
-      <strong>
-        Perfil
-      </strong>
-    </button>
-
+  <nav class="bottom-nav" aria-label="Navegação principal">
+    <button class="bottom-nav-item active" type="button" data-target="top"><span>◆</span><strong>Início</strong></button>
+    <button class="bottom-nav-item" type="button" data-target="categorias"><span>▤</span><strong>Categorias</strong></button>
+    <button class="bottom-nav-item" type="button" data-target="buscar"><span>⌕</span><strong>Buscar</strong></button>
+    <button class="bottom-nav-item" type="button" data-action="favorites"><span>♡<i class="favorite-count">0</i></span><strong>Favoritos</strong></button>
+    <button class="bottom-nav-item" type="button" data-action="profile"><span>☺</span><strong>Perfil</strong></button>
   </nav>
 
-
-  <!-- =====================================================
-       LOGIN
-       ===================================================== -->
-
-  <div
-    class="login-modal"
-    id="loginModal"
-  >
-
-    <div
-      class="login-modal-box"
-      role="dialog"
-      aria-modal="true"
-    >
-
-      <button
-        class="login-close"
-        type="button"
-        aria-label="Fechar"
-      >
-        ×
-      </button>
-
-
-      <div class="login-logo">
-        ACHOU<span>!</span>
-      </div>
-
-
-      <p class="login-subtitle">
-        Entre na sua conta.
-      </p>
-
-
+  <div class="login-modal" id="loginModal">
+    <div class="login-modal-box" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <button class="login-close" type="button" aria-label="Fechar">×</button>
+      <div class="login-logo" id="loginTitle">ACHOU<span>!</span></div>
+      <p class="login-subtitle">Entre na sua conta.</p>
       <form id="loginForm">
-
-        <label for="loginEmail">
-          E-mail
-        </label>
-
-        <input
-          id="loginEmail"
-          type="email"
-          placeholder="seu@email.com"
-          required
-        >
-
-
-        <label for="loginPassword">
-          Senha
-        </label>
-
-        <input
-          id="loginPassword"
-          type="password"
-          placeholder="Sua senha"
-          required
-        >
-
-
-        <button
-          type="submit"
-          class="login-submit"
-        >
-          ENTRAR
-        </button>
-
+        <label for="loginEmail">E-mail</label>
+        <input id="loginEmail" type="email" placeholder="seu@email.com" required>
+        <label for="loginPassword">Senha</label>
+        <input id="loginPassword" type="password" placeholder="Sua senha" required>
+        <button type="submit" class="login-submit">ENTRAR</button>
       </form>
-
-
-      <button
-        type="button"
-        class="create-account"
-      >
-        Ainda não tem conta? Criar conta
-      </button>
-
+      <button type="button" class="create-account">Ainda não tem conta? Criar conta</button>
     </div>
-
   </div>
 
-
-  <!-- =====================================================
-       CADASTRO
-       ===================================================== -->
-
-  <div
-    class="signup-modal"
-    id="signupModal"
-  >
-
-    <div
-      class="signup-modal-box"
-      role="dialog"
-      aria-modal="true"
-    >
-
-      <button
-        class="signup-close"
-        type="button"
-        aria-label="Fechar"
-      >
-        ×
-      </button>
-
-
-      <div class="signup-logo">
-        ACHOU<span>!</span>
-      </div>
-
-
-      <p class="signup-subtitle">
-        Crie sua conta gratuitamente.
-      </p>
-
-
+  <div class="signup-modal" id="signupModal">
+    <div class="signup-modal-box" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
+      <button class="signup-close" type="button" aria-label="Fechar">×</button>
+      <div class="signup-logo" id="signupTitle">ACHOU<span>!</span></div>
+      <p class="signup-subtitle">Crie sua conta gratuitamente.</p>
       <form id="signupForm">
-
-        <label for="signupName">
-          Nome completo
-        </label>
-
-        <input
-          id="signupName"
-          type="text"
-          placeholder="Seu nome"
-          required
-        >
-
-
-        <label for="signupEmail">
-          E-mail
-        </label>
-
-        <input
-          id="signupEmail"
-          type="email"
-          placeholder="seu@email.com"
-          required
-        >
-
-
-        <label for="signupPassword">
-          Senha
-        </label>
-
-        <input
-          id="signupPassword"
-          type="password"
-          placeholder="Crie uma senha"
-          required
-        >
-
-
-        <label for="signupPasswordConfirm">
-          Confirmar senha
-        </label>
-
-        <input
-          id="signupPasswordConfirm"
-          type="password"
-          placeholder="Repita a senha"
-          required
-        >
-
-
-        <button
-          type="submit"
-          class="signup-submit"
-        >
-          CRIAR CONTA
-        </button>
-
+        <label for="signupName">Nome completo</label>
+        <input id="signupName" type="text" placeholder="Seu nome" required>
+        <label for="signupEmail">E-mail</label>
+        <input id="signupEmail" type="email" placeholder="seu@email.com" required>
+        <label for="signupPassword">Senha</label>
+        <input id="signupPassword" type="password" placeholder="Crie uma senha" required>
+        <label for="signupPasswordConfirm">Confirmar senha</label>
+        <input id="signupPasswordConfirm" type="password" placeholder="Repita a senha" required>
+        <button type="submit" class="signup-submit">CRIAR CONTA</button>
       </form>
-
-
-      <button
-        type="button"
-        class="signup-login"
-      >
-        Já tenho conta
-      </button>
-
+      <button type="button" class="signup-login">Já tenho conta</button>
     </div>
-
   </div>
 
-
-  <script src="script.js?v=20260904-8"></script>
-
+  <script src="script.js?v=20260904-9"></script>
 </body>
-
-          </html>
+</html>
