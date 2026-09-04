@@ -1,48 +1,2325 @@
-:root{--yellow:#FFD400;--black:#000;--white:#fff;--muted:#999;--line:#262626;--card:#080808;--font:Inter,Arial,Helvetica,sans-serif}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#000;color:#fff;font-family:var(--font);overflow-x:hidden}body.modal-open{overflow:hidden}button,input{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button{cursor:pointer}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}[hidden]{display:none!important}
+:root{
+  --yellow:#FFD400;
+  --black:#000;
+  --white:#fff;
+  --muted:#999;
+  --line:#262626;
+  --card:#080808;
+  --font:Inter,Arial,Helvetica,sans-serif;
+}
 
-/* HEADER */
-.top-header{height:74px;padding:10px 14px;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;background:rgba(5,5,5,.97);backdrop-filter:blur(12px);position:sticky;top:0;z-index:80}.header-left,.header-user{display:flex;align-items:center}.header-left{gap:10px}.header-user{gap:7px}.menu-button{width:34px;height:34px;border:1px solid #333;background:#0b0b0b;border-radius:9px;padding:7px 6px;display:flex;flex-direction:column;justify-content:center;gap:4px}.menu-button span{display:block;height:2px;background:#fff;border-radius:2px}.brand{display:flex;flex-direction:column;line-height:1}.brand strong{font-size:26px;font-weight:950;letter-spacing:-1.7px}.brand strong span{color:var(--yellow)}.brand small{font-size:7.5px;color:#aaa;margin-top:4px;letter-spacing:.3px}.account-button{min-width:78px;border:1px solid #333;background:#0b0b0b;color:#fff;border-radius:9px;padding:6px 7px;display:flex;align-items:center;gap:5px}.account-greeting{display:flex;flex-direction:column;align-items:flex-start;line-height:1}.account-greeting small{font-size:7px;color:#aaa}.account-greeting strong{font-size:9px}.account-link{display:none}.account-avatar{width:23px;height:23px;border-radius:50%;background:var(--yellow);color:#000;display:grid;place-items:center;font-size:9px;font-weight:900}.header-icon{position:relative;width:32px;height:32px;border:1px solid #333;background:#0b0b0b;color:#fff;border-radius:8px;font-size:18px;line-height:1}.notification-badge{position:absolute;right:-3px;top:-5px;min-width:13px;height:13px;border-radius:8px;background:var(--yellow);color:#000;font-size:7px;font-weight:900;display:grid;place-items:center}
+*{
+  box-sizing:border-box;
+}
 
-/* BUSCA */
-.search-section{padding:12px 8px 0;background:#000;scroll-margin-top:86px}.search-box{height:58px;width:100%;margin:0;border:1px solid #333;border-radius:14px;background:#070707;display:flex;align-items:center;padding:4px 5px 4px 13px;box-shadow:0 0 25px rgba(255,212,0,.04)}.search-icon{color:var(--yellow);font-size:26px;line-height:1}.search-box input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:#fff;padding:0 10px;font-size:12px}.search-box input::placeholder{color:#777}.search-box button,.hero-cta{border:0;background:var(--yellow);color:#000;font-weight:950;border-radius:11px}.search-box button{height:48px;padding:0 22px;font-size:9px}.search-box button:disabled{opacity:.7;cursor:wait}
+html{
+  scroll-behavior:smooth;
+}
 
-/* CATEGORIAS SUPERIORES */
-.category-nav{display:flex;gap:7px;overflow-x:auto;padding:10px 8px 7px;scrollbar-width:none;background:#000}.category-nav::-webkit-scrollbar{display:none}.category-nav-item{flex:0 0 auto;border:1px solid #343434;border-radius:8px;background:#090909;color:#ddd;padding:8px 12px;font-size:9px;white-space:nowrap}.category-nav-item.active,.category-nav-item:hover{background:var(--yellow);color:#000;border-color:var(--yellow);font-weight:900}
+body{
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:var(--font);
+  overflow-x:hidden;
+}
 
-/* HERO */
-.hero-marketplace{position:relative;padding:4px 8px 0;background:#000}.hero-banner{position:relative;height:320px;min-height:320px;border:1px solid #242424;border-radius:16px;overflow:hidden;background:radial-gradient(circle at 76% 48%,rgba(255,212,0,.30) 0%,rgba(255,212,0,.13) 25%,rgba(30,25,0,.16) 48%,#030303 73%)}.hero-banner::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.98) 0%,rgba(0,0,0,.86) 39%,rgba(0,0,0,.32) 64%,transparent 100%)}.hero-banner-content{position:relative;z-index:20;width:61%;padding:34px 18px}.hero-small-title{display:block;color:var(--yellow);font-size:8px;font-weight:900;letter-spacing:2px;margin-bottom:18px}.hero-banner h1{margin:0 0 18px;font-size:42px;line-height:.87;letter-spacing:-2.6px;font-weight:950}.hero-banner h1 strong{display:block;color:#fff}.hero-banner p{max-width:225px;margin:0 0 20px;color:#aaa;font-size:10px;line-height:1.4}.hero-cta{min-height:40px;padding:0 16px;font-size:8px}.hero-products{position:absolute;top:0;right:0;width:61%;height:100%;z-index:4;overflow:hidden;pointer-events:none}.hero-glow{position:absolute;z-index:1;width:260px;height:260px;right:-20px;top:49%;transform:translateY(-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,212,0,.32) 0%,rgba(255,212,0,.14) 35%,rgba(255,212,0,.035) 60%,transparent 77%);filter:blur(7px)}.hero-products::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(3,3,3,.82) 0%,rgba(3,3,3,.22) 28%,transparent 50%)}.hero-real-phone,.hero-real-laptop,.hero-real-headphone{position:absolute;display:block;max-width:none;object-fit:contain;object-position:center;user-select:none;-webkit-user-drag:none}.hero-real-phone{width:112px;right:55px;top:38px;z-index:5;transform:rotate(-2deg);opacity:1;visibility:visible;filter:drop-shadow(0 16px 18px rgba(0,0,0,.88)) drop-shadow(0 0 10px rgba(255,212,0,.08))}.hero-real-laptop{width:193px;right:-13px;top:93px;z-index:7;transform:rotate(-2deg);filter:drop-shadow(0 18px 21px rgba(0,0,0,.88)) drop-shadow(0 0 12px rgba(255,212,0,.06))}.hero-real-headphone{width:91px;right:77px;bottom:20px;z-index:9;transform:rotate(-6deg);filter:drop-shadow(0 16px 18px rgba(0,0,0,.88))}.hero-discount{position:absolute;z-index:25;right:12px;bottom:12px;width:64px;height:64px;border-radius:50%;background:var(--yellow);color:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:.8;box-shadow:0 0 22px rgba(255,212,0,.23)}.hero-discount small{font-size:6px;font-weight:900}.hero-discount strong{font-size:20px;font-weight:950}.hero-discount span{font-size:6px;font-weight:950}.hero-arrow{position:absolute;z-index:30;top:50%;transform:translateY(-50%);width:28px;height:38px;border:1px solid #444;background:rgba(5,5,5,.94);color:#fff;border-radius:7px;font-size:20px;line-height:1}.hero-prev{left:10px}.hero-next{right:10px}.hero-dots{display:flex;justify-content:center;gap:5px;padding:9px 0}.hero-dot{width:6px;height:6px;border:0;border-radius:50%;padding:0;background:#444}.hero-dot.active{width:18px;border-radius:5px;background:var(--yellow)}
+body.modal-open{
+  overflow:hidden;
+}
 
-/* CATEGORIAS RÁPIDAS */
-.quick-categories{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:12px 8px 4px;scroll-margin-top:84px}.quick-category{min-width:0;min-height:82px;background:#070707;border:1px solid #292929;border-radius:11px;color:#fff;padding:11px 3px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}.quick-category-icon{width:34px;height:34px;border-radius:50%;border:1px solid #444;display:grid;place-items:center;color:var(--yellow);font-size:17px}.quick-category strong{font-size:8px;white-space:nowrap}.quick-category:active{border-color:var(--yellow)}
+button,
+input{
+  font:inherit;
+}
 
-/* SEÇÕES */
-.market-section{padding:32px 8px 0;scroll-margin-top:84px}.market-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:8px;margin-bottom:12px}.section-title{min-width:0}.section-icon{display:inline-block;color:var(--yellow);font-size:14px;margin-right:3px}.section-title h2{display:inline;font-size:19px;letter-spacing:-.7px;margin:0;font-weight:950}.see-all{border:0;background:transparent;color:var(--yellow);font-size:8px;font-weight:900;padding:0 0 2px;white-space:nowrap}
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
 
-/* RESUMO / STATUS */
-.search-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px;padding:10px 12px;border:1px solid #252525;border-radius:10px;background:#060606}.search-summary strong{display:block;color:#fff;font-size:10px;margin-bottom:2px}.search-summary span{color:#777;font-size:8px}.search-status{width:100%;padding:22px 18px;border:1px solid #292929;border-radius:12px;background:#050505;text-align:center}.search-status strong{display:block;color:#fff;font-size:11px;margin-bottom:7px}.search-status span{display:block;color:#777;font-size:8px;line-height:1.5}.search-status.loading strong{color:var(--yellow)}.affiliate-note{margin:10px 1px 0;color:#666;font-size:7px;line-height:1.45}
+button{
+  cursor:pointer;
+}
 
-/* PRODUTOS */
-.flash-deals{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 1px 14px;scrollbar-width:none}.flash-deals::-webkit-scrollbar{display:none}.flash-card{position:relative;flex:0 0 205px;scroll-snap-align:start;display:flex;flex-direction:column;min-height:390px;padding:10px;overflow:hidden;border:1px solid #292929;border-radius:14px;background:#050505}.flash-card:first-child{border-color:var(--yellow);box-shadow:0 0 0 1px rgba(255,212,0,.08),0 8px 28px rgba(0,0,0,.35)}.flash-photo{width:100%;height:180px;flex:0 0 180px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 0 10px;padding:8px;border:1px solid #1d1d1d;border-radius:10px;background:#fff}.flash-photo img,.flash-photo .achou-product-image{width:100%!important;height:100%!important;max-width:100%;max-height:100%;display:block;object-fit:contain!important;object-position:center}.achou-image-fallback{width:100%;height:100%;min-height:150px;align-items:center;justify-content:center;padding:20px;border-radius:8px;background:#111;color:#777;font-size:9px;text-align:center}.product-favorite{position:absolute;top:16px;right:16px;z-index:8;width:30px;height:30px;display:grid;place-items:center;padding:0;border:1px solid #444;border-radius:9px;background:rgba(5,5,5,.92);color:#fff;font-size:17px}.discount{position:absolute;top:16px;left:16px;z-index:8;padding:4px 7px;border-radius:6px;background:var(--yellow);color:#000;font-size:7px;font-weight:950}.flash-card h3{display:-webkit-box;min-height:36px;margin:0 0 7px;overflow:hidden;color:#f5f5f5;font-size:11px;font-weight:700;line-height:1.35;-webkit-line-clamp:2;-webkit-box-orient:vertical}.flash-price{display:block;margin:0 0 8px;color:#fff;font-size:18px;font-weight:900;line-height:1.1;letter-spacing:-.4px}.product-bottom{display:flex;align-items:center;justify-content:space-between;gap:6px;min-height:26px;margin:0 0 10px;padding-top:8px;border-top:1px solid #171717;color:#888;font-size:8px}.product-bottom span{min-width:0}.product-bottom span:last-child{text-align:right}.offer,.best-offer{width:100%;min-height:36px;display:flex;align-items:center;justify-content:center;border:1px solid var(--yellow);border-radius:9px;background:var(--yellow);color:#000;font-size:8px;font-weight:950;text-align:center}.offer:hover,.best-offer:hover{background:#ffe033;border-color:#ffe033}.offer:active,.best-offer:active{transform:scale(.98)}.offer:disabled{border-color:#333!important;background:#111!important;color:#777!important;opacity:1!important;cursor:not-allowed}.achou-group-info{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px}.achou-offer-count{display:inline-flex;align-items:center;gap:4px;padding:5px 7px;border:1px solid #292929;border-radius:20px;background:#090909;color:#aaa;font-size:7px;font-weight:700}.achou-starting{color:#777;font-size:7px;margin-bottom:2px}.achou-actions{display:grid;gap:7px;margin-top:auto}.achou-see-offers{width:100%;min-height:34px;border:1px solid #333;border-radius:9px;background:#0b0b0b;color:#ddd;font-size:8px;font-weight:900}.achou-see-offers:active{transform:scale(.98)}.achou-offers-panel{display:none;flex-direction:column;gap:7px;margin-top:9px;padding-top:9px;border-top:1px solid #202020}.achou-offers-panel.open{display:flex}.achou-offer-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:9px;border:1px solid #222;border-radius:9px;background:#080808}.achou-offer-row.best{border-color:#5d5200;background:#0b0a04}.achou-offer-price{display:block;color:#fff;font-size:11px;font-weight:900}.achou-offer-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:3px;color:#777;font-size:7px}.achou-free{color:#00c853;font-weight:800}.achou-mini-buy{min-width:82px;height:31px;display:flex;align-items:center;justify-content:center;border:1px solid #FFD400;border-radius:7px;background:#FFD400;color:#000;font-size:7px;font-weight:950;text-decoration:none;white-space:nowrap}.achou-mini-buy.disabled{border-color:#2b2b2b;background:#101010;color:#666;pointer-events:none}.achou-best-label{display:inline-block;margin-bottom:3px;color:#FFD400;font-size:6px;font-weight:950}
+a{
+  text-decoration:none;
+  color:inherit;
+}
 
-/* POPULARES */
-.popular-tags{display:flex;gap:8px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}.popular-tags::-webkit-scrollbar{display:none}.popular-tags button{flex:0 0 auto;min-height:36px;border:1px solid #303030;background:#080808;color:#ccc;border-radius:20px;padding:8px 14px;font-size:9px}.popular-tags button:first-child{border-color:var(--yellow);color:var(--yellow)}
+img{
+  max-width:100%;
+  display:block;
+}
 
-/* LOJAS */
-.featured-stores{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.featured-stores::-webkit-scrollbar{display:none}.store-card{flex:0 0 128px;height:76px;border:1px solid #292929;border-radius:11px;background:#080808;color:#fff;display:grid;place-items:center}.store-card strong{font-size:12px}.store-card.mercado strong{font-size:10px;line-height:.9}.store-card.mercado span{display:block;font-size:11px}.store-card.mercado{border-color:#3a3200}.store-card.amazon{border-color:#3a2c19}.store-card.shopee{border-color:#3a1f18}.store-card.magalu{border-color:#202a5d}.store-card.kabum{border-color:#2e2e2e}.store-card.shopee,.store-card.magalu,.store-card.kabum{background:#080808}
 
-/* BENEFÍCIOS */
-.achou-benefits{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:32px 8px 0}.achou-benefits article{min-height:78px;border:1px solid #292929;border-radius:11px;background:#050505;padding:13px 11px;display:flex;align-items:center;gap:10px}.achou-benefits article>span{color:var(--yellow);font-size:22px;min-width:24px;text-align:center}.achou-benefits article strong{display:block;font-size:9px}.achou-benefits article small{display:block;color:#777;font-size:7px;line-height:1.35;margin-top:4px}
+/* =========================================================
+   HEADER
+   ========================================================= */
 
-/* COMO FUNCIONA */
-.how-section{padding:40px 8px 32px}.section-label{color:var(--yellow);font-size:8px;font-weight:900;letter-spacing:2px}.how-section h2{font-size:24px;line-height:1;margin:10px 0 17px}.how-section h2 em{font-style:normal;color:var(--yellow)}.how-steps{border:1px solid #292929;border-radius:11px;overflow:hidden}.how-steps article{display:grid;grid-template-columns:36px 1fr;gap:8px;padding:15px 13px;border-bottom:1px solid #222}.how-steps article:last-child{border-bottom:0}.how-steps article>strong{color:var(--yellow);font-size:10px}.how-steps h3{font-size:10px;margin:0 0 5px}.how-steps p{font-size:8px;color:#888;margin:0;line-height:1.45}
+.top-header{
+  height:72px;
+  padding:10px 12px;
+  border-bottom:1px solid #222;
 
-/* MENU INFERIOR */
-.bottom-nav{position:sticky;bottom:0;z-index:50;height:60px;border-top:1px solid #252525;background:rgba(5,5,5,.97);backdrop-filter:blur(10px);display:grid;grid-template-columns:repeat(5,1fr)}.bottom-nav-item{border:0;background:transparent;color:#666;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:15px}.bottom-nav-item strong{font-size:7px}.bottom-nav-item.active{color:var(--yellow)}.bottom-nav-item span{position:relative}.bottom-nav-item i{position:absolute;right:-7px;top:-6px;width:12px;height:12px;border-radius:50%;background:var(--yellow);color:#000;font-size:6px;font-style:normal;display:grid;place-items:center}
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 
-/* LOGIN / CADASTRO */
-.login-modal,.signup-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.84);backdrop-filter:blur(8px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}.login-modal.active,.signup-modal.active{opacity:1;visibility:visible;pointer-events:auto}.login-modal-box,.signup-modal-box{position:relative;width:100%;max-width:380px;max-height:92vh;overflow:auto;padding:30px 22px 23px;background:#070707;border:1px solid #303030;border-radius:15px;box-shadow:0 20px 70px #000}.login-close,.signup-close{position:absolute;right:11px;top:9px;width:30px;height:30px;border:0;background:transparent;color:#aaa;font-size:26px;line-height:1}.login-logo,.signup-logo{font-size:29px;font-weight:950;letter-spacing:-1.5px}.login-logo span,.signup-logo span{color:var(--yellow)}.login-subtitle,.signup-subtitle{color:#777;font-size:9px;margin:5px 0 20px}.login-modal form,.signup-modal form{display:flex;flex-direction:column}.login-modal label,.signup-modal label{font-size:8px;color:#aaa;margin:0 0 5px}.login-modal input,.signup-modal input{height:43px;margin:0 0 12px;padding:0 11px;border:1px solid #333;border-radius:8px;background:#030303;color:#fff;outline:0;font-size:10px}.login-modal input:focus,.signup-modal input:focus{border-color:var(--yellow)}.login-submit,.signup-submit{height:43px;border:0;border-radius:8px;background:var(--yellow);color:#000;font-size:9px;font-weight:950;margin-top:3px}.create-account,.signup-login{border:0;background:transparent;color:#aaa;font-size:8px;width:100%;padding:15px 5px 0}
+  background:rgba(5,5,5,.97);
+  backdrop-filter:blur(12px);
 
-@media(max-width:380px){.brand strong{font-size:22px}.header-user{gap:4px}.header-icon{width:29px}.hero-banner{height:310px;min-height:310px}.hero-banner-content{width:62%;padding:31px 15px}.hero-banner h1{font-size:37px;letter-spacing:-2.2px}.hero-banner p{font-size:9px;max-width:190px}.hero-products{width:61%}.hero-real-phone{width:96px;right:55px;top:37px;z-index:5}.hero-real-laptop{width:170px;right:-18px;top:91px;z-index:7}.hero-real-headphone{width:79px;right:59px;bottom:22px;z-index:9}.hero-discount{width:58px;height:58px;right:10px;bottom:10px}.hero-discount strong{font-size:18px}.flash-card{flex-basis:190px}.flash-photo{height:165px;flex-basis:165px}}
+  position:sticky;
+  top:0;
+  z-index:80;
+}
 
-@media(min-width:700px){body{max-width:1180px;margin:auto}.top-header{height:82px;padding:12px 28px}.brand strong{font-size:30px}.account-link{display:block;font-size:7px;color:#777}.account-button{min-width:150px}.search-section{padding:20px 28px 0}.search-box{max-width:760px;margin:auto}.category-nav{justify-content:center;padding:10px 28px}.hero-marketplace{padding:12px 28px 0}.hero-banner{height:390px;min-height:390px}.hero-banner-content{width:58%;padding:58px 44px}.hero-banner h1{font-size:58px}.hero-banner p{font-size:12px;max-width:350px}.hero-products{width:50%}.hero-glow{width:340px;height:340px;right:-20px}.hero-real-phone{width:165px;right:190px;top:40px;z-index:5}.hero-real-laptop{width:320px;right:0;top:91px;z-index:7}.hero-real-headphone{width:145px;right:150px;bottom:22px;z-index:9}.hero-discount{width:82px;height:82px;right:24px;bottom:22px}.quick-categories{grid-template-columns:repeat(8,1fr);padding:18px 28px}.market-section{padding:42px 28px 0}.flash-deals{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));overflow:visible}.flash-card{min-width:0;width:100%;flex:none}.flash-photo{height:190px;flex-basis:190px}.achou-benefits{grid-template-columns:repeat(4,1fr);padding:40px 28px 0}.how-section{padding:55px 28px}.bottom-nav{display:none}}
+.header-left,
+.header-user{
+  display:flex;
+  align-items:center;
+}
+
+.header-left{
+  gap:9px;
+  min-width:0;
+}
+
+.header-user{
+  gap:7px;
+}
+
+.menu-button{
+  flex:0 0 auto;
+
+  width:34px;
+  height:34px;
+
+  border:1px solid #333;
+  background:#0b0b0b;
+
+  border-radius:9px;
+
+  padding:7px 6px;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+
+  gap:4px;
+}
+
+.menu-button span{
+  display:block;
+
+  width:100%;
+  height:2px;
+
+  background:#fff;
+
+  border-radius:2px;
+}
+
+.brand{
+  min-width:0;
+
+  display:flex;
+  flex-direction:column;
+
+  line-height:1;
+}
+
+.brand strong{
+  font-size:25px;
+  font-weight:950;
+
+  letter-spacing:-1.7px;
+
+  white-space:nowrap;
+}
+
+.brand strong span{
+  color:var(--yellow);
+}
+
+.brand small{
+  max-width:205px;
+
+  overflow:hidden;
+
+  color:#9a9a9a;
+
+  font-size:7.5px;
+
+  margin-top:5px;
+
+  letter-spacing:.25px;
+
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+.account-button{
+  min-width:76px;
+
+  border:1px solid #333;
+
+  background:#0b0b0b;
+  color:#fff;
+
+  border-radius:9px;
+
+  padding:6px 7px;
+
+  display:flex;
+  align-items:center;
+
+  gap:5px;
+}
+
+.account-greeting{
+  display:flex;
+  flex-direction:column;
+
+  align-items:flex-start;
+
+  line-height:1;
+}
+
+.account-greeting small{
+  font-size:7px;
+  color:#aaa;
+}
+
+.account-greeting strong{
+  font-size:9px;
+}
+
+.account-link{
+  display:none;
+}
+
+.account-avatar{
+  width:23px;
+  height:23px;
+
+  flex:0 0 23px;
+
+  border-radius:50%;
+
+  background:var(--yellow);
+  color:#000;
+
+  display:grid;
+  place-items:center;
+
+  font-size:10px;
+  font-weight:900;
+}
+
+.header-icon{
+  position:relative;
+
+  flex:0 0 auto;
+
+  width:32px;
+  height:32px;
+
+  border:1px solid #333;
+
+  background:#0b0b0b;
+  color:#fff;
+
+  border-radius:8px;
+
+  font-size:18px;
+
+  line-height:1;
+}
+
+.notification-badge{
+  position:absolute;
+
+  right:-3px;
+  top:-5px;
+
+  min-width:14px;
+  height:14px;
+
+  padding:0 3px;
+
+  border-radius:8px;
+
+  background:var(--yellow);
+  color:#000;
+
+  font-size:7px;
+  font-weight:950;
+
+  display:grid;
+  place-items:center;
+}
+
+
+/* =========================================================
+   BUSCA
+   ========================================================= */
+
+.search-section{
+  padding:13px 8px 0;
+  background:#000;
+}
+
+.search-box{
+  width:100%;
+  height:58px;
+
+  margin:0;
+
+  border:1px solid #333;
+  border-radius:14px;
+
+  background:#070707;
+
+  display:flex;
+  align-items:center;
+
+  padding:4px 5px 4px 13px;
+
+  box-shadow:
+    0 0 25px
+    rgba(255,212,0,.04);
+}
+
+.search-icon{
+  color:var(--yellow);
+
+  font-size:25px;
+
+  line-height:1;
+}
+
+.search-box input{
+  flex:1;
+  min-width:0;
+
+  height:100%;
+
+  border:0;
+  outline:0;
+
+  background:transparent;
+  color:#fff;
+
+  padding:0 10px;
+
+  font-size:11px;
+}
+
+.search-box input::placeholder{
+  color:#777;
+
+  opacity:1;
+}
+
+.search-box button{
+  height:48px;
+
+  padding:0 22px;
+
+  border:0;
+  border-radius:11px;
+
+  background:var(--yellow);
+  color:#000;
+
+  font-size:9px;
+  font-weight:950;
+}
+
+.search-box button:active{
+  transform:scale(.98);
+}
+
+.search-box button:disabled{
+  opacity:.7;
+  cursor:wait;
+}
+
+
+/* =========================================================
+   CATEGORIAS SUPERIORES
+   ========================================================= */
+
+.category-nav{
+  display:flex;
+
+  gap:6px;
+
+  overflow-x:auto;
+
+  padding:9px 8px 7px;
+
+  background:#000;
+
+  scrollbar-width:none;
+}
+
+.category-nav::-webkit-scrollbar{
+  display:none;
+}
+
+.category-nav-item{
+  flex:0 0 auto;
+
+  min-height:31px;
+
+  border:1px solid #343434;
+
+  border-radius:8px;
+
+  background:#090909;
+  color:#ddd;
+
+  padding:7px 12px;
+
+  font-size:9px;
+
+  white-space:nowrap;
+}
+
+.category-nav-item.active{
+  border-color:var(--yellow);
+
+  background:var(--yellow);
+  color:#000;
+
+  font-weight:950;
+}
+
+.category-nav-item:active{
+  transform:scale(.97);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero-marketplace{
+  position:relative;
+
+  padding:4px 8px 0;
+
+  background:#000;
+}
+
+.hero-banner{
+  position:relative;
+
+  height:320px;
+  min-height:320px;
+
+  overflow:hidden;
+
+  border:1px solid #242424;
+  border-radius:16px;
+
+  background:
+    radial-gradient(
+      circle at 76% 48%,
+      rgba(255,212,0,.30) 0%,
+      rgba(255,212,0,.13) 25%,
+      rgba(30,25,0,.16) 48%,
+      #030303 73%
+    );
+}
+
+.hero-banner::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  z-index:3;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.98) 0%,
+      rgba(0,0,0,.86) 39%,
+      rgba(0,0,0,.32) 64%,
+      transparent 100%
+    );
+}
+
+
+/* =========================================================
+   TEXTO DO HERO
+   ========================================================= */
+
+.hero-banner-content{
+  position:relative;
+
+  z-index:20;
+
+  width:61%;
+
+  padding:34px 18px;
+}
+
+.hero-small-title{
+  display:block;
+
+  margin-bottom:18px;
+
+  color:var(--yellow);
+
+  font-size:8px;
+  font-weight:950;
+
+  letter-spacing:2px;
+}
+
+.hero-banner h1{
+  margin:0 0 18px;
+
+  font-size:42px;
+  line-height:.87;
+
+  letter-spacing:-2.6px;
+
+  font-weight:950;
+}
+
+.hero-banner h1 strong{
+  display:block;
+
+  color:#fff;
+}
+
+.hero-banner p{
+  max-width:225px;
+
+  margin:0 0 20px;
+
+  color:#aaa;
+
+  font-size:10px;
+  line-height:1.45;
+}
+
+.hero-cta{
+  min-height:41px;
+
+  padding:0 16px;
+
+  border:0;
+  border-radius:11px;
+
+  background:var(--yellow);
+  color:#000;
+
+  font-size:8px;
+  font-weight:950;
+}
+
+.hero-cta:active{
+  transform:scale(.98);
+}
+
+
+/* =========================================================
+   PRODUTOS DO BANNER
+   ========================================================= */
+
+.hero-products{
+  position:absolute;
+
+  top:0;
+  right:0;
+
+  width:61%;
+  height:100%;
+
+  z-index:4;
+
+  overflow:hidden;
+
+  pointer-events:none;
+}
+
+.hero-glow{
+  position:absolute;
+
+  z-index:1;
+
+  width:260px;
+  height:260px;
+
+  right:-20px;
+  top:49%;
+
+  transform:translateY(-50%);
+
+  border-radius:50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,212,0,.32) 0%,
+      rgba(255,212,0,.14) 35%,
+      rgba(255,212,0,.035) 60%,
+      transparent 77%
+    );
+
+  filter:blur(7px);
+}
+
+.hero-products::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  z-index:2;
+
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3,3,3,.82) 0%,
+      rgba(3,3,3,.22) 28%,
+      transparent 50%
+    );
+}
+
+.hero-real-phone,
+.hero-real-laptop,
+.hero-real-headphone{
+  position:absolute;
+
+  display:block;
+
+  max-width:none;
+
+  object-fit:contain;
+  object-position:center;
+
+  user-select:none;
+
+  -webkit-user-drag:none;
+}
+
+
+/* =========================================================
+   CELULAR
+   POSIÇÃO APROVADA
+   ========================================================= */
+
+.hero-real-phone{
+  width:112px;
+
+  right:55px;
+  top:38px;
+
+  z-index:5;
+
+  transform:rotate(-2deg);
+
+  opacity:1;
+  visibility:visible;
+
+  filter:
+    drop-shadow(
+      0 16px 18px
+      rgba(0,0,0,.88)
+    )
+    drop-shadow(
+      0 0 10px
+      rgba(255,212,0,.08)
+    );
+}
+
+
+/* =========================================================
+   NOTEBOOK
+   ========================================================= */
+
+.hero-real-laptop{
+  width:193px;
+
+  right:-13px;
+  top:93px;
+
+  z-index:7;
+
+  transform:rotate(-2deg);
+
+  filter:
+    drop-shadow(
+      0 18px 21px
+      rgba(0,0,0,.88)
+    )
+    drop-shadow(
+      0 0 12px
+      rgba(255,212,0,.06)
+    );
+}
+
+
+/* =========================================================
+   FONE
+   ========================================================= */
+
+.hero-real-headphone{
+  width:91px;
+
+  right:77px;
+  bottom:20px;
+
+  z-index:9;
+
+  transform:rotate(-6deg);
+
+  filter:
+    drop-shadow(
+      0 16px 18px
+      rgba(0,0,0,.88)
+    );
+}
+
+
+/* =========================================================
+   SELO DE DESCONTO
+   ========================================================= */
+
+.hero-discount{
+  position:absolute;
+
+  z-index:25;
+
+  right:12px;
+  bottom:12px;
+
+  width:64px;
+  height:64px;
+
+  border-radius:50%;
+
+  background:var(--yellow);
+  color:#000;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  line-height:.8;
+
+  box-shadow:
+    0 0 22px
+    rgba(255,212,0,.23);
+}
+
+.hero-discount small{
+  font-size:6px;
+  font-weight:950;
+}
+
+.hero-discount strong{
+  font-size:20px;
+  font-weight:950;
+}
+
+.hero-discount span{
+  font-size:6px;
+  font-weight:950;
+}
+
+
+/* =========================================================
+   SETAS DO HERO
+   ========================================================= */
+
+.hero-arrow{
+  position:absolute;
+
+  z-index:30;
+
+  top:50%;
+
+  transform:translateY(-50%);
+
+  width:28px;
+  height:38px;
+
+  border:1px solid #444;
+
+  border-radius:7px;
+
+  background:rgba(5,5,5,.94);
+  color:#fff;
+
+  font-size:20px;
+
+  line-height:1;
+}
+
+.hero-prev{
+  left:10px;
+}
+
+.hero-next{
+  right:10px;
+}
+
+
+/* =========================================================
+   DOTS DO HERO
+   ========================================================= */
+
+.hero-dots{
+  display:flex;
+
+  justify-content:center;
+
+  gap:5px;
+
+  padding:9px 0;
+}
+
+.hero-dot{
+  width:6px;
+  height:6px;
+
+  padding:0;
+
+  border:0;
+  border-radius:50%;
+
+  background:#444;
+}
+
+.hero-dot.active{
+  width:18px;
+
+  border-radius:5px;
+
+  background:var(--yellow);
+}
+
+
+/* =========================================================
+   CATEGORIAS RÁPIDAS
+   ========================================================= */
+
+.quick-categories{
+  display:grid;
+
+  grid-template-columns:repeat(4,1fr);
+
+  gap:8px;
+
+  padding:12px 8px 4px;
+}
+
+.quick-category{
+  min-width:0;
+  min-height:83px;
+
+  padding:10px 3px;
+
+  border:1px solid #292929;
+
+  border-radius:11px;
+
+  background:#070707;
+  color:#fff;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:7px;
+}
+
+.quick-category-icon{
+  width:34px;
+  height:34px;
+
+  border:1px solid #444;
+
+  border-radius:50%;
+
+  display:grid;
+  place-items:center;
+
+  color:var(--yellow);
+
+  font-size:16px;
+}
+
+.quick-category strong{
+  font-size:7.5px;
+
+  white-space:nowrap;
+}
+
+.quick-category:active{
+  border-color:var(--yellow);
+
+  transform:scale(.98);
+}
+
+
+/* =========================================================
+   SEÇÕES
+   ========================================================= */
+
+.market-section{
+  padding:31px 8px 0;
+}
+
+.market-section-heading{
+  display:flex;
+
+  align-items:flex-end;
+  justify-content:space-between;
+
+  gap:8px;
+
+  margin-bottom:12px;
+}
+
+.section-title{
+  min-width:0;
+}
+
+.section-icon{
+  display:inline-block;
+
+  margin-right:4px;
+
+  color:var(--yellow);
+
+  font-size:14px;
+}
+
+.section-title h2{
+  display:inline;
+
+  margin:0;
+
+  font-size:19px;
+  font-weight:950;
+
+  letter-spacing:-.7px;
+}
+
+.see-all{
+  border:0;
+
+  background:transparent;
+  color:var(--yellow);
+
+  padding:0 0 2px;
+
+  font-size:7px;
+  font-weight:950;
+
+  white-space:nowrap;
+}
+
+
+/* =========================================================
+   RESUMO DA BUSCA
+   ========================================================= */
+
+.achou-search-summary{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin:0 0 12px;
+
+  padding:11px 12px;
+
+  border:1px solid #252525;
+
+  border-radius:10px;
+
+  background:#060606;
+}
+
+.achou-search-summary strong{
+  display:block;
+
+  margin-bottom:3px;
+
+  color:#fff;
+
+  font-size:10px;
+}
+
+.achou-search-summary span{
+  color:#777;
+
+  font-size:7.5px;
+
+  line-height:1.35;
+}
+
+.achou-search-summary>span{
+  max-width:100px;
+
+  text-align:right;
+}
+
+
+/* =========================================================
+   PRODUTOS
+   ========================================================= */
+
+.flash-deals{
+  display:flex;
+
+  gap:12px;
+
+  overflow-x:auto;
+
+  padding:4px 1px 14px;
+
+  scroll-snap-type:x mandatory;
+
+  scrollbar-width:none;
+}
+
+.flash-deals::-webkit-scrollbar{
+  display:none;
+}
+
+.flash-card{
+  position:relative;
+
+  flex:0 0 205px;
+
+  min-height:405px;
+
+  padding:10px;
+
+  overflow:hidden;
+
+  border:1px solid #292929;
+
+  border-radius:14px;
+
+  background:#050505;
+
+  display:flex;
+  flex-direction:column;
+
+  scroll-snap-align:start;
+}
+
+.flash-card:first-child{
+  border-color:var(--yellow);
+
+  box-shadow:
+    0 0 0 1px
+    rgba(255,212,0,.08),
+    0 8px 28px
+    rgba(0,0,0,.35);
+}
+
+.flash-photo{
+  position:relative;
+
+  width:100%;
+  height:180px;
+
+  flex:0 0 180px;
+
+  margin:0 0 10px;
+
+  padding:8px;
+
+  overflow:hidden;
+
+  border:1px solid #1d1d1d;
+
+  border-radius:11px;
+
+  background:#fff;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+}
+
+.flash-photo img,
+.flash-photo .achou-product-image{
+  width:100% !important;
+  height:100% !important;
+
+  max-width:100%;
+  max-height:100%;
+
+  display:block;
+
+  padding:8px;
+
+  object-fit:contain !important;
+  object-position:center;
+
+  background:#fff;
+}
+
+.achou-image-fallback{
+  width:100%;
+  height:100%;
+
+  min-height:150px;
+
+  padding:20px;
+
+  border-radius:8px;
+
+  background:#111;
+
+  color:#777;
+
+  font-size:9px;
+
+  text-align:center;
+
+  align-items:center;
+  justify-content:center;
+}
+
+.product-favorite{
+  position:absolute;
+
+  z-index:8;
+
+  top:16px;
+  right:16px;
+
+  width:30px;
+  height:30px;
+
+  padding:0;
+
+  border:1px solid #444;
+
+  border-radius:9px;
+
+  background:rgba(5,5,5,.92);
+  color:#fff;
+
+  display:grid;
+  place-items:center;
+
+  font-size:17px;
+}
+
+.discount{
+  position:absolute;
+
+  z-index:8;
+
+  top:16px;
+  left:16px;
+
+  padding:4px 7px;
+
+  border-radius:6px;
+
+  background:var(--yellow);
+  color:#000;
+
+  font-size:7px;
+  font-weight:950;
+}
+
+.flash-card h3{
+  display:-webkit-box;
+
+  min-height:38px;
+
+  margin:0 0 8px;
+
+  overflow:hidden;
+
+  color:#f5f5f5;
+
+  font-size:11px;
+  font-weight:700;
+
+  line-height:1.4;
+
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+}
+
+.flash-price{
+  display:block;
+
+  margin:0 0 9px;
+
+  color:#fff;
+
+  font-size:18px;
+  font-weight:950;
+
+  line-height:1.1;
+
+  letter-spacing:-.4px;
+}
+
+.achou-group-info{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:8px;
+
+  margin:0 0 8px;
+}
+
+.achou-offer-count{
+  display:inline-flex;
+
+  align-items:center;
+
+  gap:4px;
+
+  padding:5px 7px;
+
+  border:1px solid #292929;
+
+  border-radius:20px;
+
+  background:#090909;
+  color:#aaa;
+
+  font-size:7px;
+  font-weight:700;
+}
+
+.achou-starting{
+  display:block;
+
+  margin-bottom:3px;
+
+  color:#777;
+
+  font-size:7px;
+}
+
+.achou-free{
+  color:#00c853;
+
+  font-weight:800;
+}
+
+.product-bottom{
+  display:flex;
+
+  align-items:center;
+  justify-content:space-between;
+
+  gap:6px;
+
+  min-height:27px;
+
+  margin:0 0 10px;
+
+  padding-top:8px;
+
+  border-top:1px solid #171717;
+
+  color:#888;
+
+  font-size:7.5px;
+}
+
+.product-bottom span{
+  min-width:0;
+}
+
+.product-bottom span:last-child{
+  text-align:right;
+}
+
+.achou-actions{
+  display:grid;
+
+  gap:7px;
+
+  margin-top:auto;
+}
+
+.offer,
+.best-offer{
+  width:100%;
+
+  min-height:37px;
+
+  border:1px solid var(--yellow);
+
+  border-radius:9px;
+
+  background:var(--yellow);
+  color:#000;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:5px 8px;
+
+  font-size:8px;
+  font-weight:950;
+
+  text-align:center;
+}
+
+.offer:active,
+.best-offer:active{
+  transform:scale(.98);
+}
+
+.offer:disabled{
+  border-color:#333 !important;
+
+  background:#111 !important;
+  color:#777 !important;
+
+  opacity:1 !important;
+
+  cursor:not-allowed;
+}
+
+.achou-see-offers{
+  width:100%;
+
+  min-height:35px;
+
+  border:1px solid #333;
+
+  border-radius:9px;
+
+  background:#0b0b0b;
+  color:#ddd;
+
+  font-size:8px;
+  font-weight:900;
+}
+
+.achou-see-offers:active{
+  transform:scale(.98);
+}
+
+
+/* =========================================================
+   PAINEL DE OFERTAS
+   ========================================================= */
+
+.achou-offers-panel{
+  display:none;
+
+  flex-direction:column;
+
+  gap:7px;
+
+  margin-top:9px;
+
+  padding-top:9px;
+
+  border-top:1px solid #202020;
+}
+
+.achou-offers-panel.open{
+  display:flex;
+}
+
+.achou-offer-row{
+  display:grid;
+
+  grid-template-columns:1fr auto;
+
+  gap:8px;
+
+  align-items:center;
+
+  padding:9px;
+
+  border:1px solid #222;
+
+  border-radius:9px;
+
+  background:#080808;
+}
+
+.achou-offer-row.best{
+  border-color:#5d5200;
+
+  background:#0b0a04;
+}
+
+.achou-offer-price{
+  display:block;
+
+  color:#fff;
+
+  font-size:11px;
+  font-weight:950;
+}
+
+.achou-offer-meta{
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:6px;
+
+  margin-top:3px;
+
+  color:#777;
+
+  font-size:7px;
+}
+
+.achou-best-label{
+  display:inline-block;
+
+  margin-bottom:3px;
+
+  color:var(--yellow);
+
+  font-size:6px;
+  font-weight:950;
+}
+
+.achou-mini-buy{
+  min-width:82px;
+  height:31px;
+
+  border:1px solid var(--yellow);
+
+  border-radius:7px;
+
+  background:var(--yellow);
+  color:#000;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:0 7px;
+
+  font-size:7px;
+  font-weight:950;
+
+  white-space:nowrap;
+}
+
+.achou-mini-buy.disabled{
+  border-color:#2b2b2b;
+
+  background:#101010;
+  color:#666;
+
+  pointer-events:none;
+}
+
+.achou-affiliate-note{
+  margin:10px 0 0;
+
+  color:#666;
+
+  font-size:7px;
+
+  line-height:1.5;
+}
+
+
+/* =========================================================
+   LOADING / ERRO
+   ========================================================= */
+
+.achou-search-status{
+  width:100%;
+
+  padding:28px 18px;
+
+  border:1px solid #292929;
+
+  border-radius:12px;
+
+  background:#050505;
+
+  text-align:center;
+}
+
+.achou-search-status strong{
+  display:block;
+
+  margin-bottom:7px;
+
+  color:#fff;
+
+  font-size:11px;
+}
+
+.achou-search-status span{
+  display:block;
+
+  color:#777;
+
+  font-size:8px;
+
+  line-height:1.5;
+}
+
+.achou-search-status.loading strong{
+  color:var(--yellow);
+}
+
+
+/* =========================================================
+   MAIS PROCURADOS
+   ========================================================= */
+
+.popular-tags{
+  display:flex;
+
+  gap:7px;
+
+  overflow-x:auto;
+
+  padding-bottom:3px;
+
+  scrollbar-width:none;
+}
+
+.popular-tags::-webkit-scrollbar{
+  display:none;
+}
+
+.popular-tags button{
+  flex:0 0 auto;
+
+  min-height:34px;
+
+  padding:8px 13px;
+
+  border:1px solid #303030;
+
+  border-radius:20px;
+
+  background:#080808;
+  color:#ccc;
+
+  font-size:8.5px;
+}
+
+.popular-tags button:first-child{
+  border-color:var(--yellow);
+
+  color:var(--yellow);
+}
+
+.popular-tags button:active{
+  transform:scale(.97);
+}
+
+
+/* =========================================================
+   LOJAS
+   ========================================================= */
+
+.featured-stores{
+  display:flex;
+
+  gap:8px;
+
+  overflow-x:auto;
+
+  padding-bottom:4px;
+
+  scrollbar-width:none;
+}
+
+.featured-stores::-webkit-scrollbar{
+  display:none;
+}
+
+.store-card{
+  flex:0 0 125px;
+
+  height:74px;
+
+  border:1px solid #292929;
+
+  border-radius:11px;
+
+  background:#080808;
+  color:#fff;
+
+  display:grid;
+
+  place-items:center;
+}
+
+.store-card strong{
+  font-size:12px;
+}
+
+.store-card.mercado strong{
+  font-size:10px;
+
+  line-height:.9;
+}
+
+.store-card.mercado span{
+  display:block;
+
+  font-size:11px;
+}
+
+
+/*
+   Todas as lojas seguem o visual do ACHOU.
+   Evita um card colorido dominar a seção.
+*/
+
+.store-card.shopee,
+.store-card.magalu,
+.store-card.kabum{
+  background:#080808;
+}
+
+
+/* =========================================================
+   BENEFÍCIOS
+   ========================================================= */
+
+.achou-benefits{
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:8px;
+
+  padding:30px 8px 0;
+}
+
+.achou-benefits article{
+  min-height:67px;
+
+  padding:12px;
+
+  border:1px solid #292929;
+
+  border-radius:11px;
+
+  background:#050505;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+}
+
+.achou-benefits article>span{
+  min-width:21px;
+
+  color:var(--yellow);
+
+  font-size:20px;
+
+  text-align:center;
+}
+
+.achou-benefits article strong{
+  display:block;
+
+  color:#eee;
+
+  font-size:8.5px;
+}
+
+.achou-benefits article small{
+  display:block;
+
+  margin-top:4px;
+
+  color:#777;
+
+  font-size:7px;
+
+  line-height:1.4;
+}
+
+
+/* =========================================================
+   COMO FUNCIONA
+   ========================================================= */
+
+.how-section{
+  padding:39px 8px 30px;
+}
+
+.section-label{
+  color:var(--yellow);
+
+  font-size:8px;
+  font-weight:950;
+
+  letter-spacing:2px;
+}
+
+.how-section h2{
+  margin:10px 0 17px;
+
+  font-size:23px;
+  line-height:1;
+
+  letter-spacing:-.5px;
+}
+
+.how-section h2 em{
+  color:var(--yellow);
+
+  font-style:normal;
+}
+
+.how-steps{
+  overflow:hidden;
+
+  border:1px solid #292929;
+
+  border-radius:11px;
+}
+
+.how-steps article{
+  display:grid;
+
+  grid-template-columns:34px 1fr;
+
+  gap:8px;
+
+  padding:14px 13px;
+
+  border-bottom:1px solid #222;
+}
+
+.how-steps article:last-child{
+  border-bottom:0;
+}
+
+.how-steps article>strong{
+  color:var(--yellow);
+
+  font-size:9px;
+}
+
+.how-steps h3{
+  margin:0 0 5px;
+
+  color:#eee;
+
+  font-size:9.5px;
+}
+
+.how-steps p{
+  margin:0;
+
+  color:#858585;
+
+  font-size:7.5px;
+
+  line-height:1.5;
+}
+
+
+/* =========================================================
+   MENU INFERIOR
+   ========================================================= */
+
+.bottom-nav{
+  position:sticky;
+
+  bottom:0;
+
+  z-index:50;
+
+  height:60px;
+
+  border-top:1px solid #252525;
+
+  background:rgba(5,5,5,.97);
+
+  backdrop-filter:blur(10px);
+
+  display:grid;
+
+  grid-template-columns:repeat(5,1fr);
+}
+
+.bottom-nav-item{
+  border:0;
+
+  background:transparent;
+  color:#666;
+
+  display:flex;
+  flex-direction:column;
+
+  align-items:center;
+  justify-content:center;
+
+  gap:3px;
+
+  font-size:14px;
+}
+
+.bottom-nav-item strong{
+  font-size:6.5px;
+}
+
+.bottom-nav-item.active{
+  color:var(--yellow);
+}
+
+.bottom-nav-item span{
+  position:relative;
+}
+
+.bottom-nav-item i{
+  position:absolute;
+
+  right:-7px;
+  top:-6px;
+
+  width:13px;
+  height:13px;
+
+  border-radius:50%;
+
+  background:var(--yellow);
+  color:#000;
+
+  display:grid;
+  place-items:center;
+
+  font-size:6px;
+
+  font-style:normal;
+}
+
+
+/* =========================================================
+   LOGIN / CADASTRO
+   ========================================================= */
+
+.login-modal,
+.signup-modal{
+  position:fixed;
+
+  inset:0;
+
+  z-index:9999;
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:18px;
+
+  background:rgba(0,0,0,.84);
+
+  backdrop-filter:blur(8px);
+
+  opacity:0;
+
+  visibility:hidden;
+  pointer-events:none;
+
+  transition:
+    opacity .2s ease,
+    visibility .2s ease;
+}
+
+.login-modal.active,
+.signup-modal.active{
+  opacity:1;
+
+  visibility:visible;
+  pointer-events:auto;
+}
+
+.login-modal-box,
+.signup-modal-box{
+  position:relative;
+
+  width:100%;
+  max-width:380px;
+
+  max-height:92vh;
+
+  overflow:auto;
+
+  padding:30px 22px 23px;
+
+  border:1px solid #303030;
+
+  border-radius:15px;
+
+  background:#070707;
+
+  box-shadow:
+    0 20px 70px #000;
+}
+
+.login-close,
+.signup-close{
+  position:absolute;
+
+  right:11px;
+  top:9px;
+
+  width:30px;
+  height:30px;
+
+  border:0;
+
+  background:transparent;
+  color:#aaa;
+
+  font-size:26px;
+
+  line-height:1;
+}
+
+.login-logo,
+.signup-logo{
+  font-size:29px;
+
+  font-weight:950;
+
+  letter-spacing:-1.5px;
+}
+
+.login-logo span,
+.signup-logo span{
+  color:var(--yellow);
+}
+
+.login-subtitle,
+.signup-subtitle{
+  margin:5px 0 20px;
+
+  color:#777;
+
+  font-size:9px;
+}
+
+.login-modal form,
+.signup-modal form{
+  display:flex;
+
+  flex-direction:column;
+}
+
+.login-modal label,
+.signup-modal label{
+  margin:0 0 5px;
+
+  color:#aaa;
+
+  font-size:8px;
+}
+
+.login-modal input,
+.signup-modal input{
+  height:43px;
+
+  margin:0 0 12px;
+
+  padding:0 11px;
+
+  border:1px solid #333;
+
+  border-radius:8px;
+
+  outline:0;
+
+  background:#030303;
+  color:#fff;
+
+  font-size:10px;
+}
+
+.login-modal input:focus,
+.signup-modal input:focus{
+  border-color:var(--yellow);
+}
+
+.login-submit,
+.signup-submit{
+  height:43px;
+
+  margin-top:3px;
+
+  border:0;
+
+  border-radius:8px;
+
+  background:var(--yellow);
+  color:#000;
+
+  font-size:9px;
+  font-weight:950;
+}
+
+.create-account,
+.signup-login{
+  width:100%;
+
+  padding:15px 5px 0;
+
+  border:0;
+
+  background:transparent;
+  color:#aaa;
+
+  font-size:8px;
+}
+
+
+/* =========================================================
+   CELULARES MENORES
+   ========================================================= */
+
+@media(max-width:380px){
+
+  .top-header{
+    padding-left:8px;
+    padding-right:8px;
+  }
+
+  .brand strong{
+    font-size:22px;
+  }
+
+  .brand small{
+    max-width:165px;
+
+    font-size:6.5px;
+  }
+
+  .header-user{
+    gap:4px;
+  }
+
+  .header-icon{
+    width:29px;
+  }
+
+  .account-button{
+    min-width:70px;
+
+    padding-left:5px;
+    padding-right:5px;
+  }
+
+  .search-box button{
+    padding:0 18px;
+  }
+
+  .hero-banner{
+    height:310px;
+    min-height:310px;
+  }
+
+  .hero-banner-content{
+    width:62%;
+
+    padding:31px 15px;
+  }
+
+  .hero-banner h1{
+    font-size:37px;
+
+    letter-spacing:-2.2px;
+  }
+
+  .hero-banner p{
+    max-width:190px;
+
+    font-size:9px;
+  }
+
+  .hero-products{
+    width:61%;
+  }
+
+
+  /*
+     IMPORTANTE:
+     mantém a posição aprovada do celular.
+  */
+
+  .hero-real-phone{
+    width:105px;
+
+    right:55px;
+    top:37px;
+
+    z-index:5;
+  }
+
+  .hero-real-laptop{
+    width:175px;
+
+    right:-18px;
+    top:91px;
+
+    z-index:7;
+  }
+
+  .hero-real-headphone{
+    width:81px;
+
+    right:59px;
+    bottom:22px;
+
+    z-index:9;
+  }
+
+  .hero-discount{
+    width:58px;
+    height:58px;
+
+    right:10px;
+    bottom:10px;
+  }
+
+  .hero-discount strong{
+    font-size:18px;
+  }
+
+  .quick-category{
+    min-height:79px;
+  }
+
+  .quick-category-icon{
+    width:32px;
+    height:32px;
+  }
+
+  .flash-card{
+    flex-basis:190px;
+  }
+
+  .flash-photo{
+    height:165px;
+
+    flex-basis:165px;
+  }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media(min-width:700px){
+
+  body{
+    max-width:1180px;
+
+    margin:auto;
+  }
+
+  .top-header{
+    height:82px;
+
+    padding:12px 28px;
+  }
+
+  .brand strong{
+    font-size:30px;
+  }
+
+  .brand small{
+    font-size:8px;
+  }
+
+  .account-link{
+    display:block;
+
+    color:#777;
+
+    font-size:7px;
+  }
+
+  .account-button{
+    min-width:150px;
+  }
+
+  .search-section{
+    padding:20px 28px 0;
+  }
+
+  .search-box{
+    max-width:760px;
+
+    margin:auto;
+  }
+
+  .category-nav{
+    justify-content:center;
+
+    padding:10px 28px;
+  }
+
+  .hero-marketplace{
+    padding:12px 28px 0;
+  }
+
+  .hero-banner{
+    height:390px;
+
+    min-height:390px;
+  }
+
+  .hero-banner-content{
+    width:58%;
+
+    padding:58px 44px;
+  }
+
+  .hero-banner h1{
+    font-size:58px;
+  }
+
+  .hero-banner p{
+    max-width:350px;
+
+    font-size:12px;
+  }
+
+  .hero-products{
+    width:50%;
+  }
+
+  .hero-glow{
+    width:340px;
+    height:340px;
+
+    right:-20px;
+  }
+
+  .hero-real-phone{
+    width:165px;
+
+    right:190px;
+    top:40px;
+
+    z-index:5;
+  }
+
+  .hero-real-laptop{
+    width:320px;
+
+    right:0;
+    top:91px;
+
+    z-index:7;
+  }
+
+  .hero-real-headphone{
+    width:145px;
+
+    right:150px;
+    bottom:22px;
+
+    z-index:9;
+  }
+
+  .hero-discount{
+    width:82px;
+    height:82px;
+
+    right:24px;
+    bottom:22px;
+  }
+
+  .quick-categories{
+    grid-template-columns:repeat(8,1fr);
+
+    padding:18px 28px;
+  }
+
+  .market-section{
+    padding:42px 28px 0;
+  }
+
+  .flash-deals{
+    display:grid;
+
+    grid-template-columns:
+      repeat(5,minmax(0,1fr));
+
+    overflow:visible;
+  }
+
+  .flash-card{
+    width:100%;
+
+    min-width:0;
+
+    flex:none;
+  }
+
+  .flash-photo{
+    height:190px;
+
+    flex-basis:190px;
+  }
+
+  .achou-benefits{
+    grid-template-columns:repeat(4,1fr);
+
+    padding:40px 28px 0;
+  }
+
+  .how-section{
+    padding:55px 28px;
+  }
+
+  .bottom-nav{
+    display:none;
+  }
+
+  }
