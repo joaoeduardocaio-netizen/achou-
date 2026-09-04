@@ -10,98 +10,66 @@ document.addEventListener("DOMContentLoaded", () => {
     locale: "pt-BR",
     currency: "BRL",
     heroInterval: 5000,
-
     api:
       "https://wulhcgkphclwgidqlvtr.supabase.co/functions/v1/mercadolivre-search"
   };
 
 
-  /* ========================================================
-     PRODUTOS
-     ======================================================== */
-
   let products = [];
 
 
-  /* ========================================================
-     FUNÇÕES AUXILIARES
-     ======================================================== */
-
   function money(value) {
-
     const number = Number(value);
 
     if (!Number.isFinite(number)) {
       return "";
     }
 
-    return number.toLocaleString(
-      CONFIG.locale,
-      {
-        style: "currency",
-        currency: CONFIG.currency
-      }
-    );
-
+    return number.toLocaleString(CONFIG.locale, {
+      style: "currency",
+      currency: CONFIG.currency
+    });
   }
 
 
   function normalizeText(text) {
-
     return String(text || "")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .trim();
-
   }
 
 
   function escapeHtml(text) {
-
     return String(text || "")
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
-
   }
 
 
   function validAffiliateLink(url) {
-
     if (!url) return false;
 
     try {
-
-      const parsed =
-        new URL(url);
+      const parsed = new URL(url);
 
       return (
         parsed.protocol === "https:" &&
         parsed.hostname === "meli.la"
       );
-
     } catch {
-
       return false;
-
     }
-
   }
 
 
-  function calculateDiscount(
-    oldPrice,
-    currentPrice
-  ) {
-
-    const oldValue =
-      Number(oldPrice);
-
-    const currentValue =
-      Number(currentPrice);
+  function calculateDiscount(oldPrice, currentPrice) {
+    const oldValue = Number(oldPrice);
+    const currentValue = Number(currentPrice);
 
     if (
       !Number.isFinite(oldValue) ||
@@ -113,39 +81,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return Math.round(
-      ((oldValue - currentValue) /
-        oldValue) * 100
+      ((oldValue - currentValue) / oldValue) * 100
     );
-
   }
 
 
-  /* ========================================================
-     ELEMENTOS PRINCIPAIS
-     ======================================================== */
-
   const searchInput =
-    document.querySelector(
-      ".search-box input"
-    );
+    document.querySelector(".search-box input");
 
   const searchButton =
-    document.querySelector(
-      ".search-box button"
-    );
+    document.querySelector(".search-box button");
 
   const dealsContainer =
-    document.querySelector(
-      ".flash-deals"
-    );
+    document.querySelector(".flash-deals");
 
-
-  /* ========================================================
-     ESTADOS DA BUSCA
-     ======================================================== */
 
   function showLoading() {
-
     if (!dealsContainer) return;
 
     dealsContainer.innerHTML = `
@@ -157,7 +108,6 @@ document.addEventListener("DOMContentLoaded", () => {
         background:#050505;
         text-align:center;
       ">
-
         <strong style="
           display:block;
           color:#FFD400;
@@ -175,15 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
         ">
           Consultando produtos e preços reais.
         </span>
-
       </div>
     `;
-
   }
 
 
   function showSearchError() {
-
     if (!dealsContainer) return;
 
     dealsContainer.innerHTML = `
@@ -195,7 +142,6 @@ document.addEventListener("DOMContentLoaded", () => {
         background:#050505;
         text-align:center;
       ">
-
         <strong style="
           display:block;
           color:#fff;
@@ -213,31 +159,20 @@ document.addEventListener("DOMContentLoaded", () => {
         ">
           Tente novamente em alguns instantes.
         </span>
-
       </div>
     `;
-
   }
 
 
-  /* ========================================================
-     PRODUTOS REAIS
-     ======================================================== */
-
-  function renderProducts(
-    list = []
-  ) {
-
+  function renderProducts(list = []) {
     if (!dealsContainer) {
       return;
     }
-
 
     if (
       !Array.isArray(list) ||
       list.length === 0
     ) {
-
       dealsContainer.innerHTML = `
         <div style="
           width:100%;
@@ -247,7 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
           background:#050505;
           text-align:center;
         ">
-
           <strong style="
             display:block;
             color:#fff;
@@ -265,12 +199,10 @@ document.addEventListener("DOMContentLoaded", () => {
           ">
             Tente buscar outro produto.
           </span>
-
         </div>
       `;
 
       return;
-
     }
 
 
@@ -287,9 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const title =
-          escapeHtml(
-            product.title
-          );
+          escapeHtml(product.title);
 
 
         const image =
@@ -359,18 +289,11 @@ document.addEventListener("DOMContentLoaded", () => {
             : "";
 
 
-        const seller =
-          product.sellerId
-            ? `
-              <span>
-                Mercado Livre
-              </span>
-            `
-            : `
-              <span>
-                Mercado Livre
-              </span>
-            `;
+        const seller = `
+          <span>
+            Mercado Livre
+          </span>
+        `;
 
 
         const canBuy =
@@ -391,16 +314,6 @@ document.addEventListener("DOMContentLoaded", () => {
               >
                 VER OFERTA
               </a>
-
-              <small style="
-                display:block;
-                margin-top:6px;
-                color:#666;
-                font-size:7px;
-                text-align:center;
-              ">
-                Link de afiliado
-              </small>
             `
             : `
               <button
@@ -412,13 +325,12 @@ document.addEventListener("DOMContentLoaded", () => {
                   cursor:not-allowed;
                 "
               >
-            OFERTA SEM LINK
+                OFERTA SEM LINK
               </button>
             `;
 
 
         return `
-
           <article
             class="flash-card"
             data-id="${escapeHtml(product.id || "")}"
@@ -435,58 +347,39 @@ document.addEventListener("DOMContentLoaded", () => {
               ♡
             </button>
 
-
             <div class="flash-photo">
               ${image}
             </div>
-
 
             <h3>
               ${title}
             </h3>
 
-
             ${oldPrice}
-
 
             <strong class="flash-price">
               ${money(product.price)}
             </strong>
 
-
             <div class="product-bottom">
-
               ${seller}
-
               ${shipping}
-
             </div>
-
 
             ${offerButton}
 
           </article>
-
         `;
 
       }).join("");
 
 
     bindFavorites();
-
   }
 
 
-  /* ========================================================
-     NORMALIZAÇÃO DOS DADOS DA API
-     ======================================================== */
-
-  function normalizeApiProduct(
-    item
-  ) {
-
+  function normalizeApiProduct(item) {
     return {
-
       id:
         item.item_id ||
         item.id ||
@@ -501,15 +394,11 @@ document.addEventListener("DOMContentLoaded", () => {
         "",
 
       price:
-        Number(
-          item.price
-        ),
+        Number(item.price),
 
       oldPrice:
         item.original_price != null
-          ? Number(
-              item.original_price
-            )
+          ? Number(item.original_price)
           : null,
 
       image:
@@ -545,18 +434,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       canBuy:
         item.can_buy === true
-
     };
-
   }
 
 
-  /* ========================================================
-     BUSCA REAL — MERCADO LIVRE
-     ======================================================== */
-
   async function searchProducts() {
-
     if (!searchInput) {
       return;
     }
@@ -567,11 +449,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (!term) {
-
       searchInput.focus();
-
       return;
-
     }
 
 
@@ -579,43 +458,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (searchButton) {
-
-      searchButton.disabled =
-        true;
-
-      searchButton.textContent =
-        "BUSCANDO...";
-
+      searchButton.disabled = true;
+      searchButton.textContent = "BUSCANDO...";
     }
 
 
     try {
 
       const url =
-        `${CONFIG.api}?q=${
-          encodeURIComponent(term)
-        }`;
+        `${CONFIG.api}?q=${encodeURIComponent(term)}`;
 
 
       const response =
-        await fetch(
-          url,
-          {
-            method: "GET",
-            headers: {
-              Accept:
-                "application/json"
-            }
+        await fetch(url, {
+          method: "GET",
+          headers: {
+            Accept: "application/json"
           }
-        );
+        });
 
 
       if (!response.ok) {
-
         throw new Error(
           `HTTP ${response.status}`
         );
-
       }
 
 
@@ -626,34 +492,24 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         !data ||
         data.ok !== true ||
-        !Array.isArray(
-          data.results
-        )
+        !Array.isArray(data.results)
       ) {
-
         throw new Error(
           "Resposta inválida"
         );
-
       }
 
 
       products =
         data.results
-          .map(
-            normalizeApiProduct
-          )
+          .map(normalizeApiProduct)
           .filter(product => {
-
             return (
               product.id &&
               product.title &&
-              Number.isFinite(
-                product.price
-              ) &&
+              Number.isFinite(product.price) &&
               product.price > 0
             );
-
           });
 
 
@@ -663,9 +519,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
 
-      renderProducts(
-        products
-      );
+      renderProducts(products);
 
 
       const marketSection =
@@ -675,12 +529,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       if (marketSection) {
-
         marketSection.scrollIntoView({
           behavior: "smooth",
           block: "start"
         });
-
       }
 
 
@@ -703,95 +555,59 @@ document.addEventListener("DOMContentLoaded", () => {
     } finally {
 
       if (searchButton) {
-
-        searchButton.disabled =
-          false;
-
-        searchButton.textContent =
-          "BUSCAR";
-
+        searchButton.disabled = false;
+        searchButton.textContent = "BUSCAR";
       }
 
     }
-
   }
 
 
-  /* ========================================================
-     EVENTOS DA BUSCA
-     ======================================================== */
-
   if (searchButton) {
-
     searchButton.addEventListener(
       "click",
       searchProducts
     );
-
   }
 
 
   if (searchInput) {
-
     searchInput.addEventListener(
       "keydown",
       event => {
 
-        if (
-          event.key === "Enter"
-        ) {
-
+        if (event.key === "Enter") {
           event.preventDefault();
-
           searchProducts();
-
         }
 
       }
     );
-
   }
 
 
-  /* ========================================================
-     FAVORITOS
-     ======================================================== */
-
   function getFavorites() {
-
     try {
-
       return JSON.parse(
         localStorage.getItem(
           "achou_favorites"
         )
       ) || [];
-
     } catch {
-
       return [];
-
     }
-
   }
 
 
-  function saveFavorites(
-    favorites
-  ) {
-
+  function saveFavorites(favorites) {
     localStorage.setItem(
       "achou_favorites",
-      JSON.stringify(
-        favorites
-      )
+      JSON.stringify(favorites)
     );
-
   }
 
 
   function bindFavorites() {
-
     const buttons =
       document.querySelectorAll(
         "[data-favorite]"
@@ -805,24 +621,19 @@ document.addEventListener("DOMContentLoaded", () => {
           button.dataset.favorite
         );
 
-
       if (!id) {
         return;
       }
 
 
       const favorites =
-        getFavorites()
-          .map(String);
+        getFavorites().map(String);
 
 
       if (
         favorites.includes(id)
       ) {
-
-        button.textContent =
-          "♥";
-
+        button.textContent = "♥";
       }
 
 
@@ -831,8 +642,7 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
           let current =
-            getFavorites()
-              .map(String);
+            getFavorites().map(String);
 
 
           if (
@@ -858,9 +668,7 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
 
-          saveFavorites(
-            current
-          );
+          saveFavorites(current);
 
           updateFavoriteCounter();
 
@@ -871,15 +679,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     updateFavoriteCounter();
-
   }
 
 
   function updateFavoriteCounter() {
-
     const favorites =
       getFavorites();
-
 
     document
       .querySelectorAll(
@@ -891,13 +696,8 @@ document.addEventListener("DOMContentLoaded", () => {
           favorites.length;
 
       });
-
   }
 
-
-  /* ========================================================
-     CATEGORIAS
-     ======================================================== */
 
   const categoryButtons =
     document.querySelectorAll(
@@ -913,14 +713,11 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
           const rawText =
-            button.textContent
-              .trim();
+            button.textContent.trim();
 
 
           const text =
-            normalizeText(
-              rawText
-            );
+            normalizeText(rawText);
 
 
           document
@@ -955,20 +752,14 @@ document.addEventListener("DOMContentLoaded", () => {
           ) {
 
             if (products.length) {
-
-              renderProducts(
-                products
-              );
-
+              renderProducts(products);
             }
 
             return;
-
           }
 
 
           const quickSearchMap = {
-
             celulares:
               "celular",
 
@@ -983,7 +774,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             audio:
               "fone bluetooth"
-
           };
 
 
@@ -993,12 +783,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
           if (searchInput) {
-
             searchInput.value =
               searchTerm;
 
             searchProducts();
-
           }
 
         }
@@ -1008,14 +796,9 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
 
-  /* ========================================================
-     HERO
-     ======================================================== */
-
   const heroSlides = [
 
     {
-
       label:
         "OFERTAS SELECIONADAS",
 
@@ -1024,11 +807,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       text:
         "A gente procura os melhores preços para você economizar."
-
     },
 
     {
-
       label:
         "PREÇOS EM UM SÓ LUGAR",
 
@@ -1037,11 +818,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       text:
         "Compare preços entre diferentes lojas antes de comprar."
-
     },
 
     {
-
       label:
         "ACHOU!",
 
@@ -1050,7 +829,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       text:
         "Menos tempo procurando. Mais dinheiro economizado."
-
     }
 
   ];
@@ -1107,26 +885,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (heroLabel) {
-
       heroLabel.textContent =
         slide.label;
-
     }
 
 
     if (heroTitle) {
-
       heroTitle.innerHTML =
         `<strong>${slide.title}</strong>`;
-
     }
 
 
     if (heroText) {
-
       heroText.textContent =
         slide.text;
-
     }
 
 
@@ -1140,39 +912,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
-
   }
 
 
   if (heroPrev) {
-
     heroPrev.addEventListener(
       "click",
       () => {
-
         renderHero(
           heroIndex - 1
         );
-
       }
     );
-
   }
 
 
   if (heroNext) {
-
     heroNext.addEventListener(
       "click",
       () => {
-
         renderHero(
           heroIndex + 1
         );
-
       }
     );
-
   }
 
 
@@ -1182,9 +945,7 @@ document.addEventListener("DOMContentLoaded", () => {
       dot.addEventListener(
         "click",
         () => {
-
           renderHero(index);
-
         }
       );
 
@@ -1193,24 +954,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   if (heroTitle) {
-
     setInterval(
       () => {
-
         renderHero(
           heroIndex + 1
         );
-
       },
       CONFIG.heroInterval
     );
-
   }
 
-
-  /* ========================================================
-     BOTÃO DO HERO
-     ======================================================== */
 
   const heroCTA =
     document.querySelector(
@@ -1219,7 +972,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   if (heroCTA) {
-
     heroCTA.addEventListener(
       "click",
       () => {
@@ -1237,22 +989,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(
           () => {
-
             searchInput.focus();
-
           },
           400
         );
 
       }
     );
-
   }
 
-
-  /* ========================================================
-     LOGIN / CADASTRO
-     ======================================================== */
 
   const loginModal =
     document.querySelector(
@@ -1291,7 +1036,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   function openLogin() {
-
     if (!loginModal) {
       return;
     }
@@ -1303,12 +1047,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add(
       "modal-open"
     );
-
   }
 
 
   function closeLogin() {
-
     if (!loginModal) {
       return;
     }
@@ -1320,12 +1062,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove(
       "modal-open"
     );
-
   }
 
 
   function openSignup() {
-
     if (!signupModal) {
       return;
     }
@@ -1337,12 +1077,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add(
       "modal-open"
     );
-
   }
 
 
   function closeSignup() {
-
     if (!signupModal) {
       return;
     }
@@ -1354,42 +1092,34 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove(
       "modal-open"
     );
-
   }
 
 
   if (accountButton) {
-
     accountButton.addEventListener(
       "click",
       openLogin
     );
-
   }
 
 
   if (loginClose) {
-
     loginClose.addEventListener(
       "click",
       closeLogin
     );
-
   }
 
 
   if (signupClose) {
-
     signupClose.addEventListener(
       "click",
       closeSignup
     );
-
   }
 
 
   if (createAccount) {
-
     createAccount.addEventListener(
       "click",
       () => {
@@ -1400,12 +1130,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
-
   }
 
 
   if (signupLogin) {
-
     signupLogin.addEventListener(
       "click",
       () => {
@@ -1416,12 +1144,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
-
   }
 
 
   if (loginModal) {
-
     loginModal.addEventListener(
       "click",
       event => {
@@ -1430,19 +1156,15 @@ document.addEventListener("DOMContentLoaded", () => {
           event.target ===
           loginModal
         ) {
-
           closeLogin();
-
         }
 
       }
     );
-
   }
 
 
   if (signupModal) {
-
     signupModal.addEventListener(
       "click",
       event => {
@@ -1451,14 +1173,11 @@ document.addEventListener("DOMContentLoaded", () => {
           event.target ===
           signupModal
         ) {
-
           closeSignup();
-
         }
 
       }
     );
-
   }
 
 
@@ -1479,10 +1198,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
-
-  /* ========================================================
-     MENU INFERIOR
-     ======================================================== */
 
   const bottomItems =
     document.querySelectorAll(
@@ -1516,10 +1231,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   });
 
-
-  /* ========================================================
-     INICIALIZAÇÃO
-     ======================================================== */
 
   renderProducts([]);
 
