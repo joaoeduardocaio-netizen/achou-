@@ -1,216 +1,1235 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="ACHOU! Compare preços em várias lojas, encontre ofertas e economize antes de comprar.">
-  <meta name="robots" content="index,follow">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css?v=20260903-10">
-  <title>ACHOU! — Compare antes de comprar.</title>
+
+  <meta
+    name="description"
+    content="ACHOU! Compare preços e encontre as melhores ofertas."
+  >
+
+  <title>ACHOU! — Compare antes de comprar</title>
+
+  <link
+    rel="stylesheet"
+    href="style.css?v=20260903-11"
+  >
 </head>
+
 <body>
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
   <header class="top-header">
+
     <div class="header-left">
-      <button class="menu-button" id="menuButton" type="button" aria-label="Abrir menu" aria-expanded="false">
-        <span></span><span></span><span></span>
+
+      <button
+        class="menu-button"
+        type="button"
+        aria-label="Abrir menu"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-      <a href="./" class="brand" aria-label="ACHOU! início">
-        <strong>ACHOU<span>!</span></strong>
-        <small>COMPARE ANTES DE COMPRAR</small>
+
+      <a
+        class="brand"
+        href="#"
+        aria-label="ACHOU início"
+      >
+        <strong>
+          ACHOU<span>!</span>
+        </strong>
+
+        <small>
+          A gente procura. Você economiza tempo.
+        </small>
       </a>
+
     </div>
+
 
     <div class="header-user">
-      <button type="button" class="header-icon" id="favoritesHeader" aria-label="Favoritos">
-        ♡ <span class="notification-badge" id="favoritesCount" hidden>0</span>
-      </button>
-      <button type="button" class="account-button" id="loginButton">
-        <span class="account-greeting">
-          <small>Olá,</small>
-          <strong>Entrar</strong>
+
+      <button
+        class="header-icon"
+        type="button"
+        aria-label="Favoritos"
+      >
+        ♡
+
+        <span class="notification-badge favorite-count">
+          0
         </span>
-        <span class="account-link">Minha conta</span>
-        <span class="account-avatar">?</span>
       </button>
+
+
+      <button
+        class="account-button"
+        type="button"
+      >
+
+        <span class="account-avatar">
+          ?
+        </span>
+
+        <span class="account-greeting">
+
+          <small>
+            Olá!
+          </small>
+
+          <strong>
+            Entrar
+          </strong>
+
+        </span>
+
+        <span class="account-link">
+          Minha conta
+        </span>
+
+      </button>
+
     </div>
+
   </header>
 
-  <aside class="side-menu" id="sideMenu" aria-hidden="true">
-    <div class="side-menu-head">
-      <strong>ACHOU<span>!</span></strong>
-      <button type="button" id="menuClose" aria-label="Fechar menu">×</button>
+
+  <!-- =====================================================
+       BUSCA
+       ===================================================== -->
+
+  <section class="search-section">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        ⌕
+      </span>
+
+      <input
+        type="search"
+        placeholder="Busque iPhone, notebook, TV..."
+        autocomplete="off"
+        aria-label="Pesquisar produtos"
+      >
+
+      <button type="button">
+        BUSCAR
+      </button>
+
     </div>
-    <button type="button" data-scroll="#featuredSection">🔥 Ofertas</button>
-    <button type="button" data-scroll="#compareSection">🏆 Comparar preços</button>
-    <button type="button" data-scroll="#categoriesSection">▦ Categorias</button>
-    <button type="button" data-scroll="#storesSection">🏪 Lojas</button>
-    <button type="button" id="historyMenuButton">◷ Histórico</button>
-    <button type="button" id="favoritesMenuButton">♡ Favoritos</button>
-  </aside>
-  <div class="menu-overlay" id="menuOverlay" hidden></div>
 
-  <main>
-    <section class="hero">
-      <div class="hero-inner">
-        <span class="hero-eyebrow">PESQUISE • COMPARE • ECONOMIZE</span>
-        <h1>O melhor preço pode estar <em>a uma busca</em> de distância.</h1>
-        <p>Pesquise um produto e compare as ofertas cadastradas no ACHOU! em várias lojas.</p>
+  </section>
 
-        <form class="search-box" id="searchForm">
-          <span class="search-icon" aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="Ex.: iPhone 15, TV 55, air fryer..." autocomplete="off" aria-label="Buscar produto">
-          <button type="submit">BUSCAR</button>
-        </form>
 
-        <div class="popular-tags" id="popularTags">
-          <button type="button" data-query="iPhone 15">iPhone 15</button>
-          <button type="button" data-query="notebook gamer">Notebook gamer</button>
-          <button type="button" data-query="air fryer">Air fryer</button>
-          <button type="button" data-query="TV 4K">TV 4K</button>
-          <button type="button" data-query="PlayStation 5">PlayStation 5</button>
-        </div>
+  <!-- =====================================================
+       CATEGORIAS SUPERIORES
+       ===================================================== -->
 
-        <small class="affiliate-note">Alguns links podem gerar comissão para o ACHOU!, sem custo extra para você.</small>
-      </div>
-    </section>
+  <nav
+    class="category-nav"
+    aria-label="Categorias"
+  >
 
-    <section class="quick-categories" id="categoriesSection" aria-label="Categorias">
-      <button type="button" class="quick-category active" data-category=""><span>⌕</span><strong>Tudo</strong></button>
-      <button type="button" class="quick-category" data-category="Celulares"><span>▣</span><strong>Celulares</strong></button>
-      <button type="button" class="quick-category" data-category="Informática"><span>▱</span><strong>Informática</strong></button>
-      <button type="button" class="quick-category" data-category="Eletrônicos"><span>◈</span><strong>Eletrônicos</strong></button>
-      <button type="button" class="quick-category" data-category="Casa"><span>⌂</span><strong>Casa</strong></button>
-      <button type="button" class="quick-category" data-category="Moda"><span>◇</span><strong>Moda</strong></button>
-      <button type="button" class="quick-category" data-category="Veículos"><span>◉</span><strong>Veículos</strong></button>
-      <button type="button" class="quick-category" data-category="Games"><span>✚</span><strong>Games</strong></button>
-    </section>
+    <button
+      class="category-nav-item active"
+      type="button"
+    >
+      Todos
+    </button>
 
-    <section class="market-section" id="featuredSection">
-      <div class="market-section-heading">
-        <div>
-          <span class="section-label">DESTAQUES</span>
-          <h2>Ofertas em destaque</h2>
-        </div>
-        <button type="button" class="see-all" id="showAllFeatured">VER TODAS</button>
-      </div>
+    <button
+      class="category-nav-item"
+      type="button"
+    >
+      Celulares
+    </button>
 
-      <div class="status-box" id="featuredStatus">
-        <div class="loader"></div>
-        <span>Buscando ofertas...</span>
-      </div>
-      <div class="product-grid featured-grid" id="featuredList"></div>
-    </section>
+    <button
+      class="category-nav-item"
+      type="button"
+    >
+      Informática
+    </button>
 
-    <section class="market-section compare-section" id="compareSection">
-      <div class="market-section-heading results-heading">
-        <div>
-          <span class="section-label">COMPARADOR</span>
-          <h2 id="resultsTitle">Compare preços</h2>
-          <p id="resultsMeta">Digite um produto para ver as ofertas disponíveis.</p>
-        </div>
-      </div>
+    <button
+      class="category-nav-item"
+      type="button"
+    >
+      TV
+    </button>
 
-      <div class="filters" id="filters">
-        <label><span>Loja</span><select id="storeFilter"><option value="">Todas as lojas</option></select></label>
-        <label><span>Ordenar</span><select id="sortFilter">
-          <option value="price-asc">Menor preço</option>
-          <option value="price-desc">Maior preço</option>
-          <option value="discount">Maior desconto</option>
-          <option value="recent">Mais recentes</option>
-        </select></label>
-        <label><span>Preço máximo</span><input id="maxPriceFilter" type="number" inputmode="decimal" min="0" placeholder="Sem limite"></label>
-        <button type="button" class="clear-filters" id="clearFilters">LIMPAR</button>
-      </div>
+    <button
+      class="category-nav-item"
+      type="button"
+    >
+      Games
+    </button>
 
-      <div class="status-box" id="resultsStatus" hidden></div>
-      <div class="product-grid results-grid" id="productList"></div>
-    </section>
+    <button
+      class="category-nav-item"
+      type="button"
+    >
+      Áudio
+    </button>
 
-    <section class="market-section" id="storesSection">
-      <div class="market-section-heading">
-        <div><span class="section-label">LOJAS</span><h2>Lojas no ACHOU!</h2></div>
-      </div>
-      <div class="store-list" id="storeList">
-        <button type="button" data-store="Mercado Livre">Mercado Livre</button>
-        <button type="button" data-store="Amazon">Amazon</button>
-        <button type="button" data-store="Shopee">Shopee</button>
-        <button type="button" data-store="Magalu">Magalu</button>
-        <button type="button" data-store="KaBuM!">KaBuM!</button>
-      </div>
-      <p class="store-help">As lojas exibidas em uma busca dependem das ofertas disponíveis no nosso catálogo.</p>
-    </section>
-
-    <section class="achou-benefits">
-      <article><span>⌕</span><div><strong>Busca simples</strong><small>Encontre ofertas em segundos.</small></div></article>
-      <article><span>$</span><div><strong>Compare preços</strong><small>Veja qual oferta vale mais a pena.</small></div></article>
-      <article><span>♡</span><div><strong>Favoritos</strong><small>Guarde ofertas no seu aparelho.</small></div></article>
-      <article><span>↗</span><div><strong>Compra na loja</strong><small>Você conclui a compra no site do parceiro.</small></div></article>
-    </section>
-
-    <section class="how-section">
-      <span class="section-label">COMO FUNCIONA</span>
-      <h2>Compare. <em>Escolha.</em> Economize.</h2>
-      <div class="how-steps">
-        <article><strong>01</strong><div><h3>Você pesquisa</h3><p>Digite o produto, marca ou modelo.</p></div></article>
-        <article><strong>02</strong><div><h3>O ACHOU! procura</h3><p>Buscamos as ofertas disponíveis no nosso catálogo.</p></div></article>
-        <article><strong>03</strong><div><h3>Você compara</h3><p>Ordene por preço, loja e desconto.</p></div></article>
-        <article><strong>04</strong><div><h3>Você vai para a loja</h3><p>O pagamento e a entrega são feitos diretamente pela loja escolhida.</p></div></article>
-      </div>
-    </section>
-
-    <section class="legal-section">
-      <strong>Transparência</strong>
-      <p>O ACHOU! é um comparador de ofertas. Preços, estoque, frete, condições e formas de pagamento podem mudar no site da loja. Confira os dados finais antes de comprar.</p>
-    </section>
-  </main>
-
-  <nav class="bottom-nav">
-    <button type="button" class="bottom-nav-item active" data-scroll="#top"><span>◆</span><strong>Início</strong></button>
-    <button type="button" class="bottom-nav-item" data-scroll="#categoriesSection"><span>▦</span><strong>Categorias</strong></button>
-    <button type="button" class="bottom-nav-item" data-scroll="#compareSection"><span>⌕</span><strong>Buscar</strong></button>
-    <button type="button" class="bottom-nav-item" id="favoritesBottom"><span>♡<i id="favoritesBottomCount" hidden>0</i></span><strong>Favoritos</strong></button>
-    <button type="button" class="bottom-nav-item" id="historyBottom"><span>◷</span><strong>Histórico</strong></button>
   </nav>
 
-  <div class="login-modal" id="loginModal" aria-hidden="true">
-    <div class="login-modal-box" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-      <button type="button" class="login-close" id="loginClose" aria-label="Fechar">×</button>
-      <div class="login-logo" id="loginTitle">ACHOU<span>!</span></div>
-      <p class="login-subtitle">Entre na sua conta</p>
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <main>
+
+    <section class="hero-marketplace">
+
+      <div class="hero-banner">
+
+        <div class="hero-banner-content">
+
+          <span class="hero-small-title">
+            OFERTAS SELECIONADAS
+          </span>
+
+          <h1>
+            <strong>
+              COMPARE ANTES DE COMPRAR
+            </strong>
+          </h1>
+
+          <p>
+            A gente procura os melhores preços
+            para você economizar.
+          </p>
+
+          <button
+            class="hero-cta"
+            type="button"
+          >
+            PROCURAR PRODUTO
+          </button>
+
+        </div>
+
+
+        <div
+          class="hero-products"
+          aria-hidden="true"
+        >
+
+          <span class="hero-phone">
+            📱
+          </span>
+
+          <span class="hero-laptop">
+            💻
+          </span>
+
+          <span class="hero-headphone">
+            🎧
+          </span>
+
+        </div>
+
+
+        <div class="hero-discount">
+
+          <small>
+            ATÉ
+          </small>
+
+          <strong>
+            50
+          </strong>
+
+          <span>
+            % OFF
+          </span>
+
+        </div>
+
+
+        <button
+          class="hero-arrow hero-prev"
+          type="button"
+          aria-label="Banner anterior"
+        >
+          ‹
+        </button>
+
+        <button
+          class="hero-arrow hero-next"
+          type="button"
+          aria-label="Próximo banner"
+        >
+          ›
+        </button>
+
+      </div>
+
+
+      <div class="hero-dots">
+
+        <button
+          class="hero-dot active"
+          type="button"
+          aria-label="Banner 1"
+        ></button>
+
+        <button
+          class="hero-dot"
+          type="button"
+          aria-label="Banner 2"
+        ></button>
+
+        <button
+          class="hero-dot"
+          type="button"
+          aria-label="Banner 3"
+        ></button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         CATEGORIAS RÁPIDAS
+         =================================================== -->
+
+    <section
+      class="quick-categories"
+      aria-label="Categorias rápidas"
+    >
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          📱
+        </span>
+
+        <strong>
+          Celulares
+        </strong>
+      </button>
+
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          💻
+        </span>
+
+        <strong>
+          Informática
+        </strong>
+      </button>
+
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          📺
+        </span>
+
+        <strong>
+          TV
+        </strong>
+      </button>
+
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          🎮
+        </span>
+
+        <strong>
+          Games
+        </strong>
+      </button>
+
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          🎧
+        </span>
+
+        <strong>
+          Áudio
+        </strong>
+      </button>
+
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          🏠
+        </span>
+
+        <strong>
+          Casa
+        </strong>
+      </button>
+
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          👟
+        </span>
+
+        <strong>
+          Moda
+        </strong>
+      </button>
+
+
+      <button
+        class="quick-category"
+        type="button"
+      >
+        <span class="quick-category-icon">
+          🔧
+        </span>
+
+        <strong>
+          Ferramentas
+        </strong>
+      </button>
+
+    </section>
+
+
+    <!-- ===================================================
+         OFERTAS
+         =================================================== -->
+
+    <section class="market-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            ⚡
+          </span>
+
+          <h2>
+            Ofertas relâmpago
+          </h2>
+
+          <div class="deal-timer">
+            Termina em
+            <strong>
+              02:47:32
+            </strong>
+          </div>
+
+        </div>
+
+
+        <button
+          class="see-all"
+          type="button"
+        >
+          VER TODAS
+        </button>
+
+      </div>
+
+
+      <div class="flash-deals">
+
+        <!--
+          Os produtos são inseridos
+          automaticamente pelo script.js
+        -->
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         BUSCAS POPULARES
+         =================================================== -->
+
+    <section class="market-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            🔥
+          </span>
+
+          <h2>
+            Mais procurados
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="popular-tags">
+
+        <button type="button">
+          Todos
+        </button>
+
+        <button type="button">
+          iPhone
+        </button>
+
+        <button type="button">
+          Notebook
+        </button>
+
+        <button type="button">
+          PlayStation
+        </button>
+
+        <button type="button">
+          Smart TV
+        </button>
+
+        <button type="button">
+          Fone
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         MELHOR PREÇO
+         =================================================== -->
+
+    <section class="market-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            🏆
+          </span>
+
+          <h2>
+            Melhor preço
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <article class="best-price-card">
+
+        <div class="best-product-image">
+          📱
+        </div>
+
+
+        <div class="best-product-info">
+
+          <h3>
+            Smartphone em destaque
+          </h3>
+
+          <div class="best-rating">
+            ★★★★★
+          </div>
+
+          <small>
+            Compare antes de comprar
+          </small>
+
+        </div>
+
+
+        <div class="store-prices">
+
+          <div class="store-price">
+
+            <small>
+              Mercado Livre
+            </small>
+
+            <strong>
+              R$ 1.299
+            </strong>
+
+          </div>
+
+
+          <div class="store-price">
+
+            <small>
+              Amazon
+            </small>
+
+            <strong>
+              R$ 1.349
+            </strong>
+
+          </div>
+
+
+          <div class="store-price">
+
+            <small>
+              Magalu
+            </small>
+
+            <strong>
+              R$ 1.399
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="best-deal">
+
+          <span>
+
+            MELHOR OFERTA
+
+            <small>
+              Menor preço encontrado
+            </small>
+
+          </span>
+
+          <strong>
+            R$ 1.299
+          </strong>
+
+          <a
+            href="#"
+            class="best-offer"
+          >
+            VER OFERTA
+          </a>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ===================================================
+         LOJAS
+         =================================================== -->
+
+    <section class="market-section">
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="section-icon">
+            🛍
+          </span>
+
+          <h2>
+            Lojas no ACHOU!
+          </h2>
+
+        </div>
+
+      </div>
+
+
+      <div class="featured-stores">
+
+        <article class="store-card mercado">
+
+          <strong>
+            mercado
+            <span>
+              livre
+            </span>
+          </strong>
+
+        </article>
+
+
+        <article class="store-card">
+
+          <strong>
+            amazon
+          </strong>
+
+        </article>
+
+
+        <article class="store-card shopee">
+
+          <strong>
+            Shopee
+          </strong>
+
+        </article>
+
+
+        <article class="store-card magalu">
+
+          <strong>
+            Magalu
+          </strong>
+
+        </article>
+
+
+        <article class="store-card kabum">
+
+          <strong>
+            KaBuM!
+          </strong>
+
+        </article>
+
+      </div>
+
+    </section>
+
+
+    <!-- ===================================================
+         BENEFÍCIOS
+         =================================================== -->
+
+    <section class="achou-benefits">
+
+      <article>
+
+        <span>
+          ⌕
+        </span>
+
+        <div>
+
+          <strong>
+            Busca simples
+          </strong>
+
+          <small>
+            Encontre ofertas rapidamente.
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <article>
+
+        <span>
+          $
+        </span>
+
+        <div>
+
+          <strong>
+            Compare preços
+          </strong>
+
+          <small>
+            Veja diferentes lojas.
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <article>
+
+        <span>
+          ♡
+        </span>
+
+        <div>
+
+          <strong>
+            Favoritos
+          </strong>
+
+          <small>
+            Guarde produtos para depois.
+          </small>
+
+        </div>
+
+      </article>
+
+
+      <article>
+
+        <span>
+          ↗
+        </span>
+
+        <div>
+
+          <strong>
+            Compra na loja
+          </strong>
+
+          <small>
+            Você finaliza na loja parceira.
+          </small>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- ===================================================
+         COMO FUNCIONA
+         =================================================== -->
+
+    <section class="how-section">
+
+      <span class="section-label">
+        COMO FUNCIONA
+      </span>
+
+      <h2>
+        Compare.
+        <em>
+          Escolha.
+        </em>
+        Economize.
+      </h2>
+
+
+      <div class="how-steps">
+
+        <article>
+
+          <strong>
+            01
+          </strong>
+
+          <div>
+
+            <h3>
+              Você pesquisa
+            </h3>
+
+            <p>
+              Digite o produto que você procura.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article>
+
+          <strong>
+            02
+          </strong>
+
+          <div>
+
+            <h3>
+              O ACHOU! compara
+            </h3>
+
+            <p>
+              Encontramos ofertas disponíveis
+              nas lojas parceiras.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article>
+
+          <strong>
+            03
+          </strong>
+
+          <div>
+
+            <h3>
+              Você escolhe
+            </h3>
+
+            <p>
+              Compare preços e escolha
+              a melhor oportunidade.
+            </p>
+
+          </div>
+
+        </article>
+
+
+        <article>
+
+          <strong>
+            04
+          </strong>
+
+          <div>
+
+            <h3>
+              Você compra
+            </h3>
+
+            <p>
+              Clique na oferta e finalize
+              diretamente na loja.
+            </p>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- =====================================================
+       NAVEGAÇÃO INFERIOR
+       ===================================================== -->
+
+  <nav class="bottom-nav">
+
+    <button
+      class="bottom-nav-item active"
+      type="button"
+    >
+
+      <span>
+        ◆
+      </span>
+
+      <strong>
+        Início
+      </strong>
+
+    </button>
+
+
+    <button
+      class="bottom-nav-item"
+      type="button"
+    >
+
+      <span>
+        ▤
+      </span>
+
+      <strong>
+        Categorias
+      </strong>
+
+    </button>
+
+
+    <button
+      class="bottom-nav-item"
+      type="button"
+    >
+
+      <span>
+        ⌕
+      </span>
+
+      <strong>
+        Buscar
+      </strong>
+
+    </button>
+
+
+    <button
+      class="bottom-nav-item"
+      type="button"
+    >
+
+      <span>
+        ♡
+
+        <i class="favorite-count">
+          0
+        </i>
+
+      </span>
+
+      <strong>
+        Favoritos
+      </strong>
+
+    </button>
+
+
+    <button
+      class="bottom-nav-item"
+      type="button"
+    >
+
+      <span>
+        ☺
+      </span>
+
+      <strong>
+        Perfil
+      </strong>
+
+    </button>
+
+  </nav>
+
+
+  <!-- =====================================================
+       LOGIN
+       ===================================================== -->
+
+  <div
+    class="login-modal"
+    id="loginModal"
+  >
+
+    <div
+      class="login-modal-box"
+      role="dialog"
+      aria-modal="true"
+    >
+
+      <button
+        class="login-close"
+        type="button"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+
+
+      <div class="login-logo">
+
+        ACHOU<span>!</span>
+
+      </div>
+
+
+      <p class="login-subtitle">
+        Entre na sua conta.
+      </p>
+
+
       <form id="loginForm">
-        <label for="loginEmail">E-mail</label>
-        <input id="loginEmail" type="email" placeholder="seu@email.com" autocomplete="email" required>
-        <label for="loginPassword">Senha</label>
-        <input id="loginPassword" type="password" placeholder="Sua senha" autocomplete="current-password" required>
-        <button type="submit" class="login-submit">ENTRAR</button>
+
+        <label for="loginEmail">
+          E-mail
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="seu@email.com"
+          required
+        >
+
+
+        <label for="loginPassword">
+          Senha
+        </label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Sua senha"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="login-submit"
+        >
+          ENTRAR
+        </button>
+
       </form>
-      <button type="button" class="create-account" id="createAccount">Ainda não tenho conta</button>
+
+
+      <button
+        type="button"
+        class="create-account"
+      >
+        Ainda não tem conta?
+        Criar conta
+      </button>
+
     </div>
+
   </div>
 
-  <div class="signup-modal" id="signupModal" aria-hidden="true">
-    <div class="signup-modal-box" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
-      <button type="button" class="signup-close" id="signupClose" aria-label="Fechar">×</button>
-      <div class="signup-logo" id="signupTitle">ACHOU<span>!</span></div>
-      <p class="signup-subtitle">Crie sua conta</p>
+
+  <!-- =====================================================
+       CADASTRO
+       ===================================================== -->
+
+  <div
+    class="signup-modal"
+    id="signupModal"
+  >
+
+    <div
+      class="signup-modal-box"
+      role="dialog"
+      aria-modal="true"
+    >
+
+      <button
+        class="signup-close"
+        type="button"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
+
+
+      <div class="signup-logo">
+
+        ACHOU<span>!</span>
+
+      </div>
+
+
+      <p class="signup-subtitle">
+        Crie sua conta gratuitamente.
+      </p>
+
+
       <form id="signupForm">
-        <label for="signupName">Nome completo</label>
-        <input id="signupName" type="text" placeholder="Seu nome" autocomplete="name" required>
-        <label for="signupEmail">E-mail</label>
-        <input id="signupEmail" type="email" placeholder="seu@email.com" autocomplete="email" required>
-        <label for="signupPassword">Senha</label>
-        <input id="signupPassword" type="password" placeholder="Crie uma senha" autocomplete="new-password" minlength="6" required>
-        <label for="signupPasswordConfirm">Confirmar senha</label>
-        <input id="signupPasswordConfirm" type="password" placeholder="Digite a senha novamente" autocomplete="new-password" minlength="6" required>
-        <button type="submit" class="signup-submit">CRIAR CONTA</button>
+
+        <label for="signupName">
+          Nome completo
+        </label>
+
+        <input
+          id="signupName"
+          type="text"
+          placeholder="Seu nome"
+          required
+        >
+
+
+        <label for="signupEmail">
+          E-mail
+        </label>
+
+        <input
+          id="signupEmail"
+          type="email"
+          placeholder="seu@email.com"
+          required
+        >
+
+
+        <label for="signupPassword">
+          Senha
+        </label>
+
+        <input
+          id="signupPassword"
+          type="password"
+          placeholder="Crie uma senha"
+          required
+        >
+
+
+        <label for="signupPasswordConfirm">
+          Confirmar senha
+        </label>
+
+        <input
+          id="signupPasswordConfirm"
+          type="password"
+          placeholder="Repita a senha"
+          required
+        >
+
+
+        <button
+          type="submit"
+          class="signup-submit"
+        >
+          CRIAR CONTA
+        </button>
+
       </form>
-      <button type="button" class="signup-login" id="signupLogin">Já tenho uma conta</button>
+
+
+      <button
+        type="button"
+        class="signup-login"
+      >
+        Já tenho conta
+      </button>
+
     </div>
+
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="script.js?v=20260903-10"></script>
+
+  <!-- =====================================================
+       JAVASCRIPT
+       ===================================================== -->
+
+  <script src="script.js?v=20260903-11"></script>
+
 </body>
-</html>
+
+        </html>
