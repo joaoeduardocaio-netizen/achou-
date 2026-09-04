@@ -1,7 +1,7 @@
 /* =========================================================
-   ACHOU! — SCRIPT PRINCIPAL
-   Produtos, preços e imagens reais.
-   Nenhuma oferta fictícia é criada pelo site.
+   ACHOU! — COMPARADOR PROFISSIONAL
+   Produtos, preços, imagens e links reais.
+   Nenhuma oferta fictícia é criada.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,373 +14,482 @@ document.addEventListener("DOMContentLoaded", () => {
       "https://wulhcgkphclwgidqlvtr.supabase.co/functions/v1/mercadolivre-search"
   };
 
-
   let products = [];
+  let groupedProducts = [];
 
+
+  /* ========================================================
+     ESTILOS ADICIONAIS DO COMPARADOR
+     ======================================================== */
+
+  const style = document.createElement("style");
+
+  style.textContent = `
+    .achou-search-summary{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin:0 0 12px;
+      padding:10px 12px;
+      border:1px solid #252525;
+      border-radius:10px;
+      background:#060606;
+    }
+
+    .achou-search-summary strong{
+      display:block;
+      color:#fff;
+      font-size:10px;
+      margin-bottom:2px;
+    }
+
+    .achou-search-summary span{
+      color:#777;
+      font-size:8px;
+    }
+
+    .achou-group-card{
+      position:relative;
+    }
+
+    .achou-group-info{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin:0 0 8px;
+    }
+
+    .achou-offer-count{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:5px 7px;
+      border:1px solid #292929;
+      border-radius:20px;
+      background:#090909;
+      color:#aaa;
+      font-size:7px;
+      font-weight:700;
+    }
+
+    .achou-starting{
+      color:#777;
+      font-size:7px;
+      margin-bottom:2px;
+    }
+
+    .achou-actions{
+      display:grid;
+      gap:7px;
+      margin-top:auto;
+    }
+
+    .achou-see-offers{
+      width:100%;
+      min-height:34px;
+      border:1px solid #333;
+      border-radius:9px;
+      background:#0b0b0b;
+      color:#ddd;
+      font-size:8px;
+      font-weight:900;
+    }
+
+    .achou-see-offers:active{
+      transform:scale(.98);
+    }
+
+    .achou-offers-panel{
+      display:none;
+      flex-direction:column;
+      gap:7px;
+      margin-top:9px;
+      padding-top:9px;
+      border-top:1px solid #202020;
+    }
+
+    .achou-offers-panel.open{
+      display:flex;
+    }
+
+    .achou-offer-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:8px;
+      align-items:center;
+      padding:9px;
+      border:1px solid #222;
+      border-radius:9px;
+      background:#080808;
+    }
+
+    .achou-offer-row.best{
+      border-color:#5d5200;
+      background:#0b0a04;
+    }
+
+    .achou-offer-price{
+      display:block;
+      color:#fff;
+      font-size:11px;
+      font-weight:900;
+    }
+
+    .achou-offer-meta{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:3px;
+      color:#777;
+      font-size:7px;
+    }
+
+    .achou-free{
+      color:#00c853;
+      font-weight:800;
+    }
+
+    .achou-mini-buy{
+      min-width:82px;
+      height:31px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid #FFD400;
+      border-radius:7px;
+      background:#FFD400;
+      color:#000;
+      font-size:7px;
+      font-weight:950;
+      text-decoration:none;
+      white-space:nowrap;
+    }
+
+    .achou-mini-buy.disabled{
+      border-color:#2b2b2b;
+      background:#101010;
+      color:#666;
+      pointer-events:none;
+    }
+
+    .achou-best-label{
+      display:inline-block;
+      margin-bottom:3px;
+      color:#FFD400;
+      font-size:6px;
+      font-weight:950;
+    }
+
+    .achou-affiliate-note{
+      margin:11px 0 0;
+      color:#666;
+      font-size:7px;
+      line-height:1.45;
+    }
+
+    .achou-search-status{
+      width:100%;
+      padding:28px 18px;
+      border:1px solid #292929;
+      border-radius:12px;
+      background:#050505;
+      text-align:center;
+    }
+
+    .achou-search-status strong{
+      display:block;
+      color:#fff;
+      font-size:11px;
+      margin-bottom:7px;
+    }
+
+    .achou-search-status span{
+      display:block;
+      color:#777;
+      font-size:8px;
+      line-height:1.5;
+    }
+
+    .achou-search-status.loading strong{
+      color:#FFD400;
+    }
+
+    .flash-card h3{
+      min-height:38px;
+    }
+
+    @media (min-width:768px){
+      .flash-card{
+        flex-basis:230px;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+
+
+  /* ========================================================
+     UTILIDADES
+     ======================================================== */
 
   function money(value) {
-    const number = Number(value);
+
+    const number =
+      Number(value);
 
     if (!Number.isFinite(number)) {
       return "";
     }
 
-    return number.toLocaleString(CONFIG.locale, {
-      style: "currency",
-      currency: CONFIG.currency
-    });
+    return number.toLocaleString(
+      CONFIG.locale,
+      {
+        style: "currency",
+        currency: CONFIG.currency
+      }
+    );
+
   }
 
 
   function normalizeText(text) {
+
     return String(text || "")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .trim();
+
   }
 
 
   function escapeHtml(text) {
+
     return String(text || "")
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
+
   }
 
 
   function validAffiliateLink(url) {
-    if (!url) return false;
+
+    if (!url) {
+      return false;
+    }
 
     try {
-      const parsed = new URL(url);
+
+      const parsed =
+        new URL(url);
 
       return (
         parsed.protocol === "https:" &&
         parsed.hostname === "meli.la"
       );
+
     } catch {
+
       return false;
+
     }
+
   }
 
 
-  function calculateDiscount(oldPrice, currentPrice) {
-    const oldValue = Number(oldPrice);
-    const currentValue = Number(currentPrice);
-
-    if (
-      !Number.isFinite(oldValue) ||
-      !Number.isFinite(currentValue) ||
-      oldValue <= currentValue ||
-      currentValue <= 0
-    ) {
-      return null;
-    }
-
-    return Math.round(
-      ((oldValue - currentValue) / oldValue) * 100
-    );
-  }
-
+  /* ========================================================
+     ELEMENTOS
+     ======================================================== */
 
   const searchInput =
-    document.querySelector(".search-box input");
+    document.querySelector(
+      ".search-box input"
+    );
 
   const searchButton =
-    document.querySelector(".search-box button");
+    document.querySelector(
+      ".search-box button"
+    );
 
   const dealsContainer =
-    document.querySelector(".flash-deals");
+    document.querySelector(
+      ".flash-deals"
+    );
 
+  const marketSection =
+    document.querySelector(
+      ".market-section"
+    );
+
+
+  /* ========================================================
+     RESUMO DA BUSCA
+     ======================================================== */
+
+  let summaryBox = null;
+
+
+  function createSummary() {
+
+    if (
+      !marketSection ||
+      !dealsContainer
+    ) {
+      return;
+    }
+
+
+    summaryBox =
+      document.createElement("div");
+
+    summaryBox.className =
+      "achou-search-summary";
+
+    summaryBox.style.display =
+      "none";
+
+
+    marketSection.insertBefore(
+      summaryBox,
+      dealsContainer
+    );
+
+  }
+
+
+  function updateSummary(
+    productCount,
+    offerCount,
+    query
+  ) {
+
+    if (!summaryBox) {
+      return;
+    }
+
+
+    summaryBox.style.display =
+      "flex";
+
+
+    summaryBox.innerHTML = `
+      <div>
+        <strong>
+          ${productCount}
+          ${
+            productCount === 1
+              ? "produto encontrado"
+              : "produtos encontrados"
+          }
+        </strong>
+
+        <span>
+          ${offerCount}
+          ${
+            offerCount === 1
+              ? "oferta real"
+              : "ofertas reais"
+          }
+          para
+          “${escapeHtml(query)}”
+        </span>
+      </div>
+
+      <span>
+        Ordenado por menor preço
+      </span>
+    `;
+
+  }
+
+
+  /* ========================================================
+     ESTADOS
+     ======================================================== */
 
   function showLoading() {
-    if (!dealsContainer) return;
 
-    dealsContainer.innerHTML = `
-      <div style="
-        width:100%;
-        padding:30px 18px;
-        border:1px solid #292929;
-        border-radius:12px;
-        background:#050505;
-        text-align:center;
-      ">
-        <strong style="
-          display:block;
-          color:#FFD400;
-          font-size:12px;
-          margin-bottom:8px;
-        ">
-          Procurando ofertas...
-        </strong>
-
-        <span style="
-          display:block;
-          color:#888;
-          font-size:9px;
-          line-height:1.5;
-        ">
-          Consultando produtos e preços reais.
-        </span>
-      </div>
-    `;
-  }
-
-
-  function showSearchError() {
-    if (!dealsContainer) return;
-
-    dealsContainer.innerHTML = `
-      <div style="
-        width:100%;
-        padding:28px 18px;
-        border:1px solid #292929;
-        border-radius:12px;
-        background:#050505;
-        text-align:center;
-      ">
-        <strong style="
-          display:block;
-          color:#fff;
-          font-size:11px;
-          margin-bottom:7px;
-        ">
-          Não foi possível buscar agora
-        </strong>
-
-        <span style="
-          display:block;
-          color:#777;
-          font-size:8px;
-          line-height:1.5;
-        ">
-          Tente novamente em alguns instantes.
-        </span>
-      </div>
-    `;
-  }
-
-
-  function renderProducts(list = []) {
     if (!dealsContainer) {
       return;
     }
 
-    if (
-      !Array.isArray(list) ||
-      list.length === 0
-    ) {
-      dealsContainer.innerHTML = `
-        <div style="
-          width:100%;
-          padding:28px 18px;
-          border:1px solid #292929;
-          border-radius:12px;
-          background:#050505;
-          text-align:center;
-        ">
-          <strong style="
-            display:block;
-            color:#fff;
-            font-size:11px;
-            margin-bottom:7px;
-          ">
-            Nenhuma oferta encontrada
-          </strong>
+    dealsContainer.innerHTML = `
+      <div class="achou-search-status loading">
+        <strong>
+          Procurando as melhores ofertas...
+        </strong>
 
-          <span style="
-            display:block;
-            color:#777;
-            font-size:8px;
-            line-height:1.5;
-          ">
-            Tente buscar outro produto.
-          </span>
-        </div>
-      `;
+        <span>
+          Comparando produtos e preços reais
+          no Mercado Livre.
+        </span>
+      </div>
+    `;
 
-      return;
-    }
-
-
-    dealsContainer.innerHTML =
-      list.map(product => {
-
-        if (
-          !product ||
-          !product.title ||
-          product.price == null
-        ) {
-          return "";
-        }
-
-
-        const title =
-          escapeHtml(product.title);
-
-
-        const image =
-          product.image
-            ? `
-              <img
-                src="${escapeHtml(product.image)}"
-                alt="${title}"
-                loading="lazy"
-                style="
-                  width:100%;
-                  height:100%;
-                  object-fit:contain;
-                "
-              >
-            `
-            : `
-              <span style="
-                color:#666;
-                font-size:8px;
-              ">
-                Imagem indisponível
-              </span>
-            `;
-
-
-        const oldPrice =
-          product.oldPrice &&
-          Number(product.oldPrice) >
-          Number(product.price)
-            ? `
-              <span class="old-price">
-                ${money(product.oldPrice)}
-              </span>
-            `
-            : "";
-
-
-        const discount =
-          calculateDiscount(
-            product.oldPrice,
-            product.price
-          );
-
-
-        const discountBadge =
-          discount
-            ? `
-              <span class="discount">
-                -${discount}%
-              </span>
-            `
-            : "";
-
-
-        const shipping =
-          product.freeShipping === true
-            ? `
-              <span style="
-                color:#00c853;
-                font-size:8px;
-                font-weight:700;
-              ">
-                Frete grátis
-              </span>
-            `
-            : "";
-
-
-        const seller = `
-          <span>
-            Mercado Livre
-          </span>
-        `;
-
-
-        const canBuy =
-          product.canBuy === true &&
-          validAffiliateLink(
-            product.link
-          );
-
-
-        const offerButton =
-          canBuy
-            ? `
-              <a
-                href="${escapeHtml(product.link)}"
-                class="offer"
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-              >
-                VER OFERTA
-              </a>
-            `
-            : `
-              <button
-                type="button"
-                class="offer"
-                disabled
-                style="
-                  opacity:.42;
-                  cursor:not-allowed;
-                "
-              >
-                OFERTA SEM LINK
-              </button>
-            `;
-
-
-        return `
-          <article
-            class="flash-card"
-            data-id="${escapeHtml(product.id || "")}"
-          >
-
-            ${discountBadge}
-
-            <button
-              class="product-favorite"
-              type="button"
-              data-favorite="${escapeHtml(product.id || "")}"
-              aria-label="Favoritar produto"
-            >
-              ♡
-            </button>
-
-            <div class="flash-photo">
-              ${image}
-            </div>
-
-            <h3>
-              ${title}
-            </h3>
-
-            ${oldPrice}
-
-            <strong class="flash-price">
-              ${money(product.price)}
-            </strong>
-
-            <div class="product-bottom">
-              ${seller}
-              ${shipping}
-            </div>
-
-            ${offerButton}
-
-          </article>
-        `;
-
-      }).join("");
-
-
-    bindFavorites();
   }
 
 
+  function showError() {
+
+    if (!dealsContainer) {
+      return;
+    }
+
+    dealsContainer.innerHTML = `
+      <div class="achou-search-status">
+        <strong>
+          Não foi possível buscar agora
+        </strong>
+
+        <span>
+          Tente novamente em alguns instantes.
+        </span>
+      </div>
+    `;
+
+  }
+
+
+  function showEmpty() {
+
+    if (!dealsContainer) {
+      return;
+    }
+
+    dealsContainer.innerHTML = `
+      <div class="achou-search-status">
+        <strong>
+          Nenhuma oferta encontrada
+        </strong>
+
+        <span>
+          Tente pesquisar outro produto.
+        </span>
+      </div>
+    `;
+
+  }
+
+
+  /* ========================================================
+     NORMALIZAÇÃO DA API
+     ======================================================== */
+
   function normalizeApiProduct(item) {
+
     return {
+
       id:
+        item.item_id ||
+        item.id ||
+        "",
+
+      itemId:
         item.item_id ||
         item.id ||
         "",
@@ -405,9 +514,6 @@ document.addEventListener("DOMContentLoaded", () => {
         item.thumbnail ||
         null,
 
-      store:
-        "Mercado Livre",
-
       sellerId:
         item.seller_id ||
         null,
@@ -417,10 +523,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       condition:
         item.condition ||
-        null,
-
-      domainId:
-        item.domain_id ||
         null,
 
       affiliateCode:
@@ -434,184 +536,152 @@ document.addEventListener("DOMContentLoaded", () => {
 
       canBuy:
         item.can_buy === true
+
     };
+
   }
 
 
-  async function searchProducts() {
-    if (!searchInput) {
-      return;
-    }
+  /* ========================================================
+     AGRUPAMENTO DE OFERTAS
+     ======================================================== */
+
+  function groupProducts(list) {
+
+    const map =
+      new Map();
 
 
-    const term =
-      searchInput.value.trim();
+    list.forEach(item => {
+
+      const key =
+        item.productId ||
+        item.id;
 
 
-    if (!term) {
-      searchInput.focus();
-      return;
-    }
+      if (!map.has(key)) {
 
-
-    showLoading();
-
-
-    if (searchButton) {
-      searchButton.disabled = true;
-      searchButton.textContent = "BUSCANDO...";
-    }
-
-
-    try {
-
-      const url =
-        `${CONFIG.api}?q=${encodeURIComponent(term)}`;
-
-
-      const response =
-        await fetch(url, {
-          method: "GET",
-          headers: {
-            Accept: "application/json"
+        map.set(
+          key,
+          {
+            productId: key,
+            title: item.title,
+            image: item.image,
+            offers: []
           }
-        });
-
-
-      if (!response.ok) {
-        throw new Error(
-          `HTTP ${response.status}`
         );
+
       }
 
 
-      const data =
-        await response.json();
+      map
+        .get(key)
+        .offers
+        .push(item);
+
+    });
 
 
-      if (
-        !data ||
-        data.ok !== true ||
-        !Array.isArray(data.results)
-      ) {
-        throw new Error(
-          "Resposta inválida"
+    return Array.from(
+      map.values()
+    )
+      .map(group => {
+
+        group.offers.sort(
+          (a, b) =>
+            a.price - b.price
         );
-      }
 
 
-      products =
-        data.results
-          .map(normalizeApiProduct)
-          .filter(product => {
-            return (
-              product.id &&
-              product.title &&
-              Number.isFinite(product.price) &&
-              product.price > 0
-            );
-          });
+        group.best =
+          group.offers[0];
 
 
-      products.sort(
+        group.bestBuyable =
+          group.offers.find(
+            offer =>
+              offer.canBuy === true &&
+              validAffiliateLink(
+                offer.link
+              )
+          ) || null;
+
+
+        return group;
+
+      })
+      .sort(
         (a, b) =>
-          a.price - b.price
+          a.best.price -
+          b.best.price
       );
 
-
-      renderProducts(products);
-
-
-      const marketSection =
-        document.querySelector(
-          ".market-section"
-        );
-
-
-      if (marketSection) {
-        marketSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
-
-
-      console.log(
-        `[ACHOU!] ${products.length} ofertas reais encontradas para "${term}".`
-      );
-
-
-    } catch (error) {
-
-      console.error(
-        "[ACHOU!] Erro na busca:",
-        error
-      );
-
-      products = [];
-
-      showSearchError();
-
-    } finally {
-
-      if (searchButton) {
-        searchButton.disabled = false;
-        searchButton.textContent = "BUSCAR";
-      }
-
-    }
   }
 
 
-  if (searchButton) {
-    searchButton.addEventListener(
-      "click",
-      searchProducts
-    );
-  }
-
-
-  if (searchInput) {
-    searchInput.addEventListener(
-      "keydown",
-      event => {
-
-        if (event.key === "Enter") {
-          event.preventDefault();
-          searchProducts();
-        }
-
-      }
-    );
-  }
-
+  /* ========================================================
+     FAVORITOS
+     ======================================================== */
 
   function getFavorites() {
+
     try {
+
       return JSON.parse(
         localStorage.getItem(
           "achou_favorites"
         )
       ) || [];
+
     } catch {
+
       return [];
+
     }
+
   }
 
 
-  function saveFavorites(favorites) {
+  function saveFavorites(list) {
+
     localStorage.setItem(
       "achou_favorites",
-      JSON.stringify(favorites)
+      JSON.stringify(list)
     );
+
+  }
+
+
+  function updateFavoriteCounter() {
+
+    const favorites =
+      getFavorites();
+
+    document
+      .querySelectorAll(
+        ".favorite-count"
+      )
+      .forEach(counter => {
+
+        counter.textContent =
+          favorites.length;
+
+      });
+
   }
 
 
   function bindFavorites() {
+
     const buttons =
       document.querySelectorAll(
         "[data-favorite]"
       );
+
+
+    const favorites =
+      getFavorites()
+        .map(String);
 
 
     buttons.forEach(button => {
@@ -621,19 +691,14 @@ document.addEventListener("DOMContentLoaded", () => {
           button.dataset.favorite
         );
 
-      if (!id) {
-        return;
-      }
-
-
-      const favorites =
-        getFavorites().map(String);
-
 
       if (
         favorites.includes(id)
       ) {
-        button.textContent = "♥";
+
+        button.textContent =
+          "♥";
+
       }
 
 
@@ -642,7 +707,8 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
           let current =
-            getFavorites().map(String);
+            getFavorites()
+              .map(String);
 
 
           if (
@@ -677,27 +743,599 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
-
-    updateFavoriteCounter();
   }
 
 
-  function updateFavoriteCounter() {
-    const favorites =
-      getFavorites();
+  /* ========================================================
+     RENDERIZAÇÃO DO COMPARADOR
+     ======================================================== */
+
+  function renderGroupedProducts(
+    groups
+  ) {
+
+    if (!dealsContainer) {
+      return;
+    }
+
+
+    if (
+      !Array.isArray(groups) ||
+      groups.length === 0
+    ) {
+
+      showEmpty();
+
+      return;
+
+    }
+
+
+    dealsContainer.innerHTML =
+      groups.map(
+        (group, groupIndex) => {
+
+          const best =
+            group.best;
+
+          const title =
+            escapeHtml(
+              group.title
+            );
+
+
+          const favoriteId =
+            group.productId;
+
+
+          const image =
+            group.image
+              ? `
+                <img
+                  src="${escapeHtml(group.image)}"
+                  alt="${title}"
+                  loading="lazy"
+                >
+              `
+              : `
+                <span>
+                  Imagem indisponível
+                </span>
+              `;
+
+
+          const bestLink =
+            best.canBuy &&
+            validAffiliateLink(
+              best.link
+            )
+              ? best.link
+              : null;
+
+
+          const mainButton =
+            bestLink
+              ? `
+                <a
+                  href="${escapeHtml(bestLink)}"
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  class="offer"
+                >
+                  VER MELHOR OFERTA
+                </a>
+              `
+              : `
+                <button
+                  type="button"
+                  class="offer"
+                  disabled
+                >
+                  MELHOR OFERTA SEM LINK
+                </button>
+              `;
+
+
+          const rows =
+            group.offers
+              .map(
+                (
+                  offer,
+                  offerIndex
+                ) => {
+
+                  const buyable =
+                    offer.canBuy === true &&
+                    validAffiliateLink(
+                      offer.link
+                    );
+
+
+                  const button =
+                    buyable
+                      ? `
+                        <a
+                          class="achou-mini-buy"
+                          href="${escapeHtml(offer.link)}"
+                          target="_blank"
+                          rel="noopener noreferrer sponsored"
+                        >
+                          VER OFERTA
+                        </a>
+                      `
+                      : `
+                        <span
+                          class="achou-mini-buy disabled"
+                        >
+                          SEM LINK
+                        </span>
+                      `;
+
+
+                  return `
+                    <div
+                      class="achou-offer-row ${
+                        offerIndex === 0
+                          ? "best"
+                          : ""
+                      }"
+                    >
+
+                      <div>
+
+                        ${
+                          offerIndex === 0
+                            ? `
+                              <span class="achou-best-label">
+                                MENOR PREÇO
+                              </span>
+                            `
+                            : ""
+                        }
+
+                        <strong
+                          class="achou-offer-price"
+                        >
+                          ${money(offer.price)}
+                        </strong>
+
+                        <div
+                          class="achou-offer-meta"
+                        >
+
+                          <span>
+                            Mercado Livre
+                          </span>
+
+                          ${
+                            offer.freeShipping
+                              ? `
+                                <span class="achou-free">
+                                  Frete grátis
+                                </span>
+                              `
+                              : ""
+                          }
+
+                        </div>
+
+                      </div>
+
+                      ${button}
+
+                    </div>
+                  `;
+
+                }
+              )
+              .join("");
+
+
+          return `
+            <article
+              class="flash-card achou-group-card"
+              data-product-id="${escapeHtml(group.productId)}"
+            >
+
+              ${
+                groupIndex === 0
+                  ? `
+                    <span class="discount">
+                      MELHOR PREÇO
+                    </span>
+                  `
+                  : ""
+              }
+
+              <button
+                class="product-favorite"
+                type="button"
+                data-favorite="${escapeHtml(favoriteId)}"
+                aria-label="Favoritar produto"
+              >
+                ♡
+              </button>
+
+
+              <div class="flash-photo">
+                ${image}
+              </div>
+
+
+              <h3>
+                ${title}
+              </h3>
+
+
+              <div class="achou-group-info">
+
+                <span
+                  class="achou-offer-count"
+                >
+                  ${group.offers.length}
+                  ${
+                    group.offers.length === 1
+                      ? "oferta"
+                      : "ofertas"
+                  }
+                </span>
+
+                ${
+                  best.freeShipping
+                    ? `
+                      <span
+                        class="achou-free"
+                        style="font-size:7px"
+                      >
+                        Frete grátis
+                      </span>
+                    `
+                    : ""
+                }
+
+              </div>
+
+
+              <span class="achou-starting">
+                A partir de
+              </span>
+
+              <strong class="flash-price">
+                ${money(best.price)}
+              </strong>
+
+
+              <div class="product-bottom">
+
+                <span>
+                  Mercado Livre
+                </span>
+
+                <span>
+                  ${group.offers.length}
+                  preços comparados
+                </span>
+
+              </div>
+
+
+              <div class="achou-actions">
+
+                ${mainButton}
+
+                <button
+                  class="achou-see-offers"
+                  type="button"
+                  data-toggle-offers="${escapeHtml(group.productId)}"
+                >
+                  VER ${group.offers.length} OFERTAS
+                </button>
+
+              </div>
+
+
+              <div
+                class="achou-offers-panel"
+                data-offers-panel="${escapeHtml(group.productId)}"
+              >
+                ${rows}
+              </div>
+
+            </article>
+          `;
+
+        }
+      )
+      .join("");
+
+
+    const note =
+      document.createElement(
+        "div"
+      );
+
+
+    note.className =
+      "achou-affiliate-note";
+
+
+    note.textContent =
+      "O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.";
+
+
+    dealsContainer
+      .parentElement
+      ?.appendChild(note);
+
+
+    bindFavorites();
+
+    bindOfferPanels();
+
+  }
+
+
+  /* ========================================================
+     ABRIR / FECHAR OFERTAS
+     ======================================================== */
+
+  function bindOfferPanels() {
 
     document
       .querySelectorAll(
-        ".favorite-count"
+        "[data-toggle-offers]"
       )
-      .forEach(counter => {
+      .forEach(button => {
 
-        counter.textContent =
-          favorites.length;
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset
+                .toggleOffers;
+
+
+            const panel =
+              document.querySelector(
+                `[data-offers-panel="${CSS.escape(id)}"]`
+              );
+
+
+            if (!panel) {
+              return;
+            }
+
+
+            const open =
+              panel.classList.toggle(
+                "open"
+              );
+
+
+            button.textContent =
+              open
+                ? "OCULTAR OFERTAS"
+                : `VER ${
+                    panel.children.length
+                  } OFERTAS`;
+
+          }
+        );
 
       });
+
   }
 
+
+  /* ========================================================
+     BUSCA
+     ======================================================== */
+
+  async function searchProducts() {
+
+    if (!searchInput) {
+      return;
+    }
+
+
+    const term =
+      searchInput.value.trim();
+
+
+    if (!term) {
+
+      searchInput.focus();
+
+      return;
+
+    }
+
+
+    showLoading();
+
+
+    if (summaryBox) {
+      summaryBox.style.display =
+        "none";
+    }
+
+
+    if (searchButton) {
+
+      searchButton.disabled =
+        true;
+
+      searchButton.textContent =
+        "BUSCANDO...";
+
+    }
+
+
+    try {
+
+      const response =
+        await fetch(
+          `${CONFIG.api}?q=${
+            encodeURIComponent(term)
+          }`,
+          {
+            method: "GET",
+            headers: {
+              Accept:
+                "application/json"
+            }
+          }
+        );
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          `HTTP ${response.status}`
+        );
+
+      }
+
+
+      const data =
+        await response.json();
+
+
+      if (
+        !data ||
+        data.ok !== true ||
+        !Array.isArray(
+          data.results
+        )
+      ) {
+
+        throw new Error(
+          "Resposta inválida"
+        );
+
+      }
+
+
+      products =
+        data.results
+          .map(
+            normalizeApiProduct
+          )
+          .filter(product => {
+
+            return (
+              product.id &&
+              product.title &&
+              Number.isFinite(
+                product.price
+              ) &&
+              product.price > 0
+            );
+
+          });
+
+
+      groupedProducts =
+        groupProducts(
+          products
+        );
+
+
+      updateSummary(
+        groupedProducts.length,
+        products.length,
+        term
+      );
+
+
+      renderGroupedProducts(
+        groupedProducts
+      );
+
+
+      if (marketSection) {
+
+        marketSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      }
+
+
+      console.log(
+        `[ACHOU!] ${groupedProducts.length} produtos e ${products.length} ofertas reais encontradas.`
+      );
+
+
+    } catch (error) {
+
+      console.error(
+        "[ACHOU!] Erro:",
+        error
+      );
+
+
+      products = [];
+
+      groupedProducts = [];
+
+      showError();
+
+
+    } finally {
+
+      if (searchButton) {
+
+        searchButton.disabled =
+          false;
+
+        searchButton.textContent =
+          "BUSCAR";
+
+      }
+
+    }
+
+  }
+
+
+  if (searchButton) {
+
+    searchButton.addEventListener(
+      "click",
+      searchProducts
+    );
+
+  }
+
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          searchProducts();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     CATEGORIAS
+     ======================================================== */
 
   const categoryButtons =
     document.querySelectorAll(
@@ -713,11 +1351,14 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
           const rawText =
-            button.textContent.trim();
+            button.textContent
+              .trim();
 
 
           const text =
-            normalizeText(rawText);
+            normalizeText(
+              rawText
+            );
 
 
           document
@@ -751,15 +1392,23 @@ document.addEventListener("DOMContentLoaded", () => {
             text === "inicio"
           ) {
 
-            if (products.length) {
-              renderProducts(products);
+            if (
+              groupedProducts.length
+            ) {
+
+              renderGroupedProducts(
+                groupedProducts
+              );
+
             }
 
             return;
+
           }
 
 
-          const quickSearchMap = {
+          const map = {
+
             celulares:
               "celular",
 
@@ -773,20 +1422,32 @@ document.addEventListener("DOMContentLoaded", () => {
               "console",
 
             audio:
-              "fone bluetooth"
+              "fone bluetooth",
+
+            casa:
+              "casa",
+
+            moda:
+              "moda",
+
+            ferramentas:
+              "ferramentas"
+
           };
 
 
-          const searchTerm =
-            quickSearchMap[text] ||
+          const term =
+            map[text] ||
             rawText;
 
 
           if (searchInput) {
+
             searchInput.value =
-              searchTerm;
+              term;
 
             searchProducts();
+
           }
 
         }
@@ -795,6 +1456,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
+
+  /* ========================================================
+     HERO
+     ======================================================== */
 
   const heroSlides = [
 
@@ -817,7 +1482,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "ENCONTRE A MELHOR OFERTA",
 
       text:
-        "Compare preços entre diferentes lojas antes de comprar."
+        "Compare preços antes de decidir onde comprar."
     },
 
     {
@@ -885,20 +1550,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (heroLabel) {
+
       heroLabel.textContent =
         slide.label;
+
     }
 
 
     if (heroTitle) {
+
       heroTitle.innerHTML =
         `<strong>${slide.title}</strong>`;
+
     }
 
 
     if (heroText) {
+
       heroText.textContent =
         slide.text;
+
     }
 
 
@@ -912,30 +1583,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
+
   }
 
 
   if (heroPrev) {
+
     heroPrev.addEventListener(
       "click",
       () => {
+
         renderHero(
           heroIndex - 1
         );
+
       }
     );
+
   }
 
 
   if (heroNext) {
+
     heroNext.addEventListener(
       "click",
       () => {
+
         renderHero(
           heroIndex + 1
         );
+
       }
     );
+
   }
 
 
@@ -945,7 +1625,9 @@ document.addEventListener("DOMContentLoaded", () => {
       dot.addEventListener(
         "click",
         () => {
+
           renderHero(index);
+
         }
       );
 
@@ -954,14 +1636,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   if (heroTitle) {
+
     setInterval(
       () => {
+
         renderHero(
           heroIndex + 1
         );
+
       },
       CONFIG.heroInterval
     );
+
   }
 
 
@@ -972,6 +1658,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   if (heroCTA) {
+
     heroCTA.addEventListener(
       "click",
       () => {
@@ -989,15 +1676,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(
           () => {
+
             searchInput.focus();
+
           },
           400
         );
 
       }
     );
+
   }
 
+
+  /* ========================================================
+     LOGIN
+     ======================================================== */
 
   const loginModal =
     document.querySelector(
@@ -1036,6 +1730,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   function openLogin() {
+
     if (!loginModal) {
       return;
     }
@@ -1047,10 +1742,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add(
       "modal-open"
     );
+
   }
 
 
   function closeLogin() {
+
     if (!loginModal) {
       return;
     }
@@ -1062,10 +1759,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove(
       "modal-open"
     );
+
   }
 
 
   function openSignup() {
+
     if (!signupModal) {
       return;
     }
@@ -1077,10 +1776,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add(
       "modal-open"
     );
+
   }
 
 
   function closeSignup() {
+
     if (!signupModal) {
       return;
     }
@@ -1092,34 +1793,42 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.remove(
       "modal-open"
     );
+
   }
 
 
   if (accountButton) {
+
     accountButton.addEventListener(
       "click",
       openLogin
     );
+
   }
 
 
   if (loginClose) {
+
     loginClose.addEventListener(
       "click",
       closeLogin
     );
+
   }
 
 
   if (signupClose) {
+
     signupClose.addEventListener(
       "click",
       closeSignup
     );
+
   }
 
 
   if (createAccount) {
+
     createAccount.addEventListener(
       "click",
       () => {
@@ -1130,10 +1839,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
+
   }
 
 
   if (signupLogin) {
+
     signupLogin.addEventListener(
       "click",
       () => {
@@ -1144,40 +1855,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
-  }
 
-
-  if (loginModal) {
-    loginModal.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target ===
-          loginModal
-        ) {
-          closeLogin();
-        }
-
-      }
-    );
-  }
-
-
-  if (signupModal) {
-    signupModal.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target ===
-          signupModal
-        ) {
-          closeSignup();
-        }
-
-      }
-    );
   }
 
 
@@ -1198,6 +1876,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
+
+  /* ========================================================
+     MENU INFERIOR
+     ======================================================== */
 
   const bottomItems =
     document.querySelectorAll(
@@ -1232,7 +1914,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 
-  renderProducts([]);
+  /* ========================================================
+     INICIALIZAÇÃO
+     ======================================================== */
+
+  createSummary();
+
+  showEmpty();
 
   renderHero(0);
 
@@ -1240,7 +1928,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   console.log(
-    "[ACHOU!] Site carregado. Busca real conectada."
+    "[ACHOU!] Comparador profissional carregado."
   );
 
 });
