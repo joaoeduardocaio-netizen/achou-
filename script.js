@@ -1,268 +1,427 @@
 /* =========================================================
-   ACHOU! - SCRIPT PRINCIPAL
+   ACHOU! — SCRIPT PRINCIPAL
+   Somente produtos e preços reais.
+   Nenhuma oferta fictícia é criada pelo site.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* =======================================================
-     CONFIGURAÇÕES
-     ======================================================= */
-
   const CONFIG = {
-    currency: "BRL",
     locale: "pt-BR",
+    currency: "BRL",
     heroInterval: 5000
   };
 
-  /* =======================================================
-     PRODUTOS TEMPORÁRIOS
-     Depois estes dados serão substituídos pela API real.
-     ======================================================= */
+  /*
+   * ========================================================
+   * PRODUTOS
+   * ========================================================
+   *
+   * IMPORTANTE:
+   * Esta lista começa VAZIA de propósito.
+   *
+   * Produtos só serão adicionados quando vierem de
+   * uma fonte/API real.
+   *
+   * NÃO adicionar preços, fotos ou produtos fictícios aqui.
+   */
 
-  const products = [
-    {
-      id: 1,
-      title: "Smartphone Samsung Galaxy",
-      category: "Celulares",
-      price: 1299.90,
-      oldPrice: 1599.90,
-      discount: 19,
-      rating: 4.8,
-      store: "Mercado Livre",
-      image: "📱",
-      link: "#"
-    },
-    {
-      id: 2,
-      title: "Notebook Lenovo IdeaPad",
-      category: "Informática",
-      price: 2499.90,
-      oldPrice: 2999.90,
-      discount: 17,
-      rating: 4.7,
-      store: "Amazon",
-      image: "💻",
-      link: "#"
-    },
-    {
-      id: 3,
-      title: "Fone Bluetooth Sem Fio",
-      category: "Áudio",
-      price: 149.90,
-      oldPrice: 219.90,
-      discount: 32,
-      rating: 4.6,
-      store: "Shopee",
-      image: "🎧",
-      link: "#"
-    },
-    {
-      id: 4,
-      title: "Smart TV 50 Polegadas 4K",
-      category: "TV",
-      price: 1999.90,
-      oldPrice: 2499.90,
-      discount: 20,
-      rating: 4.9,
-      store: "Magalu",
-      image: "📺",
-      link: "#"
-    },
-    {
-      id: 5,
-      title: "Console PlayStation 5",
-      category: "Games",
-      price: 3499.90,
-      oldPrice: 3999.90,
-      discount: 13,
-      rating: 4.9,
-      store: "KaBuM!",
-      image: "🎮",
-      link: "#"
-    }
-  ];
+  let products = [];
 
-  /* =======================================================
-     FUNÇÕES ÚTEIS
-     ======================================================= */
+
+  /* ========================================================
+     FUNÇÕES AUXILIARES
+     ======================================================== */
 
   function money(value) {
-    return Number(value).toLocaleString(CONFIG.locale, {
+
+    const number = Number(value);
+
+    if (!Number.isFinite(number)) {
+      return "";
+    }
+
+    return number.toLocaleString(CONFIG.locale, {
       style: "currency",
       currency: CONFIG.currency
     });
+
   }
 
+
   function normalizeText(text) {
+
     return String(text || "")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
       .trim();
-  }
-
-  function showMessage(message) {
-    console.log("[ACHOU!]", message);
-  }
-
-  /* =======================================================
-     BUSCA
-     ======================================================= */
-
-  const searchInput = document.querySelector(".search-box input");
-  const searchButton = document.querySelector(".search-box button");
-
-  function searchProducts() {
-
-    if (!searchInput) return;
-
-    const term = normalizeText(searchInput.value);
-
-    if (!term) {
-      renderProducts(products);
-      return;
-    }
-
-    const filtered = products.filter(product => {
-
-      const searchable = normalizeText(
-        `${product.title} ${product.category} ${product.store}`
-      );
-
-      return searchable.includes(term);
-    });
-
-    renderProducts(filtered);
-
-    const marketSection = document.querySelector(".market-section");
-
-    if (marketSection) {
-      marketSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-    }
-  }
-
-  if (searchButton) {
-    searchButton.addEventListener("click", searchProducts);
-  }
-
-  if (searchInput) {
-
-    searchInput.addEventListener("keydown", event => {
-
-      if (event.key === "Enter") {
-        searchProducts();
-      }
-
-    });
 
   }
 
-  /* =======================================================
-     RENDERIZAÇÃO DE PRODUTOS
-     ======================================================= */
 
-  const dealsContainer = document.querySelector(".flash-deals");
+  /* ========================================================
+     ELEMENTOS PRINCIPAIS
+     ======================================================== */
 
-  function renderProducts(list) {
+  const searchInput =
+    document.querySelector(".search-box input");
+
+  const searchButton =
+    document.querySelector(".search-box button");
+
+  const dealsContainer =
+    document.querySelector(".flash-deals");
+
+
+  /* ========================================================
+     PRODUTOS REAIS
+     ======================================================== */
+
+  function renderProducts(list = []) {
 
     if (!dealsContainer) return;
 
-    if (!list.length) {
+    /*
+     * Se não existem produtos reais,
+     * não mostramos nenhuma oferta inventada.
+     */
+
+    if (!Array.isArray(list) || list.length === 0) {
 
       dealsContainer.innerHTML = `
         <div style="
-          padding:30px 20px;
+          width:100%;
+          padding:28px 18px;
           border:1px solid #292929;
           border-radius:12px;
-          color:#999;
-          width:100%;
+          background:#050505;
           text-align:center;
-          font-size:11px;
         ">
-          Nenhum produto encontrado.
+
+          <strong style="
+            display:block;
+            color:#fff;
+            font-size:11px;
+            margin-bottom:7px;
+          ">
+            Nenhuma oferta carregada
+          </strong>
+
+          <span style="
+            display:block;
+            color:#777;
+            font-size:8px;
+            line-height:1.5;
+          ">
+            As ofertas reais aparecerão aqui
+            quando a integração com as lojas
+            estiver disponível.
+          </span>
+
         </div>
       `;
 
       return;
     }
 
-    dealsContainer.innerHTML = list.map(product => `
 
-      <article class="flash-card" data-id="${product.id}">
+    dealsContainer.innerHTML = list.map(product => {
 
-        <span class="discount">
-          -${product.discount}%
-        </span>
+      /*
+       * Validação mínima.
+       * Um produto precisa ter dados reais
+       * antes de aparecer no ACHOU!.
+       */
 
-        <button
-          class="product-favorite"
-          type="button"
-          data-favorite="${product.id}"
-          aria-label="Favoritar produto"
-        >
-          ♡
-        </button>
+      if (
+        !product ||
+        !product.title ||
+        !product.price ||
+        !product.link
+      ) {
+        return "";
+      }
 
-        <div class="flash-photo">
-          ${product.image}
-        </div>
 
-        <h3>${product.title}</h3>
-
-        <span class="old-price">
-          ${money(product.oldPrice)}
-        </span>
-
-        <strong class="flash-price">
-          ${money(product.price)}
-        </strong>
-
-        <div class="product-bottom">
-
-          <span>
-            ${product.store}
+      const image = product.image
+        ? `
+          <img
+            src="${product.image}"
+            alt="${product.title}"
+            loading="lazy"
+            style="
+              width:100%;
+              height:100%;
+              object-fit:contain;
+            "
+          >
+        `
+        : `
+          <span style="
+            color:#666;
+            font-size:8px;
+          ">
+            Imagem indisponível
           </span>
+        `;
 
-          <span class="rating">
-            ★ ${product.rating}
-          </span>
 
-        </div>
+      const oldPrice =
+        product.oldPrice &&
+        Number(product.oldPrice) >
+        Number(product.price)
 
-        <a
-          href="${product.link}"
-          class="offer"
-          data-product="${product.id}"
+          ? `
+            <span class="old-price">
+              ${money(product.oldPrice)}
+            </span>
+          `
+
+          : "";
+
+
+      const discount =
+        product.discount
+
+          ? `
+            <span class="discount">
+              -${product.discount}%
+            </span>
+          `
+
+          : "";
+
+
+      const rating =
+        product.rating
+
+          ? `
+            <span class="rating">
+              ★ ${product.rating}
+            </span>
+          `
+
+          : "";
+
+
+      return `
+
+        <article
+          class="flash-card"
+          data-id="${product.id || ""}"
         >
-          VER OFERTA
-        </a>
 
-      </article>
+          ${discount}
 
-    `).join("");
+          <button
+            class="product-favorite"
+            type="button"
+            data-favorite="${product.id || ""}"
+            aria-label="Favoritar produto"
+          >
+            ♡
+          </button>
+
+
+          <div class="flash-photo">
+            ${image}
+          </div>
+
+
+          <h3>
+            ${product.title}
+          </h3>
+
+
+          ${oldPrice}
+
+
+          <strong class="flash-price">
+            ${money(product.price)}
+          </strong>
+
+
+          <div class="product-bottom">
+
+            <span>
+              ${product.store || "Loja parceira"}
+            </span>
+
+            ${rating}
+
+          </div>
+
+
+          <a
+            href="${product.link}"
+            class="offer"
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+          >
+            VER OFERTA
+          </a>
+
+        </article>
+
+      `;
+
+    }).join("");
+
 
     bindFavorites();
-    bindOfferLinks();
+
   }
 
-  /* =======================================================
+
+  /* ========================================================
+     BUSCA
+     ======================================================== */
+
+  function searchProducts() {
+
+    if (!searchInput) return;
+
+    const term =
+      normalizeText(searchInput.value);
+
+
+    /*
+     * Enquanto não houver API/fonte conectada,
+     * não simulamos resultados.
+     */
+
+    if (!products.length) {
+
+      if (dealsContainer) {
+
+        dealsContainer.innerHTML = `
+          <div style="
+            width:100%;
+            padding:28px 18px;
+            border:1px solid #292929;
+            border-radius:12px;
+            background:#050505;
+            text-align:center;
+          ">
+
+            <strong style="
+              display:block;
+              color:#fff;
+              font-size:11px;
+              margin-bottom:7px;
+            ">
+              Busca de ofertas reais ainda não conectada
+            </strong>
+
+            <span style="
+              display:block;
+              color:#777;
+              font-size:8px;
+              line-height:1.5;
+            ">
+              Nenhum produto ou preço fictício
+              será exibido pelo ACHOU!.
+            </span>
+
+          </div>
+        `;
+
+      }
+
+      return;
+
+    }
+
+
+    if (!term) {
+
+      renderProducts(products);
+
+      return;
+
+    }
+
+
+    const filtered =
+      products.filter(product => {
+
+        const searchable =
+          normalizeText(
+            `${product.title || ""}
+             ${product.category || ""}
+             ${product.store || ""}`
+          );
+
+        return searchable.includes(term);
+
+      });
+
+
+    renderProducts(filtered);
+
+
+    const marketSection =
+      document.querySelector(".market-section");
+
+    if (marketSection) {
+
+      marketSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }
+
+  }
+
+
+  if (searchButton) {
+
+    searchButton.addEventListener(
+      "click",
+      searchProducts
+    );
+
+  }
+
+
+  if (searchInput) {
+
+    searchInput.addEventListener(
+      "keydown",
+      event => {
+
+        if (event.key === "Enter") {
+          searchProducts();
+        }
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
      FAVORITOS
-     ======================================================= */
+     ======================================================== */
 
   function getFavorites() {
 
     try {
+
       return JSON.parse(
         localStorage.getItem("achou_favorites")
       ) || [];
+
     } catch {
+
       return [];
+
     }
 
   }
+
 
   function saveFavorites(favorites) {
 
@@ -273,235 +432,294 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
   function bindFavorites() {
 
-    const buttons = document.querySelectorAll(
-      "[data-favorite]"
-    );
+    const buttons =
+      document.querySelectorAll(
+        "[data-favorite]"
+      );
 
-    const favorites = getFavorites();
 
     buttons.forEach(button => {
 
-      const id = Number(button.dataset.favorite);
+      const id =
+        String(button.dataset.favorite);
+
+      if (!id) return;
+
+
+      const favorites =
+        getFavorites().map(String);
+
 
       if (favorites.includes(id)) {
         button.textContent = "♥";
       }
 
-      button.addEventListener("click", () => {
 
-        let current = getFavorites();
+      button.addEventListener(
+        "click",
+        () => {
 
-        if (current.includes(id)) {
+          let current =
+            getFavorites().map(String);
 
-          current = current.filter(
-            item => item !== id
-          );
 
-          button.textContent = "♡";
+          if (current.includes(id)) {
 
-        } else {
+            current =
+              current.filter(
+                item => item !== id
+              );
 
-          current.push(id);
+            button.textContent = "♡";
 
-          button.textContent = "♥";
+          } else {
 
-        }
+            current.push(id);
 
-        saveFavorites(current);
-
-        updateFavoriteCounter();
-
-      });
-
-    });
-
-    updateFavoriteCounter();
-  }
-
-  function updateFavoriteCounter() {
-
-    const favorites = getFavorites();
-
-    const counters = document.querySelectorAll(
-      ".favorite-count"
-    );
-
-    counters.forEach(counter => {
-      counter.textContent = favorites.length;
-    });
-
-  }
-
-  /* =======================================================
-     LINKS DAS OFERTAS
-     ======================================================= */
-
-  function bindOfferLinks() {
-
-    document
-      .querySelectorAll("[data-product]")
-      .forEach(link => {
-
-        link.addEventListener("click", event => {
-
-          const id = Number(
-            link.dataset.product
-          );
-
-          const product = products.find(
-            item => item.id === id
-          );
-
-          if (!product) return;
-
-          if (
-            !product.link ||
-            product.link === "#"
-          ) {
-
-            event.preventDefault();
-
-            alert(
-              "Essa oferta ainda está aguardando a integração com a loja."
-            );
+            button.textContent = "♥";
 
           }
 
-        });
+
+          saveFavorites(current);
+
+          updateFavoriteCounter();
+
+        }
+      );
+
+    });
+
+
+    updateFavoriteCounter();
+
+  }
+
+
+  function updateFavoriteCounter() {
+
+    const favorites =
+      getFavorites();
+
+
+    document
+      .querySelectorAll(".favorite-count")
+      .forEach(counter => {
+
+        counter.textContent =
+          favorites.length;
 
       });
 
   }
 
-  /* =======================================================
-     CATEGORIAS
-     ======================================================= */
 
-  const categoryButtons = document.querySelectorAll(
-    ".category-nav-item, .quick-category, .popular-tags button"
-  );
+  /* ========================================================
+     CATEGORIAS
+     ======================================================== */
+
+  const categoryButtons =
+    document.querySelectorAll(
+      ".category-nav-item, .quick-category, .popular-tags button"
+    );
+
 
   categoryButtons.forEach(button => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+      "click",
+      () => {
 
-      const text = normalizeText(
-        button.textContent
-      );
+        const text =
+          normalizeText(
+            button.textContent
+          );
 
-      document
-        .querySelectorAll(".category-nav-item")
-        .forEach(item => {
-          item.classList.remove("active");
-        });
 
-      if (
-        button.classList.contains(
-          "category-nav-item"
-        )
-      ) {
-        button.classList.add("active");
-      }
+        document
+          .querySelectorAll(
+            ".category-nav-item"
+          )
+          .forEach(item => {
 
-      if (
-        text === "todos" ||
-        text === "inicio" ||
-        text === "ofertas"
-      ) {
+            item.classList.remove(
+              "active"
+            );
 
-        renderProducts(products);
-        return;
+          });
 
-      }
 
-      const filtered = products.filter(
-        product =>
-          normalizeText(product.category)
-            .includes(text) ||
-          normalizeText(product.title)
-            .includes(text)
-      );
+        if (
+          button.classList.contains(
+            "category-nav-item"
+          )
+        ) {
 
-      if (filtered.length) {
+          button.classList.add(
+            "active"
+          );
+
+        }
+
+
+        if (!products.length) {
+
+          renderProducts([]);
+
+          return;
+
+        }
+
+
+        if (
+          text === "todos" ||
+          text === "inicio"
+        ) {
+
+          renderProducts(products);
+
+          return;
+
+        }
+
+
+        const filtered =
+          products.filter(product => {
+
+            return (
+              normalizeText(
+                product.category
+              ).includes(text) ||
+
+              normalizeText(
+                product.title
+              ).includes(text)
+            );
+
+          });
+
+
         renderProducts(filtered);
-      }
 
-    });
+      }
+    );
 
   });
 
-  /* =======================================================
-     BANNER / HERO
-     ======================================================= */
+
+  /* ========================================================
+     HERO
+     ======================================================== */
 
   const heroSlides = [
+
     {
-      label: "OFERTAS SELECIONADAS",
-      title: "COMPARE ANTES DE COMPRAR",
-      text: "A gente procura os melhores preços para você economizar."
+      label:
+        "OFERTAS SELECIONADAS",
+
+      title:
+        "COMPARE ANTES DE COMPRAR",
+
+      text:
+        "A gente procura os melhores preços para você economizar."
     },
+
     {
-      label: "PREÇOS EM UM SÓ LUGAR",
-      title: "ENCONTRE A MELHOR OFERTA",
-      text: "Compare preços entre diferentes lojas antes de comprar."
+      label:
+        "PREÇOS EM UM SÓ LUGAR",
+
+      title:
+        "ENCONTRE A MELHOR OFERTA",
+
+      text:
+        "Compare preços entre diferentes lojas antes de comprar."
     },
+
     {
-      label: "ACHOU!",
-      title: "VOCÊ PROCURA. A GENTE COMPARA.",
-      text: "Menos tempo procurando. Mais dinheiro economizado."
+      label:
+        "ACHOU!",
+
+      title:
+        "VOCÊ PROCURA. A GENTE COMPARA.",
+
+      text:
+        "Menos tempo procurando. Mais dinheiro economizado."
     }
+
   ];
+
 
   let heroIndex = 0;
 
-  const heroLabel = document.querySelector(
-    ".hero-small-title"
-  );
 
-  const heroTitle = document.querySelector(
-    ".hero-banner h1"
-  );
+  const heroLabel =
+    document.querySelector(
+      ".hero-small-title"
+    );
 
-  const heroText = document.querySelector(
-    ".hero-banner p"
-  );
+  const heroTitle =
+    document.querySelector(
+      ".hero-banner h1"
+    );
 
-  const heroPrev = document.querySelector(
-    ".hero-prev"
-  );
+  const heroText =
+    document.querySelector(
+      ".hero-banner p"
+    );
 
-  const heroNext = document.querySelector(
-    ".hero-next"
-  );
+  const heroPrev =
+    document.querySelector(
+      ".hero-prev"
+    );
 
-  const heroDots = document.querySelectorAll(
-    ".hero-dot"
-  );
+  const heroNext =
+    document.querySelector(
+      ".hero-next"
+    );
+
+  const heroDots =
+    document.querySelectorAll(
+      ".hero-dot"
+    );
+
 
   function renderHero(index) {
-
-    if (!heroSlides.length) return;
 
     heroIndex =
       (index + heroSlides.length) %
       heroSlides.length;
 
-    const slide = heroSlides[heroIndex];
+
+    const slide =
+      heroSlides[heroIndex];
+
 
     if (heroLabel) {
-      heroLabel.textContent = slide.label;
+
+      heroLabel.textContent =
+        slide.label;
+
     }
+
 
     if (heroTitle) {
+
       heroTitle.innerHTML =
         `<strong>${slide.title}</strong>`;
+
     }
 
+
     if (heroText) {
-      heroText.textContent = slide.text;
+
+      heroText.textContent =
+        slide.text;
+
     }
+
 
     heroDots.forEach(
       (dot, index) => {
@@ -516,27 +734,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
   if (heroPrev) {
 
     heroPrev.addEventListener(
       "click",
       () => {
-        renderHero(heroIndex - 1);
+
+        renderHero(
+          heroIndex - 1
+        );
+
       }
     );
 
   }
+
 
   if (heroNext) {
 
     heroNext.addEventListener(
       "click",
       () => {
-        renderHero(heroIndex + 1);
+
+        renderHero(
+          heroIndex + 1
+        );
+
       }
     );
 
   }
+
 
   heroDots.forEach(
     (dot, index) => {
@@ -544,117 +773,124 @@ document.addEventListener("DOMContentLoaded", () => {
       dot.addEventListener(
         "click",
         () => {
+
           renderHero(index);
+
         }
       );
 
     }
   );
 
-  if (
-    heroSlides.length > 1 &&
-    heroTitle
-  ) {
 
-    setInterval(() => {
+  if (heroTitle) {
 
-      renderHero(heroIndex + 1);
+    setInterval(
+      () => {
 
-    }, CONFIG.heroInterval);
+        renderHero(
+          heroIndex + 1
+        );
 
-  }
-
-  /* =======================================================
-     CONTADOR DE OFERTA
-     ======================================================= */
-
-  const timer = document.querySelector(
-    ".deal-timer strong"
-  );
-
-  let secondsRemaining =
-    (2 * 60 * 60) +
-    (47 * 60) +
-    32;
-
-  function updateTimer() {
-
-    if (!timer) return;
-
-    if (secondsRemaining <= 0) {
-
-      secondsRemaining =
-        (2 * 60 * 60) +
-        (47 * 60) +
-        32;
-
-    }
-
-    const hours =
-      Math.floor(
-        secondsRemaining / 3600
-      );
-
-    const minutes =
-      Math.floor(
-        (secondsRemaining % 3600) / 60
-      );
-
-    const seconds =
-      secondsRemaining % 60;
-
-    timer.textContent =
-      `${String(hours).padStart(2, "0")}:` +
-      `${String(minutes).padStart(2, "0")}:` +
-      `${String(seconds).padStart(2, "0")}`;
-
-    secondsRemaining--;
+      },
+      CONFIG.heroInterval
+    );
 
   }
 
-  updateTimer();
 
-  setInterval(
-    updateTimer,
-    1000
-  );
+  /* ========================================================
+     BOTÃO DO HERO
+     ======================================================== */
 
-  /* =======================================================
-     LOGIN
-     ======================================================= */
+  const heroCTA =
+    document.querySelector(
+      ".hero-cta"
+    );
+
+
+  if (heroCTA) {
+
+    heroCTA.addEventListener(
+      "click",
+      () => {
+
+        if (!searchInput) return;
+
+
+        searchInput.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+
+        setTimeout(
+          () => {
+            searchInput.focus();
+          },
+          400
+        );
+
+      }
+    );
+
+  }
+
+
+  /* ========================================================
+     LOGIN / CADASTRO
+     ======================================================== */
 
   const loginModal =
-    document.querySelector(".login-modal");
+    document.querySelector(
+      ".login-modal"
+    );
 
   const signupModal =
-    document.querySelector(".signup-modal");
+    document.querySelector(
+      ".signup-modal"
+    );
 
   const accountButton =
-    document.querySelector(".account-button");
+    document.querySelector(
+      ".account-button"
+    );
 
   const loginClose =
-    document.querySelector(".login-close");
+    document.querySelector(
+      ".login-close"
+    );
 
   const signupClose =
-    document.querySelector(".signup-close");
+    document.querySelector(
+      ".signup-close"
+    );
 
   const createAccount =
-    document.querySelector(".create-account");
+    document.querySelector(
+      ".create-account"
+    );
 
   const signupLogin =
-    document.querySelector(".signup-login");
+    document.querySelector(
+      ".signup-login"
+    );
+
 
   function openLogin() {
 
     if (!loginModal) return;
 
-    loginModal.classList.add("active");
+    loginModal.classList.add(
+      "active"
+    );
 
     document.body.classList.add(
       "modal-open"
     );
 
   }
+
 
   function closeLogin() {
 
@@ -670,6 +906,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
   function openSignup() {
 
     if (!signupModal) return;
@@ -683,6 +920,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
   }
+
 
   function closeSignup() {
 
@@ -698,26 +936,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
+
   if (accountButton) {
+
     accountButton.addEventListener(
       "click",
       openLogin
     );
+
   }
 
+
   if (loginClose) {
+
     loginClose.addEventListener(
       "click",
       closeLogin
     );
+
   }
 
+
   if (signupClose) {
+
     signupClose.addEventListener(
       "click",
       closeSignup
     );
+
   }
+
 
   if (createAccount) {
 
@@ -726,12 +974,14 @@ document.addEventListener("DOMContentLoaded", () => {
       () => {
 
         closeLogin();
+
         openSignup();
 
       }
     );
 
   }
+
 
   if (signupLogin) {
 
@@ -740,12 +990,14 @@ document.addEventListener("DOMContentLoaded", () => {
       () => {
 
         closeSignup();
+
         openLogin();
 
       }
     );
 
   }
+
 
   if (loginModal) {
 
@@ -754,15 +1006,19 @@ document.addEventListener("DOMContentLoaded", () => {
       event => {
 
         if (
-          event.target === loginModal
+          event.target ===
+          loginModal
         ) {
+
           closeLogin();
+
         }
 
       }
     );
 
   }
+
 
   if (signupModal) {
 
@@ -771,9 +1027,12 @@ document.addEventListener("DOMContentLoaded", () => {
       event => {
 
         if (
-          event.target === signupModal
+          event.target ===
+          signupModal
         ) {
+
           closeSignup();
+
         }
 
       }
@@ -781,9 +1040,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   }
 
-  /* =======================================================
-     ESC PARA FECHAR MODAIS
-     ======================================================= */
 
   document.addEventListener(
     "keydown",
@@ -792,6 +1048,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (event.key === "Escape") {
 
         closeLogin();
+
         closeSignup();
 
       }
@@ -799,14 +1056,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   );
 
-  /* =======================================================
-     NAVEGAÇÃO INFERIOR
-     ======================================================= */
+
+  /* ========================================================
+     MENU INFERIOR
+     ======================================================== */
 
   const bottomItems =
     document.querySelectorAll(
       ".bottom-nav-item"
     );
+
 
   bottomItems.forEach(item => {
 
@@ -814,58 +1073,40 @@ document.addEventListener("DOMContentLoaded", () => {
       "click",
       () => {
 
-        bottomItems.forEach(nav => {
-          nav.classList.remove("active");
-        });
+        bottomItems.forEach(
+          nav => {
 
-        item.classList.add("active");
+            nav.classList.remove(
+              "active"
+            );
+
+          }
+        );
+
+
+        item.classList.add(
+          "active"
+        );
 
       }
     );
 
   });
 
-  /* =======================================================
-     HERO CTA
-     ======================================================= */
 
-  const heroCTA =
-    document.querySelector(".hero-cta");
-
-  if (heroCTA) {
-
-    heroCTA.addEventListener(
-      "click",
-      () => {
-
-        if (searchInput) {
-
-          searchInput.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-          });
-
-          setTimeout(() => {
-            searchInput.focus();
-          }, 500);
-
-        }
-
-      }
-    );
-
-  }
-
-  /* =======================================================
+  /* ========================================================
      INICIALIZAÇÃO
-     ======================================================= */
+     ======================================================== */
 
-  renderProducts(products);
+  renderProducts([]);
+
   renderHero(0);
+
   updateFavoriteCounter();
 
-  showMessage(
-    "Site ACHOU! carregado com sucesso."
+
+  console.log(
+    "[ACHOU!] Site carregado. Aguardando fonte de ofertas reais."
   );
 
 });
