@@ -277,3 +277,172 @@
   font-size:7px;
   line-height:1.45;
 }
+/* =========================================================
+   ACHOU! — HERO COM PRODUTOS REAIS
+   ========================================================= */
+
+.hero-products{
+  position:absolute;
+  right:0;
+  top:0;
+  width:58%;
+  height:100%;
+  z-index:2;
+  pointer-events:none;
+  overflow:visible;
+}
+
+.hero-glow{
+  position:absolute;
+  width:280px;
+  height:280px;
+  right:0;
+  top:50%;
+  transform:translateY(-50%);
+  border-radius:50%;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,212,0,.30) 0%,
+      rgba(255,212,0,.12) 35%,
+      rgba(255,212,0,.035) 60%,
+      transparent 74%
+    );
+  filter:blur(6px);
+}
+
+.hero-real-laptop,
+.hero-real-headphone,
+.hero-real-phone{
+  position:absolute;
+  display:block;
+  object-fit:contain;
+  user-select:none;
+  -webkit-user-drag:none;
+  transform-origin:center;
+}
+
+.hero-real-laptop{
+  width:230px;
+  right:18px;
+  top:76px;
+  z-index:2;
+  transform:rotate(-2deg);
+  filter:
+    drop-shadow(0 18px 22px rgba(0,0,0,.75))
+    drop-shadow(0 0 18px rgba(255,212,0,.08));
+}
+
+.hero-real-headphone{
+  width:110px;
+  right:106px;
+  bottom:20px;
+  z-index:4;
+  transform:rotate(-7deg);
+  filter:
+    drop-shadow(0 15px 16px rgba(0,0,0,.8))
+    drop-shadow(0 0 12px rgba(255,212,0,.07));
+}
+
+.hero-real-phone{
+  width:90px;
+  right:3px;
+  top:66px;
+  z-index:5;
+  transform:rotate(7deg);
+  filter:
+    drop-shadow(0 16px 18px rgba(0,0,0,.78))
+    drop-shadow(0 0 13px rgba(255,212,0,.08));
+}
+
+
+/* deixa os objetos desaparecerem suavemente no fundo */
+
+.hero-products::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:7;
+  pointer-events:none;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3,3,3,.90) 0%,
+      rgba(3,3,3,.30) 23%,
+      transparent 48%
+    );
+}
+
+
+/* garante que o texto continue acima */
+
+.hero-banner-content{
+  position:relative;
+  z-index:10;
+}
+
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  .hero-banner{
+    min-height:320px;
+  }
+
+  .hero-banner-content{
+    width:61%;
+    padding:34px 16px;
+  }
+
+  .hero-products{
+    width:55%;
+  }
+
+  .hero-real-laptop{
+    width:185px;
+    right:-15px;
+    top:88px;
+  }
+
+  .hero-real-headphone{
+    width:88px;
+    right:72px;
+    bottom:25px;
+  }
+
+  .hero-real-phone{
+    width:72px;
+    right:-2px;
+    top:76px;
+  }
+
+  .hero-glow{
+    width:220px;
+    height:220px;
+    right:-25px;
+  }
+
+}
+
+
+/* TELAS BEM PEQUENAS */
+
+@media(max-width:380px){
+
+  .hero-real-laptop{
+    width:165px;
+    right:-22px;
+  }
+
+  .hero-real-headphone{
+    width:78px;
+    right:61px;
+  }
+
+  .hero-real-phone{
+    width:64px;
+    right:-5px;
+  }
+
+}
