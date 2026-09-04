@@ -213,3 +213,67 @@
   font-size:7px;
   font-weight:950;
 }
+/* =========================================================
+   ACHOU! — ACABAMENTO PROFISSIONAL DAS OFERTAS
+   ========================================================= */
+
+.flash-card:first-child{
+  border-color:#FFD400;
+  box-shadow:0 0 0 1px rgba(255,212,0,.08);
+}
+
+.flash-card:first-child::before{
+  content:"MENOR PREÇO";
+  position:absolute;
+  top:14px;
+  left:14px;
+  z-index:6;
+  padding:5px 8px;
+  border-radius:6px;
+  background:#FFD400;
+  color:#000;
+  font-size:7px;
+  font-weight:950;
+  letter-spacing:.3px;
+}
+
+.flash-card:first-child .discount{
+  top:46px;
+}
+
+.flash-card .offer{
+  transition:
+    transform .15s ease,
+    background .15s ease,
+    border-color .15s ease;
+}
+
+.flash-card .offer:active{
+  transform:scale(.98);
+}
+
+.flash-card .offer:disabled{
+  cursor:not-allowed;
+}
+
+.flash-card h3{
+  color:#f5f5f5;
+}
+
+.flash-price{
+  letter-spacing:-.4px;
+}
+
+.product-bottom{
+  border-top:1px solid #171717;
+  padding-top:8px;
+}
+
+.market-section:first-of-type::after{
+  content:"O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.";
+  display:block;
+  margin-top:10px;
+  color:#666;
+  font-size:7px;
+  line-height:1.45;
+}
