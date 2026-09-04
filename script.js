@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   cursor:not-allowed;
                 "
               >
-                LINK INDISPONÍVEL
+            OFERTA SEM LINK
               </button>
             `;
 
