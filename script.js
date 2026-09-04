@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const style = document.createElement("style");
 
   style.textContent = `
+
     .achou-search-summary{
       display:flex;
       align-items:center;
@@ -220,11 +221,51 @@ document.addEventListener("DOMContentLoaded", () => {
       min-height:38px;
     }
 
+    /* FOTO REAL DO PRODUTO */
+
+    .flash-photo{
+      width:100%;
+      aspect-ratio:1 / 1;
+      position:relative;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background:#fff;
+      border-radius:12px;
+    }
+
+    .flash-photo .achou-product-image{
+      width:100%;
+      height:100%;
+      display:block;
+      object-fit:contain;
+      object-position:center;
+      padding:14px;
+      background:#fff;
+    }
+
+    .achou-image-fallback{
+      width:100%;
+      height:100%;
+      min-height:150px;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      background:#111;
+      color:#777;
+      font-size:9px;
+      text-align:center;
+    }
+
     @media (min-width:768px){
+
       .flash-card{
         flex-basis:230px;
       }
+
     }
+
   `;
 
   document.head.appendChild(style);
@@ -343,7 +384,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     summaryBox =
       document.createElement("div");
 
@@ -352,7 +392,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     summaryBox.style.display =
       "none";
-
 
     marketSection.insertBefore(
       summaryBox,
@@ -372,13 +411,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     summaryBox.style.display =
       "flex";
 
-
     summaryBox.innerHTML = `
       <div>
+
         <strong>
           ${productCount}
           ${
@@ -398,6 +436,7 @@ document.addEventListener("DOMContentLoaded", () => {
           para
           “${escapeHtml(query)}”
         </span>
+
       </div>
 
       <span>
@@ -420,6 +459,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dealsContainer.innerHTML = `
       <div class="achou-search-status loading">
+
         <strong>
           Procurando as melhores ofertas...
         </strong>
@@ -428,6 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
           Comparando produtos e preços reais
           no Mercado Livre.
         </span>
+
       </div>
     `;
 
@@ -442,6 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dealsContainer.innerHTML = `
       <div class="achou-search-status">
+
         <strong>
           Não foi possível buscar agora
         </strong>
@@ -449,6 +491,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <span>
           Tente novamente em alguns instantes.
         </span>
+
       </div>
     `;
 
@@ -463,6 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     dealsContainer.innerHTML = `
       <div class="achou-search-status">
+
         <strong>
           Nenhuma oferta encontrada
         </strong>
@@ -470,6 +514,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <span>
           Tente pesquisar outro produto.
         </span>
+
       </div>
     `;
 
@@ -566,7 +611,7 @@ document.addEventListener("DOMContentLoaded", () => {
           {
             productId: key,
             title: item.title,
-            image: item.image,
+            image: item.image || null,
             offers: []
           }
         );
@@ -574,8 +619,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
 
-      map
-        .get(key)
+      const currentGroup =
+        map.get(key);
+
+
+      if (
+        !currentGroup.image &&
+        item.image
+      ) {
+
+        currentGroup.image =
+          item.image;
+
+      }
+
+
+      currentGroup
         .offers
         .push(item);
 
@@ -778,6 +837,7 @@ document.addEventListener("DOMContentLoaded", () => {
           const best =
             group.best;
 
+
           const title =
             escapeHtml(
               group.title
@@ -792,24 +852,49 @@ document.addEventListener("DOMContentLoaded", () => {
             group.image
               ? `
                 <img
+                  class="achou-product-image"
                   src="${escapeHtml(group.image)}"
                   alt="${title}"
                   loading="lazy"
+                  decoding="async"
+                  referrerpolicy="no-referrer"
+                  onerror="
+                    this.style.display='none';
+                    this.nextElementSibling.style.display='flex';
+                  "
                 >
+
+                <div
+                  class="achou-image-fallback"
+                  style="display:none"
+                >
+                  <span>
+                    Imagem indisponível
+                  </span>
+                </div>
               `
               : `
-                <span>
-                  Imagem indisponível
-                </span>
+                <div
+                  class="achou-image-fallback"
+                  style="display:flex"
+                >
+                  <span>
+                    Imagem indisponível
+                  </span>
+                </div>
               `;
 
 
+          const bestBuyable =
+            group.bestBuyable;
+
+
           const bestLink =
-            best.canBuy &&
+            bestBuyable &&
             validAffiliateLink(
-              best.link
+              bestBuyable.link
             )
-              ? best.link
+              ? bestBuyable.link
               : null;
 
 
@@ -1049,6 +1134,17 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
 
 
+    document
+      .querySelectorAll(
+        ".achou-affiliate-note"
+      )
+      .forEach(note => {
+
+        note.remove();
+
+      });
+
+
     const note =
       document.createElement(
         "div"
@@ -1156,8 +1252,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (summaryBox) {
+
       summaryBox.style.display =
         "none";
+
     }
 
 
