@@ -1,25 +1,33 @@
 /* =========================================================
-   ACHOU! — COMPARADOR PROFISSIONAL
-   Mercado Livre + links afiliados manuais + painel admin
+   ACHOU! — SCRIPT FINAL
+   Comparador profissional de preços
 
-   VERSÃO:
-   - Exibe produtos mesmo sem link afiliado
-   - Link afiliado vinculado somente ao ITEM ID exato
-   - Admin exige login em todo novo acesso
-   - Categorias com buscas mais específicas
+   FUNCIONALIDADES:
+   - Busca real Mercado Livre
+   - Produtos e preços reais
+   - Agrupamento de ofertas
+   - Menor preço
+   - Links afiliados manuais
+   - Favoritos
+   - Categorias e subcategorias
+   - Login / cadastro Supabase
+   - Painel administrativo secreto
+   - Mercado Livre integrado
+   - Estrutura preparada para múltiplas lojas
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
+
   /* ========================================================
-     CONFIG
+     CONFIGURAÇÃO
      ======================================================== */
 
   const CONFIG = {
-    locale: "pt-BR",
-    currency: "BRL",
 
-    heroInterval: 5000,
+    locale: "pt-BR",
+
+    currency: "BRL",
 
     initialQuery: "iPhone 15",
 
@@ -31,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     supabaseKey:
       "sb_publishable_Wi0Kz5aB4LeLnlxQE_34Yw_1KwA8ebc"
+
   };
 
 
@@ -39,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
      ======================================================== */
 
   let db = null;
+
   let adminDb = null;
 
 
@@ -52,12 +62,20 @@ document.addEventListener("DOMContentLoaded", () => {
         CONFIG.supabaseUrl,
         CONFIG.supabaseKey,
         {
+
           auth: {
+
             persistSession: true,
+
             autoRefreshToken: true,
+
             detectSessionInUrl: true,
-            storageKey: "achou-user-auth"
+
+            storageKey:
+              "achou-user-auth"
+
           }
+
         }
       );
 
@@ -67,11 +85,17 @@ document.addEventListener("DOMContentLoaded", () => {
         CONFIG.supabaseUrl,
         CONFIG.supabaseKey,
         {
+
           auth: {
+
             persistSession: false,
+
             autoRefreshToken: false,
+
             detectSessionInUrl: false
+
           }
+
         }
       );
 
@@ -80,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error(
       "[ACHOU!] Supabase não carregado."
     );
+
   }
 
 
@@ -88,11 +113,10 @@ document.addEventListener("DOMContentLoaded", () => {
      ======================================================== */
 
   let products = [];
-  let groupedProducts = [];
-  let affiliateLinks = [];
 
-  let summaryBox = null;
-  let heroIndex = 0;
+  let groupedProducts = [];
+
+  let affiliateLinks = [];
 
   let currentQuery =
     CONFIG.initialQuery;
@@ -104,27 +128,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const searchInput =
     document.querySelector(
+      "#searchInput"
+    ) ||
+    document.querySelector(
       ".search-box input"
     );
+
 
   const searchButton =
     document.querySelector(
       ".search-box button"
     );
 
+
   const dealsContainer =
     document.querySelector(
       ".flash-deals"
     );
 
+
   const marketSection =
     document.querySelector(
-      ".market-section"
+      "#offersSection"
     );
 
-  const heroCTA =
+
+  const summaryBox =
     document.querySelector(
-      ".hero-cta"
+      ".achou-search-summary"
+    );
+
+
+  const categoriesSection =
+    document.querySelector(
+      "#categoriesSection"
     );
 
 
@@ -140,79 +177,55 @@ document.addEventListener("DOMContentLoaded", () => {
     if (
       !Number.isFinite(number)
     ) {
+
       return "";
+
     }
 
     return number.toLocaleString(
       CONFIG.locale,
       {
+
         style: "currency",
-        currency: CONFIG.currency
+
+        currency:
+          CONFIG.currency
+
       }
     );
-  }
 
-
-  function normalizeText(text) {
-
-    return String(text || "")
-      .normalize("NFD")
-      .replace(
-        /[\u0300-\u036f]/g,
-        ""
-      )
-      .toLowerCase()
-      .trim();
   }
 
 
   function escapeHtml(text) {
 
     return String(text || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-  }
 
+      .replace(
+        /&/g,
+        "&amp;"
+      )
 
-  function validAffiliateLink(url) {
+      .replace(
+        /</g,
+        "&lt;"
+      )
 
-    if (!url) {
-      return false;
-    }
+      .replace(
+        />/g,
+        "&gt;"
+      )
 
-    try {
+      .replace(
+        /"/g,
+        "&quot;"
+      )
 
-      const parsed =
-        new URL(url);
-
-      if (
-        parsed.protocol !== "https:"
-      ) {
-        return false;
-      }
-
-      const host =
-        parsed.hostname.toLowerCase();
-
-      return (
-        host === "meli.la" ||
-        host === "mercadolivre.com.br" ||
-        host.endsWith(
-          ".mercadolivre.com.br"
-        ) ||
-        host === "mercadolibre.com" ||
-        host.endsWith(
-          ".mercadolibre.com"
-        )
+      .replace(
+        /'/g,
+        "&#039;"
       );
 
-    } catch {
-
-      return false;
-    }
   }
 
 
@@ -223,7 +236,9 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
 
     if (!element) {
+
       return;
+
     }
 
     element.textContent =
@@ -235,41 +250,200 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (type) {
-      element.classList.add(type);
+
+      element.classList.add(
+        type
+      );
+
     }
+
+  }
+
+
+  function validAffiliateLink(
+    url
+  ) {
+
+    if (!url) {
+
+      return false;
+
+    }
+
+    try {
+
+      const parsed =
+        new URL(url);
+
+      if (
+        parsed.protocol !==
+        "https:"
+      ) {
+
+        return false;
+
+      }
+
+      const host =
+        parsed.hostname
+          .toLowerCase();
+
+      return (
+
+        host === "meli.la" ||
+
+        host ===
+          "mercadolivre.com.br" ||
+
+        host.endsWith(
+          ".mercadolivre.com.br"
+        ) ||
+
+        host ===
+          "mercadolibre.com" ||
+
+        host.endsWith(
+          ".mercadolibre.com"
+        )
+
+      );
+
+    } catch {
+
+      return false;
+
+    }
+
+  }
+
+
+  function scrollToOffers() {
+
+    marketSection
+      ?.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "start"
+
+      });
+
+  }
+
+
+  function focusSearch() {
+
+    searchInput
+      ?.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "center"
+
+      });
+
+
+    setTimeout(
+      () => {
+
+        searchInput
+          ?.focus();
+
+      },
+      350
+    );
+
   }
 
 
   /* ========================================================
-     RESUMO
+     STATUS DE BUSCA
      ======================================================== */
 
-  function createSummary() {
+  function showLoading() {
 
-    if (
-      !marketSection ||
-      !dealsContainer
-    ) {
+    if (!dealsContainer) {
+
       return;
+
     }
 
-    summaryBox =
-      document.createElement(
-        "div"
-      );
+    dealsContainer.innerHTML = `
 
-    summaryBox.className =
-      "achou-search-summary";
+      <div class="achou-search-status loading">
 
-    summaryBox.style.display =
-      "none";
+        <strong>
+          Procurando as melhores ofertas...
+        </strong>
 
-    marketSection.insertBefore(
-      summaryBox,
-      dealsContainer
-    );
+        <span>
+          Consultando produtos e preços reais.
+        </span>
+
+      </div>
+
+    `;
+
   }
 
+
+  function showError() {
+
+    if (!dealsContainer) {
+
+      return;
+
+    }
+
+    dealsContainer.innerHTML = `
+
+      <div class="achou-search-status">
+
+        <strong>
+          Não foi possível buscar agora
+        </strong>
+
+        <span>
+          Tente novamente em alguns instantes.
+        </span>
+
+      </div>
+
+    `;
+
+  }
+
+
+  function showEmpty() {
+
+    if (!dealsContainer) {
+
+      return;
+
+    }
+
+    dealsContainer.innerHTML = `
+
+      <div class="achou-search-status">
+
+        <strong>
+          Nenhum produto encontrado
+        </strong>
+
+        <span>
+          Tente outro produto ou escolha uma subcategoria.
+        </span>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* ========================================================
+     RESUMO DA BUSCA
+     ======================================================== */
 
   function updateSummary(
     productCount,
@@ -278,122 +452,64 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
 
     if (!summaryBox) {
+
       return;
+
     }
 
     summaryBox.style.display =
       "flex";
 
     summaryBox.innerHTML = `
+
       <div>
 
         <strong>
+
           ${productCount}
+
           ${
             productCount === 1
               ? "produto encontrado"
               : "produtos encontrados"
           }
+
         </strong>
 
+
         <span>
+
           ${offerCount}
+
           ${
             offerCount === 1
               ? "oferta encontrada"
               : "ofertas encontradas"
           }
-          para
-          “${escapeHtml(query)}”
+
+          para “${escapeHtml(query)}”
+
         </span>
 
       </div>
+
 
       <span>
-        Ordenado por menor preço
+        Menor preço primeiro
       </span>
+
     `;
+
   }
 
 
   /* ========================================================
-     STATUS
+     NORMALIZA PRODUTO
      ======================================================== */
 
-  function showLoading() {
-
-    if (!dealsContainer) {
-      return;
-    }
-
-    dealsContainer.innerHTML = `
-      <div class="achou-search-status loading">
-
-        <strong>
-          Procurando as melhores ofertas...
-        </strong>
-
-        <span>
-          Consultando produtos
-          e preços reais.
-        </span>
-
-      </div>
-    `;
-  }
-
-
-  function showError() {
-
-    if (!dealsContainer) {
-      return;
-    }
-
-    dealsContainer.innerHTML = `
-      <div class="achou-search-status">
-
-        <strong>
-          Não foi possível buscar agora
-        </strong>
-
-        <span>
-          Tente novamente
-          em alguns instantes.
-        </span>
-
-      </div>
-    `;
-  }
-
-
-  function showEmpty() {
-
-    if (!dealsContainer) {
-      return;
-    }
-
-    dealsContainer.innerHTML = `
-      <div class="achou-search-status">
-
-        <strong>
-          Nenhum produto encontrado
-        </strong>
-
-        <span>
-          Tente pesquisar
-          outro produto ou categoria.
-        </span>
-
-      </div>
-    `;
-  }
-
-
-  /* ========================================================
-     NORMALIZA PRODUTOS DA API
-     ======================================================== */
-
-  function normalizeApiProduct(item) {
+  function normalizeApiProduct(
+    item
+  ) {
 
     return {
 
@@ -446,6 +562,9 @@ document.addEventListener("DOMContentLoaded", () => {
       store:
         "Mercado Livre",
 
+      source:
+        "mercadolivre",
+
       productUrl:
         item.permalink ||
         item.url ||
@@ -456,7 +575,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       affiliateId:
         null
+
     };
+
   }
 
 
@@ -471,6 +592,7 @@ document.addEventListener("DOMContentLoaded", () => {
       affiliateLinks = [];
 
       return [];
+
     }
 
     try {
@@ -480,31 +602,43 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       } =
         await db
+
           .from(
             "affiliate_links"
           )
+
           .select(
             "id, marketplace, item_id, catalog_product_id, product_title, affiliate_url, active, created_at, updated_at"
           )
+
           .eq(
             "active",
             true
           )
+
           .order(
             "updated_at",
             {
-              ascending: false
+
+              ascending:
+                false
+
             }
           );
 
+
       if (error) {
+
         throw error;
+
       }
+
 
       affiliateLinks =
         Array.isArray(data)
           ? data
           : [];
+
 
       return affiliateLinks;
 
@@ -518,13 +652,11 @@ document.addEventListener("DOMContentLoaded", () => {
       affiliateLinks = [];
 
       return [];
+
     }
+
   }
 
-
-  /* ========================================================
-     PROCURA LINK EXATO PELO ITEM ID
-     ======================================================== */
 
   function findAffiliateForProduct(
     product
@@ -534,30 +666,39 @@ document.addEventListener("DOMContentLoaded", () => {
       !product ||
       !product.itemId
     ) {
+
       return null;
+
     }
 
-    const exact =
+
+    return (
       affiliateLinks.find(
         link => {
 
           return (
+
             link.active === true &&
+
             link.item_id &&
+
             String(
               link.item_id
             ) ===
               String(
                 product.itemId
               ) &&
+
             validAffiliateLink(
               link.affiliate_url
             )
-          );
-        }
-      );
 
-    return exact || null;
+          );
+
+        }
+      ) || null
+    );
+
   }
 
 
@@ -572,6 +713,7 @@ document.addEventListener("DOMContentLoaded", () => {
           findAffiliateForProduct(
             product
           );
+
 
         if (affiliate) {
 
@@ -588,19 +730,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
           product.affiliateId =
             null;
+
         }
 
+
         return product;
+
       }
     );
+
   }
 
 
   /* ========================================================
-     AGRUPAMENTO
+     AGRUPAMENTO DE PRODUTOS
      ======================================================== */
 
-  function groupProducts(list) {
+  function groupProducts(
+    list
+  ) {
 
     const map =
       new Map();
@@ -613,15 +761,20 @@ document.addEventListener("DOMContentLoaded", () => {
           item.productId ||
           item.id;
 
+
         if (!key) {
+
           return;
+
         }
+
 
         if (!map.has(key)) {
 
           map.set(
             key,
             {
+
               productId:
                 key,
 
@@ -634,12 +787,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
               allOffers:
                 []
+
             }
           );
+
         }
+
 
         const group =
           map.get(key);
+
 
         if (
           !group.image &&
@@ -648,16 +805,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
           group.image =
             item.image;
+
         }
+
 
         group.allOffers.push(
           item
         );
+
       }
     );
 
 
     return Array
+
       .from(
         map.values()
       )
@@ -667,6 +828,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           group.offers =
             group.allOffers
+
               .filter(
                 offer =>
                   Number.isFinite(
@@ -674,11 +836,13 @@ document.addEventListener("DOMContentLoaded", () => {
                   ) &&
                   offer.price > 0
               )
+
               .sort(
                 (a, b) =>
                   a.price -
                   b.price
               );
+
 
           group.linkedOffers =
             group.offers.filter(
@@ -688,15 +852,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
             );
 
+
           group.best =
             group.offers[0] ||
             null;
+
 
           group.bestLinked =
             group.linkedOffers[0] ||
             null;
 
+
+          group.storeCount =
+            new Set(
+              group.offers.map(
+                offer =>
+                  offer.store
+              )
+            ).size;
+
+
           return group;
+
         }
       )
 
@@ -711,6 +888,7 @@ document.addEventListener("DOMContentLoaded", () => {
           a.best.price -
           b.best.price
       );
+
   }
 
 
@@ -722,25 +900,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
 
-      return JSON.parse(
-        localStorage.getItem(
-          "achou_favorites"
-        )
-      ) || [];
+      return (
+        JSON.parse(
+          localStorage.getItem(
+            "achou_favorites"
+          )
+        ) || []
+      );
 
     } catch {
 
       return [];
+
     }
+
   }
 
 
-  function saveFavorites(list) {
+  function saveFavorites(
+    list
+  ) {
 
     localStorage.setItem(
       "achou_favorites",
       JSON.stringify(list)
     );
+
   }
 
 
@@ -748,6 +933,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const favorites =
       getFavorites();
+
 
     document
       .querySelectorAll(
@@ -758,79 +944,97 @@ document.addEventListener("DOMContentLoaded", () => {
 
           counter.textContent =
             favorites.length;
+
         }
       );
+
   }
 
 
   function bindFavorites() {
 
-    const buttons =
-      document.querySelectorAll(
-        "[data-favorite]"
-      );
-
     const favorites =
       getFavorites()
         .map(String);
 
-    buttons.forEach(
-      button => {
 
-        const id =
-          String(
-            button.dataset.favorite
+    document
+      .querySelectorAll(
+        "[data-favorite]"
+      )
+      .forEach(
+        button => {
+
+          const id =
+            String(
+              button.dataset.favorite
+            );
+
+
+          if (
+            favorites.includes(id)
+          ) {
+
+            button.textContent =
+              "♥";
+
+          } else {
+
+            button.textContent =
+              "♡";
+
+          }
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              let current =
+                getFavorites()
+                  .map(String);
+
+
+              if (
+                current.includes(id)
+              ) {
+
+                current =
+                  current.filter(
+                    item =>
+                      item !== id
+                  );
+
+                button.textContent =
+                  "♡";
+
+              } else {
+
+                current.push(id);
+
+                button.textContent =
+                  "♥";
+
+              }
+
+
+              saveFavorites(
+                current
+              );
+
+              updateFavoriteCounter();
+
+            }
           );
 
-        if (
-          favorites.includes(id)
-        ) {
-
-          button.textContent =
-            "♥";
         }
+      );
 
-        button.addEventListener(
-          "click",
-          () => {
-
-            let current =
-              getFavorites()
-                .map(String);
-
-            if (
-              current.includes(id)
-            ) {
-
-              current =
-                current.filter(
-                  item =>
-                    item !== id
-                );
-
-              button.textContent =
-                "♡";
-
-            } else {
-
-              current.push(id);
-
-              button.textContent =
-                "♥";
-            }
-
-            saveFavorites(current);
-
-            updateFavoriteCounter();
-          }
-        );
-      }
-    );
   }
 
 
   /* ========================================================
-     ABRIR / FECHAR LISTA DE OFERTAS
+     PAINEL DE OFERTAS DO PRODUTO
      ======================================================== */
 
   function bindOfferPanels() {
@@ -850,34 +1054,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 button.dataset
                   .toggleOffers;
 
+
               const panel =
                 document.querySelector(
                   `[data-offers-panel="${CSS.escape(id)}"]`
                 );
 
+
               if (!panel) {
+
                 return;
+
               }
+
 
               const open =
                 panel.classList.toggle(
                   "open"
                 );
 
+
+              const count =
+                panel.children.length;
+
+
               button.textContent =
                 open
                   ? "OCULTAR OFERTAS"
-                  : `VER ${
-                      panel.children.length
-                    } ${
-                      panel.children.length === 1
+                  : `COMPARAR ${count} ${
+                      count === 1
                         ? "OFERTA"
                         : "OFERTAS"
                     }`;
+
             }
           );
+
         }
       );
+
   }
 
 
@@ -890,8 +1105,11 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
 
     if (!dealsContainer) {
+
       return;
+
     }
+
 
     if (
       !Array.isArray(groups) ||
@@ -901,10 +1119,13 @@ document.addEventListener("DOMContentLoaded", () => {
       showEmpty();
 
       return;
+
     }
+
 
     dealsContainer.innerHTML =
       groups
+
         .map(
           (
             group,
@@ -914,17 +1135,22 @@ document.addEventListener("DOMContentLoaded", () => {
             const best =
               group.best;
 
+
             const title =
               escapeHtml(
                 group.title
               );
 
+
             const favoriteId =
               group.productId;
 
+
             const image =
               group.image
+
                 ? `
+
                   <img
                     class="achou-product-image"
                     src="${escapeHtml(group.image)}"
@@ -946,8 +1172,11 @@ document.addEventListener("DOMContentLoaded", () => {
                       Imagem indisponível
                     </span>
                   </div>
+
                 `
+
                 : `
+
                   <div
                     class="achou-image-fallback"
                     style="display:flex"
@@ -956,11 +1185,13 @@ document.addEventListener("DOMContentLoaded", () => {
                       Imagem indisponível
                     </span>
                   </div>
+
                 `;
 
 
             const rows =
               group.offers
+
                 .map(
                   (
                     offer,
@@ -972,7 +1203,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         offer.link
                       );
 
+
                     return `
+
                       <div
                         class="achou-offer-row ${
                           offerIndex === 0
@@ -986,39 +1219,35 @@ document.addEventListener("DOMContentLoaded", () => {
                           ${
                             offerIndex === 0
                               ? `
-                                <span
-                                  class="achou-best-label"
-                                >
+
+                                <span class="achou-best-label">
                                   MENOR PREÇO
                                 </span>
+
                               `
                               : ""
                           }
 
-                          <strong
-                            class="achou-offer-price"
-                          >
-                            ${money(
-                              offer.price
-                            )}
+
+                          <strong class="achou-offer-price">
+                            ${money(offer.price)}
                           </strong>
 
-                          <div
-                            class="achou-offer-meta"
-                          >
+
+                          <div class="achou-offer-meta">
 
                             <span>
-                              Mercado Livre
+                              ${escapeHtml(offer.store)}
                             </span>
 
                             ${
                               offer.freeShipping
                                 ? `
-                                  <span
-                                    class="achou-free"
-                                  >
+
+                                  <span class="achou-free">
                                     Frete grátis
                                   </span>
+
                                 `
                                 : ""
                             }
@@ -1030,19 +1259,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         ${
                           hasLink
+
                             ? `
+
                               <a
                                 class="achou-mini-buy"
-                                href="${escapeHtml(
-                                  offer.link
-                                )}"
+                                href="${escapeHtml(offer.link)}"
                                 target="_blank"
                                 rel="noopener noreferrer sponsored"
                               >
                                 VER OFERTA
                               </a>
+
                             `
+
                             : `
+
                               <button
                                 class="achou-mini-buy achou-link-pending"
                                 type="button"
@@ -1050,13 +1282,17 @@ document.addEventListener("DOMContentLoaded", () => {
                               >
                                 LINK EM BREVE
                               </button>
+
                             `
                         }
 
                       </div>
+
                     `;
+
                   }
                 )
+
                 .join("");
 
 
@@ -1064,19 +1300,22 @@ document.addEventListener("DOMContentLoaded", () => {
               validAffiliateLink(
                 best.link
               )
+
                 ? `
+
                   <a
-                    href="${escapeHtml(
-                      best.link
-                    )}"
+                    href="${escapeHtml(best.link)}"
                     target="_blank"
                     rel="noopener noreferrer sponsored"
                     class="offer"
                   >
                     VER MELHOR OFERTA
                   </a>
+
                 `
+
                 : `
+
                   <button
                     type="button"
                     class="offer achou-link-pending"
@@ -1084,26 +1323,29 @@ document.addEventListener("DOMContentLoaded", () => {
                   >
                     LINK EM BREVE
                   </button>
+
                 `;
 
 
             return `
+
               <article
                 class="flash-card achou-group-card"
-                data-product-id="${escapeHtml(
-                  group.productId
-                )}"
+                data-product-id="${escapeHtml(group.productId)}"
               >
+
 
                 ${
                   groupIndex === 0
+
                     ? `
-                      <span
-                        class="discount"
-                      >
-                        MELHOR PREÇO
+
+                      <span class="discount">
+                        MENOR PREÇO
                       </span>
+
                     `
+
                     : ""
                 }
 
@@ -1111,18 +1353,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button
                   class="product-favorite"
                   type="button"
-                  data-favorite="${escapeHtml(
-                    favoriteId
-                  )}"
+                  data-favorite="${escapeHtml(favoriteId)}"
                   aria-label="Favoritar produto"
                 >
                   ♡
                 </button>
 
 
-                <div
-                  class="flash-photo"
-                >
+                <div class="flash-photo">
                   ${image}
                 </div>
 
@@ -1132,80 +1370,70 @@ document.addEventListener("DOMContentLoaded", () => {
                 </h3>
 
 
-                <div
-                  class="achou-group-info"
-                >
+                <div class="achou-group-info">
 
-                  <span
-                    class="achou-offer-count"
-                  >
+                  <span class="achou-offer-count">
+
                     ${group.offers.length}
+
                     ${
                       group.offers.length === 1
                         ? "oferta"
                         : "ofertas"
                     }
+
                   </span>
 
 
                   ${
                     best.freeShipping
+
                       ? `
-                        <span
-                          class="achou-free"
-                          style="font-size:8px"
-                        >
+
+                        <span class="achou-free">
                           Frete grátis
                         </span>
+
                       `
+
                       : ""
                   }
 
                 </div>
 
 
-                <span
-                  class="achou-starting"
-                >
+                <span class="achou-starting">
                   A partir de
                 </span>
 
 
-                <strong
-                  class="flash-price"
-                >
-                  ${money(
-                    best.price
-                  )}
+                <strong class="flash-price">
+                  ${money(best.price)}
                 </strong>
 
 
-                <div
-                  class="product-bottom"
-                >
+                <div class="product-bottom">
 
                   <span>
-                    Mercado Livre
+                    Compare no ACHOU!
                   </span>
 
                   <span>
+
                     ${
-                      group.linkedOffers.length > 0
-                        ? `${group.linkedOffers.length} ${
-                            group.linkedOffers.length === 1
-                              ? "link disponível"
-                              : "links disponíveis"
-                          }`
-                        : "Link afiliado em breve"
+                      group.storeCount === 1
+
+                        ? "Mercado Livre integrado"
+
+                        : `Compare em ${group.storeCount} lojas`
                     }
+
                   </span>
 
                 </div>
 
 
-                <div
-                  class="achou-actions"
-                >
+                <div class="achou-actions">
 
                   ${mainAction}
 
@@ -1213,17 +1441,19 @@ document.addEventListener("DOMContentLoaded", () => {
                   <button
                     class="achou-see-offers"
                     type="button"
-                    data-toggle-offers="${escapeHtml(
-                      group.productId
-                    )}"
+                    data-toggle-offers="${escapeHtml(group.productId)}"
                   >
-                    VER
+
+                    COMPARAR
+
                     ${group.offers.length}
+
                     ${
                       group.offers.length === 1
                         ? "OFERTA"
                         : "OFERTAS"
                     }
+
                   </button>
 
                 </div>
@@ -1231,54 +1461,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <div
                   class="achou-offers-panel"
-                  data-offers-panel="${escapeHtml(
-                    group.productId
-                  )}"
+                  data-offers-panel="${escapeHtml(group.productId)}"
                 >
                   ${rows}
                 </div>
 
+
               </article>
+
             `;
+
           }
         )
+
         .join("");
-
-
-    document
-      .querySelectorAll(
-        ".achou-affiliate-note"
-      )
-      .forEach(
-        note =>
-          note.remove()
-      );
-
-
-    const note =
-      document.createElement(
-        "div"
-      );
-
-    note.className =
-      "achou-affiliate-note";
-
-    note.textContent =
-      "O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.";
-
-    dealsContainer
-      .parentElement
-      ?.appendChild(note);
 
 
     bindFavorites();
 
     bindOfferPanels();
+
   }
 
 
   /* ========================================================
-     BUSCA
+     BUSCA PRINCIPAL
      ======================================================== */
 
   async function searchProducts(
@@ -1287,40 +1494,56 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
 
     if (!searchInput) {
+
       return;
+
     }
 
+
     const settings = {
+
       scroll: true,
+
       ...options
+
     };
+
 
     const term =
       forcedTerm !== null
+
         ? String(
             forcedTerm
           ).trim()
+
         : searchInput
             .value
             .trim();
 
+
     if (!term) {
 
-      searchInput.focus();
+      focusSearch();
 
       return;
+
     }
+
 
     currentQuery =
       term;
 
+
     showLoading();
+
 
     if (summaryBox) {
 
       summaryBox.style.display =
         "none";
+
     }
+
 
     if (searchButton) {
 
@@ -1329,7 +1552,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       searchButton.textContent =
         "BUSCANDO...";
+
     }
+
 
     try {
 
@@ -1337,24 +1562,32 @@ document.addEventListener("DOMContentLoaded", () => {
         await fetch(
           `${CONFIG.api}?q=${encodeURIComponent(term)}`,
           {
+
             method: "GET",
 
             headers: {
+
               Accept:
                 "application/json"
+
             }
+
           }
         );
+
 
       if (!response.ok) {
 
         throw new Error(
           `HTTP ${response.status}`
         );
+
       }
+
 
       const data =
         await response.json();
+
 
       if (
         !data ||
@@ -1367,49 +1600,69 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(
           "Resposta inválida"
         );
+
       }
+
 
       products =
         data.results
+
           .map(
             normalizeApiProduct
           )
+
           .filter(
             product => {
 
               return (
+
                 product.id &&
+
                 product.title &&
+
                 Number.isFinite(
                   product.price
                 ) &&
+
                 product.price > 0
+
               );
+
             }
           );
 
+
       await loadAffiliateLinks();
+
 
       products =
         applyAffiliateLinks(
           products
         );
 
+
       groupedProducts =
         groupProducts(
           products
         );
+
 
       const availableOffers =
         groupedProducts.reduce(
           (
             total,
             group
-          ) =>
-            total +
-            group.offers.length,
+          ) => {
+
+            return (
+              total +
+              group.offers.length
+            );
+
+          },
           0
         );
+
 
       updateSummary(
         groupedProducts.length,
@@ -1417,25 +1670,22 @@ document.addEventListener("DOMContentLoaded", () => {
         term
       );
 
+
       renderGroupedProducts(
         groupedProducts
       );
 
+
       renderAdminProducts();
 
+
       if (
-        marketSection &&
-        settings.scroll
+        settings.scroll &&
+        marketSection
       ) {
 
-        marketSection
-          .scrollIntoView({
-            behavior:
-              "smooth",
+        scrollToOffers();
 
-            block:
-              "start"
-          });
       }
 
     } catch (error) {
@@ -1445,9 +1695,11 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       );
 
+
       products = [];
 
       groupedProducts = [];
+
 
       showError();
 
@@ -1462,8 +1714,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         searchButton.textContent =
           "BUSCAR";
+
       }
+
     }
+
   }
 
 
@@ -1473,20 +1728,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadInitialDeals() {
 
-    if (!searchInput) {
-      return;
+    if (searchInput) {
+
+      searchInput.value =
+        "";
+
     }
 
-    searchInput.value =
-      "";
 
     searchProducts(
       CONFIG.initialQuery,
       {
+
         scroll:
           false
+
       }
     );
+
   }
 
 
@@ -1500,6 +1759,7 @@ document.addEventListener("DOMContentLoaded", () => {
       () => {
 
         searchProducts();
+
       }
     );
 
@@ -1517,348 +1777,853 @@ document.addEventListener("DOMContentLoaded", () => {
           event.preventDefault();
 
           searchProducts();
+
         }
+
       }
     );
 
 
   /* ========================================================
-     CATEGORIAS
+     CHIPS DE PESQUISA
      ======================================================== */
 
-  const categoryButtons =
-    document.querySelectorAll(
-      ".category-nav-item, .quick-category, .popular-tags button"
-    );
+  document
+    .querySelectorAll(
+      "[data-search]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const term =
+              button.dataset.search;
 
 
-  categoryButtons.forEach(
-    button => {
+            if (!term) {
 
-      button.addEventListener(
-        "click",
-        () => {
+              return;
 
-          const rawText =
-            button.textContent
-              .trim();
+            }
 
-          const text =
-            normalizeText(
-              rawText
-            );
-
-
-          document
-            .querySelectorAll(
-              ".category-nav-item"
-            )
-            .forEach(
-              item => {
-
-                item.classList.remove(
-                  "active"
-                );
-              }
-            );
-
-
-          if (
-            button.classList.contains(
-              "category-nav-item"
-            )
-          ) {
-
-            button.classList.add(
-              "active"
-            );
-          }
-
-
-          /*
-             BUSCAS MAIS ESPECÍFICAS
-             PARA CADA CATEGORIA
-          */
-
-          const map = {
-
-            todos:
-              CONFIG.initialQuery,
-
-            celulares:
-              "celular",
-
-            informatica:
-              "notebook",
-
-            tv:
-              "smart tv",
-
-            games:
-              "PlayStation",
-
-            audio:
-              "fone bluetooth",
-
-            casa:
-              "eletrodoméstico",
-
-            moda:
-              "tênis",
-
-            ferramentas:
-              "furadeira",
-
-            iphone:
-              "iPhone",
-
-            notebook:
-              "notebook",
-
-            playstation:
-              "PlayStation",
-
-            "smart tv":
-              "Smart TV",
-
-            fone:
-              "fone bluetooth"
-          };
-
-
-          const term =
-            map[text] ||
-            rawText;
-
-
-          if (
-            text ===
-            "todos"
-          ) {
 
             searchInput.value =
-              "";
+              term;
+
 
             searchProducts(
-              CONFIG.initialQuery
+              term
             );
 
-            return;
           }
+        );
 
-
-          searchInput.value =
-            term;
-
-          searchProducts();
-        }
-      );
-    }
-  );
+      }
+    );
 
 
   /* ========================================================
-     HERO
+     CATEGORIAS / SUBCATEGORIAS
      ======================================================== */
 
-  const heroSlides = [
+  const categoryModal =
+    document.querySelector(
+      "#categoryModal"
+    );
 
-    {
-      label:
-        "OFERTAS SELECIONADAS",
+
+  const categoryModalTitle =
+    document.querySelector(
+      "#categoryModalTitle"
+    );
+
+
+  const categoryModalText =
+    document.querySelector(
+      "#categoryModalText"
+    );
+
+
+  const categoryModalClose =
+    document.querySelector(
+      "#categoryModalClose"
+    );
+
+
+  const subcategoryGrid =
+    document.querySelector(
+      "#subcategoryGrid"
+    );
+
+
+  const CATEGORY_DATA = {
+
+
+    celulares: {
 
       title:
-        "COMPARE ANTES DE COMPRAR",
+        "Celulares",
 
       text:
-        "A gente procura os melhores preços para você economizar."
+        "Escolha uma marca ou tipo de celular.",
+
+      items: [
+
+        {
+          label:
+            "Samsung Galaxy",
+          search:
+            "Samsung Galaxy celular"
+        },
+
+        {
+          label:
+            "iPhone",
+          search:
+            "iPhone"
+        },
+
+        {
+          label:
+            "Motorola",
+          search:
+            "Motorola celular"
+        },
+
+        {
+          label:
+            "Xiaomi",
+          search:
+            "Xiaomi celular"
+        },
+
+        {
+          label:
+            "Realme",
+          search:
+            "Realme celular"
+        },
+
+        {
+          label:
+            "Smartphones 5G",
+          search:
+            "celular 5G"
+        }
+
+      ]
+
     },
 
-    {
-      label:
-        "PREÇOS EM UM SÓ LUGAR",
+
+    informatica: {
 
       title:
-        "ENCONTRE A MELHOR OFERTA",
+        "Informática",
 
       text:
-        "Compare preços antes de decidir onde comprar."
+        "Escolha o produto de informática que você procura.",
+
+      items: [
+
+        {
+          label:
+            "Notebooks",
+          search:
+            "notebook"
+        },
+
+        {
+          label:
+            "Notebook Gamer",
+          search:
+            "notebook gamer"
+        },
+
+        {
+          label:
+            "Computadores",
+          search:
+            "computador desktop"
+        },
+
+        {
+          label:
+            "Monitores",
+          search:
+            "monitor"
+        },
+
+        {
+          label:
+            "Teclados",
+          search:
+            "teclado"
+        },
+
+        {
+          label:
+            "Mouse",
+          search:
+            "mouse"
+        },
+
+        {
+          label:
+            "SSD",
+          search:
+            "SSD"
+        },
+
+        {
+          label:
+            "Impressoras",
+          search:
+            "impressora"
+        }
+
+      ]
+
     },
 
-    {
-      label:
-        "ACHOU!",
+
+    tv: {
 
       title:
-        "VOCÊ PROCURA. A GENTE COMPARA.",
+        "TV e Vídeo",
 
       text:
-        "Menos tempo procurando. Mais dinheiro economizado."
+        "Escolha o tipo de TV ou equipamento.",
+
+      items: [
+
+        {
+          label:
+            "Smart TV",
+          search:
+            "Smart TV"
+        },
+
+        {
+          label:
+            "TV 4K",
+          search:
+            "Smart TV 4K"
+        },
+
+        {
+          label:
+            "Samsung",
+          search:
+            "Smart TV Samsung"
+        },
+
+        {
+          label:
+            "LG",
+          search:
+            "Smart TV LG"
+        },
+
+        {
+          label:
+            "TCL",
+          search:
+            "Smart TV TCL"
+        },
+
+        {
+          label:
+            "Projetores",
+          search:
+            "projetor"
+        }
+
+      ]
+
+    },
+
+
+    games: {
+
+      title:
+        "Games",
+
+      text:
+        "Escolha seu console ou categoria gamer.",
+
+      items: [
+
+        {
+          label:
+            "PlayStation 5",
+          search:
+            "PlayStation 5 console"
+        },
+
+        {
+          label:
+            "Xbox",
+          search:
+            "Xbox console"
+        },
+
+        {
+          label:
+            "Nintendo Switch",
+          search:
+            "Nintendo Switch console"
+        },
+
+        {
+          label:
+            "Consoles",
+          search:
+            "console videogame"
+        },
+
+        {
+          label:
+            "PC Gamer",
+          search:
+            "PC gamer"
+        },
+
+        {
+          label:
+            "Cadeira Gamer",
+          search:
+            "cadeira gamer"
+        }
+
+      ]
+
+    },
+
+
+    audio: {
+
+      title:
+        "Áudio",
+
+      text:
+        "Escolha o produto de áudio.",
+
+      items: [
+
+        {
+          label:
+            "Fone Bluetooth",
+          search:
+            "fone bluetooth"
+        },
+
+        {
+          label:
+            "Headset Gamer",
+          search:
+            "headset gamer"
+        },
+
+        {
+          label:
+            "AirPods",
+          search:
+            "AirPods"
+        },
+
+        {
+          label:
+            "Caixa Bluetooth",
+          search:
+            "caixa de som bluetooth"
+        },
+
+        {
+          label:
+            "JBL",
+          search:
+            "JBL caixa de som"
+        },
+
+        {
+          label:
+            "Soundbar",
+          search:
+            "soundbar"
+        }
+
+      ]
+
+    },
+
+
+    casa: {
+
+      title:
+        "Casa",
+
+      text:
+        "Encontre produtos para todos os ambientes da casa.",
+
+      items: [
+
+        {
+          label:
+            "Eletrodomésticos",
+          search:
+            "eletrodomésticos"
+        },
+
+        {
+          label:
+            "Cozinha",
+          search:
+            "utensílios cozinha"
+        },
+
+        {
+          label:
+            "Air Fryer",
+          search:
+            "Air Fryer"
+        },
+
+        {
+          label:
+            "Geladeira",
+          search:
+            "geladeira"
+        },
+
+        {
+          label:
+            "Micro-ondas",
+          search:
+            "micro-ondas"
+        },
+
+        {
+          label:
+            "Cama, Mesa e Banho",
+          search:
+            "cama mesa banho"
+        },
+
+        {
+          label:
+            "Organização",
+          search:
+            "organizador casa"
+        },
+
+        {
+          label:
+            "Decoração",
+          search:
+            "decoração casa"
+        },
+
+        {
+          label:
+            "Copos e Taças",
+          search:
+            "copos taças"
+        },
+
+        {
+          label:
+            "Limpeza",
+          search:
+            "produtos limpeza casa"
+        }
+
+      ]
+
+    },
+
+
+    moda: {
+
+      title:
+        "Moda",
+
+      text:
+        "Escolha a categoria de moda que você procura.",
+
+      items: [
+
+        {
+          label:
+            "Tênis",
+          search:
+            "tênis masculino"
+        },
+
+        {
+          label:
+            "Moda Masculina",
+          search:
+            "roupa masculina"
+        },
+
+        {
+          label:
+            "Moda Feminina",
+          search:
+            "roupa feminina"
+        },
+
+        {
+          label:
+            "Bolsas",
+          search:
+            "bolsa feminina"
+        },
+
+        {
+          label:
+            "Relógios",
+          search:
+            "relógio"
+        },
+
+        {
+          label:
+            "Acessórios",
+          search:
+            "acessórios moda"
+        }
+
+      ]
+
+    },
+
+
+    ferramentas: {
+
+      title:
+        "Ferramentas",
+
+      text:
+        "Escolha a ferramenta que você procura.",
+
+      items: [
+
+        {
+          label:
+            "Furadeiras",
+          search:
+            "furadeira"
+        },
+
+        {
+          label:
+            "Parafusadeiras",
+          search:
+            "parafusadeira"
+        },
+
+        {
+          label:
+            "Serra Circular",
+          search:
+            "serra circular"
+        },
+
+        {
+          label:
+            "Esmerilhadeira",
+          search:
+            "esmerilhadeira"
+        },
+
+        {
+          label:
+            "Ferramentas Manuais",
+          search:
+            "kit ferramentas manuais"
+        },
+
+        {
+          label:
+            "Bosch",
+          search:
+            "ferramenta Bosch"
+        },
+
+        {
+          label:
+            "Makita",
+          search:
+            "ferramenta Makita"
+        },
+
+        {
+          label:
+            "DeWalt",
+          search:
+            "ferramenta DeWalt"
+        }
+
+      ]
+
     }
 
-  ];
+  };
 
 
-  const heroLabel =
-    document.querySelector(
-      ".hero-small-title"
-    );
+  function bodyLock() {
 
-  const heroTitle =
-    document.querySelector(
-      ".hero-banner h1"
-    );
+    document.body
+      .classList.add(
+        "modal-open"
+      );
 
-  const heroText =
-    document.querySelector(
-      ".hero-banner p"
-    );
-
-  const heroPrev =
-    document.querySelector(
-      ".hero-prev"
-    );
-
-  const heroNext =
-    document.querySelector(
-      ".hero-next"
-    );
-
-  const heroDots =
-    document.querySelectorAll(
-      ".hero-dot"
-    );
-
-
-  function renderHero(index) {
-
-    heroIndex =
-      (
-        index +
-        heroSlides.length
-      ) %
-      heroSlides.length;
-
-    const slide =
-      heroSlides[
-        heroIndex
-      ];
-
-    if (heroLabel) {
-
-      heroLabel.textContent =
-        slide.label;
-    }
-
-    if (heroTitle) {
-
-      heroTitle.innerHTML =
-        `<strong>${escapeHtml(
-          slide.title
-        )}</strong>`;
-    }
-
-    if (heroText) {
-
-      heroText.textContent =
-        slide.text;
-    }
-
-    heroDots.forEach(
-      (
-        dot,
-        index
-      ) => {
-
-        dot.classList.toggle(
-          "active",
-          index ===
-            heroIndex
-        );
-      }
-    );
   }
 
 
-  heroPrev
-    ?.addEventListener(
-      "click",
-      () => {
+  function bodyUnlock() {
 
-        renderHero(
-          heroIndex - 1
+    const open =
+      document.querySelector(
+        ".category-modal.active, .login-modal.active, .signup-modal.active, .admin-login-modal.active, .admin-panel-modal.active"
+      );
+
+
+    if (!open) {
+
+      document.body
+        .classList.remove(
+          "modal-open"
         );
-      }
-    );
+
+    }
+
+  }
 
 
-  heroNext
-    ?.addEventListener(
-      "click",
-      () => {
+  function openCategory(
+    key
+  ) {
 
-        renderHero(
-          heroIndex + 1
-        );
-      }
-    );
+    const category =
+      CATEGORY_DATA[key];
 
 
-  heroDots.forEach(
-    (
-      dot,
-      index
-    ) => {
+    if (
+      !category ||
+      !categoryModal ||
+      !subcategoryGrid
+    ) {
 
-      dot.addEventListener(
-        "click",
-        () => {
+      return;
 
-          renderHero(index);
+    }
+
+
+    if (categoryModalTitle) {
+
+      categoryModalTitle.textContent =
+        category.title;
+
+    }
+
+
+    if (categoryModalText) {
+
+      categoryModalText.textContent =
+        category.text;
+
+    }
+
+
+    subcategoryGrid.innerHTML =
+      category.items
+
+        .map(
+          item => `
+
+            <button
+              type="button"
+              data-subcategory-search="${escapeHtml(item.search)}"
+            >
+              ${escapeHtml(item.label)}
+            </button>
+
+          `
+        )
+
+        .join("");
+
+
+    subcategoryGrid
+      .querySelectorAll(
+        "[data-subcategory-search]"
+      )
+      .forEach(
+        button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const term =
+                button.dataset
+                  .subcategorySearch;
+
+
+              closeCategory();
+
+
+              if (searchInput) {
+
+                searchInput.value =
+                  term;
+
+              }
+
+
+              searchProducts(
+                term
+              );
+
+            }
+          );
+
         }
       );
-    }
-  );
 
 
-  if (heroTitle) {
-
-    setInterval(
-      () => {
-
-        renderHero(
-          heroIndex + 1
-        );
-
-      },
-      CONFIG.heroInterval
+    categoryModal.classList.add(
+      "active"
     );
+
+
+    bodyLock();
+
   }
 
 
-  heroCTA
+  function closeCategory() {
+
+    categoryModal
+      ?.classList.remove(
+        "active"
+      );
+
+
+    bodyUnlock();
+
+  }
+
+
+  document
+    .querySelectorAll(
+      ".quick-category[data-category]"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            openCategory(
+              button.dataset.category
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  categoryModalClose
+    ?.addEventListener(
+      "click",
+      closeCategory
+    );
+
+
+  categoryModal
+    ?.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          categoryModal
+        ) {
+
+          closeCategory();
+
+        }
+
+      }
+    );
+
+
+  document
+    .querySelector(
+      ".category-show-all"
+    )
     ?.addEventListener(
       "click",
       () => {
 
-        searchInput
+        categoriesSection
           ?.scrollIntoView({
+
             behavior:
               "smooth",
 
             block:
-              "center"
+              "start"
+
           });
 
-        setTimeout(
-          () => {
+      }
+    );
 
-            searchInput
-              ?.focus();
 
-          },
-          400
+  /* ========================================================
+     BANNER VER OFERTAS
+     ======================================================== */
+
+  document
+    .querySelector(
+      ".offer-banner .see-all"
+    )
+    ?.addEventListener(
+      "click",
+      scrollToOffers
+    );
+
+
+  /* ========================================================
+     VER TODOS PRODUTOS
+     ======================================================== */
+
+  marketSection
+    ?.querySelector(
+      ".see-all"
+    )
+    ?.addEventListener(
+      "click",
+      () => {
+
+        searchInput.value =
+          "";
+
+        searchProducts(
+          CONFIG.initialQuery
         );
+
       }
     );
 
@@ -1872,71 +2637,53 @@ document.addEventListener("DOMContentLoaded", () => {
       "#loginModal"
     );
 
+
   const signupModal =
     document.querySelector(
       "#signupModal"
     );
+
 
   const accountButton =
     document.querySelector(
       ".account-button"
     );
 
+
   const loginClose =
     document.querySelector(
       ".login-close"
     );
+
 
   const signupClose =
     document.querySelector(
       ".signup-close"
     );
 
+
   const createAccount =
     document.querySelector(
       ".create-account"
     );
+
 
   const signupLogin =
     document.querySelector(
       ".signup-login"
     );
 
+
   const loginForm =
     document.querySelector(
       "#loginForm"
     );
 
+
   const signupForm =
     document.querySelector(
       "#signupForm"
     );
-
-
-  function bodyLock() {
-
-    document.body
-      .classList.add(
-        "modal-open"
-      );
-  }
-
-
-  function bodyUnlock() {
-
-    const open =
-      document.querySelector(
-        ".login-modal.active, .signup-modal.active, .admin-login-modal.active, .admin-panel-modal.active"
-      );
-
-    if (!open) {
-
-      document.body
-        .classList.remove(
-          "modal-open"
-        );
-    }
-  }
 
 
   function openLogin() {
@@ -1947,6 +2694,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyLock();
+
   }
 
 
@@ -1958,6 +2706,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyUnlock();
+
   }
 
 
@@ -1969,6 +2718,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyLock();
+
   }
 
 
@@ -1980,6 +2730,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyUnlock();
+
   }
 
 
@@ -2012,6 +2763,7 @@ document.addEventListener("DOMContentLoaded", () => {
         closeLogin();
 
         openSignup();
+
       }
     );
 
@@ -2024,6 +2776,43 @@ document.addEventListener("DOMContentLoaded", () => {
         closeSignup();
 
         openLogin();
+
+      }
+    );
+
+
+  loginModal
+    ?.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          loginModal
+        ) {
+
+          closeLogin();
+
+        }
+
+      }
+    );
+
+
+  signupModal
+    ?.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          signupModal
+        ) {
+
+          closeSignup();
+
+        }
+
       }
     );
 
@@ -2035,9 +2824,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
+
         if (!db) {
+
           return;
+
         }
+
 
         const email =
           document
@@ -2047,6 +2840,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
+
         const password =
           document
             .querySelector(
@@ -2054,47 +2848,62 @@ document.addEventListener("DOMContentLoaded", () => {
             )
             ?.value;
 
+
         if (
           !email ||
           !password
         ) {
+
           return;
+
         }
+
 
         try {
 
           const {
+            data,
             error
           } =
             await db.auth
               .signInWithPassword({
+
                 email,
+
                 password
+
               });
 
+
           if (error) {
+
             throw error;
+
           }
+
 
           closeLogin();
 
-          const greeting =
-            document.querySelector(
-              ".account-greeting strong"
-            );
 
-          if (greeting) {
+          updateAccountUI(
+            data?.user ||
+            null
+          );
 
-            greeting.textContent =
-              "Minha conta";
-          }
+        } catch (error) {
 
-        } catch {
+          console.error(
+            "[ACHOU!] Login:",
+            error
+          );
+
 
           alert(
             "Não foi possível entrar. Confira seu e-mail e senha."
           );
+
         }
+
       }
     );
 
@@ -2106,9 +2915,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
+
         if (!db) {
+
           return;
+
         }
+
 
         const name =
           document
@@ -2118,6 +2931,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
+
         const email =
           document
             .querySelector(
@@ -2126,12 +2940,14 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
+
         const password =
           document
             .querySelector(
               "#signupPassword"
             )
             ?.value;
+
 
         const confirm =
           document
@@ -2140,13 +2956,17 @@ document.addEventListener("DOMContentLoaded", () => {
             )
             ?.value;
 
+
         if (
           !name ||
           !email ||
           !password
         ) {
+
           return;
+
         }
+
 
         if (
           password !==
@@ -2158,44 +2978,218 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
+
         }
+
+
+        if (
+          password.length < 6
+        ) {
+
+          alert(
+            "A senha precisa ter pelo menos 6 caracteres."
+          );
+
+          return;
+
+        }
+
 
         try {
 
           const {
+            data,
             error
           } =
             await db.auth
               .signUp({
+
                 email,
+
                 password,
 
                 options: {
+
                   data: {
+
                     full_name:
                       name
+
                   }
+
                 }
+
               });
 
+
           if (error) {
+
             throw error;
+
           }
+
 
           alert(
             "Conta criada com sucesso."
           );
 
+
           closeSignup();
 
-        } catch {
+
+          if (data?.user) {
+
+            updateAccountUI(
+              data.user
+            );
+
+          }
+
+        } catch (error) {
+
+          console.error(
+            "[ACHOU!] Cadastro:",
+            error
+          );
+
 
           alert(
             "Não foi possível criar a conta."
           );
+
         }
+
       }
     );
+
+
+  function updateAccountUI(
+    user
+  ) {
+
+    const greeting =
+      document.querySelector(
+        ".account-greeting strong"
+      );
+
+
+    const hello =
+      document.querySelector(
+        ".account-greeting small"
+      );
+
+
+    const avatar =
+      document.querySelector(
+        ".account-avatar"
+      );
+
+
+    if (!user) {
+
+      if (greeting) {
+
+        greeting.textContent =
+          "Entrar";
+
+      }
+
+
+      if (hello) {
+
+        hello.textContent =
+          "Olá!";
+
+      }
+
+
+      if (avatar) {
+
+        avatar.textContent =
+          "●";
+
+      }
+
+
+      return;
+
+    }
+
+
+    const name =
+      user.user_metadata
+        ?.full_name ||
+      user.email
+        ?.split("@")[0] ||
+      "Usuário";
+
+
+    const firstName =
+      String(name)
+        .trim()
+        .split(" ")[0];
+
+
+    if (hello) {
+
+      hello.textContent =
+        "Olá,";
+
+    }
+
+
+    if (greeting) {
+
+      greeting.textContent =
+        firstName;
+
+    }
+
+
+    if (avatar) {
+
+      avatar.textContent =
+        firstName
+          .charAt(0)
+          .toUpperCase();
+
+    }
+
+  }
+
+
+  async function loadCurrentUser() {
+
+    if (!db) {
+
+      return;
+
+    }
+
+
+    try {
+
+      const {
+        data
+      } =
+        await db.auth
+          .getUser();
+
+
+      updateAccountUI(
+        data?.user ||
+        null
+      );
+
+    } catch {
+
+      updateAccountUI(
+        null
+      );
+
+    }
+
+  }
 
 
   /* ========================================================
@@ -2207,100 +3201,120 @@ document.addEventListener("DOMContentLoaded", () => {
       "#adminSecretButton"
     );
 
+
   const adminLoginModal =
     document.querySelector(
       "#adminLoginModal"
     );
+
 
   const adminLoginForm =
     document.querySelector(
       "#adminLoginForm"
     );
 
+
   const adminLoginClose =
     document.querySelector(
       "#adminLoginClose"
     );
+
 
   const adminLoginMessage =
     document.querySelector(
       "#adminLoginMessage"
     );
 
+
   const adminPanelModal =
     document.querySelector(
       "#adminPanelModal"
     );
+
 
   const adminPanelClose =
     document.querySelector(
       "#adminPanelClose"
     );
 
+
   const adminLogoutButton =
     document.querySelector(
       "#adminLogoutButton"
     );
+
 
   const adminProductsList =
     document.querySelector(
       "#adminProductsList"
     );
 
+
   const adminRefreshProducts =
     document.querySelector(
       "#adminRefreshProducts"
     );
+
 
   const adminAffiliateForm =
     document.querySelector(
       "#adminAffiliateForm"
     );
 
+
   const adminAffiliateId =
     document.querySelector(
       "#adminAffiliateId"
     );
+
 
   const adminItemId =
     document.querySelector(
       "#adminItemId"
     );
 
+
   const adminProductId =
     document.querySelector(
       "#adminProductId"
     );
+
 
   const adminProductTitle =
     document.querySelector(
       "#adminProductTitle"
     );
 
+
   const adminAffiliateUrl =
     document.querySelector(
       "#adminAffiliateUrl"
     );
+
 
   const adminAffiliateActive =
     document.querySelector(
       "#adminAffiliateActive"
     );
 
+
   const adminClearForm =
     document.querySelector(
       "#adminClearForm"
     );
+
 
   const adminFormMessage =
     document.querySelector(
       "#adminFormMessage"
     );
 
+
   const adminLinksList =
     document.querySelector(
       "#adminLinksList"
     );
+
 
   const adminRefreshLinks =
     document.querySelector(
@@ -2315,8 +3329,11 @@ document.addEventListener("DOMContentLoaded", () => {
   async function resetAdminSession() {
 
     if (!adminDb) {
+
       return;
+
     }
+
 
     try {
 
@@ -2328,6 +3345,7 @@ document.addEventListener("DOMContentLoaded", () => {
       /* ignora */
 
     }
+
   }
 
 
@@ -2338,39 +3356,54 @@ document.addEventListener("DOMContentLoaded", () => {
         "#adminEmail"
       );
 
+
     const password =
       document.querySelector(
         "#adminPassword"
       );
 
+
     if (email) {
-      email.value = "";
+
+      email.value =
+        "";
+
     }
 
+
     if (password) {
-      password.value = "";
+
+      password.value =
+        "";
+
     }
+
 
     setMessage(
       adminLoginMessage,
       ""
     );
 
+
     adminLoginModal
       ?.classList.add(
         "active"
       );
 
+
     bodyLock();
+
 
     setTimeout(
       () => {
 
-        email?.focus();
+        email
+          ?.focus();
 
       },
-      250
+      200
     );
+
   }
 
 
@@ -2381,12 +3414,15 @@ document.addEventListener("DOMContentLoaded", () => {
         "active"
       );
 
+
     setMessage(
       adminLoginMessage,
       ""
     );
 
+
     bodyUnlock();
+
   }
 
 
@@ -2397,16 +3433,20 @@ document.addEventListener("DOMContentLoaded", () => {
         "active"
       );
 
+
     adminPanelModal
       ?.classList.add(
         "active"
       );
 
+
     bodyLock();
+
 
     renderAdminProducts();
 
     loadAdminLinks();
+
   }
 
 
@@ -2417,15 +3457,14 @@ document.addEventListener("DOMContentLoaded", () => {
         "active"
       );
 
+
     await resetAdminSession();
 
+
     bodyUnlock();
+
   }
 
-
-  /* ========================================================
-     ADMIN — ACESSO SECRETO
-     ======================================================== */
 
   adminSecretButton
     ?.addEventListener(
@@ -2435,6 +3474,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await resetAdminSession();
 
         openAdminLogin();
+
       }
     );
 
@@ -2447,6 +3487,7 @@ document.addEventListener("DOMContentLoaded", () => {
         await resetAdminSession();
 
         closeAdminLogin();
+
       }
     );
 
@@ -2458,15 +3499,25 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
+  adminLogoutButton
+    ?.addEventListener(
+      "click",
+      closeAdminPanel
+    );
+
+
   /* ========================================================
-     ADMIN — VERIFICA USUÁRIO
+     ADMIN — VERIFICA ACESSO
      ======================================================== */
 
   async function getCurrentAdmin() {
 
     if (!adminDb) {
+
       return null;
+
     }
+
 
     try {
 
@@ -2479,33 +3530,42 @@ document.addEventListener("DOMContentLoaded", () => {
         await adminDb.auth
           .getUser();
 
+
       if (
         userError ||
         !userData?.user
       ) {
 
         return null;
+
       }
+
 
       const user =
         userData.user;
+
 
       const {
         data,
         error
       } =
         await adminDb
+
           .from(
             "admin_users"
           )
+
           .select(
             "user_id"
           )
+
           .eq(
             "user_id",
             user.id
           )
+
           .maybeSingle();
+
 
       if (
         error ||
@@ -2513,14 +3573,18 @@ document.addEventListener("DOMContentLoaded", () => {
       ) {
 
         return null;
+
       }
+
 
       return user;
 
     } catch {
 
       return null;
+
     }
+
   }
 
 
@@ -2535,6 +3599,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
+
         if (!adminDb) {
 
           setMessage(
@@ -2544,7 +3609,9 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
+
         }
+
 
         const email =
           document
@@ -2554,12 +3621,14 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
+
         const password =
           document
             .querySelector(
               "#adminPassword"
             )
             ?.value;
+
 
         if (
           !email ||
@@ -2573,14 +3642,18 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
+
         }
+
 
         setMessage(
           adminLoginMessage,
           "Verificando acesso..."
         );
 
+
         await resetAdminSession();
+
 
         try {
 
@@ -2590,9 +3663,13 @@ document.addEventListener("DOMContentLoaded", () => {
           } =
             await adminDb.auth
               .signInWithPassword({
+
                 email,
+
                 password
+
               });
+
 
           if (
             error ||
@@ -2602,7 +3679,9 @@ document.addEventListener("DOMContentLoaded", () => {
             throw new Error(
               "Login inválido."
             );
+
           }
+
 
           const {
             data:
@@ -2611,17 +3690,22 @@ document.addEventListener("DOMContentLoaded", () => {
               adminError
           } =
             await adminDb
+
               .from(
                 "admin_users"
               )
+
               .select(
                 "user_id"
               )
+
               .eq(
                 "user_id",
                 data.user.id
               )
+
               .maybeSingle();
+
 
           if (
             adminError ||
@@ -2630,15 +3714,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
             await resetAdminSession();
 
+
             throw new Error(
               "Usuário não autorizado."
             );
+
           }
+
 
           setMessage(
             adminLoginMessage,
             ""
           );
+
 
           openAdminPanel();
 
@@ -2649,28 +3737,18 @@ document.addEventListener("DOMContentLoaded", () => {
             error
           );
 
+
           await resetAdminSession();
+
 
           setMessage(
             adminLoginMessage,
             "E-mail ou senha incorretos, ou usuário sem permissão.",
             "error"
           );
+
         }
-      }
-    );
 
-
-  /* ========================================================
-     ADMIN — SAIR
-     ======================================================== */
-
-  adminLogoutButton
-    ?.addEventListener(
-      "click",
-      async () => {
-
-        await closeAdminPanel();
       }
     );
 
@@ -2682,8 +3760,11 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderAdminProducts() {
 
     if (!adminProductsList) {
+
       return;
+
     }
+
 
     if (
       !Array.isArray(products) ||
@@ -2691,17 +3772,24 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
 
       adminProductsList.innerHTML = `
+
         <div class="admin-empty">
+
           Faça uma busca no ACHOU!
           para carregar os produtos.
+
         </div>
+
       `;
 
       return;
+
     }
+
 
     adminProductsList.innerHTML =
       products
+
         .map(
           (
             product,
@@ -2713,85 +3801,86 @@ document.addEventListener("DOMContentLoaded", () => {
                 product
               );
 
+
             const image =
               product.image
+
                 ? `
+
                   <img
-                    src="${escapeHtml(
-                      product.image
-                    )}"
+                    src="${escapeHtml(product.image)}"
                     alt=""
                   >
+
                 `
+
                 : `
-                  <div
-                    class="admin-product-no-image"
-                  >
+
+                  <div class="admin-product-no-image">
                     sem imagem
                   </div>
+
                 `;
 
-            return `
-              <article
-                class="admin-product-card"
-              >
 
-                <div
-                  class="admin-product-image"
-                >
+            return `
+
+              <article class="admin-product-card">
+
+                <div class="admin-product-image">
+
                   ${image}
+
                 </div>
 
 
-                <div
-                  class="admin-product-data"
-                >
+                <div class="admin-product-data">
 
                   <strong>
-                    ${escapeHtml(
-                      product.title
-                    )}
+                    ${escapeHtml(product.title)}
                   </strong>
 
                   <span>
-                    ${money(
-                      product.price
-                    )}
+                    ${money(product.price)}
                   </span>
 
                   <small>
                     Item:
-                    ${escapeHtml(
-                      product.itemId
-                    )}
+                    ${escapeHtml(product.itemId)}
                   </small>
 
                   ${
                     product.productId
+
                       ? `
+
                         <small>
                           Catálogo:
-                          ${escapeHtml(
-                            product.productId
-                          )}
+                          ${escapeHtml(product.productId)}
                         </small>
+
                       `
+
                       : ""
                   }
 
                   ${
                     existing
+
                       ? `
-                        <em
-                          class="admin-linked"
-                        >
+
+                        <em class="admin-linked">
                           LINK CADASTRADO
                         </em>
+
                       `
+
                       : `
+
                         <em>
                           SEM LINK
                         </em>
+
                       `
                   }
 
@@ -2803,18 +3892,24 @@ document.addEventListener("DOMContentLoaded", () => {
                   class="admin-select-product"
                   data-admin-product="${index}"
                 >
+
                   ${
                     existing
                       ? "EDITAR"
                       : "SELECIONAR"
                   }
+
                 </button>
 
               </article>
+
             `;
+
           }
         )
+
         .join("");
+
 
     adminProductsList
       .querySelectorAll(
@@ -2833,20 +3928,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     .adminProduct
                 );
 
+
               const product =
                 products[index];
 
+
               if (!product) {
+
                 return;
+
               }
+
 
               fillAdminFormFromProduct(
                 product
               );
+
             }
           );
+
         }
       );
+
   }
 
 
@@ -2859,40 +3962,52 @@ document.addEventListener("DOMContentLoaded", () => {
         product
       );
 
+
     if (adminAffiliateId) {
 
       adminAffiliateId.value =
         existing?.id ||
         "";
+
     }
+
 
     if (adminItemId) {
 
       adminItemId.value =
         product.itemId ||
         "";
+
     }
+
 
     if (adminProductId) {
 
       adminProductId.value =
         product.productId ||
         "";
+
     }
+
 
     if (adminProductTitle) {
 
       adminProductTitle.value =
         product.title ||
         "";
+
     }
+
 
     if (adminAffiliateUrl) {
 
       adminAffiliateUrl.value =
-        existing?.affiliate_url ||
+        existing
+          ?.affiliate_url ||
         "";
+
     }
+
 
     if (adminAffiliateActive) {
 
@@ -2900,26 +4015,32 @@ document.addEventListener("DOMContentLoaded", () => {
         existing
           ? existing.active !== false
           : true;
+
     }
+
 
     setMessage(
       adminFormMessage,
+
       existing
         ? "Link existente carregado para edição."
         : "Produto selecionado. Cole o link afiliado.",
+
       existing
         ? "success"
         : ""
     );
 
+
     adminAffiliateUrl
       ?.scrollIntoView({
-        behavior:
-          "smooth",
 
-        block:
-          "center"
+        behavior: "smooth",
+
+        block: "center"
+
       });
+
 
     setTimeout(
       () => {
@@ -2928,8 +4049,9 @@ document.addEventListener("DOMContentLoaded", () => {
           ?.focus();
 
       },
-      350
+      300
     );
+
   }
 
 
@@ -2941,7 +4063,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     ADMIN — LIMPAR
+     ADMIN — LIMPAR FORMULÁRIO
      ======================================================== */
 
   function clearAdminForm() {
@@ -2949,22 +4071,28 @@ document.addEventListener("DOMContentLoaded", () => {
     adminAffiliateForm
       ?.reset();
 
+
     if (adminAffiliateId) {
 
       adminAffiliateId.value =
         "";
+
     }
+
 
     if (adminAffiliateActive) {
 
       adminAffiliateActive.checked =
         true;
+
     }
+
 
     setMessage(
       adminFormMessage,
       ""
     );
+
   }
 
 
@@ -2976,7 +4104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     ADMIN — SALVAR
+     ADMIN — SALVAR LINK
      ======================================================== */
 
   adminAffiliateForm
@@ -2986,12 +4114,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
+
         if (!adminDb) {
+
           return;
+
         }
+
 
         const admin =
           await getCurrentAdmin();
+
 
         if (!admin) {
 
@@ -3002,36 +4135,44 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
+
         }
+
 
         const id =
           adminAffiliateId
             ?.value
             .trim();
 
+
         const itemId =
           adminItemId
             ?.value
             .trim();
+
 
         const productId =
           adminProductId
             ?.value
             .trim();
 
+
         const title =
           adminProductTitle
             ?.value
             .trim();
+
 
         const url =
           adminAffiliateUrl
             ?.value
             .trim();
 
+
         const active =
           adminAffiliateActive
             ?.checked === true;
+
 
         if (
           !itemId ||
@@ -3046,7 +4187,9 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
+
         }
+
 
         if (
           !validAffiliateLink(url)
@@ -3059,12 +4202,15 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
+
         }
+
 
         setMessage(
           adminFormMessage,
           "Salvando..."
         );
+
 
         try {
 
@@ -3091,7 +4237,9 @@ document.addEventListener("DOMContentLoaded", () => {
             updated_at:
               new Date()
                 .toISOString()
+
           };
+
 
           if (id) {
 
@@ -3099,19 +4247,25 @@ document.addEventListener("DOMContentLoaded", () => {
               error
             } =
               await adminDb
+
                 .from(
                   "affiliate_links"
                 )
+
                 .update(
                   payload
                 )
+
                 .eq(
                   "id",
                   id
                 );
 
+
             if (error) {
+
               throw error;
+
             }
 
           } else {
@@ -3123,22 +4277,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 findError
             } =
               await adminDb
+
                 .from(
                   "affiliate_links"
                 )
+
                 .select(
                   "id"
                 )
+
                 .eq(
                   "item_id",
                   itemId
                 )
+
                 .limit(1)
+
                 .maybeSingle();
 
+
             if (findError) {
+
               throw findError;
+
             }
+
 
             if (existing?.id) {
 
@@ -3146,19 +4309,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
               } =
                 await adminDb
+
                   .from(
                     "affiliate_links"
                   )
+
                   .update(
                     payload
                   )
+
                   .eq(
                     "id",
                     existing.id
                   );
 
+
               if (error) {
+
                 throw error;
+
               }
 
             } else {
@@ -3167,18 +4336,26 @@ document.addEventListener("DOMContentLoaded", () => {
                 error
               } =
                 await adminDb
+
                   .from(
                     "affiliate_links"
                   )
+
                   .insert(
                     payload
                   );
 
+
               if (error) {
+
                 throw error;
+
               }
+
             }
+
           }
+
 
           setMessage(
             adminFormMessage,
@@ -3186,40 +4363,9 @@ document.addEventListener("DOMContentLoaded", () => {
             "success"
           );
 
-          await loadAffiliateLinks();
 
-          products =
-            applyAffiliateLinks(
-              products
-            );
+          await refreshProductsAfterAffiliateChange();
 
-          groupedProducts =
-            groupProducts(
-              products
-            );
-
-          const availableOffers =
-            groupedProducts.reduce(
-              (
-                total,
-                group
-              ) =>
-                total +
-                group.offers.length,
-              0
-            );
-
-          updateSummary(
-            groupedProducts.length,
-            availableOffers,
-            currentQuery
-          );
-
-          renderGroupedProducts(
-            groupedProducts
-          );
-
-          renderAdminProducts();
 
           await loadAdminLinks();
 
@@ -3230,14 +4376,63 @@ document.addEventListener("DOMContentLoaded", () => {
             error
           );
 
+
           setMessage(
             adminFormMessage,
             "Não foi possível salvar o link.",
             "error"
           );
+
         }
+
       }
     );
+
+
+  async function refreshProductsAfterAffiliateChange() {
+
+    await loadAffiliateLinks();
+
+
+    products =
+      applyAffiliateLinks(
+        products
+      );
+
+
+    groupedProducts =
+      groupProducts(
+        products
+      );
+
+
+    const availableOffers =
+      groupedProducts.reduce(
+        (
+          total,
+          group
+        ) =>
+          total +
+          group.offers.length,
+        0
+      );
+
+
+    updateSummary(
+      groupedProducts.length,
+      availableOffers,
+      currentQuery
+    );
+
+
+    renderGroupedProducts(
+      groupedProducts
+    );
+
+
+    renderAdminProducts();
+
+  }
 
 
   /* ========================================================
@@ -3246,33 +4441,43 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadAdminLinks() {
 
-    if (!adminLinksList) {
+    if (
+      !adminLinksList ||
+      !adminDb
+    ) {
+
       return;
+
     }
 
-    if (!adminDb) {
-      return;
-    }
 
     const admin =
       await getCurrentAdmin();
 
+
     if (!admin) {
 
       adminLinksList.innerHTML = `
+
         <div class="admin-empty">
           Sessão administrativa inválida.
         </div>
+
       `;
 
       return;
+
     }
 
+
     adminLinksList.innerHTML = `
+
       <div class="admin-empty">
         Carregando...
       </div>
+
     `;
+
 
     try {
 
@@ -3281,118 +4486,130 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       } =
         await adminDb
+
           .from(
             "affiliate_links"
           )
+
           .select(
             "id, marketplace, item_id, catalog_product_id, product_title, affiliate_url, active, created_at, updated_at"
           )
+
           .order(
             "updated_at",
             {
+
               ascending:
                 false
+
             }
           );
 
+
       if (error) {
+
         throw error;
+
       }
+
 
       const list =
         Array.isArray(data)
           ? data
           : [];
 
+
       if (
         list.length === 0
       ) {
 
         adminLinksList.innerHTML = `
+
           <div class="admin-empty">
             Nenhum link cadastrado.
           </div>
+
         `;
 
         return;
+
       }
+
 
       adminLinksList.innerHTML =
         list
+
           .map(
-            link => {
+            link => `
 
-              return `
-                <article
-                  class="admin-link-card"
-                >
+              <article class="admin-link-card">
 
-                  <div
-                    class="admin-link-data"
+                <div class="admin-link-data">
+
+                  <strong>
+                    ${escapeHtml(
+                      link.product_title ||
+                      "Produto"
+                    )}
+                  </strong>
+
+                  <span>
+                    ${escapeHtml(
+                      link.item_id ||
+                      ""
+                    )}
+                  </span>
+
+                  <small>
+                    ${escapeHtml(
+                      link.affiliate_url ||
+                      ""
+                    )}
+                  </small>
+
+                  <em
+                    class="${
+                      link.active
+                        ? "active"
+                        : ""
+                    }"
                   >
 
-                    <strong>
-                      ${escapeHtml(
-                        link.product_title ||
-                        "Produto"
-                      )}
-                    </strong>
+                    ${
+                      link.active
+                        ? "ATIVO"
+                        : "INATIVO"
+                    }
 
-                    <span>
-                      ${escapeHtml(
-                        link.item_id ||
-                        ""
-                      )}
-                    </span>
+                  </em>
 
-                    <small>
-                      ${escapeHtml(
-                        link.affiliate_url
-                      )}
-                    </small>
-
-                    <em
-                      class="${
-                        link.active
-                          ? "active"
-                          : ""
-                      }"
-                    >
-                      ${
-                        link.active
-                          ? "ATIVO"
-                          : "INATIVO"
-                      }
-                    </em>
-
-                  </div>
+                </div>
 
 
-                  <div
-                    class="admin-link-actions"
+                <div class="admin-link-actions">
+
+                  <button
+                    type="button"
+                    data-admin-edit="${link.id}"
                   >
+                    EDITAR
+                  </button>
 
-                    <button
-                      type="button"
-                      data-admin-edit="${link.id}"
-                    >
-                      EDITAR
-                    </button>
+                  <button
+                    type="button"
+                    class="delete"
+                    data-admin-delete="${link.id}"
+                  >
+                    EXCLUIR
+                  </button>
 
-                    <button
-                      type="button"
-                      class="delete"
-                      data-admin-delete="${link.id}"
-                    >
-                      EXCLUIR
-                    </button>
+                </div>
 
-                  </div>
+              </article>
 
-                </article>
-              `;
-            }
+            `
           )
+
           .join("");
 
 
@@ -3413,6 +4630,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       .adminEdit
                   );
 
+
                 const link =
                   list.find(
                     item =>
@@ -3421,31 +4639,41 @@ document.addEventListener("DOMContentLoaded", () => {
                       ) === id
                   );
 
+
                 if (!link) {
+
                   return;
+
                 }
+
 
                 adminAffiliateId.value =
                   link.id;
+
 
                 adminItemId.value =
                   link.item_id ||
                   "";
 
+
                 adminProductId.value =
                   link.catalog_product_id ||
                   "";
+
 
                 adminProductTitle.value =
                   link.product_title ||
                   "";
 
+
                 adminAffiliateUrl.value =
                   link.affiliate_url ||
                   "";
 
+
                 adminAffiliateActive.checked =
                   link.active !== false;
+
 
                 setMessage(
                   adminFormMessage,
@@ -3453,16 +4681,21 @@ document.addEventListener("DOMContentLoaded", () => {
                   "success"
                 );
 
+
                 adminAffiliateUrl
                   ?.scrollIntoView({
+
                     behavior:
                       "smooth",
 
                     block:
                       "center"
+
                   });
+
               }
             );
+
           }
         );
 
@@ -3481,6 +4714,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const admin =
                   await getCurrentAdmin();
 
+
                 if (!admin) {
 
                   alert(
@@ -3488,20 +4722,27 @@ document.addEventListener("DOMContentLoaded", () => {
                   );
 
                   return;
+
                 }
+
 
                 const id =
                   button.dataset
                     .adminDelete;
+
 
                 const confirmed =
                   window.confirm(
                     "Excluir este link afiliado?"
                   );
 
+
                 if (!confirmed) {
+
                   return;
+
                 }
+
 
                 try {
 
@@ -3509,53 +4750,28 @@ document.addEventListener("DOMContentLoaded", () => {
                     error
                   } =
                     await adminDb
+
                       .from(
                         "affiliate_links"
                       )
+
                       .delete()
+
                       .eq(
                         "id",
                         id
                       );
 
+
                   if (error) {
+
                     throw error;
+
                   }
 
-                  await loadAffiliateLinks();
 
-                  products =
-                    applyAffiliateLinks(
-                      products
-                    );
+                  await refreshProductsAfterAffiliateChange();
 
-                  groupedProducts =
-                    groupProducts(
-                      products
-                    );
-
-                  const availableOffers =
-                    groupedProducts.reduce(
-                      (
-                        total,
-                        group
-                      ) =>
-                        total +
-                        group.offers.length,
-                      0
-                    );
-
-                  updateSummary(
-                    groupedProducts.length,
-                    availableOffers,
-                    currentQuery
-                  );
-
-                  renderGroupedProducts(
-                    groupedProducts
-                  );
-
-                  renderAdminProducts();
 
                   await loadAdminLinks();
 
@@ -3566,12 +4782,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     error
                   );
 
+
                   alert(
                     "Não foi possível excluir o link."
                   );
+
                 }
+
               }
             );
+
           }
         );
 
@@ -3582,12 +4802,17 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       );
 
+
       adminLinksList.innerHTML = `
+
         <div class="admin-empty">
           Não foi possível carregar os links.
         </div>
+
       `;
+
     }
+
   }
 
 
@@ -3609,10 +4834,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   bottomItems.forEach(
-    (
-      item,
-      index
-    ) => {
+    item => {
 
       item.addEventListener(
         "click",
@@ -3625,170 +4847,136 @@ document.addEventListener("DOMContentLoaded", () => {
                 nav.classList.remove(
                   "active"
                 );
+
               }
             );
+
 
           item.classList.add(
             "active"
           );
 
-          if (index === 0) {
+
+          const action =
+            item.dataset.nav;
+
+
+          if (
+            action ===
+            "home"
+          ) {
 
             window.scrollTo({
+
               top: 0,
+
               behavior:
                 "smooth"
+
             });
+
           }
 
-          if (index === 1) {
 
-            document
-              .querySelector(
-                ".quick-categories"
-              )
+          if (
+            action ===
+            "categories"
+          ) {
+
+            categoriesSection
               ?.scrollIntoView({
-                behavior:
-                  "smooth",
 
-                block:
-                  "center"
-              });
-          }
-
-          if (index === 2) {
-
-            searchInput
-              ?.scrollIntoView({
-                behavior:
-                  "smooth",
-
-                block:
-                  "center"
-              });
-
-            setTimeout(
-              () => {
-
-                searchInput
-                  ?.focus();
-
-              },
-              400
-            );
-          }
-
-          if (index === 3) {
-
-            marketSection
-              ?.scrollIntoView({
                 behavior:
                   "smooth",
 
                 block:
                   "start"
+
               });
+
           }
 
-          if (index === 4) {
+
+          if (
+            action ===
+            "search"
+          ) {
+
+            focusSearch();
+
+          }
+
+
+          if (
+            action ===
+            "favorites"
+          ) {
+
+            scrollToOffers();
+
+          }
+
+
+          if (
+            action ===
+            "profile"
+          ) {
 
             openLogin();
+
           }
+
         }
       );
+
     }
   );
 
 
   /* ========================================================
-     HEADER FAVORITOS
+     FAVORITOS DO HEADER
      ======================================================== */
 
-  const headerFavorite =
-    document.querySelector(
+  document
+    .querySelector(
       ".header-icon"
+    )
+    ?.addEventListener(
+      "click",
+      scrollToOffers
     );
 
 
-  headerFavorite
+  /* ========================================================
+     MENU HAMBÚRGUER
+     ======================================================== */
+
+  document
+    .querySelector(
+      ".menu-button"
+    )
     ?.addEventListener(
       "click",
       () => {
 
-        marketSection
+        categoriesSection
           ?.scrollIntoView({
+
             behavior:
               "smooth",
 
             block:
               "start"
+
           });
+
       }
     );
 
 
   /* ========================================================
-     VER TODAS
+     MODAIS ADMIN
      ======================================================== */
-
-  const seeAllButton =
-    document.querySelector(
-      ".see-all"
-    );
-
-
-  seeAllButton
-    ?.addEventListener(
-      "click",
-      () => {
-
-        dealsContainer
-          ?.scrollIntoView({
-            behavior:
-              "smooth",
-
-            block:
-              "center"
-          });
-      }
-    );
-
-
-  /* ========================================================
-     MODAIS
-     ======================================================== */
-
-  loginModal
-    ?.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target ===
-          loginModal
-        ) {
-
-          closeLogin();
-        }
-      }
-    );
-
-
-  signupModal
-    ?.addEventListener(
-      "click",
-      event => {
-
-        if (
-          event.target ===
-          signupModal
-        ) {
-
-          closeSignup();
-        }
-      }
-    );
-
 
   adminLoginModal
     ?.addEventListener(
@@ -3803,7 +4991,9 @@ document.addEventListener("DOMContentLoaded", () => {
           await resetAdminSession();
 
           closeAdminLogin();
+
         }
+
       }
     );
 
@@ -3819,28 +5009,63 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
 
           await closeAdminPanel();
+
         }
+
       }
     );
 
+
+  /* ========================================================
+     ESC
+     ======================================================== */
 
   document.addEventListener(
     "keydown",
     async event => {
 
       if (
-        event.key ===
+        event.key !==
         "Escape"
       ) {
 
-        closeLogin();
+        return;
 
-        closeSignup();
+      }
+
+
+      closeCategory();
+
+      closeLogin();
+
+      closeSignup();
+
+
+      if (
+        adminLoginModal
+          ?.classList.contains(
+            "active"
+          )
+      ) {
+
+        await resetAdminSession();
 
         closeAdminLogin();
 
-        await closeAdminPanel();
       }
+
+
+      if (
+        adminPanelModal
+          ?.classList.contains(
+            "active"
+          )
+      ) {
+
+        await closeAdminPanel();
+
+      }
+
     }
   );
 
@@ -3849,10 +5074,6 @@ document.addEventListener("DOMContentLoaded", () => {
      INICIALIZAÇÃO
      ======================================================== */
 
-  createSummary();
-
-  renderHero(0);
-
   updateFavoriteCounter();
 
 
@@ -3860,7 +5081,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     searchInput.value =
       "";
+
   }
+
+
+  loadCurrentUser();
 
 
   resetAdminSession();
@@ -3870,7 +5095,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   console.log(
-    "[ACHOU!] Sistema carregado."
+    "[ACHOU!] Comparador carregado."
   );
+
 
 });
