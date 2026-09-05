@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
 
@@ -33,1438 +34,1803 @@
   >
 </head>
 
+
 <body>
 
-  <!-- =====================================================
-       BARRA SUPERIOR
-       ===================================================== -->
 
-  <div class="utility-bar">
+<!-- =========================================================
+     BARRA SUPERIOR
+     ========================================================= -->
 
-    <div class="utility-location">
-      <span>⌖</span>
-      <strong>Entregar em Criciúma - SC</strong>
-    </div>
+<div class="store-topbar">
 
-    <div class="utility-benefits">
-      <span>Frete rápido</span>
-      <i></i>
-      <span>Lojas parceiras</span>
-      <i></i>
-      <span>Compra segura</span>
-    </div>
+  <div class="store-topbar-location">
+    <span>⌖</span>
+    Entregar em Criciúma - SC
+    <b>⌄</b>
+  </div>
 
-    <div class="utility-links">
-      <button type="button">
-        Atendimento
-      </button>
 
-      <span></span>
+  <div class="store-topbar-center">
+    <span>Frete rápido</span>
+    <i>•</i>
+    <span>Lojas parceiras</span>
+    <i>•</i>
+    <span>Compra segura</span>
+  </div>
 
-      <button type="button">
-        Meus pedidos
-      </button>
-    </div>
+
+  <div class="store-topbar-right">
+    <button type="button">
+      Atendimento
+    </button>
+
+    <i></i>
+
+    <button type="button">
+      Meus pedidos
+    </button>
+  </div>
+
+</div>
+
+
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
+<header class="top-header">
+
+
+  <button
+    class="menu-button"
+    type="button"
+    aria-label="Abrir categorias"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+
+  <a
+    class="brand"
+    href="#"
+    aria-label="ACHOU início"
+  >
+
+    <strong>
+      ACHOU<span>!</span>
+    </strong>
+
+    <small>
+      Seu estilo. Sua tecnologia.
+    </small>
+
+  </a>
+
+
+
+  <!-- BUSCA DO HEADER -->
+
+  <div class="desktop-search">
+
+    <span class="desktop-search-icon">
+      ⌕
+    </span>
+
+    <input
+      id="desktopSearchInput"
+      type="search"
+      placeholder="O que você está procurando?"
+      autocomplete="off"
+    >
+
+    <button
+      id="desktopSearchButton"
+      type="button"
+      aria-label="Buscar"
+    >
+      ⌕
+    </button>
 
   </div>
 
 
-  <!-- =====================================================
-       HEADER
-       ===================================================== -->
 
-  <header class="top-header">
+  <!-- CONTA -->
+
+  <div class="header-actions">
+
 
     <button
-      class="menu-button"
+      class="account-button"
       type="button"
-      aria-label="Abrir categorias"
     >
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
 
-
-    <a
-      class="brand"
-      href="#"
-      aria-label="ACHOU! início"
-    >
-      <strong>
-        ACHOU<span>!</span>
-      </strong>
-
-      <small>
-        Moda e tecnologia em um só lugar.
-      </small>
-    </a>
-
-
-    <div class="desktop-search">
-
-      <span>
-        ⌕
+      <span class="account-avatar">
+        ○
       </span>
 
-      <input
-        id="desktopSearchInput"
-        type="search"
-        placeholder="O que você está procurando?"
-        autocomplete="off"
-      >
-
-      <button
-        id="desktopSearchButton"
-        type="button"
-      >
-        ⌕
-      </button>
-
-    </div>
-
-
-    <div class="header-actions">
-
-      <button
-        class="account-button"
-        type="button"
-      >
-        <span class="account-icon">
-          ♙
-        </span>
-
-        <span class="account-copy">
-          <small>Olá!</small>
-          <strong>Entrar</strong>
-        </span>
-      </button>
-
-
-      <button
-        class="header-heart"
-        type="button"
-        aria-label="Favoritos"
-      >
-        ♡
-
-        <i class="favorite-count">
-          0
-        </i>
-
-        <small>
-          Favoritos
-        </small>
-      </button>
-
-
-      <button
-        class="cart-button"
-        type="button"
-        aria-label="Carrinho"
-      >
-        <span>
-          🛒
-        </span>
-
-        <i class="cart-count">
-          0
-        </i>
-
-        <small>
-          Carrinho
-        </small>
-      </button>
-
-    </div>
-
-  </header>
-
-
-  <!-- =====================================================
-       MENU DE CATEGORIAS DESKTOP
-       ===================================================== -->
-
-  <nav class="category-nav">
-
-    <button
-      data-category="todos"
-      type="button"
-    >
-      ☰ Todas as categorias
-    </button>
-
-    <button
-      data-category="moda-feminina"
-      type="button"
-    >
-      Moda Feminina
-    </button>
-
-    <button
-      data-category="moda-masculina"
-      type="button"
-    >
-      Moda Masculina
-    </button>
-
-    <button
-      data-category="infantil"
-      type="button"
-    >
-      Infantil
-    </button>
-
-    <button
-      data-category="tenis"
-      type="button"
-    >
-      Tênis e Calçados
-    </button>
-
-    <button
-      data-category="eletronicos"
-      type="button"
-    >
-      Eletrônicos
-    </button>
-
-    <button
-      data-category="acessorios"
-      type="button"
-    >
-      Acessórios
-    </button>
-
-    <button
-      class="nav-offers"
-      data-search="ofertas"
-      type="button"
-    >
-      Ofertas
-    </button>
-
-  </nav>
-
-
-  <main>
-
-
-    <!-- ===================================================
-         HERO
-         =================================================== -->
-
-    <section class="hero">
-
-      <div class="hero-banner">
-
-        <div class="hero-copy">
-
-          <strong class="hero-logo">
-            ACHOU<span>!</span>
-          </strong>
-
-          <h1>
-            <em>Moda</em> e tecnologia<br>
-            em um só lugar.
-          </h1>
-
-          <p>
-            Qualidade, variedade e as melhores ofertas
-            com fornecedores confiáveis.
-          </p>
-
-          <button
-            class="hero-cta"
-            type="button"
-          >
-            COMPRAR AGORA
-            <span>›</span>
-          </button>
-
-
-          <div class="hero-trust">
-
-            <article>
-              <span>▣</span>
-
-              <div>
-                <strong>
-                  Entrega rápida
-                </strong>
-
-                <small>
-                  Criciúma e região
-                </small>
-              </div>
-            </article>
-
-
-            <article>
-              <span>✓</span>
-
-              <div>
-                <strong>
-                  Compra segura
-                </strong>
-
-                <small>
-                  Seus dados protegidos
-                </small>
-              </div>
-            </article>
-
-
-            <article>
-              <span>▤</span>
-
-              <div>
-                <strong>
-                  Lojas parceiras
-                </strong>
-
-                <small>
-                  Produtos selecionados
-                </small>
-              </div>
-            </article>
-
-          </div>
-
-        </div>
-
-
-        <div
-          class="hero-visual"
-          aria-hidden="true"
-        >
-          <div class="hero-yellow-shape"></div>
-
-          <img
-            src="achou-hero-homem.png?v=20260905-store-01"
-            alt=""
-          >
-
-          <div class="hero-message">
-            AS MELHORES<br>
-            MARCAS<br>
-            VOCÊ<br>
-            ENCONTRA<br>
-            AQUI
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
-           BUSCA MOBILE
-           ================================================= -->
-
-      <div class="mobile-search">
-
-        <span>
-          ⌕
-        </span>
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="O que você está procurando?"
-          autocomplete="off"
-        >
-
-        <button
-          class="search-submit"
-          type="button"
-        >
-          Buscar
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         CATEGORIAS
-         =================================================== -->
-
-    <section
-      class="section categories-section"
-      id="categoriesSection"
-    >
-
-      <div class="category-store-row">
-
-        <button
-          class="store-category"
-          data-category="moda-feminina"
-        >
-          <span>👗</span>
-          <strong>Moda Feminina</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="moda-masculina"
-        >
-          <span>👕</span>
-          <strong>Moda Masculina</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="infantil"
-        >
-          <span>♧</span>
-          <strong>Infantil</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="tenis"
-        >
-          <span>👟</span>
-          <strong>Tênis e Calçados</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="eletronicos"
-        >
-          <span>🎧</span>
-          <strong>Eletrônicos</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="informatica"
-        >
-          <span>▣</span>
-          <strong>Informática</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="games"
-        >
-          <span>🎮</span>
-          <strong>Gamer</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="smartwatch"
-        >
-          <span>⌚</span>
-          <strong>Smartwatches</strong>
-        </button>
-
-
-        <button
-          class="store-category"
-          data-category="acessorios"
-        >
-          <span>👜</span>
-          <strong>Acessórios</strong>
-        </button>
-
-
-        <button
-          class="store-category category-offer"
-          data-search="ofertas"
-        >
-          <span>◆</span>
-          <strong>Ofertas</strong>
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         BENEFÍCIOS PRINCIPAIS
-         =================================================== -->
-
-    <section class="shopping-benefits">
-
-      <article>
-
-        <span>
-          🚚
-        </span>
-
-        <div>
-          <strong>
-            FRETE RÁPIDO
-          </strong>
-
-          <small>
-            Criciúma e região
-          </small>
-        </div>
-
-      </article>
-
-
-      <article>
-
-        <span>
-          ♢
-        </span>
-
-        <div>
-          <strong>
-            COMPRA SEGURA
-          </strong>
-
-          <small>
-            Seus dados protegidos
-          </small>
-        </div>
-
-      </article>
-
-
-      <article>
-
-        <span>
-          ▭
-        </span>
-
-        <div>
-          <strong>
-            PARCELE EM ATÉ 12X
-          </strong>
-
-          <small>
-            Nos principais cartões
-          </small>
-        </div>
-
-      </article>
-
-    </section>
-
-
-    <!-- ===================================================
-         OFERTAS
-         =================================================== -->
-
-    <section
-      class="section products-section"
-      id="offersSection"
-    >
-
-      <div class="section-head">
-
-        <div class="section-title">
-
-          <h2>
-            Ofertas em destaque
-          </h2>
-
-        </div>
-
-
-        <button
-          class="text-link products-show-all"
-          type="button"
-        >
-          Ver todas ›
-        </button>
-
-      </div>
-
-
-      <div
-        class="achou-search-summary"
-        style="display:none"
-      ></div>
-
-
-      <div class="flash-deals"></div>
-
-    </section>
-
-
-    <!-- ===================================================
-         BANNERS
-         =================================================== -->
-
-    <section class="dual-banners">
-
-
-      <article class="fashion-banner">
-
-        <div class="banner-copy">
-
-          <h2>
-            Moda para<br>
-            todas as ocasiões
-          </h2>
-
-          <button
-            type="button"
-            data-search="moda feminina"
-          >
-            VER COLEÇÃO
-            <span>›</span>
-          </button>
-
-        </div>
-
-        <div class="banner-decoration fashion-decoration">
-          ACHOU!
-        </div>
-
-      </article>
-
-
-      <article class="electronics-banner">
-
-        <div class="banner-copy">
-
-          <h2>
-            Eletrônicos<br>
-            que conectam você
-          </h2>
-
-          <button
-            type="button"
-            data-search="eletrônicos"
-          >
-            VER OFERTAS
-            <span>›</span>
-          </button>
-
-        </div>
-
-        <div class="tech-art">
-          🎧 💻 🎮
-        </div>
-
-      </article>
-
-    </section>
-
-
-    <!-- ===================================================
-         LOJAS / MARCAS
-         =================================================== -->
-
-    <section class="section stores-section">
-
-      <div class="section-head">
-
-        <div class="section-title">
-          <h2>
-            Lojas parceiras
-          </h2>
-        </div>
-
-      </div>
-
-
-      <div class="stores-row">
-
-        <article class="brand-card">
-          <strong>NIKE</strong>
-        </article>
-
-        <article class="brand-card">
-          <strong>adidas</strong>
-        </article>
-
-        <article class="brand-card">
-          <strong>SAMSUNG</strong>
-        </article>
-
-        <article class="brand-card apple">
-          <strong>●</strong>
-        </article>
-
-        <article class="brand-card">
-          <strong>JBL</strong>
-        </article>
-
-        <article class="brand-card">
-          <strong>mi</strong>
-        </article>
-
-        <article class="brand-card">
-          <strong>PUMA</strong>
-        </article>
-
-        <article class="brand-card">
-          <strong>LACOSTE</strong>
-        </article>
-
-        <article class="brand-card">
-          <strong>GAP</strong>
-        </article>
-
-        <article class="brand-card more">
-          <strong>
-            e muito mais...
-          </strong>
-        </article>
-
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================
-         RODAPÉ
-         =================================================== -->
-
-    <footer class="site-footer">
-
-      <div class="footer-brand">
-
-        <strong>
-          ACHOU<span>!</span>
-        </strong>
-
-        <p>
-          Seu estilo. Sua tecnologia.<br>
-          Tudo em um só lugar.
-        </p>
-
-      </div>
-
-
-      <article>
-        <span>♬</span>
-
-        <div>
-          <strong>Atendimento</strong>
-          <small>Seg a Sex - 8h às 18h</small>
-        </div>
-      </article>
-
-
-      <article>
-        <span>◇</span>
-
-        <div>
-          <strong>Troca fácil</strong>
-          <small>Até 7 dias</small>
-        </div>
-      </article>
-
-
-      <article>
-        <span>♢</span>
-
-        <div>
-          <strong>Compra segura</strong>
-          <small>Ambiente protegido</small>
-        </div>
-      </article>
-
-
-      <div class="social-links">
-        <span>◎</span>
-        <span>f</span>
-        <span>♪</span>
-        <span>▶</span>
-      </div>
-
-    </footer>
-
-
-    <!-- ===================================================
-         ACESSO ADMINISTRATIVO
-         =================================================== -->
-
-    <div class="admin-secret-area">
-
-      <button
-        id="adminSecretButton"
-        class="admin-secret-dot"
-        aria-label="Acesso reservado"
-      ></button>
-
-    </div>
-
-  </main>
-
-
-  <!-- =====================================================
-       MENU MOBILE
-       ===================================================== -->
-
-  <nav class="bottom-nav">
-
-    <button
-      class="bottom-nav-item active"
-      data-nav="home"
-    >
-      <span>⌂</span>
-      <strong>Início</strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      data-nav="categories"
-    >
-      <span>▦</span>
-      <strong>Categorias</strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      data-nav="search"
-    >
-      <span>⌕</span>
-      <strong>Buscar</strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      data-nav="favorites"
-    >
-      <span>
-        ♡
-
-        <i class="favorite-count">
-          0
-        </i>
+      <span class="account-copy">
+        <small>Olá!</small>
+        <strong>Entrar</strong>
       </span>
 
-      <strong>
+    </button>
+
+
+
+    <!-- FAVORITOS -->
+
+    <button
+      class="header-heart"
+      type="button"
+      aria-label="Favoritos"
+    >
+
+      <span class="header-action-icon">
+        ♡
+      </span>
+
+      <span class="header-action-copy">
         Favoritos
-      </strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      data-nav="cart"
-    >
-      <span>
-        🛒
-
-        <i class="cart-count">
-          0
-        </i>
       </span>
 
-      <strong>
-        Carrinho
-      </strong>
+      <i class="favorite-count">
+        0
+      </i>
+
     </button>
 
-  </nav>
 
 
-  <!-- =====================================================
-       MODAL DE CATEGORIA
-       ===================================================== -->
+    <!-- CARRINHO -->
 
-  <div
-    class="modal"
-    id="categoryModal"
+    <button
+      class="header-cart"
+      type="button"
+      aria-label="Carrinho"
+    >
+
+      <span class="header-action-icon">
+        🛒
+      </span>
+
+      <span class="header-action-copy">
+        Carrinho
+      </span>
+
+      <i class="cart-count">
+        0
+      </i>
+
+    </button>
+
+
+  </div>
+
+</header>
+
+
+
+<!-- =========================================================
+     MENU PRINCIPAL
+     ========================================================= -->
+
+<nav class="department-nav">
+
+
+  <button
+    type="button"
+    class="department-all"
+    data-department="all"
   >
-
-    <div class="modal-box">
-
-      <button
-        id="categoryModalClose"
-        class="modal-close"
-        type="button"
-      >
-        ×
-      </button>
+    ☰
+    <strong>Todas as categorias</strong>
+  </button>
 
 
-      <small class="modal-kicker">
-        CATEGORIAS
-      </small>
+  <button
+    type="button"
+    data-category="moda"
+  >
+    Moda Feminina
+  </button>
 
 
-      <h2 id="categoryModalTitle">
-        Categoria
-      </h2>
+  <button
+    type="button"
+    data-search="camiseta masculina"
+  >
+    Moda Masculina
+  </button>
+
+
+  <button
+    type="button"
+    data-search="roupa infantil"
+  >
+    Infantil
+  </button>
+
+
+  <button
+    type="button"
+    data-search="tênis"
+  >
+    Tênis e Calçados
+  </button>
+
+
+  <button
+    type="button"
+    data-category="informatica"
+  >
+    Eletrônicos
+  </button>
+
+
+  <button
+    type="button"
+    data-search="acessórios"
+  >
+    Acessórios
+  </button>
+
+
+  <button
+    type="button"
+    class="department-offers"
+  >
+    Ofertas
+  </button>
+
+
+</nav>
+
+
+
+<!-- =========================================================
+     CONTEÚDO
+     ========================================================= -->
+
+<main>
+
+
+
+<!-- =========================================================
+     HERO PRINCIPAL
+     ========================================================= -->
+
+<section class="store-hero">
+
+
+  <div class="store-hero-content">
+
+
+    <div class="store-hero-copy">
+
+
+      <div class="hero-brand-title">
+        ACHOU<span>!</span>
+      </div>
+
+
+      <h1>
+        <em>Moda e tecnologia</em><br>
+        em um só lugar.
+      </h1>
 
 
       <p>
-        Escolha o que deseja encontrar.
+        Qualidade, variedade e as melhores ofertas
+        com fornecedores confiáveis.
       </p>
 
 
-      <div
-        id="subcategoryGrid"
-        class="subcategory-grid"
-      ></div>
+      <button
+        class="hero-buy-button"
+        type="button"
+      >
+        COMPRAR AGORA
+        <span>›</span>
+      </button>
+
 
     </div>
+
+
+
+    <div
+      class="store-hero-visual"
+      aria-hidden="true"
+    >
+
+      <img
+        src="achou-hero-homem.png?v=20260905-store"
+        alt=""
+      >
+
+    </div>
+
+
+
+    <div class="hero-side-message">
+
+      <strong>
+        AS<br>
+        MELHORES<br>
+        MARCAS<br>
+        VOCÊ<br>
+        ENCONTRA<br>
+        AQUI
+      </strong>
+
+    </div>
+
 
   </div>
 
 
-  <!-- =====================================================
-       CARRINHO
-       ===================================================== -->
 
-  <div
-    class="modal"
-    id="cartModal"
-  >
+  <!-- BENEFÍCIOS DENTRO DO HERO -->
 
-    <div class="modal-box cart-modal-box">
-
-      <button
-        id="cartModalClose"
-        class="modal-close"
-        type="button"
-      >
-        ×
-      </button>
+  <div class="hero-benefits">
 
 
-      <small class="modal-kicker">
-        SUA SACOLA
-      </small>
+    <article>
 
+      <span>▣</span>
+
+      <div>
+        <strong>Entrega rápida</strong>
+        <small>em Criciúma e região</small>
+      </div>
+
+    </article>
+
+
+    <article>
+
+      <span>◇</span>
+
+      <div>
+        <strong>Compra segura</strong>
+        <small>seus dados protegidos</small>
+      </div>
+
+    </article>
+
+
+    <article>
+
+      <span>▥</span>
+
+      <div>
+        <strong>Lojas parceiras</strong>
+        <small>e produtos originais</small>
+      </div>
+
+    </article>
+
+
+  </div>
+
+
+
+  <div class="hero-dots">
+
+    <button
+      class="active"
+      type="button"
+      aria-label="Banner 1"
+    ></button>
+
+    <button
+      type="button"
+      aria-label="Banner 2"
+    ></button>
+
+    <button
+      type="button"
+      aria-label="Banner 3"
+    ></button>
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     BUSCA MOBILE
+     ========================================================= -->
+
+<section class="mobile-search-area">
+
+
+  <div class="search-box">
+
+    <span class="search-icon">
+      ⌕
+    </span>
+
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="O que você está procurando?"
+      autocomplete="off"
+    >
+
+    <button type="button">
+      Buscar
+    </button>
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     CATEGORIAS
+     ========================================================= -->
+
+<section
+  class="section categories-section"
+  id="categoriesSection"
+>
+
+
+  <div class="section-head mobile-section-title">
+
+    <div class="section-title">
+
+      <span class="title-icon">
+        ▦
+      </span>
 
       <h2>
-        Carrinho
+        Categorias
+      </h2>
+
+    </div>
+
+
+    <button
+      class="text-link category-show-all"
+      type="button"
+    >
+      Ver todas ›
+    </button>
+
+  </div>
+
+
+
+  <div class="category-row">
+
+
+    <!-- MODA FEMININA -->
+
+    <button
+      class="category-card"
+      data-search="moda feminina"
+    >
+
+      <span class="cat-icon active">
+        ♀
+      </span>
+
+      <strong>
+        Moda Feminina
+      </strong>
+
+    </button>
+
+
+
+    <!-- MODA MASCULINA -->
+
+    <button
+      class="category-card"
+      data-search="camiseta masculina"
+    >
+
+      <span class="cat-icon active">
+        ♟
+      </span>
+
+      <strong>
+        Moda Masculina
+      </strong>
+
+    </button>
+
+
+
+    <!-- INFANTIL -->
+
+    <button
+      class="category-card"
+      data-search="roupa infantil"
+    >
+
+      <span class="cat-icon active">
+        ♧
+      </span>
+
+      <strong>
+        Infantil
+      </strong>
+
+    </button>
+
+
+
+    <!-- TÊNIS -->
+
+    <button
+      class="category-card"
+      data-search="tênis"
+    >
+
+      <span class="cat-icon active">
+        ◒
+      </span>
+
+      <strong>
+        Tênis e Calçados
+      </strong>
+
+    </button>
+
+
+
+    <!-- ELETRÔNICOS -->
+
+    <button
+      class="category-card"
+      data-search="eletrônicos"
+    >
+
+      <span class="cat-icon active">
+        ◉
+      </span>
+
+      <strong>
+        Eletrônicos
+      </strong>
+
+    </button>
+
+
+
+    <!-- INFORMÁTICA -->
+
+    <button
+      class="category-card"
+      data-category="informatica"
+    >
+
+      <span class="cat-icon active">
+        ▣
+      </span>
+
+      <strong>
+        Informática
+      </strong>
+
+    </button>
+
+
+
+    <!-- GAMES -->
+
+    <button
+      class="category-card"
+      data-category="games"
+    >
+
+      <span class="cat-icon active">
+        🎮
+      </span>
+
+      <strong>
+        Gamer
+      </strong>
+
+    </button>
+
+
+
+    <!-- SMARTWATCH -->
+
+    <button
+      class="category-card"
+      data-search="smartwatch"
+    >
+
+      <span class="cat-icon active">
+        ◫
+      </span>
+
+      <strong>
+        Smartwatches
+      </strong>
+
+    </button>
+
+
+
+    <!-- ACESSÓRIOS -->
+
+    <button
+      class="category-card"
+      data-search="acessórios"
+    >
+
+      <span class="cat-icon active">
+        ♙
+      </span>
+
+      <strong>
+        Acessórios
+      </strong>
+
+    </button>
+
+
+
+    <!-- OFERTAS -->
+
+    <button
+      class="category-card category-offer-card"
+    >
+
+      <span class="cat-icon active">
+        %
+      </span>
+
+      <strong>
+        Ofertas
+      </strong>
+
+    </button>
+
+
+  </div>
+
+</section>
+
+
+
+<!-- =========================================================
+     BENEFÍCIOS PRINCIPAIS
+     ========================================================= -->
+
+<section class="commerce-benefits">
+
+
+  <article>
+
+    <span class="commerce-benefit-icon">
+      ▰
+    </span>
+
+    <div>
+      <strong>FRETE RÁPIDO</strong>
+      <small>Criciúma e região</small>
+    </div>
+
+  </article>
+
+
+
+  <article>
+
+    <span class="commerce-benefit-icon">
+      ◇
+    </span>
+
+    <div>
+      <strong>COMPRA SEGURA</strong>
+      <small>Seus dados protegidos</small>
+    </div>
+
+  </article>
+
+
+
+  <article>
+
+    <span class="commerce-benefit-icon">
+      ▭
+    </span>
+
+    <div>
+      <strong>PARCELE EM ATÉ 12X</strong>
+      <small>Nos principais cartões</small>
+    </div>
+
+  </article>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     OFERTAS
+     ========================================================= -->
+
+<section
+  class="section products-section"
+  id="offersSection"
+>
+
+
+  <div class="section-head">
+
+
+    <div class="section-title">
+
+      <h2>
+        Ofertas em destaque
+      </h2>
+
+    </div>
+
+
+    <button
+      class="text-link products-show-all"
+      type="button"
+    >
+      Ver todas ›
+    </button>
+
+
+  </div>
+
+
+
+  <div
+    class="achou-search-summary"
+    style="display:none"
+  ></div>
+
+
+
+  <div class="flash-deals"></div>
+
+
+
+  <p class="affiliate-note">
+    O ACHOU! pode receber comissão por compras realizadas
+    através dos links de parceiros.
+  </p>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     BANNERS SECUNDÁRIOS
+     ========================================================= -->
+
+<section class="promo-grid">
+
+
+  <!-- MODA -->
+
+  <article class="promo-card promo-fashion">
+
+
+    <div class="promo-copy">
+
+      <h2>
+        Moda para<br>
+        todas as ocasiões
       </h2>
 
 
-      <div
-        id="cartItems"
-        class="cart-items"
-      ></div>
+      <button
+        type="button"
+        data-search="moda feminina"
+      >
+        VER COLEÇÃO
+        <span>›</span>
+      </button>
+
+    </div>
 
 
-      <div class="cart-total">
+    <div class="promo-fashion-person">
 
-        <span>
-          Total
-        </span>
+      <span>
+        ACHOU!
+      </span>
 
-        <strong id="cartTotal">
-          R$ 0,00
-        </strong>
+    </div>
 
-      </div>
+
+  </article>
+
+
+
+  <!-- ELETRÔNICOS -->
+
+  <article class="promo-card promo-tech">
+
+
+    <div class="promo-copy">
+
+      <h2>
+        Eletrônicos<br>
+        que conectam você
+      </h2>
 
 
       <button
-        id="checkoutButton"
-        class="primary-btn"
         type="button"
+        data-search="eletrônicos"
       >
-        FINALIZAR COMPRA
+        VER OFERTAS
+        <span>›</span>
       </button>
 
+    </div>
 
-      <small class="cart-notice">
-        O checkout próprio será conectado na próxima etapa.
-        Produtos parceiros podem redirecionar para a loja responsável.
-      </small>
+
+    <div class="promo-tech-products">
+
+      <img
+        src="file_00000000bd34820e8cc682ea72542717.png"
+        alt=""
+        loading="lazy"
+      >
+
+      <img
+        src="file_00000000d40c820ea6f7a477eb429009.png"
+        alt=""
+        loading="lazy"
+      >
 
     </div>
+
+
+  </article>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     LOJAS PARCEIRAS
+     ========================================================= -->
+
+<section class="section stores-section">
+
+
+  <div class="section-head">
+
+
+    <div class="section-title">
+
+      <h2>
+        Lojas parceiras
+      </h2>
+
+    </div>
+
+
+    <button
+      class="text-link"
+      type="button"
+    >
+      Ver todas ›
+    </button>
+
 
   </div>
 
 
-  <!-- =====================================================
-       LOGIN
-       ===================================================== -->
 
-  <div
-    class="modal"
-    id="loginModal"
+  <div class="brand-partners">
+
+
+    <article>
+      <strong>NIKE</strong>
+    </article>
+
+
+    <article>
+      <strong>adidas</strong>
+    </article>
+
+
+    <article>
+      <strong>SAMSUNG</strong>
+    </article>
+
+
+    <article>
+      <strong>●</strong>
+    </article>
+
+
+    <article>
+      <strong>JBL</strong>
+    </article>
+
+
+    <article>
+      <strong>mi</strong>
+    </article>
+
+
+    <article>
+      <strong>PUMA</strong>
+    </article>
+
+
+    <article>
+      <strong>LACOSTE</strong>
+    </article>
+
+
+    <article>
+      <strong>GAP</strong>
+    </article>
+
+
+    <article>
+      <small>
+        e muito mais...
+      </small>
+    </article>
+
+
+  </div>
+
+
+</section>
+
+
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
+<footer class="store-footer">
+
+
+  <div class="footer-brand">
+
+
+    <strong>
+      ACHOU<span>!</span>
+    </strong>
+
+
+    <p>
+      Seu estilo. Sua tecnologia.<br>
+      Tudo em um só lugar.
+    </p>
+
+
+  </div>
+
+
+
+  <div class="footer-service">
+
+
+    <article>
+
+      <span>♬</span>
+
+      <div>
+        <strong>Atendimento</strong>
+        <small>Seg a Sex - 8h às 18h</small>
+      </div>
+
+    </article>
+
+
+
+    <article>
+
+      <span>◇</span>
+
+      <div>
+        <strong>Troca fácil</strong>
+        <small>Até 7 dias</small>
+      </div>
+
+    </article>
+
+
+
+    <article>
+
+      <span>◇</span>
+
+      <div>
+        <strong>Compra segura</strong>
+        <small>Ambiente 100% protegido</small>
+      </div>
+
+    </article>
+
+
+  </div>
+
+
+
+  <div class="footer-social">
+
+    <button
+      type="button"
+      aria-label="Instagram"
+    >
+      ◎
+    </button>
+
+    <button
+      type="button"
+      aria-label="Facebook"
+    >
+      f
+    </button>
+
+    <button
+      type="button"
+      aria-label="TikTok"
+    >
+      ♪
+    </button>
+
+    <button
+      type="button"
+      aria-label="YouTube"
+    >
+      ▶
+    </button>
+
+  </div>
+
+
+</footer>
+
+
+
+<!-- =========================================================
+     ACESSO ADMIN SECRETO
+     ========================================================= -->
+
+<div class="admin-secret-area">
+
+  <button
+    id="adminSecretButton"
+    class="admin-secret-dot"
+    aria-label="Acesso reservado"
+  ></button>
+
+</div>
+
+
+</main>
+
+
+
+<!-- =========================================================
+     NAVEGAÇÃO MOBILE
+     ========================================================= -->
+
+<nav class="bottom-nav">
+
+
+  <button
+    class="bottom-nav-item active"
+    data-nav="home"
   >
 
-    <div class="modal-box auth-box">
+    <span>⌂</span>
+    <strong>Início</strong>
+
+  </button>
+
+
+
+  <button
+    class="bottom-nav-item"
+    data-nav="categories"
+  >
+
+    <span>▦</span>
+    <strong>Categorias</strong>
+
+  </button>
+
+
+
+  <button
+    class="bottom-nav-item"
+    data-nav="search"
+  >
+
+    <span>⌕</span>
+    <strong>Buscar</strong>
+
+  </button>
+
+
+
+  <button
+    class="bottom-nav-item"
+    data-nav="favorites"
+  >
+
+    <span>
+
+      ♡
+
+      <i class="favorite-count">
+        0
+      </i>
+
+    </span>
+
+    <strong>
+      Favoritos
+    </strong>
+
+  </button>
+
+
+
+  <button
+    class="bottom-nav-item"
+    data-nav="cart"
+  >
+
+    <span>
+
+      🛒
+
+      <i class="cart-count">
+        0
+      </i>
+
+    </span>
+
+    <strong>
+      Carrinho
+    </strong>
+
+  </button>
+
+
+</nav>
+
+
+
+<!-- =========================================================
+     MODAL CATEGORIAS
+     ========================================================= -->
+
+<div
+  class="category-modal modal"
+  id="categoryModal"
+>
+
+
+  <div class="modal-box category-modal-box">
+
+
+    <button
+      id="categoryModalClose"
+      class="modal-close"
+      type="button"
+    >
+      ×
+    </button>
+
+
+    <small class="modal-kicker">
+      EXPLORE
+    </small>
+
+
+    <h2 id="categoryModalTitle">
+      Categoria
+    </h2>
+
+
+    <p id="categoryModalText">
+      Escolha o que você procura.
+    </p>
+
+
+    <div
+      id="subcategoryGrid"
+      class="subcategory-grid"
+    ></div>
+
+
+  </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     LOGIN
+     ========================================================= -->
+
+<div
+  class="login-modal modal"
+  id="loginModal"
+>
+
+
+  <div class="modal-box auth-box">
+
+
+    <button
+      class="login-close modal-close"
+      type="button"
+    >
+      ×
+    </button>
+
+
+    <div class="modal-logo">
+      ACHOU<span>!</span>
+    </div>
+
+
+    <p>
+      Entre na sua conta.
+    </p>
+
+
+    <form id="loginForm">
+
+
+      <label>
+        E-mail
+      </label>
+
+
+      <input
+        id="loginEmail"
+        type="email"
+        required
+      >
+
+
+      <label>
+        Senha
+      </label>
+
+
+      <input
+        id="loginPassword"
+        type="password"
+        required
+      >
+
 
       <button
-        class="login-close modal-close"
-        type="button"
+        class="primary-btn"
+        type="submit"
       >
-        ×
+        ENTRAR
       </button>
 
 
-      <div class="modal-logo">
-        ACHOU<span>!</span>
+    </form>
+
+
+    <button
+      class="link-btn create-account"
+      type="button"
+    >
+      Ainda não tem conta? Criar conta
+    </button>
+
+
+  </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     CADASTRO
+     ========================================================= -->
+
+<div
+  class="signup-modal modal"
+  id="signupModal"
+>
+
+
+  <div class="modal-box auth-box">
+
+
+    <button
+      class="signup-close modal-close"
+      type="button"
+    >
+      ×
+    </button>
+
+
+    <div class="modal-logo">
+      ACHOU<span>!</span>
+    </div>
+
+
+    <p>
+      Crie sua conta gratuitamente.
+    </p>
+
+
+    <form id="signupForm">
+
+
+      <label>
+        Nome completo
+      </label>
+
+
+      <input
+        id="signupName"
+        type="text"
+        required
+      >
+
+
+      <label>
+        E-mail
+      </label>
+
+
+      <input
+        id="signupEmail"
+        type="email"
+        required
+      >
+
+
+      <label>
+        Senha
+      </label>
+
+
+      <input
+        id="signupPassword"
+        type="password"
+        required
+      >
+
+
+      <label>
+        Confirmar senha
+      </label>
+
+
+      <input
+        id="signupPasswordConfirm"
+        type="password"
+        required
+      >
+
+
+      <button
+        class="primary-btn"
+        type="submit"
+      >
+        CRIAR CONTA
+      </button>
+
+
+    </form>
+
+
+    <button
+      class="link-btn signup-login"
+      type="button"
+    >
+      Já tenho conta
+    </button>
+
+
+  </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     LOGIN ADMIN
+     ========================================================= -->
+
+<div
+  class="admin-login-modal modal"
+  id="adminLoginModal"
+>
+
+
+  <div class="modal-box auth-box">
+
+
+    <button
+      id="adminLoginClose"
+      class="modal-close"
+      type="button"
+    >
+      ×
+    </button>
+
+
+    <div class="modal-logo">
+      ACHOU<span>!</span>
+    </div>
+
+
+    <small class="modal-kicker">
+      ÁREA RESTRITA
+    </small>
+
+
+    <h2>
+      Administrador
+    </h2>
+
+
+    <form id="adminLoginForm">
+
+
+      <label>
+        E-mail
+      </label>
+
+
+      <input
+        id="adminEmail"
+        type="email"
+        required
+      >
+
+
+      <label>
+        Senha
+      </label>
+
+
+      <input
+        id="adminPassword"
+        type="password"
+        required
+      >
+
+
+      <button
+        class="primary-btn"
+        type="submit"
+      >
+        ENTRAR NO PAINEL
+      </button>
+
+
+    </form>
+
+
+    <div
+      id="adminLoginMessage"
+      class="admin-message"
+    ></div>
+
+
+  </div>
+
+
+</div>
+
+
+
+<!-- =========================================================
+     PAINEL ADMIN
+     ========================================================= -->
+
+<div
+  class="admin-panel-modal modal"
+  id="adminPanelModal"
+>
+
+
+  <div class="admin-panel">
+
+
+    <header class="admin-panel-header">
+
+
+      <div>
+
+        <small class="modal-kicker">
+          ÁREA RESTRITA
+        </small>
+
+        <h2>
+          Painel ACHOU!
+        </h2>
+
       </div>
 
 
-      <p>
-        Entre na sua conta.
-      </p>
 
-
-      <form id="loginForm">
-
-        <label>
-          E-mail
-        </label>
-
-        <input
-          id="loginEmail"
-          type="email"
-          required
-        >
-
-
-        <label>
-          Senha
-        </label>
-
-        <input
-          id="loginPassword"
-          type="password"
-          required
-        >
+      <div class="admin-head-actions">
 
 
         <button
-          class="primary-btn"
-          type="submit"
+          id="adminLogoutButton"
+          type="button"
         >
-          ENTRAR
+          SAIR
         </button>
 
-      </form>
+
+        <button
+          id="adminPanelClose"
+          class="modal-close static"
+          type="button"
+        >
+          ×
+        </button>
 
 
-      <button
-        class="link-btn create-account"
-        type="button"
-      >
-        Ainda não tem conta? Criar conta
-      </button>
-
-    </div>
-
-  </div>
-
-
-  <!-- =====================================================
-       CADASTRO
-       ===================================================== -->
-
-  <div
-    class="modal"
-    id="signupModal"
-  >
-
-    <div class="modal-box auth-box">
-
-      <button
-        class="signup-close modal-close"
-        type="button"
-      >
-        ×
-      </button>
-
-
-      <div class="modal-logo">
-        ACHOU<span>!</span>
       </div>
 
 
-      <p>
-        Crie sua conta gratuitamente.
-      </p>
+    </header>
 
 
-      <form id="signupForm">
 
-        <label>
-          Nome completo
-        </label>
+    <!-- PRODUTOS -->
+
+    <section class="admin-section">
+
+
+      <div class="admin-section-title">
+
+
+        <h3>
+          Produtos encontrados
+        </h3>
+
+
+        <button
+          id="adminRefreshProducts"
+          type="button"
+        >
+          ATUALIZAR
+        </button>
+
+
+      </div>
+
+
+      <div
+        id="adminProductsList"
+        class="admin-products-list"
+      >
+
+        <div class="admin-empty">
+          Faça uma busca no ACHOU! para carregar os produtos.
+        </div>
+
+      </div>
+
+
+    </section>
+
+
+
+    <!-- AFILIADOS -->
+
+    <section class="admin-section">
+
+
+      <h3>
+        Link de afiliado
+      </h3>
+
+
+      <form id="adminAffiliateForm">
+
 
         <input
-          id="signupName"
+          id="adminAffiliateId"
+          type="hidden"
+        >
+
+
+        <label>
+          Item ID
+        </label>
+
+
+        <input
+          id="adminItemId"
           type="text"
           required
         >
 
 
         <label>
-          E-mail
+          Product ID / Catálogo
         </label>
 
+
         <input
-          id="signupEmail"
-          type="email"
+          id="adminProductId"
+          type="text"
+        >
+
+
+        <label>
+          Produto
+        </label>
+
+
+        <input
+          id="adminProductTitle"
+          type="text"
           required
         >
 
 
         <label>
-          Senha
+          Link de afiliado
         </label>
 
+
         <input
-          id="signupPassword"
-          type="password"
+          id="adminAffiliateUrl"
+          type="url"
           required
         >
 
 
-        <label>
-          Confirmar senha
+        <label class="check-row">
+
+
+          <input
+            id="adminAffiliateActive"
+            type="checkbox"
+            checked
+          >
+
+
+          Link ativo no site
+
+
         </label>
 
-        <input
-          id="signupPasswordConfirm"
-          type="password"
-          required
-        >
 
 
-        <button
-          class="primary-btn"
-          type="submit"
-        >
-          CRIAR CONTA
-        </button>
-
-      </form>
+        <div class="admin-form-actions">
 
 
-      <button
-        class="link-btn signup-login"
-        type="button"
-      >
-        Já tenho conta
-      </button>
-
-    </div>
-
-  </div>
+          <button
+            id="adminClearForm"
+            type="button"
+          >
+            LIMPAR
+          </button>
 
 
-  <!-- =====================================================
-       LOGIN ADMIN
-       ===================================================== -->
-
-  <div
-    class="modal"
-    id="adminLoginModal"
-  >
-
-    <div class="modal-box auth-box">
-
-      <button
-        id="adminLoginClose"
-        class="modal-close"
-        type="button"
-      >
-        ×
-      </button>
+          <button
+            class="primary-btn"
+            type="submit"
+          >
+            SALVAR LINK
+          </button>
 
 
-      <div class="modal-logo">
-        ACHOU<span>!</span>
-      </div>
+        </div>
 
-
-      <small class="modal-kicker">
-        ÁREA RESTRITA
-      </small>
-
-
-      <h2>
-        Administrador
-      </h2>
-
-
-      <form id="adminLoginForm">
-
-        <label>
-          E-mail
-        </label>
-
-        <input
-          id="adminEmail"
-          type="email"
-          required
-        >
-
-
-        <label>
-          Senha
-        </label>
-
-        <input
-          id="adminPassword"
-          type="password"
-          required
-        >
-
-
-        <button
-          class="primary-btn"
-          type="submit"
-        >
-          ENTRAR NO PAINEL
-        </button>
 
       </form>
 
 
       <div
-        id="adminLoginMessage"
+        id="adminFormMessage"
         class="admin-message"
       ></div>
 
-    </div>
 
-  </div>
-
-
-  <!-- =====================================================
-       PAINEL ADMINISTRATIVO
-       ===================================================== -->
-
-  <div
-    class="modal admin-panel-modal"
-    id="adminPanelModal"
-  >
-
-    <div class="admin-panel">
-
-      <header class="admin-panel-header">
-
-        <div>
-          <small class="modal-kicker">
-            ÁREA RESTRITA
-          </small>
-
-          <h2>
-            Painel ACHOU!
-          </h2>
-        </div>
+    </section>
 
 
-        <div class="admin-head-actions">
 
-          <button
-            id="adminLogoutButton"
-            type="button"
-          >
-            SAIR
-          </button>
+    <!-- LINKS CADASTRADOS -->
+
+    <section class="admin-section">
 
 
-          <button
-            id="adminPanelClose"
-            class="modal-close static"
-            type="button"
-          >
-            ×
-          </button>
+      <div class="admin-section-title">
 
-        </div>
-
-      </header>
-
-
-      <section class="admin-section">
-
-        <div class="admin-section-title">
-
-          <h3>
-            Produtos encontrados
-          </h3>
-
-
-          <button
-            id="adminRefreshProducts"
-            type="button"
-          >
-            ATUALIZAR
-          </button>
-
-        </div>
-
-
-        <div
-          id="adminProductsList"
-          class="admin-products-list"
-        >
-
-          <div class="admin-empty">
-            Faça uma busca para carregar produtos.
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <section class="admin-section">
 
         <h3>
-          Link de produto parceiro
+          Links cadastrados
         </h3>
 
 
-        <form id="adminAffiliateForm">
-
-          <input
-            id="adminAffiliateId"
-            type="hidden"
-          >
-
-
-          <label>
-            Item ID
-          </label>
-
-          <input
-            id="adminItemId"
-            type="text"
-            required
-          >
+        <button
+          id="adminRefreshLinks"
+          type="button"
+        >
+          ATUALIZAR
+        </button>
 
 
-          <label>
-            Product ID
-          </label>
-
-          <input
-            id="adminProductId"
-            type="text"
-          >
+      </div>
 
 
-          <label>
-            Produto
-          </label>
-
-          <input
-            id="adminProductTitle"
-            type="text"
-            required
-          >
+      <div
+        id="adminLinksList"
+        class="admin-links-list"
+      ></div>
 
 
-          <label>
-            Link parceiro
-          </label>
+    </section>
 
-          <input
-            id="adminAffiliateUrl"
-            type="url"
-            required
-          >
-
-
-          <label class="check-row">
-
-            <input
-              id="adminAffiliateActive"
-              type="checkbox"
-              checked
-            >
-
-            Produto ativo no site
-
-          </label>
-
-
-          <div class="admin-form-actions">
-
-            <button
-              id="adminClearForm"
-              type="button"
-            >
-              LIMPAR
-            </button>
-
-
-            <button
-              class="primary-btn"
-              type="submit"
-            >
-              SALVAR PRODUTO
-            </button>
-
-          </div>
-
-        </form>
-
-
-        <div
-          id="adminFormMessage"
-          class="admin-message"
-        ></div>
-
-      </section>
-
-
-      <section class="admin-section">
-
-        <div class="admin-section-title">
-
-          <h3>
-            Produtos cadastrados
-          </h3>
-
-
-          <button
-            id="adminRefreshLinks"
-            type="button"
-          >
-            ATUALIZAR
-          </button>
-
-        </div>
-
-
-        <div
-          id="adminLinksList"
-          class="admin-links-list"
-        ></div>
-
-      </section>
-
-    </div>
 
   </div>
 
 
-  <!-- =====================================================
-       SUPABASE
-       ===================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
+</div>
 
 
-  <!-- =====================================================
-       ACHOU
-       ===================================================== -->
 
-  <script
-    src="script.js?v=20260905-store-01"
-  ></script>
+<!-- =========================================================
+     SUPABASE
+     ========================================================= -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+
+
+
+<!-- =========================================================
+     SCRIPT ACHOU
+     ========================================================= -->
+
+<script
+  src="script.js?v=20260905-store-01"
+></script>
+
+
+<script
+  src="amazon-integration.js?v=20260905-01"
+></script>
+
 
 </body>
-</html>
+
+  </html>
