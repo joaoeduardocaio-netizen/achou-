@@ -1,1979 +1,319 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  >
-
-  <meta
-    name="theme-color"
-    content="#000000"
-  >
-
-  <meta
-    name="description"
-    content="ACHOU! Pesquise uma vez e compare ofertas reais de várias lojas."
-  >
-
-  <title>
-    ACHOU! — Pesquise uma vez. Compare várias lojas.
-  </title>
-
-  <link
-    rel="manifest"
-    href="manifest.json"
-  >
-
-  <link
-    rel="stylesheet"
-    href="style.css?v=20260904-20"
-  >
-
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="ACHOU! Pesquise uma vez e compare ofertas reais.">
+  <title>ACHOU! — Compare várias lojas</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css?v=20260905-01">
 </head>
 
-
 <body>
-
-
-  <!-- =====================================================
-       HEADER
-       ===================================================== -->
-
   <header class="top-header">
+    <button class="menu-button" type="button" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
 
-    <div class="header-left">
+    <a class="brand" href="#" aria-label="ACHOU início">
+      <strong>ACHOU<span>!</span></strong>
+      <small>A gente procura. Você economiza tempo.</small>
+    </a>
 
-      <button
-        class="menu-button"
-        type="button"
-        aria-label="Abrir menu"
-      >
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
-
-      <a
-        class="brand"
-        href="#"
-        aria-label="ACHOU início"
-      >
-
-        <strong>
-          ACHOU<span>!</span>
-        </strong>
-
-        <small>
-          A gente procura. Você economiza tempo.
-        </small>
-
-      </a>
-
-    </div>
-
-
-    <div class="header-user">
-
-      <button
-        class="header-icon"
-        type="button"
-        aria-label="Favoritos"
-      >
-
+    <div class="header-actions">
+      <button class="header-heart" type="button" aria-label="Favoritos">
         ♡
-
-        <span class="notification-badge favorite-count">
-          0
-        </span>
-
+        <i class="favorite-count">0</i>
       </button>
 
-
-      <button
-        class="account-button"
-        type="button"
-      >
-
-        <span class="account-avatar">
-          ●
-        </span>
-
-        <span class="account-greeting">
+      <button class="account-button" type="button">
+        <span class="account-avatar">●</span>
+        <span class="account-copy">
           <small>Olá!</small>
           <strong>Entrar</strong>
         </span>
-
       </button>
-
     </div>
-
   </header>
 
-
-
   <main>
-
-
-    <!-- ===================================================
-         HERO PRINCIPAL
-         =================================================== -->
-
-    <section class="hero-marketplace">
-
+    <section class="hero">
       <div class="hero-copy">
-
-        <span class="hero-small-title">
-          SEU COMPARADOR DE PREÇOS
-        </span>
-
-        <h1>
-          Pesquise uma vez.
-          <br>
-          <em>Compare várias lojas.</em>
-        </h1>
-
-        <p>
-          A gente procura. Você economiza tempo.
-        </p>
-
+        <h1>Pesquise uma vez.<br><em>Compare várias lojas.</em></h1>
+        <p>A gente procura. Você economiza tempo.</p>
       </div>
 
-
-      <div
-        class="hero-visual"
-        aria-hidden="true"
-      >
-
-        <div class="hero-shape"></div>
-
-        <img
-          src="achou-homem-caixa-1.png?v=20260904-20"
-          alt=""
-          class="hero-man"
-          draggable="false"
-        >
-
+      <div class="hero-art" aria-hidden="true">
+        <div class="hero-yellow"></div>
+        <img src="achou-homem-caixa-1.png?v=20260905-01" class="hero-man" alt="">
       </div>
 
-
-      <!-- BUSCA PRINCIPAL -->
-
-      <div class="search-box hero-search">
-
-        <span class="search-icon">
-          ⌕
-        </span>
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="O que você está procurando?"
-          autocomplete="off"
-          aria-label="Pesquisar produtos"
-        >
-
-        <button type="button">
-          BUSCAR
-        </button>
-
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input id="searchInput" type="search" placeholder="O que você está procurando?" autocomplete="off">
+        <button type="button">Buscar</button>
       </div>
 
-
-      <!-- PESQUISAS RÁPIDAS -->
-
-      <div
-        class="search-chips"
-        aria-label="Pesquisas populares"
-      >
-
-        <button
-          type="button"
-          data-search="iPhone 15"
-        >
-          iPhone 15
-        </button>
-
-        <button
-          type="button"
-          data-search="notebook"
-        >
-          Notebook
-        </button>
-
-        <button
-          type="button"
-          data-search="PlayStation 5"
-        >
-          PlayStation 5
-        </button>
-
-        <button
-          type="button"
-          data-search="Smart TV"
-        >
-          Smart TV
-        </button>
-
-        <button
-          type="button"
-          data-search="Air Fryer"
-        >
-          Air Fryer
-        </button>
-
-        <button
-          type="button"
-          data-search="tênis"
-        >
-          Tênis
-        </button>
-
-        <button
-          type="button"
-          data-search="geladeira"
-        >
-          Geladeira
-        </button>
-
-        <button
-          type="button"
-          data-search="furadeira"
-        >
-          Furadeira
-        </button>
-
+      <div class="search-chips">
+        <button data-search="iPhone 15">iPhone 15</button>
+        <button data-search="notebook">Notebook</button>
+        <button data-search="PlayStation 5">PlayStation 5</button>
+        <button data-search="Smart TV">Smart TV</button>
+        <button data-search="Air Fryer">Air Fryer</button>
+        <button data-search="tênis">Tênis</button>
+        <button data-search="geladeira">Geladeira</button>
+        <button data-search="furadeira">Furadeira</button>
       </div>
-
     </section>
 
-
-
-    <!-- ===================================================
-         CATEGORIAS
-         =================================================== -->
-
-    <section
-      class="market-section categories-section"
-      id="categoriesSection"
-    >
-
-      <div class="market-section-heading">
-
+    <section class="section categories-section" id="categoriesSection">
+      <div class="section-head">
         <div class="section-title">
-
-          <span class="section-grid-icon">
-            ▦
-          </span>
-
-          <h2>
-            Categorias
-          </h2>
-
+          <span class="title-icon">▦</span>
+          <h2>Categorias</h2>
         </div>
-
-
-        <button
-          class="see-all category-show-all"
-          type="button"
-        >
-          Ver todas ›
-        </button>
-
+        <button class="text-link category-show-all" type="button">Ver todas ›</button>
       </div>
 
-
-
-      <div
-        class="quick-categories"
-        aria-label="Categorias rápidas"
-      >
-
-
-        <!-- CELULARES -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="celulares"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-              <rect
-                x="7"
-                y="2"
-                width="10"
-                height="20"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.8"
-              />
-
-              <path
-                d="M10 5h4"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-
-              <circle
-                cx="12"
-                cy="19"
-                r=".8"
-                fill="currentColor"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            Celulares
-          </strong>
-
+      <div class="category-row">
+        <button class="category-card" data-category="celulares">
+          <span class="cat-icon">▯</span><strong>Celulares</strong>
         </button>
-
-
-
-        <!-- INFORMÁTICA -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="informatica"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <rect
-                x="4"
-                y="5"
-                width="16"
-                height="11"
-                rx="1.5"
-                stroke="currentColor"
-                stroke-width="1.8"
-              />
-
-              <path
-                d="M2.5 19h19"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            Informática
-          </strong>
-
+        <button class="category-card" data-category="informatica">
+          <span class="cat-icon">▱</span><strong>Informática</strong>
         </button>
-
-
-
-        <!-- TV -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="tv"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <rect
-                x="3"
-                y="5"
-                width="18"
-                height="12"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.8"
-              />
-
-              <path
-                d="M9 20h6M12 17v3"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            TV e Vídeo
-          </strong>
-
+        <button class="category-card" data-category="tv">
+          <span class="cat-icon">▭</span><strong>TV e Vídeo</strong>
         </button>
-
-
-
-        <!-- GAMES -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="games"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <path
-                d="M7 8.5h10c2.3 0 4 1.8 4 4v3c0 1.7-1.3 3-3 3-.9 0-1.7-.4-2.3-1.1L14 15.5h-4l-1.7 1.9A3 3 0 0 1 3 15.5v-3c0-2.2 1.8-4 4-4Z"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linejoin="round"
-              />
-
-              <path
-                d="M8 11v4M6 13h4"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-
-              <circle
-                cx="16"
-                cy="12"
-                r="1"
-                fill="currentColor"
-              />
-
-              <circle
-                cx="18"
-                cy="14"
-                r="1"
-                fill="currentColor"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            Games
-          </strong>
-
+        <button class="category-card" data-category="games">
+          <span class="cat-icon">⌘</span><strong>Games</strong>
         </button>
-
-
-
-        <!-- ÁUDIO -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="audio"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <path
-                d="M4 13v-1a8 8 0 0 1 16 0v1"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-
-              <rect
-                x="3"
-                y="12"
-                width="4"
-                height="7"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.8"
-              />
-
-              <rect
-                x="17"
-                y="12"
-                width="4"
-                height="7"
-                rx="2"
-                stroke="currentColor"
-                stroke-width="1.8"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            Áudio
-          </strong>
-
+        <button class="category-card" data-category="audio">
+          <span class="cat-icon">◉</span><strong>Áudio</strong>
         </button>
-
-
-
-        <!-- CASA -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="casa"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <path
-                d="M3 11.5 12 4l9 7.5"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-
-              <path
-                d="M5.5 10.5V20h13v-9.5"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linejoin="round"
-              />
-
-              <path
-                d="M10 20v-5h4v5"
-                stroke="currentColor"
-                stroke-width="1.8"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            Casa
-          </strong>
-
+        <button class="category-card" data-category="casa">
+          <span class="cat-icon active">⌂</span><strong>Casa</strong>
         </button>
-
-
-
-        <!-- MODA -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="moda"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <path
-                d="M8.5 5.5 12 3l3.5 2.5 3 1.5-2 4v9H7.5v-9l-2-4 3-1.5Z"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linejoin="round"
-              />
-
-              <path
-                d="M8.5 5.5 10 9h4l1.5-3.5"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linejoin="round"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            Moda
-          </strong>
-
+        <button class="category-card" data-category="moda">
+          <span class="cat-icon">♧</span><strong>Moda</strong>
         </button>
-
-
-
-        <!-- FERRAMENTAS -->
-
-        <button
-          class="quick-category"
-          type="button"
-          data-category="ferramentas"
-        >
-
-          <span
-            class="quick-category-icon"
-            aria-hidden="true"
-          >
-
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-            >
-
-              <path
-                d="M14.5 5.5a4 4 0 0 0 4.9 4.9L12 17.8a2.5 2.5 0 1 1-3.5-3.5l7.4-7.4a4 4 0 0 0-1.4-1.4Z"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-
-            </svg>
-
-          </span>
-
-          <strong>
-            Ferramentas
-          </strong>
-
+        <button class="category-card" data-category="ferramentas">
+          <span class="cat-icon">⌕</span><strong>Ferramentas</strong>
         </button>
-
-
       </div>
-
     </section>
 
-
-
-    <!-- ===================================================
-         BANNER DE OFERTAS
-         =================================================== -->
-
-    <section class="offer-banner">
-
-      <div>
-
-        <span class="offer-banner-icon">
-          %
-        </span>
-
+    <section class="highlight-banner">
+      <div class="highlight-left">
+        <div class="tag-icon">%</div>
         <div>
-
-          <strong>
-            Ofertas em destaque
-          </strong>
-
-          <small>
-            Os melhores preços, em um só lugar.
-          </small>
-
+          <strong>Ofertas em destaque</strong>
+          <small>Os melhores preços, em um só lugar.</small>
         </div>
-
       </div>
-
-
-      <button
-        class="see-all"
-        type="button"
-      >
-        Ver ofertas ›
-      </button>
-
+      <button type="button" class="highlight-button">Ver todas as ofertas ›</button>
     </section>
 
-
-
-    <!-- ===================================================
-         RESULTADOS / MAIS PROCURADOS
-         =================================================== -->
-
-    <section
-      class="market-section"
-      id="offersSection"
-    >
-
-      <div class="market-section-heading">
-
+    <section class="section products-section" id="offersSection">
+      <div class="section-head">
         <div class="section-title">
-
-          <span class="section-fire">
-            🔥
-          </span>
-
-          <h2>
-            Mais procurados
-          </h2>
-
+          <span class="title-icon fire">🔥</span>
+          <h2>Mais procurados</h2>
         </div>
-
-
-        <button
-          class="see-all"
-          type="button"
-        >
-          Ver todos ›
-        </button>
-
+        <button class="text-link products-show-all" type="button">Ver todos ›</button>
       </div>
 
-
-      <div
-        class="achou-search-summary"
-        style="display:none"
-      ></div>
-
-
+      <div class="achou-search-summary" style="display:none"></div>
       <div class="flash-deals"></div>
 
-
-      <div class="achou-affiliate-note">
+      <p class="affiliate-note">
         O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.
-      </div>
-
+      </p>
     </section>
 
-
-
-    <!-- ===================================================
-         LOJAS PARCEIRAS
-         =================================================== -->
-
-    <section
-      class="market-section stores-section"
-      id="storesSection"
-    >
-
-      <div class="market-section-heading">
-
+    <section class="section stores-section">
+      <div class="section-head">
         <div class="section-title">
-
-          <span class="store-section-icon">
-            ▰
-          </span>
-
-          <h2>
-            Lojas parceiras
-          </h2>
-
+          <span class="title-icon">▰</span>
+          <h2>Lojas parceiras</h2>
         </div>
-
-
-        <button
-          class="see-all"
-          type="button"
-        >
-          Ver todas ›
-        </button>
-
+        <button class="text-link" type="button">Ver todas ›</button>
       </div>
 
-
-
-      <div class="featured-stores">
-
-
-        <!-- MERCADO LIVRE -->
-
+      <div class="stores-row">
         <article class="store-card integrated">
-
-          <div class="store-logo-wrap">
-
-            <img
-              src="https://logo.clearbit.com/mercadolivre.com.br"
-              alt="Mercado Livre"
-              loading="lazy"
-            >
-
-            <span>
-              Mercado Livre
-            </span>
-
-          </div>
-
-          <small>
-            <i></i>
-            Integrada
-          </small>
-
+          <div class="logo ml"><span>🤝</span><strong>mercado<br>livre</strong></div>
+          <small><i></i> Integrada</small>
         </article>
 
-
-
-        <!-- AMAZON -->
-
-        <article class="store-card coming">
-
-          <div class="store-logo-wrap">
-
-            <img
-              src="https://logo.clearbit.com/amazon.com.br"
-              alt="Amazon"
-              loading="lazy"
-            >
-
-            <span>
-              Amazon
-            </span>
-
-          </div>
-
-          <small>
-            <i></i>
-            Em breve
-          </small>
-
+        <article class="store-card">
+          <div class="logo amazon"><strong>amazon</strong></div>
+          <small><i></i> Em breve</small>
         </article>
 
-
-
-        <!-- SHOPEE -->
-
-        <article class="store-card coming">
-
-          <div class="store-logo-wrap">
-
-            <img
-              src="https://logo.clearbit.com/shopee.com.br"
-              alt="Shopee"
-              loading="lazy"
-            >
-
-            <span>
-              Shopee
-            </span>
-
-          </div>
-
-          <small>
-            <i></i>
-            Em breve
-          </small>
-
+        <article class="store-card">
+          <div class="logo shopee"><strong>▣ Shopee</strong></div>
+          <small><i></i> Em breve</small>
         </article>
 
-
-
-        <!-- MAGALU -->
-
-        <article class="store-card coming">
-
-          <div class="store-logo-wrap">
-
-            <img
-              src="https://logo.clearbit.com/magazineluiza.com.br"
-              alt="Magalu"
-              loading="lazy"
-            >
-
-            <span>
-              Magalu
-            </span>
-
-          </div>
-
-          <small>
-            <i></i>
-            Em breve
-          </small>
-
+        <article class="store-card">
+          <div class="logo magalu"><strong>magalu</strong></div>
+          <small><i></i> Em breve</small>
         </article>
 
-
-
-        <!-- KABUM -->
-
-        <article class="store-card coming">
-
-          <div class="store-logo-wrap">
-
-            <img
-              src="https://logo.clearbit.com/kabum.com.br"
-              alt="KaBuM!"
-              loading="lazy"
-            >
-
-            <span>
-              KaBuM!
-            </span>
-
-          </div>
-
-          <small>
-            <i></i>
-            Em breve
-          </small>
-
+        <article class="store-card">
+          <div class="logo kabum"><strong>KaBuM!</strong></div>
+          <small><i></i> Em breve</small>
         </article>
 
-
-
-        <!-- CASAS BAHIA -->
-
-        <article class="store-card coming">
-
-          <div class="store-logo-wrap">
-
-            <img
-              src="https://logo.clearbit.com/casasbahia.com.br"
-              alt="Casas Bahia"
-              loading="lazy"
-            >
-
-            <span>
-              Casas Bahia
-            </span>
-
-          </div>
-
-          <small>
-            <i></i>
-            Em breve
-          </small>
-
+        <article class="store-card">
+          <div class="logo casas"><strong>CASAS<br>BAHIA</strong></div>
+          <small><i></i> Em breve</small>
         </article>
-
-
       </div>
-
     </section>
 
-
-
-    <!-- ===================================================
-         BENEFÍCIOS
-         =================================================== -->
-
-    <section class="achou-benefits">
-
-
-      <article>
-
-        <span>
-          ✓
-        </span>
-
-        <div>
-
-          <strong>
-            Compra segura
-          </strong>
-
-          <small>
-            Você compra diretamente nas lojas.
-          </small>
-
-        </div>
-
-      </article>
-
-
-
-      <article>
-
-        <span>
-          $
-        </span>
-
-        <div>
-
-          <strong>
-            Compare e economize
-          </strong>
-
-          <small>
-            Ofertas organizadas pelo melhor preço.
-          </small>
-
-        </div>
-
-      </article>
-
-
-
-      <article>
-
-        <span>
-          ♡
-        </span>
-
-        <div>
-
-          <strong>
-            Favoritos
-          </strong>
-
-          <small>
-            Guarde produtos para encontrar depois.
-          </small>
-
-        </div>
-
-      </article>
-
-
-
-      <article>
-
-        <span>
-          ✓
-        </span>
-
-        <div>
-
-          <strong>
-            Sem custo extra
-          </strong>
-
-          <small>
-            Comparar no ACHOU! é gratuito.
-          </small>
-
-        </div>
-
-      </article>
-
-
+    <section class="benefits">
+      <article><span>✓</span><p>Compra segura<br>pelas lojas oficiais</p></article>
+      <article><span>⚡</span><p>Você compara<br>e economiza</p></article>
+      <article><span>◷</span><p>Acompanhe suas<br>buscas e favoritos</p></article>
+      <article><span>◇</span><p>Sem custo extra<br>para você</p></article>
     </section>
-
-
-
-    <!-- ===================================================
-         COMO FUNCIONA
-         =================================================== -->
-
-    <section class="how-section">
-
-      <span class="section-label">
-        COMO FUNCIONA
-      </span>
-
-      <h2>
-        Pesquise.
-        Compare.
-        <em>Economize.</em>
-      </h2>
-
-
-      <div class="how-steps">
-
-
-        <article>
-
-          <strong>
-            01
-          </strong>
-
-          <div>
-
-            <h3>
-              Você pesquisa
-            </h3>
-
-            <p>
-              Digite o produto que procura.
-            </p>
-
-          </div>
-
-        </article>
-
-
-
-        <article>
-
-          <strong>
-            02
-          </strong>
-
-          <div>
-
-            <h3>
-              O ACHOU! compara
-            </h3>
-
-            <p>
-              Buscamos ofertas reais nas lojas integradas.
-            </p>
-
-          </div>
-
-        </article>
-
-
-
-        <article>
-
-          <strong>
-            03
-          </strong>
-
-          <div>
-
-            <h3>
-              Você escolhe
-            </h3>
-
-            <p>
-              Veja o menor preço e compare as ofertas.
-            </p>
-
-          </div>
-
-        </article>
-
-
-
-        <article>
-
-          <strong>
-            04
-          </strong>
-
-          <div>
-
-            <h3>
-              Você compra
-            </h3>
-
-            <p>
-              Finalize diretamente na loja parceira.
-            </p>
-
-          </div>
-
-        </article>
-
-
-      </div>
-
-    </section>
-
-
-
-    <!-- ===================================================
-         ACESSO SECRETO ADMIN
-         =================================================== -->
 
     <div class="admin-secret-area">
-
-      <button
-        id="adminSecretButton"
-        class="admin-secret-dot"
-        type="button"
-        aria-label="Acesso reservado"
-      ></button>
-
+      <button id="adminSecretButton" class="admin-secret-dot" aria-label="Acesso reservado"></button>
     </div>
-
-
   </main>
 
-
-
-  <!-- =====================================================
-       MENU INFERIOR
-       ===================================================== -->
-
   <nav class="bottom-nav">
-
-
-    <button
-      class="bottom-nav-item active"
-      type="button"
-      data-nav="home"
-    >
-
-      <span>
-        ⌂
-      </span>
-
-      <strong>
-        Início
-      </strong>
-
+    <button class="bottom-nav-item active" data-nav="home"><span>⌂</span><strong>Início</strong></button>
+    <button class="bottom-nav-item" data-nav="categories"><span>▦</span><strong>Categorias</strong></button>
+    <button class="bottom-nav-item" data-nav="search"><span>⌕</span><strong>Buscar</strong></button>
+    <button class="bottom-nav-item" data-nav="favorites">
+      <span>♡<i class="favorite-count">0</i></span><strong>Favoritos</strong>
     </button>
-
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-      data-nav="categories"
-    >
-
-      <span>
-        ▦
-      </span>
-
-      <strong>
-        Categorias
-      </strong>
-
-    </button>
-
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-      data-nav="search"
-    >
-
-      <span>
-        ⌕
-      </span>
-
-      <strong>
-        Buscar
-      </strong>
-
-    </button>
-
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-      data-nav="favorites"
-    >
-
-      <span>
-
-        ♡
-
-        <i class="favorite-count">
-          0
-        </i>
-
-      </span>
-
-      <strong>
-        Favoritos
-      </strong>
-
-    </button>
-
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-      data-nav="profile"
-    >
-
-      <span>
-        ○
-      </span>
-
-      <strong>
-        Perfil
-      </strong>
-
-    </button>
-
-
+    <button class="bottom-nav-item" data-nav="profile"><span>○</span><strong>Perfil</strong></button>
   </nav>
 
-
-
-  <!-- =====================================================
-       MODAL DE CATEGORIAS / SUBCATEGORIAS
-       ===================================================== -->
-
-  <div
-    class="category-modal"
-    id="categoryModal"
-  >
-
-    <div class="category-modal-box">
-
-      <header>
-
-        <div>
-
-          <small>
-            EXPLORE
-          </small>
-
-          <h2 id="categoryModalTitle">
-            Categoria
-          </h2>
-
-        </div>
-
-
-        <button
-          id="categoryModalClose"
-          type="button"
-          aria-label="Fechar"
-        >
-          ×
-        </button>
-
-      </header>
-
-
-      <p id="categoryModalText">
-        Escolha o que você procura.
-      </p>
-
-
-      <div
-        class="subcategory-grid"
-        id="subcategoryGrid"
-      ></div>
-
+  <div class="category-modal modal" id="categoryModal">
+    <div class="modal-box category-modal-box">
+      <button id="categoryModalClose" class="modal-close" type="button">×</button>
+      <small class="modal-kicker">EXPLORE</small>
+      <h2 id="categoryModalTitle">Categoria</h2>
+      <p id="categoryModalText">Escolha o que você procura.</p>
+      <div id="subcategoryGrid" class="subcategory-grid"></div>
     </div>
-
   </div>
 
-
-
-  <!-- =====================================================
-       LOGIN NORMAL
-       ===================================================== -->
-
-  <div
-    class="login-modal"
-    id="loginModal"
-  >
-
-    <div class="login-modal-box">
-
-      <button
-        class="login-close"
-        type="button"
-        aria-label="Fechar"
-      >
-        ×
-      </button>
-
-
-      <div class="login-logo">
-        ACHOU<span>!</span>
-      </div>
-
-
-      <p class="login-subtitle">
-        Entre na sua conta.
-      </p>
-
-
+  <div class="login-modal modal" id="loginModal">
+    <div class="modal-box auth-box">
+      <button class="login-close modal-close" type="button">×</button>
+      <div class="modal-logo">ACHOU<span>!</span></div>
+      <p>Entre na sua conta.</p>
       <form id="loginForm">
-
-        <label for="loginEmail">
-          E-mail
-        </label>
-
-        <input
-          id="loginEmail"
-          type="email"
-          placeholder="seu@email.com"
-          autocomplete="email"
-          required
-        >
-
-
-        <label for="loginPassword">
-          Senha
-        </label>
-
-        <input
-          id="loginPassword"
-          type="password"
-          placeholder="Sua senha"
-          autocomplete="current-password"
-          required
-        >
-
-
-        <button
-          type="submit"
-          class="login-submit"
-        >
-          ENTRAR
-        </button>
-
+        <label>E-mail</label>
+        <input id="loginEmail" type="email" required>
+        <label>Senha</label>
+        <input id="loginPassword" type="password" required>
+        <button class="primary-btn" type="submit">ENTRAR</button>
       </form>
-
-
-      <button
-        type="button"
-        class="create-account"
-      >
-        Ainda não tem conta? Criar conta
-      </button>
-
+      <button class="link-btn create-account" type="button">Ainda não tem conta? Criar conta</button>
     </div>
-
   </div>
 
-
-
-  <!-- =====================================================
-       CADASTRO
-       ===================================================== -->
-
-  <div
-    class="signup-modal"
-    id="signupModal"
-  >
-
-    <div class="signup-modal-box">
-
-      <button
-        class="signup-close"
-        type="button"
-        aria-label="Fechar"
-      >
-        ×
-      </button>
-
-
-      <div class="signup-logo">
-        ACHOU<span>!</span>
-      </div>
-
-
-      <p class="signup-subtitle">
-        Crie sua conta gratuitamente.
-      </p>
-
-
+  <div class="signup-modal modal" id="signupModal">
+    <div class="modal-box auth-box">
+      <button class="signup-close modal-close" type="button">×</button>
+      <div class="modal-logo">ACHOU<span>!</span></div>
+      <p>Crie sua conta gratuitamente.</p>
       <form id="signupForm">
-
-        <label for="signupName">
-          Nome completo
-        </label>
-
-        <input
-          id="signupName"
-          type="text"
-          placeholder="Seu nome"
-          autocomplete="name"
-          required
-        >
-
-
-        <label for="signupEmail">
-          E-mail
-        </label>
-
-        <input
-          id="signupEmail"
-          type="email"
-          placeholder="seu@email.com"
-          autocomplete="email"
-          required
-        >
-
-
-        <label for="signupPassword">
-          Senha
-        </label>
-
-        <input
-          id="signupPassword"
-          type="password"
-          placeholder="Crie uma senha"
-          autocomplete="new-password"
-          required
-        >
-
-
-        <label for="signupPasswordConfirm">
-          Confirmar senha
-        </label>
-
-        <input
-          id="signupPasswordConfirm"
-          type="password"
-          placeholder="Repita a senha"
-          autocomplete="new-password"
-          required
-        >
-
-
-        <button
-          type="submit"
-          class="signup-submit"
-        >
-          CRIAR CONTA
-        </button>
-
+        <label>Nome completo</label>
+        <input id="signupName" type="text" required>
+        <label>E-mail</label>
+        <input id="signupEmail" type="email" required>
+        <label>Senha</label>
+        <input id="signupPassword" type="password" required>
+        <label>Confirmar senha</label>
+        <input id="signupPasswordConfirm" type="password" required>
+        <button class="primary-btn" type="submit">CRIAR CONTA</button>
       </form>
-
-
-      <button
-        type="button"
-        class="signup-login"
-      >
-        Já tenho conta
-      </button>
-
+      <button class="link-btn signup-login" type="button">Já tenho conta</button>
     </div>
-
   </div>
 
-
-
-  <!-- =====================================================
-       LOGIN ADMIN
-       ===================================================== -->
-
-  <div
-    class="admin-login-modal"
-    id="adminLoginModal"
-  >
-
-    <div class="admin-login-box">
-
-      <button
-        id="adminLoginClose"
-        class="admin-close"
-        type="button"
-        aria-label="Fechar"
-      >
-        ×
-      </button>
-
-
-      <div class="admin-brand">
-        ACHOU<span>!</span>
-      </div>
-
-
-      <span class="admin-security-label">
-        ÁREA RESTRITA
-      </span>
-
-
-      <h2>
-        Administrador
-      </h2>
-
-
-      <p>
-        Entre com sua conta autorizada.
-      </p>
-
-
+  <div class="admin-login-modal modal" id="adminLoginModal">
+    <div class="modal-box auth-box">
+      <button id="adminLoginClose" class="modal-close" type="button">×</button>
+      <div class="modal-logo">ACHOU<span>!</span></div>
+      <small class="modal-kicker">ÁREA RESTRITA</small>
+      <h2>Administrador</h2>
       <form id="adminLoginForm">
-
-        <label for="adminEmail">
-          E-mail
-        </label>
-
-        <input
-          id="adminEmail"
-          type="email"
-          autocomplete="username"
-          placeholder="E-mail do administrador"
-          required
-        >
-
-
-        <label for="adminPassword">
-          Senha
-        </label>
-
-        <input
-          id="adminPassword"
-          type="password"
-          autocomplete="current-password"
-          placeholder="Sua senha"
-          required
-        >
-
-
-        <button
-          class="admin-login-submit"
-          type="submit"
-        >
-          ENTRAR NO PAINEL
-        </button>
-
+        <label>E-mail</label>
+        <input id="adminEmail" type="email" required>
+        <label>Senha</label>
+        <input id="adminPassword" type="password" required>
+        <button class="primary-btn" type="submit">ENTRAR NO PAINEL</button>
       </form>
-
-
-      <div
-        id="adminLoginMessage"
-        class="admin-message"
-      ></div>
-
+      <div id="adminLoginMessage" class="admin-message"></div>
     </div>
-
   </div>
 
-
-
-  <!-- =====================================================
-       PAINEL ADMIN
-       ===================================================== -->
-
-  <div
-    class="admin-panel-modal"
-    id="adminPanelModal"
-  >
-
+  <div class="admin-panel-modal modal" id="adminPanelModal">
     <div class="admin-panel">
-
-
       <header class="admin-panel-header">
-
-        <div>
-
-          <span class="admin-security-label">
-            ÁREA RESTRITA
-          </span>
-
-          <h2>
-            Painel ACHOU!
-          </h2>
-
-          <p>
-            Links de afiliado
-          </p>
-
+        <div><small class="modal-kicker">ÁREA RESTRITA</small><h2>Painel ACHOU!</h2></div>
+        <div class="admin-head-actions">
+          <button id="adminLogoutButton" type="button">SAIR</button>
+          <button id="adminPanelClose" class="modal-close static" type="button">×</button>
         </div>
-
-
-        <div class="admin-panel-header-actions">
-
-          <button
-            id="adminLogoutButton"
-            class="admin-logout"
-            type="button"
-          >
-            SAIR
-          </button>
-
-
-          <button
-            id="adminPanelClose"
-            class="admin-close"
-            type="button"
-            aria-label="Fechar painel"
-          >
-            ×
-          </button>
-
-        </div>
-
       </header>
 
-
-
-      <!-- PRODUTOS -->
-
       <section class="admin-section">
-
         <div class="admin-section-title">
-
-          <div>
-
-            <span>
-              01
-            </span>
-
-            <div>
-
-              <h3>
-                Produtos encontrados
-              </h3>
-
-              <p>
-                Escolha uma oferta para cadastrar o link.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <button
-            id="adminRefreshProducts"
-            type="button"
-            class="admin-secondary-button"
-          >
-            ATUALIZAR
-          </button>
-
+          <h3>Produtos encontrados</h3>
+          <button id="adminRefreshProducts" type="button">ATUALIZAR</button>
         </div>
-
-
-        <div
-          id="adminProductsList"
-          class="admin-products-list"
-        >
-
-          <div class="admin-empty">
-            Faça uma busca no ACHOU! para carregar os produtos.
-          </div>
-
+        <div id="adminProductsList" class="admin-products-list">
+          <div class="admin-empty">Faça uma busca no ACHOU! para carregar os produtos.</div>
         </div>
-
       </section>
 
-
-
-      <!-- CADASTRO DE LINK -->
-
       <section class="admin-section">
-
-        <div class="admin-section-title">
-
-          <div>
-
-            <span>
-              02
-            </span>
-
-            <div>
-
-              <h3>
-                Link de afiliado
-              </h3>
-
-              <p>
-                Cole o link criado no Mercado Livre.
-              </p>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-
+        <h3>Link de afiliado</h3>
         <form id="adminAffiliateForm">
-
-
-          <input
-            id="adminAffiliateId"
-            type="hidden"
-          >
-
-
-          <label for="adminItemId">
-            Item ID
+          <input id="adminAffiliateId" type="hidden">
+          <label>Item ID</label>
+          <input id="adminItemId" type="text" required>
+          <label>Product ID / Catálogo</label>
+          <input id="adminProductId" type="text">
+          <label>Produto</label>
+          <input id="adminProductTitle" type="text" required>
+          <label>Link de afiliado</label>
+          <input id="adminAffiliateUrl" type="url" required>
+          <label class="check-row">
+            <input id="adminAffiliateActive" type="checkbox" checked>
+            Link ativo no site
           </label>
-
-          <input
-            id="adminItemId"
-            type="text"
-            placeholder="Ex.: MLB123456789"
-            required
-          >
-
-
-          <label for="adminProductId">
-            Product ID / Catálogo
-          </label>
-
-          <input
-            id="adminProductId"
-            type="text"
-            placeholder="Opcional"
-          >
-
-
-          <label for="adminProductTitle">
-            Produto
-          </label>
-
-          <input
-            id="adminProductTitle"
-            type="text"
-            placeholder="Nome do produto"
-            required
-          >
-
-
-          <label for="adminAffiliateUrl">
-            Link de afiliado
-          </label>
-
-          <input
-            id="adminAffiliateUrl"
-            type="url"
-            placeholder="https://meli.la/..."
-            autocomplete="off"
-            required
-          >
-
-
-          <label class="admin-active-field">
-
-            <input
-              id="adminAffiliateActive"
-              type="checkbox"
-              checked
-            >
-
-            <span>
-              Link ativo no site
-            </span>
-
-          </label>
-
-
-
           <div class="admin-form-actions">
-
-            <button
-              id="adminClearForm"
-              class="admin-secondary-button"
-              type="button"
-            >
-              LIMPAR
-            </button>
-
-
-            <button
-              class="admin-primary-button"
-              type="submit"
-            >
-              SALVAR LINK
-            </button>
-
+            <button id="adminClearForm" type="button">LIMPAR</button>
+            <button class="primary-btn" type="submit">SALVAR LINK</button>
           </div>
-
-
         </form>
-
-
-        <div
-          id="adminFormMessage"
-          class="admin-message"
-        ></div>
-
+        <div id="adminFormMessage" class="admin-message"></div>
       </section>
-
-
-
-      <!-- LINKS CADASTRADOS -->
 
       <section class="admin-section">
-
         <div class="admin-section-title">
-
-          <div>
-
-            <span>
-              03
-            </span>
-
-            <div>
-
-              <h3>
-                Links cadastrados
-              </h3>
-
-              <p>
-                Edite ou remova links existentes.
-              </p>
-
-            </div>
-
-          </div>
-
-
-          <button
-            id="adminRefreshLinks"
-            type="button"
-            class="admin-secondary-button"
-          >
-            ATUALIZAR
-          </button>
-
+          <h3>Links cadastrados</h3>
+          <button id="adminRefreshLinks" type="button">ATUALIZAR</button>
         </div>
-
-
-        <div
-          id="adminLinksList"
-          class="admin-links-list"
-        >
-
-          <div class="admin-empty">
-            Carregando...
-          </div>
-
-        </div>
-
+        <div id="adminLinksList" class="admin-links-list"></div>
       </section>
-
-
     </div>
-
   </div>
 
-
-
-  <!-- =====================================================
-       SCRIPTS
-       ===================================================== -->
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-  ></script>
-
-  <script
-    src="script.js?v=20260904-20"
-  ></script>
-
-
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js?v=20260905-01"></script>
 </body>
-
-  </html>
+</html>
