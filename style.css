@@ -52,16 +52,18 @@ main{padding-bottom:74px}
 .hero h1 em{font-style:normal;color:var(--yellow)}
 .hero p{margin:13px 0 0;color:#d0d0d0;font-size:17px;max-width:470px}
 .hero-visual{
-  position:absolute;right:0;top:0;width:52%;height:100%;
-  overflow:hidden;z-index:1;pointer-events:none;
+  position:absolute;right:0;top:0;width:56%;height:100%;
+  overflow:visible;z-index:1;pointer-events:none;
+  display:flex;align-items:center;justify-content:flex-end;
 }
 .hero-visual:before{
-  content:"";position:absolute;left:0;top:0;bottom:0;width:28%;z-index:2;
-  background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.88) 35%,rgba(0,0,0,0) 100%);
+  content:"";position:absolute;left:-1px;top:0;bottom:0;width:31%;z-index:2;
+  background:linear-gradient(90deg,#000 0%,rgba(0,0,0,.96) 24%,rgba(0,0,0,.62) 58%,rgba(0,0,0,0) 100%);
 }
 .hero-visual img{
-  position:absolute;right:0;top:0;width:100%;height:100%;max-width:none;
-  object-fit:cover;object-position:center center;
+  position:relative;right:0;width:100%;height:auto;max-width:none;
+  object-fit:contain;object-position:right center;
+  transform:none;
 }
 
 .search-box{height:68px;margin-top:14px;border:1px solid #b8b8b8;border-radius:18px;overflow:hidden;
@@ -84,7 +86,9 @@ main{padding-bottom:74px}
 .category-row::-webkit-scrollbar{display:none}
 .category-card{flex:0 0 112px;height:100px;border:1px solid #333;border-radius:14px;background:linear-gradient(180deg,#111,#090909);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:8px}
-.cat-icon{font-size:38px;line-height:1;color:#fff}.cat-icon.active{color:var(--yellow)}
+.cat-icon{width:39px;height:39px;display:grid;place-items:center;color:#fff}
+.cat-icon svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}
+.cat-icon.active{color:var(--yellow)}
 .category-card strong{font-size:13px}
 
 .highlight-banner{margin:2px 34px 0;min-height:90px;padding:15px 18px;border:1px solid #3a3521;border-radius:18px;
@@ -175,18 +179,19 @@ main{padding-bottom:74px}
 
   .hero{padding:8px 9px 12px}
   .hero-main{min-height:116px}
-  .hero-copy{width:58%;padding:12px 0 10px}
+  .hero-copy{width:55%;padding:12px 0 10px}
   .hero h1{font-size:20px;letter-spacing:-1.05px;line-height:1.01}
   .hero p{font-size:7px;margin-top:6px;max-width:180px}
-  .hero-visual{width:53%}
-  .hero-visual:before{width:24%}
+  .hero-visual{width:58%;right:-1px}
+  .hero-visual:before{width:26%;left:-1px}
+  .hero-visual img{width:100%;height:auto;object-fit:contain;object-position:right center}
 
   .search-box{height:46px;margin-top:8px;border-radius:12px}.search-icon{width:39px;font-size:22px}.search-box input{font-size:10px;padding:0 5px}.search-box button{min-width:72px;font-size:9px}
   .search-chips{gap:5px;margin-top:8px}.search-chips button{height:27px;padding:0 9px;font-size:7px}
   .section{padding:17px 9px}.section-head{margin-bottom:11px}.section-title{gap:7px}.section-title h2{font-size:16px}.title-icon{font-size:18px}.title-icon.fire{font-size:16px}.text-link{font-size:8px}
   .category-row{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;overflow:visible}
   .category-card{min-width:0;height:66px;border-radius:9px;gap:3px;padding:3px}
-  .cat-icon{font-size:21px}.category-card strong{font-size:5.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
+  .cat-icon{width:23px;height:23px}.cat-icon svg{stroke-width:1.7}.category-card strong{font-size:5.6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%}
   .highlight-banner{margin:1px 9px 0;min-height:58px;padding:9px 10px;border-radius:12px}.highlight-left{gap:8px}.tag-icon{width:34px;height:34px;border-radius:8px;font-size:18px}
   .highlight-left strong{font-size:10px}.highlight-left small{font-size:6px;margin-top:2px}.highlight-button{height:34px;padding:0 10px;border-radius:8px;font-size:7px}
   .flash-deals{gap:8px}.flash-card{flex-basis:156px;min-height:286px;padding:8px;border-radius:11px}.flash-photo{height:105px;border-radius:8px}
@@ -202,8 +207,8 @@ main{padding-bottom:74px}
 
 @media(max-width:390px){
   .hero-main{min-height:112px}
-  .hero-copy{width:59%}
+  .hero-copy{width:56%}
   .hero h1{font-size:19px}
   .hero p{font-size:6.7px}
-  .hero-visual{width:54%}
+  .hero-visual{width:58%}
 }
