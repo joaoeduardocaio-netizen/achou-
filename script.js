@@ -6,6 +6,7 @@
    - Exibe produtos mesmo sem link afiliado
    - Link afiliado vinculado somente ao ITEM ID exato
    - Admin exige login em todo novo acesso
+   - Categorias com buscas mais específicas
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -91,7 +92,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let affiliateLinks = [];
 
   let summaryBox = null;
-
   let heroIndex = 0;
 
   let currentQuery =
@@ -137,13 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const number =
       Number(value);
 
-
     if (
       !Number.isFinite(number)
     ) {
       return "";
     }
-
 
     return number.toLocaleString(
       CONFIG.locale,
@@ -185,12 +183,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
 
-
     try {
 
       const parsed =
         new URL(url);
-
 
       if (
         parsed.protocol !== "https:"
@@ -198,10 +194,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return false;
       }
 
-
       const host =
         parsed.hostname.toLowerCase();
-
 
       return (
         host === "meli.la" ||
@@ -214,7 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
           ".mercadolibre.com"
         )
       );
-
 
     } catch {
 
@@ -233,16 +226,13 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     element.textContent =
       text || "";
-
 
     element.classList.remove(
       "success",
       "error"
     );
-
 
     if (type) {
       element.classList.add(type);
@@ -263,20 +253,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     summaryBox =
       document.createElement(
         "div"
       );
 
-
     summaryBox.className =
       "achou-search-summary";
 
-
     summaryBox.style.display =
       "none";
-
 
     marketSection.insertBefore(
       summaryBox,
@@ -295,10 +281,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     summaryBox.style.display =
       "flex";
-
 
     summaryBox.innerHTML = `
       <div>
@@ -342,7 +326,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     dealsContainer.innerHTML = `
       <div class="achou-search-status loading">
 
@@ -366,7 +349,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     dealsContainer.innerHTML = `
       <div class="achou-search-status">
 
@@ -389,7 +371,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!dealsContainer) {
       return;
     }
-
 
     dealsContainer.innerHTML = `
       <div class="achou-search-status">
@@ -492,7 +473,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return [];
     }
 
-
     try {
 
       const {
@@ -517,20 +497,16 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           );
 
-
       if (error) {
         throw error;
       }
-
 
       affiliateLinks =
         Array.isArray(data)
           ? data
           : [];
 
-
       return affiliateLinks;
-
 
     } catch (error) {
 
@@ -538,7 +514,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "[ACHOU!] Links afiliados:",
         error
       );
-
 
       affiliateLinks = [];
 
@@ -549,11 +524,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========================================================
      PROCURA LINK EXATO PELO ITEM ID
-
-     NÃO usa mais Product ID como fallback.
-
-     Assim o preço exibido pertence
-     exatamente ao anúncio do link.
      ======================================================== */
 
   function findAffiliateForProduct(
@@ -566,7 +536,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
       return null;
     }
-
 
     const exact =
       affiliateLinks.find(
@@ -588,7 +557,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-
     return exact || null;
   }
 
@@ -604,7 +572,6 @@ document.addEventListener("DOMContentLoaded", () => {
           findAffiliateForProduct(
             product
           );
-
 
         if (affiliate) {
 
@@ -623,7 +590,6 @@ document.addEventListener("DOMContentLoaded", () => {
             null;
         }
 
-
         return product;
       }
     );
@@ -632,9 +598,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========================================================
      AGRUPAMENTO
-
-     IMPORTANTE:
-     Agora produtos SEM link também permanecem.
      ======================================================== */
 
   function groupProducts(list) {
@@ -650,11 +613,9 @@ document.addEventListener("DOMContentLoaded", () => {
           item.productId ||
           item.id;
 
-
         if (!key) {
           return;
         }
-
 
         if (!map.has(key)) {
 
@@ -677,10 +638,8 @@ document.addEventListener("DOMContentLoaded", () => {
           );
         }
 
-
         const group =
           map.get(key);
-
 
         if (
           !group.image &&
@@ -690,7 +649,6 @@ document.addEventListener("DOMContentLoaded", () => {
           group.image =
             item.image;
         }
-
 
         group.allOffers.push(
           item
@@ -707,11 +665,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(
         group => {
 
-          /*
-             TODAS AS OFERTAS REAIS,
-             mesmo sem link afiliado.
-          */
-
           group.offers =
             group.allOffers
               .filter(
@@ -727,12 +680,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   b.price
               );
 
-
-          /*
-             OFERTAS QUE JÁ POSSUEM
-             link afiliado cadastrado.
-          */
-
           group.linkedOffers =
             group.offers.filter(
               offer =>
@@ -741,25 +688,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
             );
 
-
-          /*
-             Menor preço real encontrado,
-             independente do link.
-          */
-
           group.best =
             group.offers[0] ||
             null;
 
-
-          /*
-             Menor preço com link afiliado.
-          */
-
           group.bestLinked =
             group.linkedOffers[0] ||
             null;
-
 
           return group;
         }
@@ -814,7 +749,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const favorites =
       getFavorites();
 
-
     document
       .querySelectorAll(
         ".favorite-count"
@@ -836,11 +770,9 @@ document.addEventListener("DOMContentLoaded", () => {
         "[data-favorite]"
       );
 
-
     const favorites =
       getFavorites()
         .map(String);
-
 
     buttons.forEach(
       button => {
@@ -850,7 +782,6 @@ document.addEventListener("DOMContentLoaded", () => {
             button.dataset.favorite
           );
 
-
         if (
           favorites.includes(id)
         ) {
@@ -859,7 +790,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "♥";
         }
 
-
         button.addEventListener(
           "click",
           () => {
@@ -867,7 +797,6 @@ document.addEventListener("DOMContentLoaded", () => {
             let current =
               getFavorites()
                 .map(String);
-
 
             if (
               current.includes(id)
@@ -879,7 +808,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     item !== id
                 );
 
-
               button.textContent =
                 "♡";
 
@@ -890,7 +818,6 @@ document.addEventListener("DOMContentLoaded", () => {
               button.textContent =
                 "♥";
             }
-
 
             saveFavorites(current);
 
@@ -923,23 +850,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 button.dataset
                   .toggleOffers;
 
-
               const panel =
                 document.querySelector(
                   `[data-offers-panel="${CSS.escape(id)}"]`
                 );
 
-
               if (!panel) {
                 return;
               }
-
 
               const open =
                 panel.classList.toggle(
                   "open"
                 );
-
 
               button.textContent =
                 open
@@ -970,7 +893,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     if (
       !Array.isArray(groups) ||
       groups.length === 0
@@ -980,7 +902,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return;
     }
-
 
     dealsContainer.innerHTML =
       groups
@@ -993,20 +914,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const best =
               group.best;
 
-
-            const bestLinked =
-              group.bestLinked;
-
-
             const title =
               escapeHtml(
                 group.title
               );
 
-
             const favoriteId =
               group.productId;
-
 
             const image =
               group.image
@@ -1045,16 +959,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 
 
-            /*
-               LISTA DAS OFERTAS.
-
-               Com link:
-               botão VER OFERTA.
-
-               Sem link:
-               botão LINK EM BREVE.
-            */
-
             const rows =
               group.offers
                 .map(
@@ -1067,7 +971,6 @@ document.addEventListener("DOMContentLoaded", () => {
                       validAffiliateLink(
                         offer.link
                       );
-
 
                     return `
                       <div
@@ -1156,19 +1059,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 )
                 .join("");
 
-
-            /*
-               BOTÃO PRINCIPAL.
-
-               Se o menor preço encontrado
-               já possui link, abre ele.
-
-               Caso contrário mostra
-               LINK EM BREVE.
-
-               Não apontamos para outro anúncio,
-               evitando diferença de preço.
-            */
 
             const mainAction =
               validAffiliateLink(
@@ -1370,14 +1260,11 @@ document.addEventListener("DOMContentLoaded", () => {
         "div"
       );
 
-
     note.className =
       "achou-affiliate-note";
 
-
     note.textContent =
       "O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.";
-
 
     dealsContainer
       .parentElement
@@ -1403,12 +1290,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     const settings = {
       scroll: true,
       ...options
     };
-
 
     const term =
       forcedTerm !== null
@@ -1419,7 +1304,6 @@ document.addEventListener("DOMContentLoaded", () => {
             .value
             .trim();
 
-
     if (!term) {
 
       searchInput.focus();
@@ -1427,20 +1311,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     currentQuery =
       term;
 
-
     showLoading();
-
 
     if (summaryBox) {
 
       summaryBox.style.display =
         "none";
     }
-
 
     if (searchButton) {
 
@@ -1450,7 +1330,6 @@ document.addEventListener("DOMContentLoaded", () => {
       searchButton.textContent =
         "BUSCANDO...";
     }
-
 
     try {
 
@@ -1467,7 +1346,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         );
 
-
       if (!response.ok) {
 
         throw new Error(
@@ -1475,10 +1353,8 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
 
-
       const data =
         await response.json();
-
 
       if (
         !data ||
@@ -1492,7 +1368,6 @@ document.addEventListener("DOMContentLoaded", () => {
           "Resposta inválida"
         );
       }
-
 
       products =
         data.results
@@ -1513,21 +1388,17 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           );
 
-
       await loadAffiliateLinks();
-
 
       products =
         applyAffiliateLinks(
           products
         );
 
-
       groupedProducts =
         groupProducts(
           products
         );
-
 
       const availableOffers =
         groupedProducts.reduce(
@@ -1540,21 +1411,17 @@ document.addEventListener("DOMContentLoaded", () => {
           0
         );
 
-
       updateSummary(
         groupedProducts.length,
         availableOffers,
         term
       );
 
-
       renderGroupedProducts(
         groupedProducts
       );
 
-
       renderAdminProducts();
-
 
       if (
         marketSection &&
@@ -1571,7 +1438,6 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       }
 
-
     } catch (error) {
 
       console.error(
@@ -1579,17 +1445,13 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       );
 
-
       products = [];
 
       groupedProducts = [];
 
-
       showError();
 
-
       renderAdminProducts();
-
 
     } finally {
 
@@ -1615,10 +1477,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     searchInput.value =
       "";
-
 
     searchProducts(
       CONFIG.initialQuery,
@@ -1683,7 +1543,6 @@ document.addEventListener("DOMContentLoaded", () => {
             button.textContent
               .trim();
 
-
           const text =
             normalizeText(
               rawText
@@ -1716,34 +1575,39 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
 
+          /*
+             BUSCAS MAIS ESPECÍFICAS
+             PARA CADA CATEGORIA
+          */
+
           const map = {
 
             todos:
               CONFIG.initialQuery,
 
             celulares:
-              "celular smartphone",
+              "celular",
 
             informatica:
-              "notebook computador",
+              "notebook",
 
             tv:
               "smart tv",
 
             games:
-              "console videogame",
+              "PlayStation",
 
             audio:
               "fone bluetooth",
 
             casa:
-              "eletrodomesticos casa",
+              "eletrodoméstico",
 
             moda:
-              "tenis roupa",
+              "tênis",
 
             ferramentas:
-              "furadeira ferramentas",
+              "furadeira",
 
             iphone:
               "iPhone",
@@ -1775,11 +1639,9 @@ document.addEventListener("DOMContentLoaded", () => {
             searchInput.value =
               "";
 
-
             searchProducts(
               CONFIG.initialQuery
             );
-
 
             return;
           }
@@ -1788,13 +1650,14 @@ document.addEventListener("DOMContentLoaded", () => {
           searchInput.value =
             term;
 
-
           searchProducts();
         }
       );
     }
   );
-     /* ========================================================
+
+
+  /* ========================================================
      HERO
      ======================================================== */
 
@@ -1876,19 +1739,16 @@ document.addEventListener("DOMContentLoaded", () => {
       ) %
       heroSlides.length;
 
-
     const slide =
       heroSlides[
         heroIndex
       ];
-
 
     if (heroLabel) {
 
       heroLabel.textContent =
         slide.label;
     }
-
 
     if (heroTitle) {
 
@@ -1898,13 +1758,11 @@ document.addEventListener("DOMContentLoaded", () => {
         )}</strong>`;
     }
 
-
     if (heroText) {
 
       heroText.textContent =
         slide.text;
     }
-
 
     heroDots.forEach(
       (
@@ -1992,7 +1850,6 @@ document.addEventListener("DOMContentLoaded", () => {
               "center"
           });
 
-
         setTimeout(
           () => {
 
@@ -2071,7 +1928,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(
         ".login-modal.active, .signup-modal.active, .admin-login-modal.active, .admin-panel-modal.active"
       );
-
 
     if (!open) {
 
@@ -2179,11 +2035,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
-
         if (!db) {
           return;
         }
-
 
         const email =
           document
@@ -2193,7 +2047,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
-
         const password =
           document
             .querySelector(
@@ -2201,14 +2054,12 @@ document.addEventListener("DOMContentLoaded", () => {
             )
             ?.value;
 
-
         if (
           !email ||
           !password
         ) {
           return;
         }
-
 
         try {
 
@@ -2221,27 +2072,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 password
               });
 
-
           if (error) {
             throw error;
           }
 
-
           closeLogin();
-
 
           const greeting =
             document.querySelector(
               ".account-greeting strong"
             );
 
-
           if (greeting) {
 
             greeting.textContent =
               "Minha conta";
           }
-
 
         } catch {
 
@@ -2260,11 +2106,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
-
         if (!db) {
           return;
         }
-
 
         const name =
           document
@@ -2274,7 +2118,6 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
-
         const email =
           document
             .querySelector(
@@ -2283,14 +2126,12 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
-
         const password =
           document
             .querySelector(
               "#signupPassword"
             )
             ?.value;
-
 
         const confirm =
           document
@@ -2299,7 +2140,6 @@ document.addEventListener("DOMContentLoaded", () => {
             )
             ?.value;
 
-
         if (
           !name ||
           !email ||
@@ -2307,7 +2147,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
           return;
         }
-
 
         if (
           password !==
@@ -2320,7 +2159,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           return;
         }
-
 
         try {
 
@@ -2340,19 +2178,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
               });
 
-
           if (error) {
             throw error;
           }
-
 
           alert(
             "Conta criada com sucesso."
           );
 
-
           closeSignup();
-
 
         } catch {
 
@@ -2484,7 +2318,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     try {
 
       await adminDb.auth
@@ -2510,31 +2343,25 @@ document.addEventListener("DOMContentLoaded", () => {
         "#adminPassword"
       );
 
-
     if (email) {
       email.value = "";
     }
 
-
     if (password) {
       password.value = "";
     }
-
 
     setMessage(
       adminLoginMessage,
       ""
     );
 
-
     adminLoginModal
       ?.classList.add(
         "active"
       );
 
-
     bodyLock();
-
 
     setTimeout(
       () => {
@@ -2554,12 +2381,10 @@ document.addEventListener("DOMContentLoaded", () => {
         "active"
       );
 
-
     setMessage(
       adminLoginMessage,
       ""
     );
-
 
     bodyUnlock();
   }
@@ -2572,15 +2397,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "active"
       );
 
-
     adminPanelModal
       ?.classList.add(
         "active"
       );
 
-
     bodyLock();
-
 
     renderAdminProducts();
 
@@ -2595,9 +2417,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "active"
       );
 
-
     await resetAdminSession();
-
 
     bodyUnlock();
   }
@@ -2648,7 +2468,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return null;
     }
 
-
     try {
 
       const {
@@ -2660,7 +2479,6 @@ document.addEventListener("DOMContentLoaded", () => {
         await adminDb.auth
           .getUser();
 
-
       if (
         userError ||
         !userData?.user
@@ -2669,10 +2487,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
       }
 
-
       const user =
         userData.user;
-
 
       const {
         data,
@@ -2691,7 +2507,6 @@ document.addEventListener("DOMContentLoaded", () => {
           )
           .maybeSingle();
 
-
       if (
         error ||
         !data
@@ -2700,9 +2515,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return null;
       }
 
-
       return user;
-
 
     } catch {
 
@@ -2722,7 +2535,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
-
         if (!adminDb) {
 
           setMessage(
@@ -2734,7 +2546,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-
         const email =
           document
             .querySelector(
@@ -2743,14 +2554,12 @@ document.addEventListener("DOMContentLoaded", () => {
             ?.value
             .trim();
 
-
         const password =
           document
             .querySelector(
               "#adminPassword"
             )
             ?.value;
-
 
         if (
           !email ||
@@ -2766,15 +2575,12 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-
         setMessage(
           adminLoginMessage,
           "Verificando acesso..."
         );
 
-
         await resetAdminSession();
-
 
         try {
 
@@ -2788,7 +2594,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 password
               });
 
-
           if (
             error ||
             !data?.user
@@ -2798,7 +2603,6 @@ document.addEventListener("DOMContentLoaded", () => {
               "Login inválido."
             );
           }
-
 
           const {
             data:
@@ -2819,7 +2623,6 @@ document.addEventListener("DOMContentLoaded", () => {
               )
               .maybeSingle();
 
-
           if (
             adminError ||
             !adminData
@@ -2827,21 +2630,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
             await resetAdminSession();
 
-
             throw new Error(
               "Usuário não autorizado."
             );
           }
-
 
           setMessage(
             adminLoginMessage,
             ""
           );
 
-
           openAdminPanel();
-
 
         } catch (error) {
 
@@ -2850,9 +2649,7 @@ document.addEventListener("DOMContentLoaded", () => {
             error
           );
 
-
           await resetAdminSession();
-
 
           setMessage(
             adminLoginMessage,
@@ -2888,7 +2685,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     if (
       !Array.isArray(products) ||
       products.length === 0
@@ -2904,7 +2700,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     adminProductsList.innerHTML =
       products
         .map(
@@ -2917,7 +2712,6 @@ document.addEventListener("DOMContentLoaded", () => {
               findAffiliateForProduct(
                 product
               );
-
 
             const image =
               product.image
@@ -2936,7 +2730,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     sem imagem
                   </div>
                 `;
-
 
             return `
               <article
@@ -3023,7 +2816,6 @@ document.addEventListener("DOMContentLoaded", () => {
         )
         .join("");
 
-
     adminProductsList
       .querySelectorAll(
         "[data-admin-product]"
@@ -3041,15 +2833,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     .adminProduct
                 );
 
-
               const product =
                 products[index];
-
 
               if (!product) {
                 return;
               }
-
 
               fillAdminFormFromProduct(
                 product
@@ -3070,14 +2859,12 @@ document.addEventListener("DOMContentLoaded", () => {
         product
       );
 
-
     if (adminAffiliateId) {
 
       adminAffiliateId.value =
         existing?.id ||
         "";
     }
-
 
     if (adminItemId) {
 
@@ -3086,14 +2873,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "";
     }
 
-
     if (adminProductId) {
 
       adminProductId.value =
         product.productId ||
         "";
     }
-
 
     if (adminProductTitle) {
 
@@ -3102,14 +2887,12 @@ document.addEventListener("DOMContentLoaded", () => {
         "";
     }
 
-
     if (adminAffiliateUrl) {
 
       adminAffiliateUrl.value =
         existing?.affiliate_url ||
         "";
     }
-
 
     if (adminAffiliateActive) {
 
@@ -3118,7 +2901,6 @@ document.addEventListener("DOMContentLoaded", () => {
           ? existing.active !== false
           : true;
     }
-
 
     setMessage(
       adminFormMessage,
@@ -3130,7 +2912,6 @@ document.addEventListener("DOMContentLoaded", () => {
         : ""
     );
 
-
     adminAffiliateUrl
       ?.scrollIntoView({
         behavior:
@@ -3139,7 +2920,6 @@ document.addEventListener("DOMContentLoaded", () => {
         block:
           "center"
       });
-
 
     setTimeout(
       () => {
@@ -3169,20 +2949,17 @@ document.addEventListener("DOMContentLoaded", () => {
     adminAffiliateForm
       ?.reset();
 
-
     if (adminAffiliateId) {
 
       adminAffiliateId.value =
         "";
     }
 
-
     if (adminAffiliateActive) {
 
       adminAffiliateActive.checked =
         true;
     }
-
 
     setMessage(
       adminFormMessage,
@@ -3209,15 +2986,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         event.preventDefault();
 
-
         if (!adminDb) {
           return;
         }
 
-
         const admin =
           await getCurrentAdmin();
-
 
         if (!admin) {
 
@@ -3230,41 +3004,34 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-
         const id =
           adminAffiliateId
             ?.value
             .trim();
-
 
         const itemId =
           adminItemId
             ?.value
             .trim();
 
-
         const productId =
           adminProductId
             ?.value
             .trim();
-
 
         const title =
           adminProductTitle
             ?.value
             .trim();
 
-
         const url =
           adminAffiliateUrl
             ?.value
             .trim();
 
-
         const active =
           adminAffiliateActive
             ?.checked === true;
-
 
         if (
           !itemId ||
@@ -3281,7 +3048,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-
         if (
           !validAffiliateLink(url)
         ) {
@@ -3295,12 +3061,10 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-
         setMessage(
           adminFormMessage,
           "Salvando..."
         );
-
 
         try {
 
@@ -3329,7 +3093,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 .toISOString()
           };
 
-
           if (id) {
 
             const {
@@ -3347,11 +3110,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   id
                 );
 
-
             if (error) {
               throw error;
             }
-
 
           } else {
 
@@ -3375,11 +3136,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 .limit(1)
                 .maybeSingle();
 
-
             if (findError) {
               throw findError;
             }
-
 
             if (existing?.id) {
 
@@ -3398,11 +3157,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     existing.id
                   );
 
-
               if (error) {
                 throw error;
               }
-
 
             } else {
 
@@ -3417,13 +3174,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     payload
                   );
 
-
               if (error) {
                 throw error;
               }
             }
           }
-
 
           setMessage(
             adminFormMessage,
@@ -3431,21 +3186,17 @@ document.addEventListener("DOMContentLoaded", () => {
             "success"
           );
 
-
           await loadAffiliateLinks();
-
 
           products =
             applyAffiliateLinks(
               products
             );
 
-
           groupedProducts =
             groupProducts(
               products
             );
-
 
           const availableOffers =
             groupedProducts.reduce(
@@ -3458,24 +3209,19 @@ document.addEventListener("DOMContentLoaded", () => {
               0
             );
 
-
           updateSummary(
             groupedProducts.length,
             availableOffers,
             currentQuery
           );
 
-
           renderGroupedProducts(
             groupedProducts
           );
 
-
           renderAdminProducts();
 
-
           await loadAdminLinks();
-
 
         } catch (error) {
 
@@ -3483,7 +3229,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "[ACHOU!] Salvar link:",
             error
           );
-
 
           setMessage(
             adminFormMessage,
@@ -3505,15 +3250,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     if (!adminDb) {
       return;
     }
 
-
     const admin =
       await getCurrentAdmin();
-
 
     if (!admin) {
 
@@ -3526,13 +3268,11 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     adminLinksList.innerHTML = `
       <div class="admin-empty">
         Carregando...
       </div>
     `;
-
 
     try {
 
@@ -3555,17 +3295,14 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           );
 
-
       if (error) {
         throw error;
       }
-
 
       const list =
         Array.isArray(data)
           ? data
           : [];
-
 
       if (
         list.length === 0
@@ -3579,7 +3316,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         return;
       }
-
 
       adminLinksList.innerHTML =
         list
@@ -3677,7 +3413,6 @@ document.addEventListener("DOMContentLoaded", () => {
                       .adminEdit
                   );
 
-
                 const link =
                   list.find(
                     item =>
@@ -3686,46 +3421,37 @@ document.addEventListener("DOMContentLoaded", () => {
                       ) === id
                   );
 
-
                 if (!link) {
                   return;
                 }
 
-
                 adminAffiliateId.value =
                   link.id;
-
 
                 adminItemId.value =
                   link.item_id ||
                   "";
 
-
                 adminProductId.value =
                   link.catalog_product_id ||
                   "";
-
 
                 adminProductTitle.value =
                   link.product_title ||
                   "";
 
-
                 adminAffiliateUrl.value =
                   link.affiliate_url ||
                   "";
 
-
                 adminAffiliateActive.checked =
                   link.active !== false;
-
 
                 setMessage(
                   adminFormMessage,
                   "Link carregado para edição.",
                   "success"
                 );
-
 
                 adminAffiliateUrl
                   ?.scrollIntoView({
@@ -3755,7 +3481,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 const admin =
                   await getCurrentAdmin();
 
-
                 if (!admin) {
 
                   alert(
@@ -3765,22 +3490,18 @@ document.addEventListener("DOMContentLoaded", () => {
                   return;
                 }
 
-
                 const id =
                   button.dataset
                     .adminDelete;
-
 
                 const confirmed =
                   window.confirm(
                     "Excluir este link afiliado?"
                   );
 
-
                 if (!confirmed) {
                   return;
                 }
-
 
                 try {
 
@@ -3797,26 +3518,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         id
                       );
 
-
                   if (error) {
                     throw error;
                   }
 
-
                   await loadAffiliateLinks();
-
 
                   products =
                     applyAffiliateLinks(
                       products
                     );
 
-
                   groupedProducts =
                     groupProducts(
                       products
                     );
-
 
                   const availableOffers =
                     groupedProducts.reduce(
@@ -3829,24 +3545,19 @@ document.addEventListener("DOMContentLoaded", () => {
                       0
                     );
 
-
                   updateSummary(
                     groupedProducts.length,
                     availableOffers,
                     currentQuery
                   );
 
-
                   renderGroupedProducts(
                     groupedProducts
                   );
 
-
                   renderAdminProducts();
 
-
                   await loadAdminLinks();
-
 
                 } catch (error) {
 
@@ -3854,7 +3565,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     "[ACHOU!] Excluir:",
                     error
                   );
-
 
                   alert(
                     "Não foi possível excluir o link."
@@ -3865,14 +3575,12 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         );
 
-
     } catch (error) {
 
       console.error(
         "[ACHOU!] Listar links:",
         error
       );
-
 
       adminLinksList.innerHTML = `
         <div class="admin-empty">
@@ -3920,11 +3628,9 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             );
 
-
           item.classList.add(
             "active"
           );
-
 
           if (index === 0) {
 
@@ -3934,7 +3640,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "smooth"
             });
           }
-
 
           if (index === 1) {
 
@@ -3951,7 +3656,6 @@ document.addEventListener("DOMContentLoaded", () => {
               });
           }
 
-
           if (index === 2) {
 
             searchInput
@@ -3962,7 +3666,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 block:
                   "center"
               });
-
 
             setTimeout(
               () => {
@@ -3975,7 +3678,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
           }
 
-
           if (index === 3) {
 
             marketSection
@@ -3987,7 +3689,6 @@ document.addEventListener("DOMContentLoaded", () => {
                   "start"
               });
           }
-
 
           if (index === 4) {
 
@@ -4161,11 +3862,6 @@ document.addEventListener("DOMContentLoaded", () => {
       "";
   }
 
-
-  /*
-     Garante que a sessão administrativa
-     sempre comece encerrada.
-  */
 
   resetAdminSession();
 
