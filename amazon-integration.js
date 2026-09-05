@@ -2106,5 +2106,31 @@ document.addEventListener("DOMContentLoaded", () => {
   watchSearchResults();
 
   loadAmazonOffers();
+/* AJUSTE FINAL DO CARD AMAZON */
+const amazonFinalStyle = document.createElement("style");
 
+amazonFinalStyle.textContent = `
+  .amazon-manual-card .flash-photo{
+    position:relative;
+    overflow:hidden;
+  }
+
+  .amazon-manual-card .flash-photo img{
+    width:100%;
+    height:100%;
+    object-fit:contain !important;
+    object-position:center !important;
+    padding:8px;
+    background:#fff;
+  }
+
+  .amazon-manual-card .amazon-badge{
+    top:12px !important;
+    left:12px !important;
+    bottom:auto !important;
+    z-index:5;
+  }
+`;
+
+document.head.appendChild(amazonFinalStyle);
 });
