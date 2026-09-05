@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -9,22 +10,35 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
   >
 
-  <meta name="theme-color" content="#000000">
+  <meta
+    name="theme-color"
+    content="#000000"
+  >
 
   <meta
     name="description"
-    content="ACHOU! Compare preços e encontre as melhores ofertas."
+    content="ACHOU! Pesquise uma vez e compare ofertas reais de várias lojas."
   >
 
-  <title>ACHOU! — Compare antes de comprar</title>
+  <title>
+    ACHOU! — Pesquise uma vez. Compare várias lojas.
+  </title>
+
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
 
   <link
     rel="stylesheet"
-    href="style.css?v=20260904-11"
+    href="style.css?v=20260904-20"
   >
+
 </head>
 
+
 <body>
+
 
   <!-- =====================================================
        HEADER
@@ -44,11 +58,13 @@
         <span></span>
       </button>
 
+
       <a
         class="brand"
         href="#"
         aria-label="ACHOU início"
       >
+
         <strong>
           ACHOU<span>!</span>
         </strong>
@@ -56,6 +72,7 @@
         <small>
           A gente procura. Você economiza tempo.
         </small>
+
       </a>
 
     </div>
@@ -68,11 +85,13 @@
         type="button"
         aria-label="Favoritos"
       >
+
         ♡
 
         <span class="notification-badge favorite-count">
           0
         </span>
+
       </button>
 
 
@@ -82,16 +101,12 @@
       >
 
         <span class="account-avatar">
-          ?
+          ●
         </span>
 
         <span class="account-greeting">
           <small>Olá!</small>
           <strong>Entrar</strong>
-        </span>
-
-        <span class="account-link">
-          Minha conta
         </span>
 
       </button>
@@ -101,558 +116,637 @@
   </header>
 
 
-  <!-- =====================================================
-       BUSCA
-       ===================================================== -->
-
-  <section class="search-section">
-
-    <div class="search-box">
-
-      <span class="search-icon">
-        ⌕
-      </span>
-
-      <input
-        type="search"
-        placeholder="Busque iPhone, notebook, TV..."
-        autocomplete="off"
-        aria-label="Pesquisar produtos"
-      >
-
-      <button type="button">
-        BUSCAR
-      </button>
-
-    </div>
-
-  </section>
-
-
-  <!-- =====================================================
-       CATEGORIAS SUPERIORES
-       ===================================================== -->
-
-  <nav
-    class="category-nav"
-    aria-label="Categorias"
-  >
-
-    <button
-      class="category-nav-item active"
-      type="button"
-    >
-      Todos
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Celulares
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Informática
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      TV
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Games
-    </button>
-
-    <button
-      class="category-nav-item"
-      type="button"
-    >
-      Áudio
-    </button>
-
-  </nav>
-
 
   <main>
 
+
     <!-- ===================================================
-         HERO
+         HERO PRINCIPAL
          =================================================== -->
 
     <section class="hero-marketplace">
 
-      <div class="hero-banner">
+      <div class="hero-copy">
 
-        <div class="hero-banner-content">
+        <span class="hero-small-title">
+          SEU COMPARADOR DE PREÇOS
+        </span>
 
-          <span class="hero-small-title">
-            OFERTAS SELECIONADAS
-          </span>
+        <h1>
+          Pesquise uma vez.
+          <br>
+          <em>Compare várias lojas.</em>
+        </h1>
 
-          <h1>
-            <strong>
-              COMPARE ANTES DE COMPRAR
-            </strong>
-          </h1>
+        <p>
+          A gente procura. Você economiza tempo.
+        </p>
 
-          <p>
-            A gente procura os melhores preços
-            para você economizar.
-          </p>
-
-          <button
-            class="hero-cta"
-            type="button"
-          >
-            PROCURAR PRODUTO
-          </button>
-
-        </div>
+      </div>
 
 
-        <div
-          class="hero-products"
-          aria-hidden="true"
+      <div
+        class="hero-visual"
+        aria-hidden="true"
+      >
+
+        <div class="hero-shape"></div>
+
+        <img
+          src="achou-homem-caixa-1.png?v=20260904-20"
+          alt=""
+          class="hero-man"
+          draggable="false"
         >
 
-          <div class="hero-glow"></div>
+      </div>
 
 
-          <img
-            src="./file_0000000045e0820e864bd3e97b3a8de2.png?v=20260904-10"
-            class="hero-real-phone"
-            alt=""
-            draggable="false"
-          >
+      <!-- BUSCA PRINCIPAL -->
 
+      <div class="search-box hero-search">
 
-          <img
-            src="./file_00000000d40c820ea6f7a477eb429009.png?v=20260904-10"
-            class="hero-real-laptop"
-            alt=""
-            draggable="false"
-          >
+        <span class="search-icon">
+          ⌕
+        </span>
 
-
-          <img
-            src="./file_00000000bd34820e8cc682ea72542717.png?v=20260904-10"
-            class="hero-real-headphone"
-            alt=""
-            draggable="false"
-          >
-
-        </div>
-
-
-        <div class="hero-discount">
-
-          <small>
-            ATÉ
-          </small>
-
-          <strong>
-            50
-          </strong>
-
-          <span>
-            % OFF
-          </span>
-
-        </div>
-
-
-        <button
-          class="hero-arrow hero-prev"
-          type="button"
-          aria-label="Banner anterior"
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="O que você está procurando?"
+          autocomplete="off"
+          aria-label="Pesquisar produtos"
         >
-          ‹
-        </button>
 
-        <button
-          class="hero-arrow hero-next"
-          type="button"
-          aria-label="Próximo banner"
-        >
-          ›
+        <button type="button">
+          BUSCAR
         </button>
 
       </div>
 
 
-      <div class="hero-dots">
+      <!-- PESQUISAS RÁPIDAS -->
+
+      <div
+        class="search-chips"
+        aria-label="Pesquisas populares"
+      >
 
         <button
-          class="hero-dot active"
           type="button"
-          aria-label="Banner 1"
-        ></button>
+          data-search="iPhone 15"
+        >
+          iPhone 15
+        </button>
 
         <button
-          class="hero-dot"
           type="button"
-          aria-label="Banner 2"
-        ></button>
+          data-search="notebook"
+        >
+          Notebook
+        </button>
 
         <button
-          class="hero-dot"
           type="button"
-          aria-label="Banner 3"
-        ></button>
+          data-search="PlayStation 5"
+        >
+          PlayStation 5
+        </button>
+
+        <button
+          type="button"
+          data-search="Smart TV"
+        >
+          Smart TV
+        </button>
+
+        <button
+          type="button"
+          data-search="Air Fryer"
+        >
+          Air Fryer
+        </button>
+
+        <button
+          type="button"
+          data-search="tênis"
+        >
+          Tênis
+        </button>
+
+        <button
+          type="button"
+          data-search="geladeira"
+        >
+          Geladeira
+        </button>
+
+        <button
+          type="button"
+          data-search="furadeira"
+        >
+          Furadeira
+        </button>
 
       </div>
 
     </section>
 
 
+
     <!-- ===================================================
-         CATEGORIAS RÁPIDAS — ÍCONES SVG PROFISSIONAIS
+         CATEGORIAS
          =================================================== -->
 
     <section
-      class="quick-categories"
-      aria-label="Categorias rápidas"
+      class="market-section categories-section"
+      id="categoriesSection"
     >
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="7"
-              y="2.5"
-              width="10"
-              height="19"
-              rx="2"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-            <path
-              d="M10 5h4"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-            <circle
-              cx="12"
-              cy="18.5"
-              r="0.8"
-              fill="currentColor"
-            />
-          </svg>
-
-        </span>
-
-        <strong>Celulares</strong>
-
-      </button>
-
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="4"
-              y="5"
-              width="16"
-              height="11"
-              rx="1.5"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-            <path
-              d="M2.8 19h18.4"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-          </svg>
-
-        </span>
-
-        <strong>Informática</strong>
-
-      </button>
-
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect
-              x="3"
-              y="5"
-              width="18"
-              height="12"
-              rx="2"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-            <path
-              d="M9 20h6M12 17v3"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-          </svg>
-
-        </span>
-
-        <strong>TV</strong>
-
-      </button>
-
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7.2 8.5h9.6c2.1 0 3.8 1.7 3.8 3.8v3.1c0 1.7-1.3 3-3 3-.9 0-1.8-.4-2.4-1.2l-1.2-1.5H10l-1.2 1.5c-.6.8-1.5 1.2-2.4 1.2-1.7 0-3-1.3-3-3v-3.1c0-2.1 1.7-3.8 3.8-3.8Z"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M8 11v4M6 13h4"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-            <circle
-              cx="16.5"
-              cy="12"
-              r="1"
-              fill="currentColor"
-            />
-            <circle
-              cx="18.5"
-              cy="14"
-              r="1"
-              fill="currentColor"
-            />
-          </svg>
-
-        </span>
-
-        <strong>Games</strong>
-
-      </button>
-
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 13v-1a8 8 0 0 1 16 0v1"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-            />
-            <rect
-              x="3"
-              y="12"
-              width="4"
-              height="7"
-              rx="2"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-            <rect
-              x="17"
-              y="12"
-              width="4"
-              height="7"
-              rx="2"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-          </svg>
-
-        </span>
-
-        <strong>Áudio</strong>
-
-      </button>
-
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M3 11.5 12 4l9 7.5"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M5.5 10.5V20h13v-9.5"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M10 20v-5h4v5"
-              stroke="currentColor"
-              stroke-width="1.8"
-            />
-          </svg>
-
-        </span>
-
-        <strong>Casa</strong>
-
-      </button>
-
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8.5 5.5 12 3l3.5 2.5 3 1.5-2 4v9H7.5v-9l-2-4 3-1.5Z"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M8.5 5.5 10 9h4l1.5-3.5"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linejoin="round"
-            />
-          </svg>
-
-        </span>
-
-        <strong>Moda</strong>
-
-      </button>
-
-
-      <button class="quick-category" type="button">
-
-        <span class="quick-category-icon" aria-hidden="true">
-
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M14.5 5.5a4 4 0 0 0 4.9 4.9L12 17.8a2.5 2.5 0 1 1-3.5-3.5l7.4-7.4a4 4 0 0 0-1.4-1.4Z"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-
-        </span>
-
-        <strong>Ferramentas</strong>
-
-      </button>
-
-    </section>
-
-
-    <!-- ===================================================
-         OFERTAS
-         =================================================== -->
-
-    <section class="market-section">
 
       <div class="market-section-heading">
 
         <div class="section-title">
 
-          <span class="section-icon">
-            ⚡
+          <span class="section-grid-icon">
+            ▦
           </span>
 
           <h2>
-            Ofertas em destaque
+            Categorias
           </h2>
 
         </div>
 
 
         <button
-          class="see-all"
+          class="see-all category-show-all"
           type="button"
         >
-          VER TODAS
+          Ver todas ›
         </button>
 
       </div>
 
 
-      <div class="flash-deals"></div>
+
+      <div
+        class="quick-categories"
+        aria-label="Categorias rápidas"
+      >
+
+
+        <!-- CELULARES -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="celulares"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <rect
+                x="7"
+                y="2"
+                width="10"
+                height="20"
+                rx="2"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+
+              <path
+                d="M10 5h4"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+
+              <circle
+                cx="12"
+                cy="19"
+                r=".8"
+                fill="currentColor"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            Celulares
+          </strong>
+
+        </button>
+
+
+
+        <!-- INFORMÁTICA -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="informatica"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <rect
+                x="4"
+                y="5"
+                width="16"
+                height="11"
+                rx="1.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+
+              <path
+                d="M2.5 19h19"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            Informática
+          </strong>
+
+        </button>
+
+
+
+        <!-- TV -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="tv"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <rect
+                x="3"
+                y="5"
+                width="18"
+                height="12"
+                rx="2"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+
+              <path
+                d="M9 20h6M12 17v3"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            TV e Vídeo
+          </strong>
+
+        </button>
+
+
+
+        <!-- GAMES -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="games"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <path
+                d="M7 8.5h10c2.3 0 4 1.8 4 4v3c0 1.7-1.3 3-3 3-.9 0-1.7-.4-2.3-1.1L14 15.5h-4l-1.7 1.9A3 3 0 0 1 3 15.5v-3c0-2.2 1.8-4 4-4Z"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+
+              <path
+                d="M8 11v4M6 13h4"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+
+              <circle
+                cx="16"
+                cy="12"
+                r="1"
+                fill="currentColor"
+              />
+
+              <circle
+                cx="18"
+                cy="14"
+                r="1"
+                fill="currentColor"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            Games
+          </strong>
+
+        </button>
+
+
+
+        <!-- ÁUDIO -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="audio"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <path
+                d="M4 13v-1a8 8 0 0 1 16 0v1"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+
+              <rect
+                x="3"
+                y="12"
+                width="4"
+                height="7"
+                rx="2"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+
+              <rect
+                x="17"
+                y="12"
+                width="4"
+                height="7"
+                rx="2"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            Áudio
+          </strong>
+
+        </button>
+
+
+
+        <!-- CASA -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="casa"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <path
+                d="M3 11.5 12 4l9 7.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+              <path
+                d="M5.5 10.5V20h13v-9.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+
+              <path
+                d="M10 20v-5h4v5"
+                stroke="currentColor"
+                stroke-width="1.8"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            Casa
+          </strong>
+
+        </button>
+
+
+
+        <!-- MODA -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="moda"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <path
+                d="M8.5 5.5 12 3l3.5 2.5 3 1.5-2 4v9H7.5v-9l-2-4 3-1.5Z"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+
+              <path
+                d="M8.5 5.5 10 9h4l1.5-3.5"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linejoin="round"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            Moda
+          </strong>
+
+        </button>
+
+
+
+        <!-- FERRAMENTAS -->
+
+        <button
+          class="quick-category"
+          type="button"
+          data-category="ferramentas"
+        >
+
+          <span
+            class="quick-category-icon"
+            aria-hidden="true"
+          >
+
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+
+              <path
+                d="M14.5 5.5a4 4 0 0 0 4.9 4.9L12 17.8a2.5 2.5 0 1 1-3.5-3.5l7.4-7.4a4 4 0 0 0-1.4-1.4Z"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+
+            </svg>
+
+          </span>
+
+          <strong>
+            Ferramentas
+          </strong>
+
+        </button>
+
+
+      </div>
 
     </section>
 
 
+
     <!-- ===================================================
-         MAIS PROCURADOS
+         BANNER DE OFERTAS
          =================================================== -->
 
-    <section class="market-section">
+    <section class="offer-banner">
+
+      <div>
+
+        <span class="offer-banner-icon">
+          %
+        </span>
+
+        <div>
+
+          <strong>
+            Ofertas em destaque
+          </strong>
+
+          <small>
+            Os melhores preços, em um só lugar.
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="see-all"
+        type="button"
+      >
+        Ver ofertas ›
+      </button>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         RESULTADOS / MAIS PROCURADOS
+         =================================================== -->
+
+    <section
+      class="market-section"
+      id="offersSection"
+    >
 
       <div class="market-section-heading">
 
         <div class="section-title">
 
-          <span class="section-icon">
+          <span class="section-fire">
             🔥
           </span>
 
@@ -662,165 +756,335 @@
 
         </div>
 
+
+        <button
+          class="see-all"
+          type="button"
+        >
+          Ver todos ›
+        </button>
+
       </div>
 
 
-      <div class="popular-tags">
+      <div
+        class="achou-search-summary"
+        style="display:none"
+      ></div>
 
-        <button type="button">
-          Todos
+
+      <div class="flash-deals"></div>
+
+
+      <div class="achou-affiliate-note">
+        O ACHOU! pode receber comissão por compras realizadas através dos links de parceiros.
+      </div>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         LOJAS PARCEIRAS
+         =================================================== -->
+
+    <section
+      class="market-section stores-section"
+      id="storesSection"
+    >
+
+      <div class="market-section-heading">
+
+        <div class="section-title">
+
+          <span class="store-section-icon">
+            ▰
+          </span>
+
+          <h2>
+            Lojas parceiras
+          </h2>
+
+        </div>
+
+
+        <button
+          class="see-all"
+          type="button"
+        >
+          Ver todas ›
         </button>
 
-        <button type="button">
-          iPhone
-        </button>
+      </div>
 
-        <button type="button">
-          Notebook
-        </button>
 
-        <button type="button">
-          PlayStation
-        </button>
 
-        <button type="button">
-          Smart TV
-        </button>
+      <div class="featured-stores">
 
-        <button type="button">
-          Fone
-        </button>
+
+        <!-- MERCADO LIVRE -->
+
+        <article class="store-card integrated">
+
+          <div class="store-logo-wrap">
+
+            <img
+              src="https://logo.clearbit.com/mercadolivre.com.br"
+              alt="Mercado Livre"
+              loading="lazy"
+            >
+
+            <span>
+              Mercado Livre
+            </span>
+
+          </div>
+
+          <small>
+            <i></i>
+            Integrada
+          </small>
+
+        </article>
+
+
+
+        <!-- AMAZON -->
+
+        <article class="store-card coming">
+
+          <div class="store-logo-wrap">
+
+            <img
+              src="https://logo.clearbit.com/amazon.com.br"
+              alt="Amazon"
+              loading="lazy"
+            >
+
+            <span>
+              Amazon
+            </span>
+
+          </div>
+
+          <small>
+            <i></i>
+            Em breve
+          </small>
+
+        </article>
+
+
+
+        <!-- SHOPEE -->
+
+        <article class="store-card coming">
+
+          <div class="store-logo-wrap">
+
+            <img
+              src="https://logo.clearbit.com/shopee.com.br"
+              alt="Shopee"
+              loading="lazy"
+            >
+
+            <span>
+              Shopee
+            </span>
+
+          </div>
+
+          <small>
+            <i></i>
+            Em breve
+          </small>
+
+        </article>
+
+
+
+        <!-- MAGALU -->
+
+        <article class="store-card coming">
+
+          <div class="store-logo-wrap">
+
+            <img
+              src="https://logo.clearbit.com/magazineluiza.com.br"
+              alt="Magalu"
+              loading="lazy"
+            >
+
+            <span>
+              Magalu
+            </span>
+
+          </div>
+
+          <small>
+            <i></i>
+            Em breve
+          </small>
+
+        </article>
+
+
+
+        <!-- KABUM -->
+
+        <article class="store-card coming">
+
+          <div class="store-logo-wrap">
+
+            <img
+              src="https://logo.clearbit.com/kabum.com.br"
+              alt="KaBuM!"
+              loading="lazy"
+            >
+
+            <span>
+              KaBuM!
+            </span>
+
+          </div>
+
+          <small>
+            <i></i>
+            Em breve
+          </small>
+
+        </article>
+
+
+
+        <!-- CASAS BAHIA -->
+
+        <article class="store-card coming">
+
+          <div class="store-logo-wrap">
+
+            <img
+              src="https://logo.clearbit.com/casasbahia.com.br"
+              alt="Casas Bahia"
+              loading="lazy"
+            >
+
+            <span>
+              Casas Bahia
+            </span>
+
+          </div>
+
+          <small>
+            <i></i>
+            Em breve
+          </small>
+
+        </article>
+
 
       </div>
 
     </section>
 
 
-    <!-- ===================================================
-         LOJAS
-         =================================================== -->
 
-    <section class="market-section">
-
-      <div class="market-section-heading">
-
-        <div class="section-title">
-
-          <span class="section-icon">
-            🛍
-          </span>
-
-          <h2>
-            Lojas no ACHOU!
-          </h2>
-
-        </div>
-
-      </div>
-
-
-      <div class="featured-stores">
-
-        <article class="store-card mercado">
-          <strong>
-            mercado
-            <span>livre</span>
-          </strong>
-        </article>
-
-        <article class="store-card">
-          <strong>
-            amazon
-          </strong>
-        </article>
-
-        <article class="store-card shopee">
-          <strong>
-            Shopee
-          </strong>
-        </article>
-
-        <article class="store-card magalu">
-          <strong>
-            Magalu
-          </strong>
-        </article>
-
-        <article class="store-card kabum">
-          <strong>
-            KaBuM!
-          </strong>
-        </article>
-
-      </div>
-
-              </section> 
     <!-- ===================================================
          BENEFÍCIOS
          =================================================== -->
 
     <section class="achou-benefits">
 
+
       <article>
-        <span>⌕</span>
+
+        <span>
+          ✓
+        </span>
 
         <div>
+
           <strong>
-            Busca simples
+            Compra segura
           </strong>
 
           <small>
-            Encontre ofertas rapidamente.
+            Você compra diretamente nas lojas.
           </small>
+
         </div>
+
       </article>
 
 
+
       <article>
-        <span>$</span>
+
+        <span>
+          $
+        </span>
 
         <div>
+
           <strong>
-            Compare preços
+            Compare e economize
           </strong>
 
           <small>
-            Veja diferentes lojas.
+            Ofertas organizadas pelo melhor preço.
           </small>
+
         </div>
+
       </article>
 
 
+
       <article>
-        <span>♡</span>
+
+        <span>
+          ♡
+        </span>
 
         <div>
+
           <strong>
             Favoritos
           </strong>
 
           <small>
-            Guarde produtos para depois.
+            Guarde produtos para encontrar depois.
           </small>
+
         </div>
+
       </article>
+
 
 
       <article>
-        <span>↗</span>
+
+        <span>
+          ✓
+        </span>
 
         <div>
+
           <strong>
-            Compra na loja
+            Sem custo extra
           </strong>
 
           <small>
-            Você finaliza na loja parceira.
+            Comparar no ACHOU! é gratuito.
           </small>
+
         </div>
+
       </article>
 
+
     </section>
+
 
 
     <!-- ===================================================
@@ -834,13 +1098,14 @@
       </span>
 
       <h2>
+        Pesquise.
         Compare.
-        <em>Escolha.</em>
-        Economize.
+        <em>Economize.</em>
       </h2>
 
 
       <div class="how-steps">
+
 
         <article>
 
@@ -849,16 +1114,19 @@
           </strong>
 
           <div>
+
             <h3>
               Você pesquisa
             </h3>
 
             <p>
-              Digite o produto que você procura.
+              Digite o produto que procura.
             </p>
+
           </div>
 
         </article>
+
 
 
         <article>
@@ -868,17 +1136,19 @@
           </strong>
 
           <div>
+
             <h3>
               O ACHOU! compara
             </h3>
 
             <p>
-              Encontramos ofertas disponíveis
-              nas lojas parceiras.
+              Buscamos ofertas reais nas lojas integradas.
             </p>
+
           </div>
 
         </article>
+
 
 
         <article>
@@ -888,17 +1158,19 @@
           </strong>
 
           <div>
+
             <h3>
               Você escolhe
             </h3>
 
             <p>
-              Compare preços e escolha
-              a melhor oportunidade.
+              Veja o menor preço e compare as ofertas.
             </p>
+
           </div>
 
         </article>
+
 
 
         <article>
@@ -908,25 +1180,28 @@
           </strong>
 
           <div>
+
             <h3>
               Você compra
             </h3>
 
             <p>
-              Clique na oferta e finalize
-              diretamente na loja.
+              Finalize diretamente na loja parceira.
             </p>
+
           </div>
 
         </article>
+
 
       </div>
 
     </section>
 
 
+
     <!-- ===================================================
-         ENTRADA SECRETA DO ADMIN
+         ACESSO SECRETO ADMIN
          =================================================== -->
 
     <div class="admin-secret-area">
@@ -940,7 +1215,9 @@
 
     </div>
 
+
   </main>
+
 
 
   <!-- =====================================================
@@ -949,44 +1226,75 @@
 
   <nav class="bottom-nav">
 
+
     <button
       class="bottom-nav-item active"
       type="button"
-    >
-      <span>◆</span>
-      <strong>Início</strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-    >
-      <span>▤</span>
-      <strong>Categorias</strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
-    >
-      <span>⌕</span>
-      <strong>Buscar</strong>
-    </button>
-
-
-    <button
-      class="bottom-nav-item"
-      type="button"
+      data-nav="home"
     >
 
       <span>
+        ⌂
+      </span>
+
+      <strong>
+        Início
+      </strong>
+
+    </button>
+
+
+
+    <button
+      class="bottom-nav-item"
+      type="button"
+      data-nav="categories"
+    >
+
+      <span>
+        ▦
+      </span>
+
+      <strong>
+        Categorias
+      </strong>
+
+    </button>
+
+
+
+    <button
+      class="bottom-nav-item"
+      type="button"
+      data-nav="search"
+    >
+
+      <span>
+        ⌕
+      </span>
+
+      <strong>
+        Buscar
+      </strong>
+
+    </button>
+
+
+
+    <button
+      class="bottom-nav-item"
+      type="button"
+      data-nav="favorites"
+    >
+
+      <span>
+
         ♡
 
         <i class="favorite-count">
           0
         </i>
+
       </span>
 
       <strong>
@@ -996,19 +1304,83 @@
     </button>
 
 
+
     <button
       class="bottom-nav-item"
       type="button"
+      data-nav="profile"
     >
-      <span>☺</span>
-      <strong>Perfil</strong>
+
+      <span>
+        ○
+      </span>
+
+      <strong>
+        Perfil
+      </strong>
+
     </button>
+
 
   </nav>
 
 
+
   <!-- =====================================================
-       LOGIN NORMAL DO SITE
+       MODAL DE CATEGORIAS / SUBCATEGORIAS
+       ===================================================== -->
+
+  <div
+    class="category-modal"
+    id="categoryModal"
+  >
+
+    <div class="category-modal-box">
+
+      <header>
+
+        <div>
+
+          <small>
+            EXPLORE
+          </small>
+
+          <h2 id="categoryModalTitle">
+            Categoria
+          </h2>
+
+        </div>
+
+
+        <button
+          id="categoryModalClose"
+          type="button"
+          aria-label="Fechar"
+        >
+          ×
+        </button>
+
+      </header>
+
+
+      <p id="categoryModalText">
+        Escolha o que você procura.
+      </p>
+
+
+      <div
+        class="subcategory-grid"
+        id="subcategoryGrid"
+      ></div>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       LOGIN NORMAL
        ===================================================== -->
 
   <div
@@ -1016,11 +1388,7 @@
     id="loginModal"
   >
 
-    <div
-      class="login-modal-box"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div class="login-modal-box">
 
       <button
         class="login-close"
@@ -1051,6 +1419,7 @@
           id="loginEmail"
           type="email"
           placeholder="seu@email.com"
+          autocomplete="email"
           required
         >
 
@@ -1063,6 +1432,7 @@
           id="loginPassword"
           type="password"
           placeholder="Sua senha"
+          autocomplete="current-password"
           required
         >
 
@@ -1089,8 +1459,9 @@
   </div>
 
 
+
   <!-- =====================================================
-       CADASTRO NORMAL
+       CADASTRO
        ===================================================== -->
 
   <div
@@ -1098,11 +1469,7 @@
     id="signupModal"
   >
 
-    <div
-      class="signup-modal-box"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div class="signup-modal-box">
 
       <button
         class="signup-close"
@@ -1133,6 +1500,7 @@
           id="signupName"
           type="text"
           placeholder="Seu nome"
+          autocomplete="name"
           required
         >
 
@@ -1145,6 +1513,7 @@
           id="signupEmail"
           type="email"
           placeholder="seu@email.com"
+          autocomplete="email"
           required
         >
 
@@ -1157,6 +1526,7 @@
           id="signupPassword"
           type="password"
           placeholder="Crie uma senha"
+          autocomplete="new-password"
           required
         >
 
@@ -1169,6 +1539,7 @@
           id="signupPasswordConfirm"
           type="password"
           placeholder="Repita a senha"
+          autocomplete="new-password"
           required
         >
 
@@ -1195,8 +1566,9 @@
   </div>
 
 
+
   <!-- =====================================================
-       LOGIN DO ADMINISTRADOR
+       LOGIN ADMIN
        ===================================================== -->
 
   <div
@@ -1204,11 +1576,7 @@
     id="adminLoginModal"
   >
 
-    <div
-      class="admin-login-box"
-      role="dialog"
-      aria-modal="true"
-    >
+    <div class="admin-login-box">
 
       <button
         id="adminLoginClose"
@@ -1288,8 +1656,9 @@
   </div>
 
 
+
   <!-- =====================================================
-       PAINEL ADMINISTRATIVO
+       PAINEL ADMIN
        ===================================================== -->
 
   <div
@@ -1298,6 +1667,7 @@
   >
 
     <div class="admin-panel">
+
 
       <header class="admin-panel-header">
 
@@ -1328,6 +1698,7 @@
             SAIR
           </button>
 
+
           <button
             id="adminPanelClose"
             class="admin-close"
@@ -1342,18 +1713,21 @@
       </header>
 
 
-      <!-- =================================================
-           PRODUTOS ENCONTRADOS NA ÚLTIMA BUSCA
-           ================================================= -->
+
+      <!-- PRODUTOS -->
 
       <section class="admin-section">
 
         <div class="admin-section-title">
 
           <div>
-            <span>01</span>
+
+            <span>
+              01
+            </span>
 
             <div>
+
               <h3>
                 Produtos encontrados
               </h3>
@@ -1361,7 +1735,9 @@
               <p>
                 Escolha uma oferta para cadastrar o link.
               </p>
+
             </div>
+
           </div>
 
 
@@ -1390,18 +1766,21 @@
       </section>
 
 
-      <!-- =================================================
-           CADASTRO / EDIÇÃO DO LINK
-           ================================================= -->
+
+      <!-- CADASTRO DE LINK -->
 
       <section class="admin-section">
 
         <div class="admin-section-title">
 
           <div>
-            <span>02</span>
+
+            <span>
+              02
+            </span>
 
             <div>
+
               <h3>
                 Link de afiliado
               </h3>
@@ -1409,13 +1788,17 @@
               <p>
                 Cole o link criado no Mercado Livre.
               </p>
+
             </div>
+
           </div>
 
         </div>
 
 
+
         <form id="adminAffiliateForm">
+
 
           <input
             id="adminAffiliateId"
@@ -1486,6 +1869,7 @@
           </label>
 
 
+
           <div class="admin-form-actions">
 
             <button
@@ -1506,6 +1890,7 @@
 
           </div>
 
+
         </form>
 
 
@@ -1517,18 +1902,21 @@
       </section>
 
 
-      <!-- =================================================
-           LINKS JÁ CADASTRADOS
-           ================================================= -->
+
+      <!-- LINKS CADASTRADOS -->
 
       <section class="admin-section">
 
         <div class="admin-section-title">
 
           <div>
-            <span>03</span>
+
+            <span>
+              03
+            </span>
 
             <div>
+
               <h3>
                 Links cadastrados
               </h3>
@@ -1536,7 +1924,9 @@
               <p>
                 Edite ou remova links existentes.
               </p>
+
             </div>
+
           </div>
 
 
@@ -1557,35 +1947,33 @@
         >
 
           <div class="admin-empty">
-            Nenhum link carregado.
+            Carregando...
           </div>
 
         </div>
 
       </section>
 
+
     </div>
 
   </div>
 
 
+
   <!-- =====================================================
-       SUPABASE
+       SCRIPTS
        ===================================================== -->
 
   <script
     src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
   ></script>
 
-
-  <!-- =====================================================
-       SCRIPT PRINCIPAL
-       ===================================================== -->
-
   <script
-    src="script.js?v=20260904-11"
+    src="script.js?v=20260904-20"
   ></script>
+
 
 </body>
 
-</html>
+  </html>
