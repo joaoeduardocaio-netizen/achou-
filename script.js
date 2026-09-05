@@ -1,27 +1,25 @@
 /* =========================================================
    ACHOU! — COMPARADOR PROFISSIONAL
-   Busca Mercado Livre + links afiliados manuais + painel admin
+   Mercado Livre + links afiliados manuais + painel admin
+
+   ADMIN:
+   Sempre exige e-mail e senha ao acessar pelo pontinho.
+   A sessão administrativa não fica salva no navegador.
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
 
   /* ========================================================
-     CONFIGURAÇÃO
+     CONFIG
      ======================================================== */
 
   const CONFIG = {
+    locale: "pt-BR",
+    currency: "BRL",
 
-    locale:
-      "pt-BR",
+    heroInterval: 5000,
 
-    currency:
-      "BRL",
-
-    heroInterval:
-      5000,
-
-    initialQuery:
-      "iPhone 15",
+    initialQuery: "iPhone 15",
 
     api:
       "https://wulhcgkphclwgidqlvtr.supabase.co/functions/v1/mercadolivre-search",
@@ -40,11 +38,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let db = null;
 
+  let adminDb = null;
+
 
   if (
     window.supabase &&
     window.supabase.createClient
   ) {
+
+    /*
+       CLIENTE NORMAL DO SITE
+
+       Pode manter a sessão normal
+       do cliente caso ele faça login.
+    */
 
     db =
       window.supabase.createClient(
@@ -54,7 +61,36 @@ document.addEventListener("DOMContentLoaded", () => {
           auth: {
             persistSession: true,
             autoRefreshToken: true,
-            detectSessionInUrl: true
+            detectSessionInUrl: true,
+            storageKey: "achou-user-auth"
+          }
+        }
+      );
+
+
+    /*
+       CLIENTE EXCLUSIVO DO ADMIN
+
+       IMPORTANTE:
+       persistSession = false
+
+       Portanto o login administrativo
+       não fica salvo no celular.
+
+       Toda vez que clicar no pontinho
+       será necessário informar
+       e-mail e senha novamente.
+    */
+
+    adminDb =
+      window.supabase.createClient(
+        CONFIG.supabaseUrl,
+        CONFIG.supabaseKey,
+        {
+          auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false
           }
         }
       );
@@ -62,14 +98,14 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
 
     console.error(
-      "[ACHOU!] Biblioteca Supabase não carregada."
+      "[ACHOU!] Supabase não carregado."
     );
 
   }
 
 
   /* ========================================================
-     ESTADO GLOBAL
+     ESTADO
      ======================================================== */
 
   let products = [];
@@ -138,7 +174,6 @@ document.addEventListener("DOMContentLoaded", () => {
         currency: CONFIG.currency
       }
     );
-
   }
 
 
@@ -152,7 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
       )
       .toLowerCase()
       .trim();
-
   }
 
 
@@ -164,7 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
-
   }
 
 
@@ -179,27 +212,31 @@ document.addEventListener("DOMContentLoaded", () => {
       const parsed =
         new URL(url);
 
+      if (
+        parsed.protocol !== "https:"
+      ) {
+        return false;
+      }
+
+      const host =
+        parsed.hostname.toLowerCase();
+
       return (
-        parsed.protocol === "https:" &&
-        (
-          parsed.hostname === "meli.la" ||
-          parsed.hostname === "mercadolivre.com.br" ||
-          parsed.hostname.endsWith(
-            ".mercadolivre.com.br"
-          ) ||
-          parsed.hostname === "mercadolibre.com" ||
-          parsed.hostname.endsWith(
-            ".mercadolibre.com"
-          )
+        host === "meli.la" ||
+        host === "mercadolivre.com.br" ||
+        host.endsWith(
+          ".mercadolivre.com.br"
+        ) ||
+        host === "mercadolibre.com" ||
+        host.endsWith(
+          ".mercadolibre.com"
         )
       );
 
     } catch {
 
       return false;
-
     }
-
   }
 
 
@@ -222,11 +259,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (type) {
-
       element.classList.add(type);
-
     }
-
   }
 
 
@@ -243,7 +277,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     summaryBox =
       document.createElement(
         "div"
@@ -255,12 +288,10 @@ document.addEventListener("DOMContentLoaded", () => {
     summaryBox.style.display =
       "none";
 
-
     marketSection.insertBefore(
       summaryBox,
       dealsContainer
     );
-
   }
 
 
@@ -274,10 +305,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-
     summaryBox.style.display =
       "flex";
-
 
     summaryBox.innerHTML = `
       <div>
@@ -308,12 +337,11 @@ document.addEventListener("DOMContentLoaded", () => {
         Ordenado por menor preço
       </span>
     `;
-
   }
 
 
   /* ========================================================
-     ESTADOS DA BUSCA
+     STATUS
      ======================================================== */
 
   function showLoading() {
@@ -321,7 +349,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!dealsContainer) {
       return;
     }
-
 
     dealsContainer.innerHTML = `
       <div
@@ -333,24 +360,20 @@ document.addEventListener("DOMContentLoaded", () => {
         </strong>
 
         <span>
-          Consultando produtos e preços reais.
+          Consultando produtos
+          e preços reais.
         </span>
 
       </div>
     `;
-
   }
 
 
-  function showError(
-    message =
-      "Tente novamente em alguns instantes."
-  ) {
+  function showError() {
 
     if (!dealsContainer) {
       return;
     }
-
 
     dealsContainer.innerHTML = `
       <div
@@ -362,12 +385,12 @@ document.addEventListener("DOMContentLoaded", () => {
         </strong>
 
         <span>
-          ${escapeHtml(message)}
+          Tente novamente
+          em alguns instantes.
         </span>
 
       </div>
     `;
-
   }
 
 
@@ -376,7 +399,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!dealsContainer) {
       return;
     }
-
 
     dealsContainer.innerHTML = `
       <div
@@ -388,18 +410,18 @@ document.addEventListener("DOMContentLoaded", () => {
         </strong>
 
         <span>
-          Os produtos encontrados ainda
-          não possuem link afiliado ativo.
+          Os produtos encontrados
+          ainda não possuem link
+          afiliado ativo.
         </span>
 
       </div>
     `;
-
   }
 
 
   /* ========================================================
-     NORMALIZAÇÃO DOS PRODUTOS
+     NORMALIZA PRODUTO
      ======================================================== */
 
   function normalizeApiProduct(item) {
@@ -455,13 +477,6 @@ document.addEventListener("DOMContentLoaded", () => {
       store:
         "Mercado Livre",
 
-      /*
-         Guardamos o URL original
-         somente como referência.
-         O botão público usa o
-         affiliate_url manual.
-      */
-
       productUrl:
         item.permalink ||
         item.url ||
@@ -473,12 +488,11 @@ document.addEventListener("DOMContentLoaded", () => {
       affiliateId:
         null
     };
-
   }
 
 
   /* ========================================================
-     LINKS AFILIADOS MANUAIS
+     LINKS AFILIADOS PÚBLICOS
      ======================================================== */
 
   async function loadAffiliateLinks() {
@@ -488,9 +502,7 @@ document.addEventListener("DOMContentLoaded", () => {
       affiliateLinks = [];
 
       return [];
-
     }
-
 
     try {
 
@@ -516,37 +528,28 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           );
 
-
       if (error) {
-
         throw error;
-
       }
-
 
       affiliateLinks =
         Array.isArray(data)
           ? data
           : [];
 
-
       return affiliateLinks;
-
 
     } catch (error) {
 
       console.error(
-        "[ACHOU!] Erro ao carregar links afiliados:",
+        "[ACHOU!] Links afiliados:",
         error
       );
-
 
       affiliateLinks = [];
 
       return [];
-
     }
-
   }
 
 
@@ -555,26 +558,25 @@ document.addEventListener("DOMContentLoaded", () => {
   ) {
 
     /*
-       Prioridade 1:
-       item_id exato.
-
-       É a forma mais segura de
-       associar oferta e link.
+       PRIMEIRO:
+       procura ITEM ID exato.
     */
 
     const exact =
       affiliateLinks.find(
-        link =>
-          link.active === true &&
-          link.item_id &&
-          String(
-            link.item_id
-          ) === String(
-            product.itemId
-          ) &&
-          validAffiliateLink(
-            link.affiliate_url
-          )
+        link => {
+
+          return (
+            link.active === true &&
+            link.item_id &&
+            String(link.item_id) ===
+              String(product.itemId) &&
+            validAffiliateLink(
+              link.affiliate_url
+            )
+          );
+
+        }
       );
 
 
@@ -584,39 +586,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /*
-       Prioridade 2:
-       product_id / catálogo.
-
-       Serve como fallback.
+       SEGUNDO:
+       fallback pelo Product ID.
     */
 
     if (product.productId) {
 
       const catalog =
         affiliateLinks.find(
-          link =>
-            link.active === true &&
-            link.catalog_product_id &&
-            String(
-              link.catalog_product_id
-            ) === String(
-              product.productId
-            ) &&
-            validAffiliateLink(
-              link.affiliate_url
-            )
+          link => {
+
+            return (
+              link.active === true &&
+              link.catalog_product_id &&
+              String(
+                link.catalog_product_id
+              ) ===
+                String(
+                  product.productId
+                ) &&
+              validAffiliateLink(
+                link.affiliate_url
+              )
+            );
+
+          }
         );
 
 
       if (catalog) {
         return catalog;
       }
-
     }
 
 
     return null;
-
   }
 
 
@@ -648,15 +652,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
           product.affiliateId =
             null;
-
         }
 
 
         return product;
-
       }
     );
-
   }
 
 
@@ -683,9 +684,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        if (
-          !map.has(key)
-        ) {
+        if (!map.has(key)) {
 
           map.set(
             key,
@@ -700,10 +699,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.image ||
                 null,
 
-              allOffers: []
+              allOffers:
+                []
             }
           );
-
         }
 
 
@@ -718,14 +717,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
           group.image =
             item.image;
-
         }
 
 
         group.allOffers.push(
           item
         );
-
       }
     );
 
@@ -737,12 +734,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       .map(
         group => {
-
-          /*
-             No site público entram
-             somente ofertas com
-             link afiliado cadastrado.
-          */
 
           group.offers =
             group.allOffers
@@ -774,7 +765,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
           return group;
-
         }
       )
 
@@ -789,7 +779,6 @@ document.addEventListener("DOMContentLoaded", () => {
           a.best.price -
           b.best.price
       );
-
   }
 
 
@@ -810,21 +799,16 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch {
 
       return [];
-
     }
-
   }
 
 
-  function saveFavorites(
-    list
-  ) {
+  function saveFavorites(list) {
 
     localStorage.setItem(
       "achou_favorites",
       JSON.stringify(list)
     );
-
   }
 
 
@@ -846,7 +830,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
       );
-
   }
 
 
@@ -878,7 +861,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           button.textContent =
             "♥";
-
         }
 
 
@@ -910,27 +892,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
               button.textContent =
                 "♥";
-
             }
 
 
-            saveFavorites(
-              current
-            );
+            saveFavorites(current);
 
             updateFavoriteCounter();
-
           }
         );
 
       }
     );
-
   }
 
 
   /* ========================================================
-     EXPANSÃO DAS OFERTAS
+     PAINEL DE OFERTAS
      ======================================================== */
 
   function bindOfferPanels() {
@@ -978,18 +955,16 @@ document.addEventListener("DOMContentLoaded", () => {
                         ? "OFERTA"
                         : "OFERTAS"
                     }`;
-
             }
           );
 
         }
       );
-
   }
 
 
   /* ========================================================
-     PRODUTOS PÚBLICOS
+     RENDERIZA PRODUTOS
      ======================================================== */
 
   function renderGroupedProducts(
@@ -1009,7 +984,6 @@ document.addEventListener("DOMContentLoaded", () => {
       showEmpty();
 
       return;
-
     }
 
 
@@ -1106,7 +1080,9 @@ document.addEventListener("DOMContentLoaded", () => {
                           <strong
                             class="achou-offer-price"
                           >
-                            ${money(offer.price)}
+                            ${money(
+                              offer.price
+                            )}
                           </strong>
 
                           <div
@@ -1136,7 +1112,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                         <a
                           class="achou-mini-buy"
-                          href="${escapeHtml(offer.link)}"
+                          href="${escapeHtml(
+                            offer.link
+                          )}"
                           target="_blank"
                           rel="noopener noreferrer sponsored"
                         >
@@ -1145,7 +1123,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                       </div>
                     `;
-
                   }
                 )
                 .join("");
@@ -1154,7 +1131,9 @@ document.addEventListener("DOMContentLoaded", () => {
             return `
               <article
                 class="flash-card achou-group-card"
-                data-product-id="${escapeHtml(group.productId)}"
+                data-product-id="${escapeHtml(
+                  group.productId
+                )}"
               >
 
                 ${
@@ -1173,7 +1152,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button
                   class="product-favorite"
                   type="button"
-                  data-favorite="${escapeHtml(favoriteId)}"
+                  data-favorite="${escapeHtml(
+                    favoriteId
+                  )}"
                   aria-label="Favoritar produto"
                 >
                   ♡
@@ -1263,7 +1244,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 >
 
                   <a
-                    href="${escapeHtml(best.link)}"
+                    href="${escapeHtml(
+                      best.link
+                    )}"
                     target="_blank"
                     rel="noopener noreferrer sponsored"
                     class="offer"
@@ -1275,7 +1258,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   <button
                     class="achou-see-offers"
                     type="button"
-                    data-toggle-offers="${escapeHtml(group.productId)}"
+                    data-toggle-offers="${escapeHtml(
+                      group.productId
+                    )}"
                   >
                     VER
                     ${group.offers.length}
@@ -1291,14 +1276,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 <div
                   class="achou-offers-panel"
-                  data-offers-panel="${escapeHtml(group.productId)}"
+                  data-offers-panel="${escapeHtml(
+                    group.productId
+                  )}"
                 >
                   ${rows}
                 </div>
 
               </article>
             `;
-
           }
         )
         .join("");
@@ -1309,11 +1295,8 @@ document.addEventListener("DOMContentLoaded", () => {
         ".achou-affiliate-note"
       )
       .forEach(
-        note => {
-
-          note.remove();
-
-        }
+        note =>
+          note.remove()
       );
 
 
@@ -1339,12 +1322,11 @@ document.addEventListener("DOMContentLoaded", () => {
     bindFavorites();
 
     bindOfferPanels();
-
   }
 
 
   /* ========================================================
-     BUSCA PRINCIPAL
+     BUSCA
      ======================================================== */
 
   async function searchProducts(
@@ -1378,7 +1360,6 @@ document.addEventListener("DOMContentLoaded", () => {
       searchInput.focus();
 
       return;
-
     }
 
 
@@ -1393,7 +1374,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       summaryBox.style.display =
         "none";
-
     }
 
 
@@ -1404,15 +1384,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       searchButton.textContent =
         "BUSCANDO...";
-
     }
 
 
     try {
-
-      /*
-         1. Mercado Livre
-      */
 
       const response =
         await fetch(
@@ -1433,7 +1408,6 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(
           `HTTP ${response.status}`
         );
-
       }
 
 
@@ -1452,13 +1426,8 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(
           "Resposta inválida"
         );
-
       }
 
-
-      /*
-         2. Normaliza produtos
-      */
 
       products =
         data.results
@@ -1481,18 +1450,8 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
 
-      /*
-         3. Busca os links manuais
-         cadastrados no Supabase.
-      */
-
       await loadAffiliateLinks();
 
-
-      /*
-         4. Associa os links aos
-         produtos encontrados.
-      */
 
       products =
         applyAffiliateLinks(
@@ -1500,17 +1459,13 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-      /*
-         5. Cria os grupos públicos.
-      */
-
       groupedProducts =
         groupProducts(
           products
         );
 
 
-      const availableOfferCount =
+      const available =
         groupedProducts.reduce(
           (
             total,
@@ -1524,7 +1479,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       updateSummary(
         groupedProducts.length,
-        availableOfferCount,
+        available,
         term
       );
 
@@ -1533,11 +1488,6 @@ document.addEventListener("DOMContentLoaded", () => {
         groupedProducts
       );
 
-
-      /*
-         Atualiza lista do admin
-         se o painel estiver aberto.
-      */
 
       renderAdminProducts();
 
@@ -1555,14 +1505,13 @@ document.addEventListener("DOMContentLoaded", () => {
             block:
               "start"
           });
-
       }
 
 
     } catch (error) {
 
       console.error(
-        "[ACHOU!] Erro na busca:",
+        "[ACHOU!] Busca:",
         error
       );
 
@@ -1587,11 +1536,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         searchButton.textContent =
           "BUSCAR";
-
       }
-
     }
-
   }
 
 
@@ -1606,17 +1552,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /*
-       Campo continua vazio.
-    */
-
     searchInput.value =
       "";
 
-
-    /*
-       iPhone 15 somente nos bastidores.
-    */
 
     searchProducts(
       CONFIG.initialQuery,
@@ -1625,51 +1563,40 @@ document.addEventListener("DOMContentLoaded", () => {
           false
       }
     );
-
   }
 
 
   /* ========================================================
-     BUSCA / ENTER
+     BUSCAR
      ======================================================== */
 
-  if (searchButton) {
+  searchButton
+    ?.addEventListener(
+      "click",
+      () => {
 
-    searchButton
-      .addEventListener(
-        "click",
-        () => {
+        searchProducts();
+
+      }
+    );
+
+
+  searchInput
+    ?.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key ===
+          "Enter"
+        ) {
+
+          event.preventDefault();
 
           searchProducts();
-
         }
-      );
-
-  }
-
-
-  if (searchInput) {
-
-    searchInput
-      .addEventListener(
-        "keydown",
-        event => {
-
-          if (
-            event.key ===
-            "Enter"
-          ) {
-
-            event.preventDefault();
-
-            searchProducts();
-
-          }
-
-        }
-      );
-
-  }
+      }
+    );
 
 
   /* ========================================================
@@ -1724,7 +1651,6 @@ document.addEventListener("DOMContentLoaded", () => {
             button.classList.add(
               "active"
             );
-
           }
 
 
@@ -1771,7 +1697,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             fone:
               "fone bluetooth"
-
           };
 
 
@@ -1785,12 +1710,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "todos"
           ) {
 
-            if (searchInput) {
-
-              searchInput.value =
-                "";
-
-            }
+            searchInput.value =
+              "";
 
 
             searchProducts(
@@ -1799,18 +1720,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             return;
-
           }
 
 
-          if (searchInput) {
+          searchInput.value =
+            term;
 
-            searchInput.value =
-              term;
 
-            searchProducts();
-
-          }
+          searchProducts();
 
         }
       );
@@ -1826,7 +1743,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const heroSlides = [
 
     {
-
       label:
         "OFERTAS SELECIONADAS",
 
@@ -1835,11 +1751,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       text:
         "A gente procura os melhores preços para você economizar."
-
     },
 
     {
-
       label:
         "PREÇOS EM UM SÓ LUGAR",
 
@@ -1848,11 +1762,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       text:
         "Compare preços antes de decidir onde comprar."
-
     },
 
     {
-
       label:
         "ACHOU!",
 
@@ -1861,7 +1773,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       text:
         "Menos tempo procurando. Mais dinheiro economizado."
-
     }
 
   ];
@@ -1898,9 +1809,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-  function renderHero(
-    index
-  ) {
+  function renderHero(index) {
 
     heroIndex =
       (
@@ -1920,15 +1829,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       heroLabel.textContent =
         slide.label;
-
     }
 
 
     if (heroTitle) {
 
       heroTitle.innerHTML =
-        `<strong>${escapeHtml(slide.title)}</strong>`;
-
+        `<strong>${escapeHtml(
+          slide.title
+        )}</strong>`;
     }
 
 
@@ -1936,7 +1845,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       heroText.textContent =
         slide.text;
-
     }
 
 
@@ -1954,13 +1862,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
-
   }
 
 
-  if (heroPrev) {
-
-    heroPrev.addEventListener(
+  heroPrev
+    ?.addEventListener(
       "click",
       () => {
 
@@ -1971,12 +1877,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     );
 
-  }
 
-
-  if (heroNext) {
-
-    heroNext.addEventListener(
+  heroNext
+    ?.addEventListener(
       "click",
       () => {
 
@@ -1986,8 +1889,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       }
     );
-
-  }
 
 
   heroDots.forEach(
@@ -2000,9 +1901,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "click",
         () => {
 
-          renderHero(
-            index
-          );
+          renderHero(index);
 
         }
       );
@@ -2023,13 +1922,11 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       CONFIG.heroInterval
     );
-
   }
 
 
-  if (heroCTA) {
-
-    heroCTA.addEventListener(
+  heroCTA
+    ?.addEventListener(
       "click",
       () => {
 
@@ -2052,15 +1949,12 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           400
         );
-
       }
     );
 
-  }
-
 
   /* ========================================================
-     LOGIN NORMAL / CADASTRO
+     LOGIN NORMAL
      ======================================================== */
 
   const loginModal =
@@ -2115,7 +2009,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .classList.add(
         "modal-open"
       );
-
   }
 
 
@@ -2133,9 +2026,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .classList.remove(
           "modal-open"
         );
-
     }
-
   }
 
 
@@ -2147,7 +2038,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyLock();
-
   }
 
 
@@ -2159,7 +2049,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyUnlock();
-
   }
 
 
@@ -2171,7 +2060,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyLock();
-
   }
 
 
@@ -2183,7 +2071,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
     bodyUnlock();
-
   }
 
 
@@ -2216,7 +2103,6 @@ document.addEventListener("DOMContentLoaded", () => {
         closeLogin();
 
         openSignup();
-
       }
     );
 
@@ -2229,15 +2115,9 @@ document.addEventListener("DOMContentLoaded", () => {
         closeSignup();
 
         openLogin();
-
       }
     );
 
-
-  /*
-     Login normal também usa
-     Supabase Auth.
-  */
 
   loginForm
     ?.addEventListener(
@@ -2307,18 +2187,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
             greeting.textContent =
               "Minha conta";
-
           }
 
 
-        } catch (error) {
+        } catch {
 
           alert(
             "Não foi possível entrar. Confira seu e-mail e senha."
           );
-
         }
-
       }
     );
 
@@ -2389,7 +2266,6 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
-
         }
 
 
@@ -2400,19 +2276,15 @@ document.addEventListener("DOMContentLoaded", () => {
           } =
             await db.auth
               .signUp({
-
                 email,
                 password,
 
                 options: {
-
                   data: {
                     full_name:
                       name
                   }
-
                 }
-
               });
 
 
@@ -2429,20 +2301,18 @@ document.addEventListener("DOMContentLoaded", () => {
           closeSignup();
 
 
-        } catch (error) {
+        } catch {
 
           alert(
             "Não foi possível criar a conta."
           );
-
         }
-
       }
     );
 
 
   /* ========================================================
-     PAINEL ADMIN — ELEMENTOS
+     ADMIN — ELEMENTOS
      ======================================================== */
 
   const adminSecretButton =
@@ -2552,18 +2422,79 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     ADMIN — MODAIS
+     ADMIN — CONTROLE DE SESSÃO
+
+     Sempre começa BLOQUEADO.
      ======================================================== */
 
+  async function resetAdminSession() {
+
+    if (!adminDb) {
+      return;
+    }
+
+    try {
+
+      await adminDb.auth
+        .signOut();
+
+    } catch {
+
+      /* ignora */
+
+    }
+  }
+
+
   function openAdminLogin() {
+
+    /*
+       Limpa os campos.
+    */
+
+    const email =
+      document.querySelector(
+        "#adminEmail"
+      );
+
+    const password =
+      document.querySelector(
+        "#adminPassword"
+      );
+
+
+    if (email) {
+      email.value = "";
+    }
+
+    if (password) {
+      password.value = "";
+    }
+
+
+    setMessage(
+      adminLoginMessage,
+      ""
+    );
+
 
     adminLoginModal
       ?.classList.add(
         "active"
       );
 
+
     bodyLock();
 
+
+    setTimeout(
+      () => {
+
+        email?.focus();
+
+      },
+      250
+    );
   }
 
 
@@ -2574,6 +2505,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "active"
       );
 
+
     setMessage(
       adminLoginMessage,
       ""
@@ -2581,7 +2513,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     bodyUnlock();
-
   }
 
 
@@ -2605,29 +2536,86 @@ document.addEventListener("DOMContentLoaded", () => {
     renderAdminProducts();
 
     loadAdminLinks();
-
   }
 
 
-  function closeAdminPanel() {
+  async function closeAdminPanel() {
 
     adminPanelModal
       ?.classList.remove(
         "active"
       );
 
-    bodyUnlock();
 
+    /*
+       AO FECHAR O PAINEL,
+       DESTROI A SESSÃO ADMIN.
+
+       Portanto, para abrir novamente,
+       terá que digitar a senha.
+    */
+
+    await resetAdminSession();
+
+
+    bodyUnlock();
   }
 
 
   /* ========================================================
-     ADMIN — VERIFICAÇÃO DE PERMISSÃO
+     ADMIN — PONTINHO SECRETO
+
+     NUNCA abre painel diretamente.
+     ======================================================== */
+
+  adminSecretButton
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        /*
+           Garante que qualquer sessão
+           administrativa anterior morreu.
+        */
+
+        await resetAdminSession();
+
+
+        /*
+           SEMPRE abre a tela de login.
+        */
+
+        openAdminLogin();
+      }
+    );
+
+
+  adminLoginClose
+    ?.addEventListener(
+      "click",
+      async () => {
+
+        await resetAdminSession();
+
+        closeAdminLogin();
+      }
+    );
+
+
+  adminPanelClose
+    ?.addEventListener(
+      "click",
+      closeAdminPanel
+    );
+
+
+  /* ========================================================
+     ADMIN — VERIFICA USUÁRIO
      ======================================================== */
 
   async function getCurrentAdmin() {
 
-    if (!db) {
+    if (!adminDb) {
       return null;
     }
 
@@ -2640,7 +2628,7 @@ document.addEventListener("DOMContentLoaded", () => {
         error:
           userError
       } =
-        await db.auth
+        await adminDb.auth
           .getUser();
 
 
@@ -2650,7 +2638,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ) {
 
         return null;
-
       }
 
 
@@ -2662,7 +2649,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data,
         error
       } =
-        await db
+        await adminDb
           .from(
             "admin_users"
           )
@@ -2682,7 +2669,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ) {
 
         return null;
-
       }
 
 
@@ -2692,55 +2678,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch {
 
       return null;
-
     }
-
   }
 
 
   /* ========================================================
-     ENTRADA SECRETA
-     ======================================================== */
-
-  adminSecretButton
-    ?.addEventListener(
-      "click",
-      async () => {
-
-        const admin =
-          await getCurrentAdmin();
-
-
-        if (admin) {
-
-          openAdminPanel();
-
-        } else {
-
-          openAdminLogin();
-
-        }
-
-      }
-    );
-
-
-  adminLoginClose
-    ?.addEventListener(
-      "click",
-      closeAdminLogin
-    );
-
-
-  adminPanelClose
-    ?.addEventListener(
-      "click",
-      closeAdminPanel
-    );
-
-
-  /* ========================================================
-     LOGIN DO ADMIN
+     ADMIN — LOGIN
      ======================================================== */
 
   adminLoginForm
@@ -2751,7 +2694,7 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
 
-        if (!db) {
+        if (!adminDb) {
 
           setMessage(
             adminLoginMessage,
@@ -2760,7 +2703,6 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
-
         }
 
 
@@ -2793,48 +2735,54 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
-
         }
 
 
         setMessage(
           adminLoginMessage,
-          "Entrando..."
+          "Verificando acesso..."
         );
 
 
+        /*
+           Remove qualquer sessão antiga.
+        */
+
+        await resetAdminSession();
+
+
         try {
+
+          /*
+             1. CONFERE E-MAIL E SENHA
+          */
 
           const {
             data,
             error
           } =
-            await db.auth
+            await adminDb.auth
               .signInWithPassword({
                 email,
                 password
               });
 
 
-          if (error) {
-
-            throw error;
-
-          }
-
-
-          const user =
-            data?.user;
-
-
-          if (!user) {
+          if (
+            error ||
+            !data?.user
+          ) {
 
             throw new Error(
-              "Usuário inválido."
+              "Login inválido."
             );
-
           }
 
+
+          /*
+             2. CONFERE SE O USUÁRIO
+                ESTÁ NA TABELA admin_users
+          */
 
           const {
             data:
@@ -2842,7 +2790,7 @@ document.addEventListener("DOMContentLoaded", () => {
             error:
               adminError
           } =
-            await db
+            await adminDb
               .from(
                 "admin_users"
               )
@@ -2851,7 +2799,7 @@ document.addEventListener("DOMContentLoaded", () => {
               )
               .eq(
                 "user_id",
-                user.id
+                data.user.id
               )
               .maybeSingle();
 
@@ -2861,21 +2809,18 @@ document.addEventListener("DOMContentLoaded", () => {
             !adminData
           ) {
 
-            /*
-               Se logou mas não é admin,
-               removemos a sessão.
-            */
-
-            await db.auth
-              .signOut();
+            await resetAdminSession();
 
 
             throw new Error(
-              "Usuário sem permissão."
+              "Usuário não autorizado."
             );
-
           }
 
+
+          /*
+             3. ACESSO AUTORIZADO
+          */
 
           setMessage(
             adminLoginMessage,
@@ -2889,25 +2834,26 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
 
           console.error(
-            "[ACHOU!] Admin login:",
+            "[ACHOU!] Admin:",
             error
           );
 
 
+          await resetAdminSession();
+
+
           setMessage(
             adminLoginMessage,
-            "E-mail, senha ou permissão inválidos.",
+            "E-mail ou senha incorretos, ou usuário sem permissão.",
             "error"
           );
-
         }
-
       }
     );
 
 
   /* ========================================================
-     ADMIN — LOGOUT
+     ADMIN — SAIR
      ======================================================== */
 
   adminLogoutButton
@@ -2915,22 +2861,13 @@ document.addEventListener("DOMContentLoaded", () => {
       "click",
       async () => {
 
-        if (db) {
-
-          await db.auth
-            .signOut();
-
-        }
-
-
-        closeAdminPanel();
-
+        await closeAdminPanel();
       }
     );
 
 
   /* ========================================================
-     ADMIN — PRODUTOS ENCONTRADOS
+     ADMIN — PRODUTOS
      ======================================================== */
 
   function renderAdminProducts() {
@@ -2955,7 +2892,6 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
 
       return;
-
     }
 
 
@@ -2977,7 +2913,9 @@ document.addEventListener("DOMContentLoaded", () => {
               product.image
                 ? `
                   <img
-                    src="${escapeHtml(product.image)}"
+                    src="${escapeHtml(
+                      product.image
+                    )}"
                     alt=""
                   >
                 `
@@ -3007,16 +2945,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 >
 
                   <strong>
-                    ${escapeHtml(product.title)}
+                    ${escapeHtml(
+                      product.title
+                    )}
                   </strong>
 
                   <span>
-                    ${money(product.price)}
+                    ${money(
+                      product.price
+                    )}
                   </span>
 
                   <small>
                     Item:
-                    ${escapeHtml(product.itemId)}
+                    ${escapeHtml(
+                      product.itemId
+                    )}
                   </small>
 
                   ${
@@ -3024,7 +2968,9 @@ document.addEventListener("DOMContentLoaded", () => {
                       ? `
                         <small>
                           Catálogo:
-                          ${escapeHtml(product.productId)}
+                          ${escapeHtml(
+                            product.productId
+                          )}
                         </small>
                       `
                       : ""
@@ -3063,7 +3009,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
               </article>
             `;
-
           }
         )
         .join("");
@@ -3099,13 +3044,11 @@ document.addEventListener("DOMContentLoaded", () => {
               fillAdminFormFromProduct(
                 product
               );
-
             }
           );
 
         }
       );
-
   }
 
 
@@ -3124,7 +3067,6 @@ document.addEventListener("DOMContentLoaded", () => {
       adminAffiliateId.value =
         existing?.id ||
         "";
-
     }
 
 
@@ -3133,7 +3075,6 @@ document.addEventListener("DOMContentLoaded", () => {
       adminItemId.value =
         product.itemId ||
         "";
-
     }
 
 
@@ -3142,7 +3083,6 @@ document.addEventListener("DOMContentLoaded", () => {
       adminProductId.value =
         product.productId ||
         "";
-
     }
 
 
@@ -3151,7 +3091,6 @@ document.addEventListener("DOMContentLoaded", () => {
       adminProductTitle.value =
         product.title ||
         "";
-
     }
 
 
@@ -3160,7 +3099,6 @@ document.addEventListener("DOMContentLoaded", () => {
       adminAffiliateUrl.value =
         existing?.affiliate_url ||
         "";
-
     }
 
 
@@ -3170,7 +3108,6 @@ document.addEventListener("DOMContentLoaded", () => {
         existing
           ? existing.active !== false
           : true;
-
     }
 
 
@@ -3204,23 +3141,18 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       350
     );
-
   }
 
 
   adminRefreshProducts
     ?.addEventListener(
       "click",
-      () => {
-
-        renderAdminProducts();
-
-      }
+      renderAdminProducts
     );
 
 
   /* ========================================================
-     ADMIN — LIMPAR FORMULÁRIO
+     ADMIN — LIMPAR
      ======================================================== */
 
   function clearAdminForm() {
@@ -3230,6 +3162,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     if (adminAffiliateId) {
+
       adminAffiliateId.value =
         "";
     }
@@ -3239,7 +3172,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       adminAffiliateActive.checked =
         true;
-
     }
 
 
@@ -3247,7 +3179,6 @@ document.addEventListener("DOMContentLoaded", () => {
       adminFormMessage,
       ""
     );
-
   }
 
 
@@ -3259,7 +3190,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     ADMIN — SALVAR LINK
+     ADMIN — SALVAR
      ======================================================== */
 
   adminAffiliateForm
@@ -3270,16 +3201,8 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
 
-        if (!db) {
-
-          setMessage(
-            adminFormMessage,
-            "Supabase indisponível.",
-            "error"
-          );
-
+        if (!adminDb) {
           return;
-
         }
 
 
@@ -3291,12 +3214,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           setMessage(
             adminFormMessage,
-            "Sessão de administrador expirada.",
+            "Sua sessão administrativa expirou. Entre novamente.",
             "error"
           );
 
           return;
-
         }
 
 
@@ -3348,14 +3270,11 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
-
         }
 
 
         if (
-          !validAffiliateLink(
-            url
-          )
+          !validAffiliateLink(url)
         ) {
 
           setMessage(
@@ -3365,7 +3284,6 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
           return;
-
         }
 
 
@@ -3403,17 +3321,12 @@ document.addEventListener("DOMContentLoaded", () => {
           };
 
 
-          /*
-             Se já temos um ID,
-             apenas atualizamos.
-          */
-
           if (id) {
 
             const {
               error
             } =
-              await db
+              await adminDb
                 .from(
                   "affiliate_links"
                 )
@@ -3433,19 +3346,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
           } else {
 
-            /*
-               Antes de inserir,
-               verificamos se já há
-               link para o mesmo item.
-            */
-
             const {
               data:
                 existing,
               error:
                 findError
             } =
-              await db
+              await adminDb
                 .from(
                   "affiliate_links"
                 )
@@ -3470,7 +3377,7 @@ document.addEventListener("DOMContentLoaded", () => {
               const {
                 error
               } =
-                await db
+                await adminDb
                   .from(
                     "affiliate_links"
                   )
@@ -3493,7 +3400,7 @@ document.addEventListener("DOMContentLoaded", () => {
               const {
                 error
               } =
-                await db
+                await adminDb
                   .from(
                     "affiliate_links"
                   )
@@ -3505,9 +3412,7 @@ document.addEventListener("DOMContentLoaded", () => {
               if (error) {
                 throw error;
               }
-
             }
-
           }
 
 
@@ -3517,6 +3422,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "success"
           );
 
+
+          /*
+             Recarrega links públicos.
+          */
 
           await loadAffiliateLinks();
 
@@ -3566,7 +3475,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } catch (error) {
 
           console.error(
-            "[ACHOU!] Erro ao salvar link:",
+            "[ACHOU!] Salvar link:",
             error
           );
 
@@ -3576,9 +3485,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "Não foi possível salvar o link.",
             "error"
           );
-
         }
-
       }
     );
 
@@ -3594,18 +3501,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    if (!db) {
-
-      adminLinksList.innerHTML = `
-        <div
-          class="admin-empty"
-        >
-          Supabase indisponível.
-        </div>
-      `;
-
+    if (!adminDb) {
       return;
-
     }
 
 
@@ -3619,12 +3516,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <div
           class="admin-empty"
         >
-          Sessão de administrador inválida.
+          Sessão administrativa inválida.
         </div>
       `;
 
       return;
-
     }
 
 
@@ -3643,7 +3539,7 @@ document.addEventListener("DOMContentLoaded", () => {
         data,
         error
       } =
-        await db
+        await adminDb
           .from(
             "affiliate_links"
           )
@@ -3683,7 +3579,6 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
         return;
-
       }
 
 
@@ -3761,7 +3656,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 </article>
               `;
-
             }
           )
           .join("");
@@ -3803,58 +3697,32 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
 
-                if (adminAffiliateId) {
-
-                  adminAffiliateId.value =
-                    link.id;
-
-                }
+                adminAffiliateId.value =
+                  link.id;
 
 
-                if (adminItemId) {
-
-                  adminItemId.value =
-                    link.item_id ||
-                    "";
-
-                }
+                adminItemId.value =
+                  link.item_id ||
+                  "";
 
 
-                if (adminProductId) {
-
-                  adminProductId.value =
-                    link.catalog_product_id ||
-                    "";
-
-                }
+                adminProductId.value =
+                  link.catalog_product_id ||
+                  "";
 
 
-                if (adminProductTitle) {
-
-                  adminProductTitle.value =
-                    link.product_title ||
-                    "";
-
-                }
+                adminProductTitle.value =
+                  link.product_title ||
+                  "";
 
 
-                if (adminAffiliateUrl) {
-
-                  adminAffiliateUrl.value =
-                    link.affiliate_url ||
-                    "";
-
-                }
+                adminAffiliateUrl.value =
+                  link.affiliate_url ||
+                  "";
 
 
-                if (
-                  adminAffiliateActive
-                ) {
-
-                  adminAffiliateActive.checked =
-                    link.active !== false;
-
-                }
+                adminAffiliateActive.checked =
+                  link.active !== false;
 
 
                 setMessage(
@@ -3872,7 +3740,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     block:
                       "center"
                   });
-
               }
             );
 
@@ -3895,6 +3762,20 @@ document.addEventListener("DOMContentLoaded", () => {
               "click",
               async () => {
 
+                const admin =
+                  await getCurrentAdmin();
+
+
+                if (!admin) {
+
+                  alert(
+                    "Sessão administrativa expirada."
+                  );
+
+                  return;
+                }
+
+
                 const id =
                   button.dataset
                     .adminDelete;
@@ -3916,7 +3797,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   const {
                     error
                   } =
-                    await db
+                    await adminDb
                       .from(
                         "affiliate_links"
                       )
@@ -3954,9 +3835,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         group
                       ) =>
                         total +
-                          group
-                            .offers
-                            .length,
+                        group.offers.length,
                       0
                     );
 
@@ -3982,7 +3861,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } catch (error) {
 
                   console.error(
-                    "[ACHOU!] Erro ao excluir:",
+                    "[ACHOU!] Excluir:",
                     error
                   );
 
@@ -3990,9 +3869,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   alert(
                     "Não foi possível excluir o link."
                   );
-
                 }
-
               }
             );
 
@@ -4003,7 +3880,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
 
       console.error(
-        "[ACHOU!] Erro ao listar links:",
+        "[ACHOU!] Listar links:",
         error
       );
 
@@ -4015,9 +3892,7 @@ document.addEventListener("DOMContentLoaded", () => {
           Não foi possível carregar os links.
         </div>
       `;
-
     }
-
   }
 
 
@@ -4055,7 +3930,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 nav.classList.remove(
                   "active"
                 );
-
               }
             );
 
@@ -4072,7 +3946,6 @@ document.addEventListener("DOMContentLoaded", () => {
               behavior:
                 "smooth"
             });
-
           }
 
 
@@ -4089,7 +3962,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 block:
                   "center"
               });
-
           }
 
 
@@ -4114,7 +3986,6 @@ document.addEventListener("DOMContentLoaded", () => {
               },
               400
             );
-
           }
 
 
@@ -4128,16 +3999,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 block:
                   "start"
               });
-
           }
 
 
           if (index === 4) {
 
             openLogin();
-
           }
-
         }
       );
 
@@ -4146,7 +4014,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     FAVORITO DO HEADER
+     HEADER FAVORITOS
      ======================================================== */
 
   const headerFavorite =
@@ -4168,7 +4036,6 @@ document.addEventListener("DOMContentLoaded", () => {
             block:
               "start"
           });
-
       }
     );
 
@@ -4196,13 +4063,12 @@ document.addEventListener("DOMContentLoaded", () => {
             block:
               "center"
           });
-
       }
     );
 
 
   /* ========================================================
-     FECHAR MODAIS CLICANDO FORA
+     MODAIS
      ======================================================== */
 
   loginModal
@@ -4216,9 +4082,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
 
           closeLogin();
-
         }
-
       }
     );
 
@@ -4234,9 +4098,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ) {
 
           closeSignup();
-
         }
-
       }
     );
 
@@ -4244,24 +4106,24 @@ document.addEventListener("DOMContentLoaded", () => {
   adminLoginModal
     ?.addEventListener(
       "click",
-      event => {
+      async event => {
 
         if (
           event.target ===
           adminLoginModal
         ) {
 
+          await resetAdminSession();
+
           closeAdminLogin();
-
         }
-
       }
     );
 
 
   document.addEventListener(
     "keydown",
-    event => {
+    async event => {
 
       if (
         event.key ===
@@ -4272,10 +4134,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         closeSignup();
 
+        await resetAdminSession();
+
         closeAdminLogin();
-
       }
-
     }
   );
 
@@ -4291,27 +4153,27 @@ document.addEventListener("DOMContentLoaded", () => {
   updateFavoriteCounter();
 
 
-  /*
-     Campo de busca sempre começa vazio.
-  */
-
   if (searchInput) {
 
     searchInput.value =
       "";
-
   }
 
 
   /*
-     Carrega ofertas iniciais.
+     Garante que não exista
+     sessão administrativa
+     ao carregar a página.
   */
+
+  resetAdminSession();
+
 
   loadInitialDeals();
 
 
   console.log(
-    "[ACHOU!] Sistema carregado — painel admin disponível."
+    "[ACHOU!] Sistema carregado."
   );
 
 });
