@@ -2,9 +2,10 @@
    ACHOU! — COMPARADOR PROFISSIONAL
    Mercado Livre + links afiliados manuais + painel admin
 
-   ADMIN:
-   Sempre exige e-mail e senha ao acessar pelo pontinho.
-   A sessão administrativa não fica salva no navegador.
+   VERSÃO:
+   - Exibe produtos mesmo sem link afiliado
+   - Link afiliado vinculado somente ao ITEM ID exato
+   - Admin exige login em todo novo acesso
    ========================================================= */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -37,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
      ======================================================== */
 
   let db = null;
-
   let adminDb = null;
 
 
@@ -45,13 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.supabase &&
     window.supabase.createClient
   ) {
-
-    /*
-       CLIENTE NORMAL DO SITE
-
-       Pode manter a sessão normal
-       do cliente caso ele faça login.
-    */
 
     db =
       window.supabase.createClient(
@@ -67,20 +60,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-
-    /*
-       CLIENTE EXCLUSIVO DO ADMIN
-
-       IMPORTANTE:
-       persistSession = false
-
-       Portanto o login administrativo
-       não fica salvo no celular.
-
-       Toda vez que clicar no pontinho
-       será necessário informar
-       e-mail e senha novamente.
-    */
 
     adminDb =
       window.supabase.createClient(
@@ -100,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
     console.error(
       "[ACHOU!] Supabase não carregado."
     );
-
   }
 
 
@@ -109,9 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
      ======================================================== */
 
   let products = [];
-
   let groupedProducts = [];
-
   let affiliateLinks = [];
 
   let summaryBox = null;
@@ -161,11 +137,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const number =
       Number(value);
 
+
     if (
       !Number.isFinite(number)
     ) {
       return "";
     }
+
 
     return number.toLocaleString(
       CONFIG.locale,
@@ -207,10 +185,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return false;
     }
 
+
     try {
 
       const parsed =
         new URL(url);
+
 
       if (
         parsed.protocol !== "https:"
@@ -218,8 +198,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return false;
       }
 
+
       const host =
         parsed.hostname.toLowerCase();
+
 
       return (
         host === "meli.la" ||
@@ -232,6 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ".mercadolibre.com"
         )
       );
+
 
     } catch {
 
@@ -250,13 +233,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     element.textContent =
       text || "";
+
 
     element.classList.remove(
       "success",
       "error"
     );
+
 
     if (type) {
       element.classList.add(type);
@@ -265,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     RESUMO DA BUSCA
+     RESUMO
      ======================================================== */
 
   function createSummary() {
@@ -277,16 +263,20 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     summaryBox =
       document.createElement(
         "div"
       );
 
+
     summaryBox.className =
       "achou-search-summary";
 
+
     summaryBox.style.display =
       "none";
+
 
     marketSection.insertBefore(
       summaryBox,
@@ -305,8 +295,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     summaryBox.style.display =
       "flex";
+
 
     summaryBox.innerHTML = `
       <div>
@@ -324,8 +316,8 @@ document.addEventListener("DOMContentLoaded", () => {
           ${offerCount}
           ${
             offerCount === 1
-              ? "oferta disponível"
-              : "ofertas disponíveis"
+              ? "oferta encontrada"
+              : "ofertas encontradas"
           }
           para
           “${escapeHtml(query)}”
@@ -350,10 +342,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     dealsContainer.innerHTML = `
-      <div
-        class="achou-search-status loading"
-      >
+      <div class="achou-search-status loading">
 
         <strong>
           Procurando as melhores ofertas...
@@ -375,10 +366,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     dealsContainer.innerHTML = `
-      <div
-        class="achou-search-status"
-      >
+      <div class="achou-search-status">
 
         <strong>
           Não foi possível buscar agora
@@ -400,19 +390,17 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+
     dealsContainer.innerHTML = `
-      <div
-        class="achou-search-status"
-      >
+      <div class="achou-search-status">
 
         <strong>
-          Nenhuma oferta publicada
+          Nenhum produto encontrado
         </strong>
 
         <span>
-          Os produtos encontrados
-          ainda não possuem link
-          afiliado ativo.
+          Tente pesquisar
+          outro produto ou categoria.
         </span>
 
       </div>
@@ -421,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     NORMALIZA PRODUTO
+     NORMALIZA PRODUTOS DA API
      ======================================================== */
 
   function normalizeApiProduct(item) {
@@ -492,7 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     LINKS AFILIADOS PÚBLICOS
+     LINKS AFILIADOS
      ======================================================== */
 
   async function loadAffiliateLinks() {
@@ -503,6 +491,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       return [];
     }
+
 
     try {
 
@@ -528,16 +517,20 @@ document.addEventListener("DOMContentLoaded", () => {
             }
           );
 
+
       if (error) {
         throw error;
       }
+
 
       affiliateLinks =
         Array.isArray(data)
           ? data
           : [];
 
+
       return affiliateLinks;
+
 
     } catch (error) {
 
@@ -546,6 +539,7 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       );
 
+
       affiliateLinks = [];
 
       return [];
@@ -553,14 +547,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  /* ========================================================
+     PROCURA LINK EXATO PELO ITEM ID
+
+     NÃO usa mais Product ID como fallback.
+
+     Assim o preço exibido pertence
+     exatamente ao anúncio do link.
+     ======================================================== */
+
   function findAffiliateForProduct(
     product
   ) {
 
-    /*
-       PRIMEIRO:
-       procura ITEM ID exato.
-    */
+    if (
+      !product ||
+      !product.itemId
+    ) {
+      return null;
+    }
+
 
     const exact =
       affiliateLinks.find(
@@ -569,58 +575,21 @@ document.addEventListener("DOMContentLoaded", () => {
           return (
             link.active === true &&
             link.item_id &&
-            String(link.item_id) ===
-              String(product.itemId) &&
+            String(
+              link.item_id
+            ) ===
+              String(
+                product.itemId
+              ) &&
             validAffiliateLink(
               link.affiliate_url
             )
           );
-
         }
       );
 
 
-    if (exact) {
-      return exact;
-    }
-
-
-    /*
-       SEGUNDO:
-       fallback pelo Product ID.
-    */
-
-    if (product.productId) {
-
-      const catalog =
-        affiliateLinks.find(
-          link => {
-
-            return (
-              link.active === true &&
-              link.catalog_product_id &&
-              String(
-                link.catalog_product_id
-              ) ===
-                String(
-                  product.productId
-                ) &&
-              validAffiliateLink(
-                link.affiliate_url
-              )
-            );
-
-          }
-        );
-
-
-      if (catalog) {
-        return catalog;
-      }
-    }
-
-
-    return null;
+    return exact || null;
   }
 
 
@@ -631,19 +600,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return list.map(
       product => {
 
-        const link =
+        const affiliate =
           findAffiliateForProduct(
             product
           );
 
 
-        if (link) {
+        if (affiliate) {
 
           product.link =
-            link.affiliate_url;
+            affiliate.affiliate_url;
 
           product.affiliateId =
-            link.id;
+            affiliate.id;
 
         } else {
 
@@ -663,6 +632,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ========================================================
      AGRUPAMENTO
+
+     IMPORTANTE:
+     Agora produtos SEM link também permanecem.
      ======================================================== */
 
   function groupProducts(list) {
@@ -735,22 +707,19 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(
         group => {
 
+          /*
+             TODAS AS OFERTAS REAIS,
+             mesmo sem link afiliado.
+          */
+
           group.offers =
             group.allOffers
               .filter(
-                offer => {
-
-                  return (
-                    Number.isFinite(
-                      offer.price
-                    ) &&
-                    offer.price > 0 &&
-                    validAffiliateLink(
-                      offer.link
-                    )
-                  );
-
-                }
+                offer =>
+                  Number.isFinite(
+                    offer.price
+                  ) &&
+                  offer.price > 0
               )
               .sort(
                 (a, b) =>
@@ -759,8 +728,36 @@ document.addEventListener("DOMContentLoaded", () => {
               );
 
 
+          /*
+             OFERTAS QUE JÁ POSSUEM
+             link afiliado cadastrado.
+          */
+
+          group.linkedOffers =
+            group.offers.filter(
+              offer =>
+                validAffiliateLink(
+                  offer.link
+                )
+            );
+
+
+          /*
+             Menor preço real encontrado,
+             independente do link.
+          */
+
           group.best =
             group.offers[0] ||
+            null;
+
+
+          /*
+             Menor preço com link afiliado.
+          */
+
+          group.bestLinked =
+            group.linkedOffers[0] ||
             null;
 
 
@@ -827,7 +824,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
           counter.textContent =
             favorites.length;
-
         }
       );
   }
@@ -883,6 +879,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     item !== id
                 );
 
+
               button.textContent =
                 "♡";
 
@@ -900,14 +897,13 @@ document.addEventListener("DOMContentLoaded", () => {
             updateFavoriteCounter();
           }
         );
-
       }
     );
   }
 
 
   /* ========================================================
-     PAINEL DE OFERTAS
+     ABRIR / FECHAR LISTA DE OFERTAS
      ======================================================== */
 
   function bindOfferPanels() {
@@ -957,7 +953,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     }`;
             }
           );
-
         }
       );
   }
@@ -997,6 +992,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const best =
               group.best;
+
+
+            const bestLinked =
+              group.bestLinked;
 
 
             const title =
@@ -1046,6 +1045,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
 
 
+            /*
+               LISTA DAS OFERTAS.
+
+               Com link:
+               botão VER OFERTA.
+
+               Sem link:
+               botão LINK EM BREVE.
+            */
+
             const rows =
               group.offers
                 .map(
@@ -1053,6 +1062,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     offer,
                     offerIndex
                   ) => {
+
+                    const hasLink =
+                      validAffiliateLink(
+                        offer.link
+                      );
+
 
                     return `
                       <div
@@ -1110,22 +1125,76 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>
 
 
-                        <a
-                          class="achou-mini-buy"
-                          href="${escapeHtml(
-                            offer.link
-                          )}"
-                          target="_blank"
-                          rel="noopener noreferrer sponsored"
-                        >
-                          VER OFERTA
-                        </a>
+                        ${
+                          hasLink
+                            ? `
+                              <a
+                                class="achou-mini-buy"
+                                href="${escapeHtml(
+                                  offer.link
+                                )}"
+                                target="_blank"
+                                rel="noopener noreferrer sponsored"
+                              >
+                                VER OFERTA
+                              </a>
+                            `
+                            : `
+                              <button
+                                class="achou-mini-buy achou-link-pending"
+                                type="button"
+                                disabled
+                              >
+                                LINK EM BREVE
+                              </button>
+                            `
+                        }
 
                       </div>
                     `;
                   }
                 )
                 .join("");
+
+
+            /*
+               BOTÃO PRINCIPAL.
+
+               Se o menor preço encontrado
+               já possui link, abre ele.
+
+               Caso contrário mostra
+               LINK EM BREVE.
+
+               Não apontamos para outro anúncio,
+               evitando diferença de preço.
+            */
+
+            const mainAction =
+              validAffiliateLink(
+                best.link
+              )
+                ? `
+                  <a
+                    href="${escapeHtml(
+                      best.link
+                    )}"
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    class="offer"
+                  >
+                    VER MELHOR OFERTA
+                  </a>
+                `
+                : `
+                  <button
+                    type="button"
+                    class="offer achou-link-pending"
+                    disabled
+                  >
+                    LINK EM BREVE
+                  </button>
+                `;
 
 
             return `
@@ -1215,7 +1284,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 <strong
                   class="flash-price"
                 >
-                  ${money(best.price)}
+                  ${money(
+                    best.price
+                  )}
                 </strong>
 
 
@@ -1228,11 +1299,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   </span>
 
                   <span>
-                    ${group.offers.length}
                     ${
-                      group.offers.length === 1
-                        ? "preço disponível"
-                        : "preços comparados"
+                      group.linkedOffers.length > 0
+                        ? `${group.linkedOffers.length} ${
+                            group.linkedOffers.length === 1
+                              ? "link disponível"
+                              : "links disponíveis"
+                          }`
+                        : "Link afiliado em breve"
                     }
                   </span>
 
@@ -1243,16 +1317,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   class="achou-actions"
                 >
 
-                  <a
-                    href="${escapeHtml(
-                      best.link
-                    )}"
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    class="offer"
-                  >
-                    VER MELHOR OFERTA
-                  </a>
+                  ${mainAction}
 
 
                   <button
@@ -1445,7 +1510,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 ) &&
                 product.price > 0
               );
-
             }
           );
 
@@ -1465,7 +1529,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-      const available =
+      const availableOffers =
         groupedProducts.reduce(
           (
             total,
@@ -1479,7 +1543,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       updateSummary(
         groupedProducts.length,
-        available,
+        availableOffers,
         term
       );
 
@@ -1567,7 +1631,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     BUSCAR
+     EVENTOS DA BUSCA
      ======================================================== */
 
   searchButton
@@ -1576,7 +1640,6 @@ document.addEventListener("DOMContentLoaded", () => {
       () => {
 
         searchProducts();
-
       }
     );
 
@@ -1637,7 +1700,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 item.classList.remove(
                   "active"
                 );
-
               }
             );
 
@@ -1660,28 +1722,28 @@ document.addEventListener("DOMContentLoaded", () => {
               CONFIG.initialQuery,
 
             celulares:
-              "celular",
+              "celular smartphone",
 
             informatica:
-              "notebook",
+              "notebook computador",
 
             tv:
               "smart tv",
 
             games:
-              "console",
+              "console videogame",
 
             audio:
               "fone bluetooth",
 
             casa:
-              "casa",
+              "eletrodomesticos casa",
 
             moda:
-              "moda",
+              "tenis roupa",
 
             ferramentas:
-              "ferramentas",
+              "furadeira ferramentas",
 
             iphone:
               "iPhone",
@@ -1728,15 +1790,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
           searchProducts();
-
         }
       );
-
     }
   );
-
-
-  /* ========================================================
+     /* ========================================================
      HERO
      ======================================================== */
 
@@ -1859,7 +1917,6 @@ document.addEventListener("DOMContentLoaded", () => {
           index ===
             heroIndex
         );
-
       }
     );
   }
@@ -1873,7 +1930,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderHero(
           heroIndex - 1
         );
-
       }
     );
 
@@ -1886,7 +1942,6 @@ document.addEventListener("DOMContentLoaded", () => {
         renderHero(
           heroIndex + 1
         );
-
       }
     );
 
@@ -1902,10 +1957,8 @@ document.addEventListener("DOMContentLoaded", () => {
         () => {
 
           renderHero(index);
-
         }
       );
-
     }
   );
 
@@ -2422,9 +2475,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     ADMIN — CONTROLE DE SESSÃO
-
-     Sempre começa BLOQUEADO.
+     ADMIN — SESSÃO
      ======================================================== */
 
   async function resetAdminSession() {
@@ -2432,6 +2483,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!adminDb) {
       return;
     }
+
 
     try {
 
@@ -2448,10 +2500,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function openAdminLogin() {
 
-    /*
-       Limpa os campos.
-    */
-
     const email =
       document.querySelector(
         "#adminEmail"
@@ -2466,6 +2514,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (email) {
       email.value = "";
     }
+
 
     if (password) {
       password.value = "";
@@ -2547,14 +2596,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
 
-    /*
-       AO FECHAR O PAINEL,
-       DESTROI A SESSÃO ADMIN.
-
-       Portanto, para abrir novamente,
-       terá que digitar a senha.
-    */
-
     await resetAdminSession();
 
 
@@ -2563,9 +2604,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ========================================================
-     ADMIN — PONTINHO SECRETO
-
-     NUNCA abre painel diretamente.
+     ADMIN — ACESSO SECRETO
      ======================================================== */
 
   adminSecretButton
@@ -2573,17 +2612,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "click",
       async () => {
 
-        /*
-           Garante que qualquer sessão
-           administrativa anterior morreu.
-        */
-
         await resetAdminSession();
-
-
-        /*
-           SEMPRE abre a tela de login.
-        */
 
         openAdminLogin();
       }
@@ -2744,18 +2773,10 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
 
-        /*
-           Remove qualquer sessão antiga.
-        */
-
         await resetAdminSession();
 
 
         try {
-
-          /*
-             1. CONFERE E-MAIL E SENHA
-          */
 
           const {
             data,
@@ -2778,11 +2799,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
           }
 
-
-          /*
-             2. CONFERE SE O USUÁRIO
-                ESTÁ NA TABELA admin_users
-          */
 
           const {
             data:
@@ -2817,10 +2833,6 @@ document.addEventListener("DOMContentLoaded", () => {
             );
           }
 
-
-          /*
-             3. ACESSO AUTORIZADO
-          */
 
           setMessage(
             adminLoginMessage,
@@ -2883,9 +2895,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
 
       adminProductsList.innerHTML = `
-        <div
-          class="admin-empty"
-        >
+        <div class="admin-empty">
           Faça uma busca no ACHOU!
           para carregar os produtos.
         </div>
@@ -3046,7 +3056,6 @@ document.addEventListener("DOMContentLoaded", () => {
               );
             }
           );
-
         }
       );
   }
@@ -3423,10 +3432,6 @@ document.addEventListener("DOMContentLoaded", () => {
           );
 
 
-          /*
-             Recarrega links públicos.
-          */
-
           await loadAffiliateLinks();
 
 
@@ -3442,7 +3447,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-          const available =
+          const availableOffers =
             groupedProducts.reduce(
               (
                 total,
@@ -3456,7 +3461,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           updateSummary(
             groupedProducts.length,
-            available,
+            availableOffers,
             currentQuery
           );
 
@@ -3513,9 +3518,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!admin) {
 
       adminLinksList.innerHTML = `
-        <div
-          class="admin-empty"
-        >
+        <div class="admin-empty">
           Sessão administrativa inválida.
         </div>
       `;
@@ -3525,9 +3528,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     adminLinksList.innerHTML = `
-      <div
-        class="admin-empty"
-      >
+      <div class="admin-empty">
         Carregando...
       </div>
     `;
@@ -3571,9 +3572,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ) {
 
         adminLinksList.innerHTML = `
-          <div
-            class="admin-empty"
-          >
+          <div class="admin-empty">
             Nenhum link cadastrado.
           </div>
         `;
@@ -3661,10 +3660,6 @@ document.addEventListener("DOMContentLoaded", () => {
           .join("");
 
 
-      /*
-         EDITAR
-      */
-
       adminLinksList
         .querySelectorAll(
           "[data-admin-edit]"
@@ -3742,14 +3737,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   });
               }
             );
-
           }
         );
 
-
-      /*
-         EXCLUIR
-      */
 
       adminLinksList
         .querySelectorAll(
@@ -3828,7 +3818,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
 
 
-                  const available =
+                  const availableOffers =
                     groupedProducts.reduce(
                       (
                         total,
@@ -3842,7 +3832,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                   updateSummary(
                     groupedProducts.length,
-                    available,
+                    availableOffers,
                     currentQuery
                   );
 
@@ -3872,7 +3862,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
               }
             );
-
           }
         );
 
@@ -3886,9 +3875,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       adminLinksList.innerHTML = `
-        <div
-          class="admin-empty"
-        >
+        <div class="admin-empty">
           Não foi possível carregar os links.
         </div>
       `;
@@ -4008,7 +3995,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       );
-
     }
   );
 
@@ -4121,6 +4107,22 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
+  adminPanelModal
+    ?.addEventListener(
+      "click",
+      async event => {
+
+        if (
+          event.target ===
+          adminPanelModal
+        ) {
+
+          await closeAdminPanel();
+        }
+      }
+    );
+
+
   document.addEventListener(
     "keydown",
     async event => {
@@ -4134,9 +4136,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         closeSignup();
 
-        await resetAdminSession();
-
         closeAdminLogin();
+
+        await closeAdminPanel();
       }
     }
   );
@@ -4161,9 +4163,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /*
-     Garante que não exista
-     sessão administrativa
-     ao carregar a página.
+     Garante que a sessão administrativa
+     sempre comece encerrada.
   */
 
   resetAdminSession();
