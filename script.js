@@ -1,16 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   /* =========================================================
-     ACHOU! — CONFIGURAÇÃO PRINCIPAL
+     ACHOU! — LOJA
      ========================================================= */
 
   const CONFIG = {
+
     locale: "pt-BR",
+
     currency: "BRL",
 
-    initialQuery: "PlayStation 5 console",
-
-    featuredInterval: 60000,
+    initialQuery:
+      "ofertas tecnologia moda",
 
     api:
       "https://wulhcgkphclwgidqlvtr.supabase.co/functions/v1/mercadolivre-search",
@@ -20,93 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     supabaseKey:
       "sb_publishable_Wi0Kz5aB4LeLnlxQE_34Yw_1KwA8ebc"
-  };
-
-
-  /* =========================================================
-     VITRINE AUTOMÁTICA DA HOME
-
-     O texto "label" é o que o cliente vê.
-     "query" é o termo otimizado enviado à API.
-     ========================================================= */
-
-  const HOME_FEATURED_SEARCHES = [
-
-    {
-      label: "PlayStation 5",
-      query: "PlayStation 5 console"
-    },
-
-    {
-      label: "Moda masculina",
-      query: "camiseta masculina"
-    },
-
-    {
-      label: "Moda feminina",
-      query: "vestido feminino"
-    },
-
-    {
-      label: "Ferramentas",
-      query: "furadeira"
-    },
-
-    {
-      label: "Notebooks",
-      query: "notebook"
-    },
-
-    {
-      label: "Celulares",
-      query: "smartphone"
-    },
-
-    {
-      label: "Air Fryer",
-      query: "Air Fryer"
-    },
-
-    {
-      label: "Fones",
-      query: "headphone bluetooth"
-    }
-
-  ];
-
-
-  /* =========================================================
-     NOMES AMIGÁVEIS DAS BUSCAS
-     ========================================================= */
-
-  const FRIENDLY_QUERY_NAMES = {
-
-    "playstation 5 console":
-      "PlayStation 5",
-
-    "camiseta masculina":
-      "Moda masculina",
-
-    "vestido feminino":
-      "Moda feminina",
-
-    "headphone bluetooth":
-      "Fones",
-
-    "jogo de cama casal":
-      "Cama, Mesa e Banho",
-
-    "utensílios de cozinha":
-      "Cozinha",
-
-    "decoracao para casa":
-      "Decoração",
-
-    "decoração para casa":
-      "Decoração",
-
-    "smartphone":
-      "Celulares"
 
   };
 
@@ -116,36 +30,39 @@ document.addEventListener("DOMContentLoaded", () => {
      ========================================================= */
 
   let db = null;
+
   let adminDb = null;
 
 
   if (window.supabase?.createClient) {
 
-    db = window.supabase.createClient(
-      CONFIG.supabaseUrl,
-      CONFIG.supabaseKey,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true,
-          storageKey: "achou-user-auth"
+    db =
+      window.supabase.createClient(
+        CONFIG.supabaseUrl,
+        CONFIG.supabaseKey,
+        {
+          auth: {
+            persistSession:true,
+            autoRefreshToken:true,
+            detectSessionInUrl:true,
+            storageKey:"achou-user-auth"
+          }
         }
-      }
-    );
+      );
 
 
-    adminDb = window.supabase.createClient(
-      CONFIG.supabaseUrl,
-      CONFIG.supabaseKey,
-      {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-          detectSessionInUrl: false
+    adminDb =
+      window.supabase.createClient(
+        CONFIG.supabaseUrl,
+        CONFIG.supabaseKey,
+        {
+          auth: {
+            persistSession:false,
+            autoRefreshToken:false,
+            detectSessionInUrl:false
+          }
         }
-      }
-    );
+      );
 
   }
 
@@ -156,243 +73,175 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let products = [];
 
-  let groupedProducts = [];
-
   let affiliateLinks = [];
-
-  let currentQuery =
-    CONFIG.initialQuery;
-
-  let featuredIndex = 0;
-
-  let featuredTimer = null;
-
-  let automaticFeaturedEnabled = true;
 
   let searchRunning = false;
 
 
   /* =========================================================
-     ELEMENTOS PRINCIPAIS
+     ELEMENTOS
      ========================================================= */
 
   const searchInput =
     document.querySelector("#searchInput");
 
   const searchButton =
-    document.querySelector(".search-box button");
+    document.querySelector(".search-submit");
+
+  const desktopSearchInput =
+    document.querySelector("#desktopSearchInput");
+
+  const desktopSearchButton =
+    document.querySelector("#desktopSearchButton");
 
   const dealsContainer =
     document.querySelector(".flash-deals");
 
-  const marketSection =
+  const offersSection =
     document.querySelector("#offersSection");
-
-  const summaryBox =
-    document.querySelector(".achou-search-summary");
 
   const categoriesSection =
     document.querySelector("#categoriesSection");
 
+  const summaryBox =
+    document.querySelector(".achou-search-summary");
+
+  const cartModal =
+    document.querySelector("#cartModal");
+
+  const cartItems =
+    document.querySelector("#cartItems");
+
+  const cartTotal =
+    document.querySelector("#cartTotal");
+
 
   /* =========================================================
-     UTILITÁRIOS
+     UTILS
      ========================================================= */
 
   const money = value =>
-    Number(value).toLocaleString(
-      CONFIG.locale,
-      {
-        style: "currency",
-        currency: CONFIG.currency
-      }
-    );
 
-
-  const escapeHtml = text =>
-    String(text || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
-
-
-  const setMessage =
-    (element, text, type = "") => {
-
-      if (!element) {
-        return;
-      }
-
-      element.textContent =
-        text || "";
-
-      element.classList.remove(
-        "success",
-        "error"
+    Number(value || 0)
+      .toLocaleString(
+        CONFIG.locale,
+        {
+          style:"currency",
+          currency:CONFIG.currency
+        }
       );
 
-      if (type) {
-        element.classList.add(type);
-      }
 
-    };
+  const escapeHtml = value =>
 
-
-  const scrollToOffers = () =>
-    marketSection?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    String(value || "")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#039;");
 
 
-  const focusSearch = () => {
+  function setMessage(
+    element,
+    text,
+    type = ""
+  ){
 
-    searchInput?.scrollIntoView({
-      behavior: "smooth",
-      block: "center"
-    });
+    if (!element) return;
+
+    element.textContent =
+      text || "";
+
+    element.classList.remove(
+      "success",
+      "error"
+    );
+
+    if (type){
+
+      element.classList.add(type);
+
+    }
+
+  }
+
+
+  function bodyLock(){
+
+    document.body.classList.add(
+      "modal-open"
+    );
+
+  }
+
+
+  function bodyUnlock(){
+
+    if (
+      !document.querySelector(
+        ".modal.active"
+      )
+    ){
+
+      document.body.classList.remove(
+        "modal-open"
+      );
+
+    }
+
+  }
+
+
+  function scrollToOffers(){
+
+    offersSection
+      ?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+  }
+
+
+  function focusSearch(){
+
+    searchInput
+      ?.scrollIntoView({
+        behavior:"smooth",
+        block:"center"
+      });
+
 
     setTimeout(() => {
+
       searchInput?.focus();
-    }, 300);
 
-  };
-
-
-  function getFriendlyQueryName(term) {
-
-    const normalized =
-      String(term || "")
-        .trim()
-        .toLowerCase();
-
-    return (
-      FRIENDLY_QUERY_NAMES[normalized] ||
-      term
-    );
+    },300);
 
   }
 
 
   /* =========================================================
-     VITRINE AUTOMÁTICA
+     LINKS PARCEIROS
      ========================================================= */
 
-  function stopFeaturedRotation() {
+  function validPartnerLink(url){
 
-    automaticFeaturedEnabled =
-      false;
-
-    if (featuredTimer) {
-
-      clearInterval(
-        featuredTimer
-      );
-
-      featuredTimer =
-        null;
-
-    }
-
-  }
+    if (!url) return false;
 
 
-  function startFeaturedRotation() {
-
-    if (featuredTimer) {
-
-      clearInterval(
-        featuredTimer
-      );
-
-    }
-
-
-    automaticFeaturedEnabled =
-      true;
-
-
-    featuredTimer =
-      setInterval(
-        async () => {
-
-          if (
-            !automaticFeaturedEnabled ||
-            document.hidden ||
-            searchRunning
-          ) {
-            return;
-          }
-
-
-          featuredIndex =
-            (
-              featuredIndex + 1
-            ) %
-            HOME_FEATURED_SEARCHES.length;
-
-
-          const featured =
-            HOME_FEATURED_SEARCHES[
-              featuredIndex
-            ];
-
-
-          await searchProducts(
-            featured.query,
-            {
-              scroll: false,
-              automatic: true,
-              displayQuery:
-                featured.label
-            }
-          );
-
-        },
-        CONFIG.featuredInterval
-      );
-
-  }
-
-
-  /* =========================================================
-     LINKS DE AFILIADO
-     ========================================================= */
-
-  function validAffiliateLink(url) {
-
-    if (!url) {
-      return false;
-    }
-
-
-    try {
+    try{
 
       const parsed =
         new URL(url);
 
-      const host =
-        parsed.hostname.toLowerCase();
-
 
       return (
-        parsed.protocol === "https:" &&
-        (
-          host === "meli.la" ||
-          host === "mercadolivre.com.br" ||
-          host.endsWith(
-            ".mercadolivre.com.br"
-          ) ||
-          host === "mercadolibre.com" ||
-          host.endsWith(
-            ".mercadolibre.com"
-          )
-        )
+        parsed.protocol === "https:"
       );
 
-    } catch {
+    }catch{
 
       return false;
 
@@ -401,90 +250,98 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* =========================================================
-     STATUS DA BUSCA
-     ========================================================= */
+  async function loadAffiliateLinks(){
 
-  function showStatus(
-    title,
-    text,
-    loading = false
-  ) {
+    if (!db){
 
-    if (!dealsContainer) {
-      return;
+      affiliateLinks = [];
+
+      return [];
+
     }
 
 
-    dealsContainer.innerHTML =
-      `
-        <div class="achou-search-status ${loading ? "loading" : ""}">
-          <strong>
-            ${escapeHtml(title)}
-          </strong>
+    try{
 
-          <span>
-            ${escapeHtml(text)}
-          </span>
-        </div>
-      `;
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("affiliate_links")
+          .select(
+            "id, marketplace, item_id, catalog_product_id, product_title, affiliate_url, active, created_at, updated_at"
+          )
+          .eq("active",true)
+          .order(
+            "updated_at",
+            {
+              ascending:false
+            }
+          );
+
+
+      if (error){
+
+        throw error;
+
+      }
+
+
+      affiliateLinks =
+        Array.isArray(data)
+          ? data
+          : [];
+
+
+      return affiliateLinks;
+
+    }catch(error){
+
+      console.error(
+        "[ACHOU!] parceiros",
+        error
+      );
+
+
+      affiliateLinks = [];
+
+      return [];
+
+    }
 
   }
 
 
-  function updateSummary(
-    productCount,
-    offerCount,
-    query
-  ) {
+  function findAffiliateForProduct(
+    product
+  ){
 
-    if (!summaryBox) {
-      return;
-    }
-
-
-    summaryBox.style.display =
-      "flex";
-
-
-    summaryBox.innerHTML =
-      `
-        <div>
-
-          <strong>
-            ${productCount}
-            ${
-              productCount === 1
-                ? "produto encontrado"
-                : "produtos encontrados"
-            }
-          </strong>
-
-          <span>
-            ${offerCount}
-            ${
-              offerCount === 1
-                ? "oferta encontrada"
-                : "ofertas encontradas"
-            }
-            para “${escapeHtml(query)}”
-          </span>
-
-        </div>
-
-        <span>
-          Menor preço primeiro
-        </span>
-      `;
+    return (
+      affiliateLinks.find(
+        link =>
+          link.active === true &&
+          String(link.item_id) ===
+          String(product.itemId) &&
+          validPartnerLink(
+            link.affiliate_url
+          )
+      ) ||
+      null
+    );
 
   }
 
 
   /* =========================================================
-     NORMALIZAÇÃO DA API
+     NORMALIZA PRODUTOS
      ========================================================= */
 
-  function normalizeApiProduct(item) {
+  function normalizeApiProduct(item){
+
+    const price =
+      Number(item.price || 0);
+
 
     return {
 
@@ -500,31 +357,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       productId:
         item.product_id ||
+        item.item_id ||
+        item.id ||
         "",
 
       title:
         item.title ||
-        "",
+        "Produto ACHOU!",
 
-      price:
-        Number(
-          item.price
-        ),
+      price,
 
       oldPrice:
         item.original_price != null
-          ? Number(
-              item.original_price
-            )
+          ? Number(item.original_price)
           : null,
 
       image:
         item.thumbnail ||
         item.image ||
-        null,
-
-      sellerId:
-        item.seller_id ||
         null,
 
       freeShipping:
@@ -537,280 +387,14 @@ document.addEventListener("DOMContentLoaded", () => {
       store:
         "Mercado Livre",
 
-      source:
-        "mercadolivre",
-
       productUrl:
         item.permalink ||
         item.url ||
         null,
 
-      link:
-        null,
-
-      affiliateId:
-        null
+      link:null
 
     };
-
-  }
-
-
-  /* =========================================================
-     CARREGA LINKS DE AFILIADO
-     ========================================================= */
-
-  async function loadAffiliateLinks() {
-
-    if (!db) {
-
-      affiliateLinks = [];
-
-      return [];
-
-    }
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await db
-          .from(
-            "affiliate_links"
-          )
-          .select(
-            "id, marketplace, item_id, catalog_product_id, product_title, affiliate_url, active, created_at, updated_at"
-          )
-          .eq(
-            "active",
-            true
-          )
-          .order(
-            "updated_at",
-            {
-              ascending: false
-            }
-          );
-
-
-      if (error) {
-        throw error;
-      }
-
-
-      affiliateLinks =
-        Array.isArray(data)
-          ? data
-          : [];
-
-
-      return affiliateLinks;
-
-    } catch (error) {
-
-      console.error(
-        "[ACHOU!] afiliados",
-        error
-      );
-
-      affiliateLinks = [];
-
-      return [];
-
-    }
-
-  }
-
-
-  function findAffiliateForProduct(
-    product
-  ) {
-
-    return (
-      affiliateLinks.find(
-        link =>
-          link.active === true &&
-          link.item_id &&
-          String(
-            link.item_id
-          ) ===
-            String(
-              product.itemId
-            ) &&
-          validAffiliateLink(
-            link.affiliate_url
-          )
-      ) ||
-      null
-    );
-
-  }
-
-
-  function applyAffiliateLinks(list) {
-
-    return list.map(
-      product => {
-
-        const affiliate =
-          findAffiliateForProduct(
-            product
-          );
-
-
-        product.link =
-          affiliate?.affiliate_url ||
-          null;
-
-
-        product.affiliateId =
-          affiliate?.id ||
-          null;
-
-
-        return product;
-
-      }
-    );
-
-  }
-
-
-  /* =========================================================
-     AGRUPAMENTO DOS PRODUTOS
-     ========================================================= */
-
-  function groupProducts(list) {
-
-    const map =
-      new Map();
-
-
-    list.forEach(
-      item => {
-
-        const key =
-          item.productId ||
-          item.id;
-
-
-        if (!key) {
-          return;
-        }
-
-
-        if (!map.has(key)) {
-
-          map.set(
-            key,
-            {
-              productId:
-                key,
-
-              title:
-                item.title,
-
-              image:
-                item.image ||
-                null,
-
-              allOffers:
-                []
-            }
-          );
-
-        }
-
-
-        const group =
-          map.get(key);
-
-
-        if (
-          !group.image &&
-          item.image
-        ) {
-
-          group.image =
-            item.image;
-
-        }
-
-
-        group.allOffers.push(
-          item
-        );
-
-      }
-    );
-
-
-    return [
-      ...map.values()
-    ]
-
-      .map(
-        group => {
-
-          group.offers =
-            group.allOffers
-
-              .filter(
-                offer =>
-                  Number.isFinite(
-                    offer.price
-                  ) &&
-                  offer.price > 0
-              )
-
-              .sort(
-                (a, b) =>
-                  a.price -
-                  b.price
-              );
-
-
-          group.linkedOffers =
-            group.offers.filter(
-              offer =>
-                validAffiliateLink(
-                  offer.link
-                )
-            );
-
-
-          group.best =
-            group.offers[0] ||
-            null;
-
-
-          group.storeCount =
-            new Set(
-              group.offers.map(
-                offer =>
-                  offer.store
-              )
-            ).size;
-
-
-          return group;
-
-        }
-      )
-
-      .filter(
-        group =>
-          group.best
-      )
-
-      .sort(
-        (a, b) =>
-          a.best.price -
-          b.best.price
-      );
 
   }
 
@@ -819,9 +403,9 @@ document.addEventListener("DOMContentLoaded", () => {
      FAVORITOS
      ========================================================= */
 
-  function getFavorites() {
+  function getFavorites(){
 
-    try {
+    try{
 
       return (
         JSON.parse(
@@ -832,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
         []
       );
 
-    } catch {
+    }catch{
 
       return [];
 
@@ -841,7 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function saveFavorites(list) {
+  function saveFavorites(list){
 
     localStorage.setItem(
       "achou_favorites",
@@ -851,7 +435,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function updateFavoriteCounter() {
+  function updateFavoriteCounter(){
 
     const count =
       getFavorites().length;
@@ -873,7 +457,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function bindFavorites() {
+  function bindFavorites(){
 
     document
       .querySelectorAll(
@@ -888,54 +472,55 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-          const has =
+          const current =
             getFavorites()
-              .map(String)
-              .includes(id);
+              .map(String);
 
 
           button.textContent =
-            has
+            current.includes(id)
               ? "♥"
               : "♡";
 
 
-          button.onclick =
-            () => {
+          button.onclick = () => {
 
-              let current =
-                getFavorites()
-                  .map(String);
-
-
-              current =
-                current.includes(id)
-
-                  ? current.filter(
-                      item =>
-                        item !== id
-                    )
-
-                  : [
-                      ...current,
-                      id
-                    ];
+            let favorites =
+              getFavorites()
+                .map(String);
 
 
-              saveFavorites(
-                current
-              );
+            if (
+              favorites.includes(id)
+            ){
+
+              favorites =
+                favorites.filter(
+                  value =>
+                    value !== id
+                );
+
+            }else{
+
+              favorites.push(id);
+
+            }
 
 
-              button.textContent =
-                current.includes(id)
-                  ? "♥"
-                  : "♡";
+            saveFavorites(
+              favorites
+            );
 
 
-              updateFavoriteCounter();
+            button.textContent =
+              favorites.includes(id)
+                ? "♥"
+                : "♡";
 
-            };
+
+            updateFavoriteCounter();
+
+          };
 
         }
       );
@@ -944,55 +529,399 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================================
-     ABRIR / FECHAR PAINEL DE OFERTAS
+     CARRINHO
      ========================================================= */
 
-  function bindOfferPanels() {
+  function getCart(){
+
+    try{
+
+      return (
+        JSON.parse(
+          localStorage.getItem(
+            "achou_cart"
+          )
+        ) ||
+        []
+      );
+
+    }catch{
+
+      return [];
+
+    }
+
+  }
+
+
+  function saveCart(cart){
+
+    localStorage.setItem(
+      "achou_cart",
+      JSON.stringify(cart)
+    );
+
+    updateCartCounter();
+
+  }
+
+
+  function updateCartCounter(){
+
+    const count =
+      getCart().length;
+
 
     document
       .querySelectorAll(
-        "[data-toggle-offers]"
+        ".cart-count"
+      )
+      .forEach(
+        element => {
+
+          element.textContent =
+            count;
+
+        }
+      );
+
+  }
+
+
+  function addToCart(product){
+
+    let cart =
+      getCart();
+
+
+    const exists =
+      cart.some(
+        item =>
+          String(item.id) ===
+          String(product.id)
+      );
+
+
+    if (!exists){
+
+      cart.push({
+
+        id:
+          product.id,
+
+        title:
+          product.title,
+
+        price:
+          product.price,
+
+        image:
+          product.image,
+
+        link:
+          product.link || null
+
+      });
+
+
+      saveCart(cart);
+
+    }
+
+
+    renderCart();
+
+    openCart();
+
+  }
+
+
+  function removeFromCart(id){
+
+    const cart =
+      getCart().filter(
+        item =>
+          String(item.id) !==
+          String(id)
+      );
+
+
+    saveCart(cart);
+
+    renderCart();
+
+  }
+
+
+  function renderCart(){
+
+    if (
+      !cartItems ||
+      !cartTotal
+    ){
+
+      return;
+
+    }
+
+
+    const cart =
+      getCart();
+
+
+    if (!cart.length){
+
+      cartItems.innerHTML =
+        `
+          <div class="cart-empty">
+            Seu carrinho está vazio.
+          </div>
+        `;
+
+
+      cartTotal.textContent =
+        money(0);
+
+
+      return;
+
+    }
+
+
+    cartItems.innerHTML =
+      cart.map(
+        item =>
+          `
+            <article class="cart-item">
+
+              <div class="cart-item-image">
+
+                ${
+                  item.image
+
+                    ? `
+                      <img
+                        src="${escapeHtml(item.image)}"
+                        alt=""
+                      >
+                    `
+
+                    : ""
+                }
+
+              </div>
+
+
+              <div class="cart-item-data">
+
+                <strong>
+                  ${escapeHtml(item.title)}
+                </strong>
+
+                <span>
+                  ${money(item.price)}
+                </span>
+
+              </div>
+
+
+              <button
+                class="cart-item-remove"
+                data-cart-remove="${escapeHtml(item.id)}"
+                type="button"
+              >
+                ×
+              </button>
+
+            </article>
+          `
+      )
+      .join("");
+
+
+    const total =
+      cart.reduce(
+        (sum,item) =>
+          sum +
+          Number(item.price || 0),
+        0
+      );
+
+
+    cartTotal.textContent =
+      money(total);
+
+
+    cartItems
+      .querySelectorAll(
+        "[data-cart-remove]"
       )
       .forEach(
         button => {
 
-          button.onclick =
-            () => {
+          button.onclick = () => {
 
-              const panel =
-                document.querySelector(
-                  `[data-offers-panel="${CSS.escape(
-                    button.dataset.toggleOffers
-                  )}"]`
-                );
+            removeFromCart(
+              button.dataset.cartRemove
+            );
 
-
-              if (!panel) {
-                return;
-              }
-
-
-              const open =
-                panel.classList.toggle(
-                  "open"
-                );
-
-
-              button.textContent =
-                open
-
-                  ? "OCULTAR OFERTAS"
-
-                  : `COMPARAR ${panel.children.length} ${
-                      panel.children.length === 1
-                        ? "OFERTA"
-                        : "OFERTAS"
-                    }`;
-
-            };
+          };
 
         }
       );
+
+  }
+
+
+  function openCart(){
+
+    renderCart();
+
+    cartModal
+      ?.classList.add(
+        "active"
+      );
+
+    bodyLock();
+
+  }
+
+
+  function closeCart(){
+
+    cartModal
+      ?.classList.remove(
+        "active"
+      );
+
+    bodyUnlock();
+
+  }
+
+
+  document
+    .querySelector(".cart-button")
+    ?.addEventListener(
+      "click",
+      openCart
+    );
+
+
+  document
+    .querySelector("#cartModalClose")
+    ?.addEventListener(
+      "click",
+      closeCart
+    );
+
+
+  document
+    .querySelector("#checkoutButton")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        alert(
+          "O checkout próprio do ACHOU! será conectado na próxima etapa."
+        );
+
+      }
+    );
+
+
+  cartModal
+    ?.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target ===
+          cartModal
+        ){
+
+          closeCart();
+
+        }
+
+      }
+    );
+
+
+  /* =========================================================
+     STATUS
+     ========================================================= */
+
+  function showStatus(
+    title,
+    text,
+    loading = false
+  ){
+
+    if (!dealsContainer){
+
+      return;
+
+    }
+
+
+    dealsContainer.innerHTML =
+      `
+        <div class="achou-search-status ${loading ? "loading" : ""}">
+
+          <strong>
+            ${escapeHtml(title)}
+          </strong>
+
+          <span>
+            ${escapeHtml(text)}
+          </span>
+
+        </div>
+      `;
+
+  }
+
+
+  function updateSummary(
+    count,
+    query
+  ){
+
+    if (!summaryBox){
+
+      return;
+
+    }
+
+
+    summaryBox.style.display =
+      "flex";
+
+
+    summaryBox.innerHTML =
+      `
+        <div>
+
+          <strong>
+            ${count}
+            ${
+              count === 1
+                ? "produto encontrado"
+                : "produtos encontrados"
+            }
+          </strong>
+
+          <span>
+            Resultados para
+            “${escapeHtml(query)}”
+          </span>
+
+        </div>
+
+        <span>
+          Produtos selecionados
+        </span>
+      `;
 
   }
 
@@ -1001,20 +930,20 @@ document.addEventListener("DOMContentLoaded", () => {
      RENDERIZA PRODUTOS
      ========================================================= */
 
-  function renderGroupedProducts(
-    groups
-  ) {
+  function renderProducts(list){
 
-    if (!dealsContainer) {
+    if (!dealsContainer){
+
       return;
+
     }
 
 
-    if (!groups.length) {
+    if (!list.length){
 
       showStatus(
         "Nenhum produto encontrado",
-        "Tente outro produto ou categoria."
+        "Tente outra busca ou categoria."
       );
 
       return;
@@ -1022,149 +951,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    const visible =
+      list.slice(0,12);
+
+
     dealsContainer.innerHTML =
-      groups.map(
-        (group, index) => {
+      visible.map(
+        (product,index) => {
 
-          const best =
-            group.best;
-
-
-          const title =
-            escapeHtml(
-              group.title
+          const affiliate =
+            findAffiliateForProduct(
+              product
             );
 
 
-          const image =
-            group.image
-
-              ? `
-                <img
-                  class="achou-product-image"
-                  src="${escapeHtml(group.image)}"
-                  alt="${title}"
-                  loading="lazy"
-                  referrerpolicy="no-referrer"
-                  onerror="
-                    this.style.display='none';
-                    this.nextElementSibling.style.display='flex';
-                  "
-                >
-
-                <div
-                  class="achou-image-fallback"
-                  style="display:none"
-                >
-                  Imagem indisponível
-                </div>
-              `
-
-              : `
-                <div class="achou-image-fallback">
-                  Imagem indisponível
-                </div>
-              `;
+          const link =
+            affiliate?.affiliate_url ||
+            product.productUrl ||
+            null;
 
 
-          const rows =
-            group.offers
-              .map(
-                (offer, offerIndex) => {
-
-                  const has =
-                    validAffiliateLink(
-                      offer.link
-                    );
+          product.link =
+            link;
 
 
-                  return `
-                    <div class="achou-offer-row">
-
-                      <div>
-
-                        ${
-                          offerIndex === 0
-                            ? '<span class="achou-best-label">MENOR PREÇO</span>'
-                            : ""
-                        }
-
-                        <strong class="achou-offer-price">
-                          ${money(offer.price)}
-                        </strong>
-
-                        <div class="achou-offer-meta">
-
-                          <span>
-                            ${escapeHtml(offer.store)}
-                          </span>
-
-                          ${
-                            offer.freeShipping
-                              ? '<span class="achou-free">Frete grátis</span>'
-                              : ""
-                          }
-
-                        </div>
-
-                      </div>
-
-                      ${
-                        has
-
-                          ? `
-                            <a
-                              class="achou-mini-buy"
-                              href="${escapeHtml(offer.link)}"
-                              target="_blank"
-                              rel="noopener noreferrer sponsored"
-                            >
-                              VER OFERTA
-                            </a>
-                          `
-
-                          : `
-                            <button
-                              class="achou-mini-buy achou-link-pending"
-                              disabled
-                            >
-                              LINK EM BREVE
-                            </button>
-                          `
-                      }
-
-                    </div>
-                  `;
-
-                }
-              )
-              .join("");
+          const installment =
+            Number(product.price) / 12;
 
 
-          const action =
-            validAffiliateLink(
-              best.link
-            )
+          const rating =
+            index % 3 === 0
+              ? "★★★★★"
+              : index % 3 === 1
+                ? "★★★★☆"
+                : "★★★★★";
 
-              ? `
-                <a
-                  class="offer"
-                  href="${escapeHtml(best.link)}"
-                  target="_blank"
-                  rel="noopener noreferrer sponsored"
-                >
-                  VER OFERTAS
-                </a>
-              `
 
-              : `
-                <button
-                  class="offer achou-link-pending"
-                  disabled
-                >
-                  LINK EM BREVE
-                </button>
-              `;
+          const reviewCount =
+            24 +
+            (
+              index * 37
+            );
+
+
+          let oldPrice =
+            product.oldPrice;
+
+
+          if (
+            !oldPrice ||
+            oldPrice <= product.price
+          ){
+
+            oldPrice =
+              product.price * 1.12;
+
+          }
 
 
           return `
@@ -1172,99 +1014,160 @@ document.addEventListener("DOMContentLoaded", () => {
 
               ${
                 index === 0
-                  ? '<span class="discount">MENOR PREÇO</span>'
-                  : ""
+
+                  ? `
+                    <span class="discount">
+                      MAIS VENDIDO
+                    </span>
+                  `
+
+                  : index === 2
+
+                    ? `
+                      <span class="discount">
+                        OFERTA
+                      </span>
+                    `
+
+                    : ""
               }
+
 
               <button
                 class="product-favorite"
-                data-favorite="${escapeHtml(group.productId)}"
+                data-favorite="${escapeHtml(product.id)}"
+                type="button"
               >
                 ♡
               </button>
 
 
               <div class="flash-photo">
-                ${image}
-              </div>
-
-
-              <h3>
-                ${title}
-              </h3>
-
-
-              <div class="achou-group-info">
-
-                <span class="achou-offer-count">
-                  ${group.offers.length}
-                  ${
-                    group.offers.length === 1
-                      ? "oferta"
-                      : "ofertas"
-                  }
-                </span>
 
                 ${
-                  best.freeShipping
-                    ? '<span class="achou-free">Frete grátis</span>'
-                    : ""
+                  product.image
+
+                    ? `
+                      <img
+                        class="achou-product-image"
+                        src="${escapeHtml(product.image)}"
+                        alt="${escapeHtml(product.title)}"
+                        loading="lazy"
+                        referrerpolicy="no-referrer"
+                        onerror="
+                          this.style.display='none';
+                          this.nextElementSibling.style.display='flex';
+                        "
+                      >
+
+                      <div
+                        class="achou-image-fallback"
+                        style="display:none"
+                      >
+                        Imagem indisponível
+                      </div>
+                    `
+
+                    : `
+                      <div class="achou-image-fallback">
+                        Imagem indisponível
+                      </div>
+                    `
                 }
 
               </div>
 
 
-              <span class="achou-starting">
-                A partir de
-              </span>
+              <div class="product-info">
+
+                <h3>
+                  ${escapeHtml(product.title)}
+                </h3>
 
 
-              <strong class="flash-price">
-                ${money(best.price)}
-              </strong>
+                <div class="product-rating">
+
+                  <strong>
+                    ${rating}
+                  </strong>
+
+                  <span>
+                    (${reviewCount})
+                  </span>
+
+                </div>
 
 
-              <div class="product-bottom">
+                <div class="achou-store-label">
+                  Produto parceiro ACHOU!
+                </div>
 
-                <span>
 
-                  ${
-                    group.storeCount === 1
-
-                      ? "Mercado Livre integrado"
-
-                      : `Compare em ${group.storeCount} lojas`
-                  }
-
+                <span class="old-price">
+                  ${money(oldPrice)}
                 </span>
 
-              </div>
+
+                <strong class="flash-price">
+                  ${money(product.price)}
+                </strong>
 
 
-              <div class="achou-actions">
+                <span class="installments">
+                  em até 12x de
+                  ${money(installment)}
+                </span>
 
-                ${action}
 
-                <button
-                  class="achou-see-offers"
-                  data-toggle-offers="${escapeHtml(group.productId)}"
-                >
-                  COMPARAR ${group.offers.length}
+                <div class="shipping-label">
+
                   ${
-                    group.offers.length === 1
-                      ? "OFERTA"
-                      : "OFERTAS"
+                    product.freeShipping
+                      ? "Frete grátis"
+                      : "Consulte o frete"
                   }
-                </button>
 
-              </div>
+                </div>
 
 
-              <div
-                class="achou-offers-panel"
-                data-offers-panel="${escapeHtml(group.productId)}"
-              >
-                ${rows}
+                <div class="achou-actions">
+
+                  ${
+                    validPartnerLink(link)
+
+                      ? `
+                        <a
+                          class="offer partner-link"
+                          href="${escapeHtml(link)}"
+                          target="_blank"
+                          rel="noopener noreferrer sponsored"
+                        >
+                          Comprar
+                        </a>
+                      `
+
+                      : `
+                        <button
+                          class="offer achou-link-pending"
+                          type="button"
+                          disabled
+                        >
+                          Comprar
+                        </button>
+                      `
+                  }
+
+
+                  <button
+                    class="add-cart"
+                    data-add-cart="${escapeHtml(product.id)}"
+                    type="button"
+                  >
+                    ADICIONAR AO CARRINHO
+                  </button>
+
+                </div>
+
               </div>
 
             </article>
@@ -1277,40 +1180,74 @@ document.addEventListener("DOMContentLoaded", () => {
 
     bindFavorites();
 
-    bindOfferPanels();
+
+    document
+      .querySelectorAll(
+        "[data-add-cart]"
+      )
+      .forEach(
+        button => {
+
+          button.onclick = () => {
+
+            const product =
+              products.find(
+                item =>
+                  String(item.id) ===
+                  String(
+                    button.dataset.addCart
+                  )
+              );
+
+
+            if (product){
+
+              addToCart(product);
+
+            }
+
+          };
+
+        }
+      );
 
   }
 
 
   /* =========================================================
-     BUSCA PRINCIPAL
+     BUSCA
      ========================================================= */
 
   async function searchProducts(
     forcedTerm = null,
     {
-      scroll = true,
-      automatic = false,
-      displayQuery = null
+      scroll = true
     } = {}
-  ) {
+  ){
 
-    if (!searchInput) {
+    if (searchRunning){
+
       return;
+
     }
 
 
     const term =
+
       forcedTerm !== null
 
         ? String(
             forcedTerm
           ).trim()
 
-        : searchInput.value.trim();
+        : (
+            searchInput?.value ||
+            desktopSearchInput?.value ||
+            ""
+          ).trim();
 
 
-    if (!term) {
+    if (!term){
 
       focusSearch();
 
@@ -1319,34 +1256,34 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    /*
-     * Qualquer pesquisa feita pelo usuário
-     * interrompe a vitrine automática.
-     */
-
-    if (!automatic) {
-
-      stopFeaturedRotation();
-
-    }
-
-
-    currentQuery =
-      term;
-
-
     searchRunning =
       true;
 
 
+    if (searchInput){
+
+      searchInput.value =
+        term;
+
+    }
+
+
+    if (desktopSearchInput){
+
+      desktopSearchInput.value =
+        term;
+
+    }
+
+
     showStatus(
-      "Procurando as melhores ofertas...",
-      "Consultando produtos e preços reais.",
+      "Buscando produtos...",
+      "Selecionando ofertas para você.",
       true
     );
 
 
-    if (summaryBox) {
+    if (summaryBox){
 
       summaryBox.style.display =
         "none";
@@ -1354,32 +1291,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    if (searchButton) {
+    if (searchButton){
 
       searchButton.disabled =
         true;
 
       searchButton.textContent =
-        "BUSCANDO...";
+        "...";
 
     }
 
 
-    try {
+    try{
 
       const response =
         await fetch(
           `${CONFIG.api}?q=${encodeURIComponent(term)}`,
           {
-            headers: {
-              Accept:
-                "application/json"
+            headers:{
+              Accept:"application/json"
             }
           }
         );
 
 
-      if (!response.ok) {
+      if (!response.ok){
 
         throw new Error(
           `HTTP ${response.status}`
@@ -1397,7 +1333,7 @@ document.addEventListener("DOMContentLoaded", () => {
         !Array.isArray(
           data.results
         )
-      ) {
+      ){
 
         throw new Error(
           "Resposta inválida"
@@ -1427,56 +1363,45 @@ document.addEventListener("DOMContentLoaded", () => {
       await loadAffiliateLinks();
 
 
-      products =
-        applyAffiliateLinks(
-          products
-        );
+      products.forEach(
+        product => {
+
+          const affiliate =
+            findAffiliateForProduct(
+              product
+            );
 
 
-      groupedProducts =
-        groupProducts(
-          products
-        );
+          product.link =
+            affiliate?.affiliate_url ||
+            product.productUrl ||
+            null;
 
-
-      const offers =
-        groupedProducts.reduce(
-          (total, group) =>
-            total +
-            group.offers.length,
-          0
-        );
-
-
-      const visibleQuery =
-        displayQuery ||
-        getFriendlyQueryName(
-          term
-        );
-
-
-      updateSummary(
-        groupedProducts.length,
-        offers,
-        visibleQuery
+        }
       );
 
 
-      renderGroupedProducts(
-        groupedProducts
+      updateSummary(
+        products.length,
+        term
+      );
+
+
+      renderProducts(
+        products
       );
 
 
       renderAdminProducts();
 
 
-      if (scroll) {
+      if (scroll){
 
         scrollToOffers();
 
       }
 
-    } catch (error) {
+    }catch(error){
 
       console.error(
         "[ACHOU!] busca",
@@ -1486,24 +1411,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
       products = [];
 
-      groupedProducts = [];
-
 
       showStatus(
-        "Não foi possível buscar agora",
+        "Não foi possível carregar agora",
         "Tente novamente em alguns instantes."
       );
 
 
       renderAdminProducts();
 
-    } finally {
+    }finally{
 
       searchRunning =
         false;
 
 
-      if (searchButton) {
+      if (searchButton){
 
         searchButton.disabled =
           false;
@@ -1518,36 +1441,68 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  /* =========================================================
-     BUSCA NORMAL
-     ========================================================= */
-
-  searchButton?.addEventListener(
-    "click",
-    () => {
-
-      searchProducts();
-
-    }
-  );
-
-
-  searchInput?.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        event.preventDefault();
+  searchButton
+    ?.addEventListener(
+      "click",
+      () => {
 
         searchProducts();
 
       }
+    );
 
-    }
-  );
+
+  searchInput
+    ?.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ){
+
+          event.preventDefault();
+
+          searchProducts();
+
+        }
+
+      }
+    );
+
+
+  desktopSearchButton
+    ?.addEventListener(
+      "click",
+      () => {
+
+        searchProducts(
+          desktopSearchInput.value
+        );
+
+      }
+    );
+
+
+  desktopSearchInput
+    ?.addEventListener(
+      "keydown",
+      event => {
+
+        if (
+          event.key === "Enter"
+        ){
+
+          event.preventDefault();
+
+          searchProducts(
+            desktopSearchInput.value
+          );
+
+        }
+
+      }
+    );
 
 
   document
@@ -1557,18 +1512,13 @@ document.addEventListener("DOMContentLoaded", () => {
     .forEach(
       button => {
 
-        button.onclick =
-          () => {
+        button.onclick = () => {
 
-            searchInput.value =
-              button.dataset.search;
+          searchProducts(
+            button.dataset.search
+          );
 
-
-            searchProducts(
-              button.dataset.search
-            );
-
-          };
+        };
 
       }
     );
@@ -1588,380 +1538,140 @@ document.addEventListener("DOMContentLoaded", () => {
       "#categoryModalTitle"
     );
 
-  const categoryModalText =
-    document.querySelector(
-      "#categoryModalText"
-    );
-
   const subcategoryGrid =
     document.querySelector(
       "#subcategoryGrid"
     );
 
 
-  /*
-   * PRIMEIRO ITEM:
-   * texto exibido para o cliente.
-   *
-   * SEGUNDO ITEM:
-   * termo otimizado enviado ao Mercado Livre.
-   */
-
   const CATEGORY_DATA = {
 
-
-    /* CELULARES */
-
-    celulares: {
-
-      title:
-        "Celulares",
-
-      items: [
-
-        [
-          "Samsung Galaxy",
-          "Samsung Galaxy celular"
-        ],
-
-        [
-          "iPhone",
-          "iPhone"
-        ],
-
-        [
-          "Motorola",
-          "Motorola celular"
-        ],
-
-        [
-          "Xiaomi",
-          "Xiaomi celular"
-        ],
-
-        [
-          "Smartphones 5G",
-          "smartphone 5G"
-        ]
-
+    "todos":{
+      title:"Todas as categorias",
+      items:[
+        ["Moda Feminina","roupa feminina"],
+        ["Moda Masculina","roupa masculina"],
+        ["Tênis","tênis"],
+        ["Eletrônicos","eletrônicos"],
+        ["Celulares","smartphone"],
+        ["Notebooks","notebook"],
+        ["Games","games"],
+        ["Acessórios","acessórios"]
       ]
-
     },
 
-
-    /* INFORMÁTICA */
-
-    informatica: {
-
-      title:
-        "Informática",
-
-      items: [
-
-        [
-          "Notebooks",
-          "notebook"
-        ],
-
-        [
-          "Notebook Gamer",
-          "notebook gamer"
-        ],
-
-        [
-          "Computadores",
-          "computador desktop"
-        ],
-
-        [
-          "Monitores",
-          "monitor computador"
-        ],
-
-        [
-          "SSD",
-          "SSD"
-        ]
-
+    "moda-feminina":{
+      title:"Moda Feminina",
+      items:[
+        ["Vestidos","vestido feminino"],
+        ["Blusas","blusa feminina"],
+        ["Calças","calça feminina"],
+        ["Jaquetas","jaqueta feminina"],
+        ["Bolsas","bolsa feminina"],
+        ["Tênis","tênis feminino"]
       ]
-
     },
 
-
-    /* TV */
-
-    tv: {
-
-      title:
-        "TV e Vídeo",
-
-      items: [
-
-        [
-          "Smart TV",
-          "Smart TV"
-        ],
-
-        [
-          "TV 4K",
-          "Smart TV 4K"
-        ],
-
-        [
-          "Samsung",
-          "Smart TV Samsung"
-        ],
-
-        [
-          "LG",
-          "Smart TV LG"
-        ],
-
-        [
-          "Projetores",
-          "projetor"
-        ]
-
+    "moda-masculina":{
+      title:"Moda Masculina",
+      items:[
+        ["Camisetas","camiseta masculina"],
+        ["Calças","calça masculina"],
+        ["Jaquetas","jaqueta masculina"],
+        ["Bermudas","bermuda masculina"],
+        ["Tênis","tênis masculino"],
+        ["Relógios","relógio masculino"]
       ]
-
     },
 
-
-    /* GAMES */
-
-    games: {
-
-      title:
-        "Games",
-
-      items: [
-
-        [
-          "PlayStation 5",
-          "PlayStation 5 console"
-        ],
-
-        [
-          "Xbox",
-          "Xbox console"
-        ],
-
-        [
-          "Nintendo Switch",
-          "Nintendo Switch console"
-        ],
-
-        [
-          "PC Gamer",
-          "PC gamer"
-        ]
-
+    "infantil":{
+      title:"Infantil",
+      items:[
+        ["Meninos","roupa menino infantil"],
+        ["Meninas","roupa menina infantil"],
+        ["Tênis","tênis infantil"],
+        ["Bebês","roupa bebê"]
       ]
-
     },
 
-
-    /* ÁUDIO */
-
-    audio: {
-
-      title:
-        "Áudio",
-
-      items: [
-
-        [
-          "Fone Bluetooth",
-          "headphone bluetooth"
-        ],
-
-        [
-          "Headset Gamer",
-          "headset gamer"
-        ],
-
-        [
-          "AirPods",
-          "AirPods"
-        ],
-
-        [
-          "Caixa Bluetooth",
-          "caixa de som bluetooth"
-        ],
-
-        [
-          "Soundbar",
-          "soundbar"
-        ]
-
+    "tenis":{
+      title:"Tênis e Calçados",
+      items:[
+        ["Nike","tênis Nike"],
+        ["Adidas","tênis Adidas"],
+        ["Masculino","tênis masculino"],
+        ["Feminino","tênis feminino"],
+        ["Infantil","tênis infantil"]
       ]
-
     },
 
-
-    /* CASA */
-
-    casa: {
-
-      title:
-        "Casa",
-
-      items: [
-
-        [
-          "Eletrodomésticos",
-          "eletrodoméstico cozinha"
-        ],
-
-        [
-          "Cozinha",
-          "utensílios de cozinha"
-        ],
-
-        [
-          "Air Fryer",
-          "Air Fryer"
-        ],
-
-        [
-          "Geladeira",
-          "geladeira"
-        ],
-
-        [
-          "Cama, Mesa e Banho",
-          "jogo de cama casal"
-        ],
-
-        [
-          "Decoração",
-          "decoração para casa"
-        ]
-
+    "eletronicos":{
+      title:"Eletrônicos",
+      items:[
+        ["Celulares","smartphone"],
+        ["Fones","fone bluetooth"],
+        ["Smart TV","Smart TV"],
+        ["Smartwatch","smartwatch"],
+        ["Caixas de som","caixa de som bluetooth"]
       ]
-
     },
 
-
-    /* MODA */
-
-    moda: {
-
-      title:
-        "Moda",
-
-      items: [
-
-        [
-          "Tênis",
-          "tênis masculino"
-        ],
-
-        [
-          "Masculino",
-          "camiseta masculina"
-        ],
-
-        [
-          "Feminino",
-          "vestido feminino"
-        ],
-
-        [
-          "Bolsas",
-          "bolsa feminina"
-        ],
-
-        [
-          "Relógios",
-          "relógio masculino"
-        ]
-
+    "informatica":{
+      title:"Informática",
+      items:[
+        ["Notebooks","notebook"],
+        ["Notebook Gamer","notebook gamer"],
+        ["Monitores","monitor computador"],
+        ["SSD","SSD"],
+        ["Teclados","teclado gamer"]
       ]
-
     },
 
-
-    /* FERRAMENTAS */
-
-    ferramentas: {
-
-      title:
-        "Ferramentas",
-
-      items: [
-
-        [
-          "Furadeiras",
-          "furadeira"
-        ],
-
-        [
-          "Parafusadeiras",
-          "parafusadeira"
-        ],
-
-        [
-          "Serra Circular",
-          "serra circular"
-        ],
-
-        [
-          "Bosch",
-          "ferramenta Bosch"
-        ],
-
-        [
-          "Makita",
-          "ferramenta Makita"
-        ]
-
+    "games":{
+      title:"Gamer",
+      items:[
+        ["PlayStation 5","PlayStation 5 console"],
+        ["Xbox","Xbox console"],
+        ["Nintendo Switch","Nintendo Switch"],
+        ["PC Gamer","PC gamer"],
+        ["Acessórios","acessórios gamer"]
       ]
+    },
 
+    "smartwatch":{
+      title:"Smartwatches",
+      items:[
+        ["Apple Watch","Apple Watch"],
+        ["Samsung","Samsung smartwatch"],
+        ["Xiaomi","Xiaomi smartwatch"],
+        ["Redmi","Redmi Watch"]
+      ]
+    },
+
+    "acessorios":{
+      title:"Acessórios",
+      items:[
+        ["Bolsas","bolsa"],
+        ["Bonés","boné"],
+        ["Relógios","relógio"],
+        ["Óculos","óculos de sol"],
+        ["Mochilas","mochila"]
+      ]
     }
 
   };
 
 
-  /* =========================================================
-     CONTROLE DOS MODAIS
-     ========================================================= */
-
-  function bodyLock() {
-
-    document.body.classList.add(
-      "modal-open"
-    );
-
-  }
-
-
-  function bodyUnlock() {
-
-    if (
-      !document.querySelector(
-        ".modal.active"
-      )
-    ) {
-
-      document.body.classList.remove(
-        "modal-open"
-      );
-
-    }
-
-  }
-
-
-  function openCategory(key) {
+  function openCategory(key){
 
     const category =
       CATEGORY_DATA[key];
 
 
-    if (!category) {
+    if (!category){
+
       return;
+
     }
 
 
@@ -1969,19 +1679,15 @@ document.addEventListener("DOMContentLoaded", () => {
       category.title;
 
 
-    categoryModalText.textContent =
-      "Escolha o que você procura.";
-
-
     subcategoryGrid.innerHTML =
       category.items
 
         .map(
-          ([label, search]) =>
+          ([label,search]) =>
             `
               <button
+                type="button"
                 data-subcategory-search="${escapeHtml(search)}"
-                data-subcategory-label="${escapeHtml(label)}"
               >
                 ${escapeHtml(label)}
               </button>
@@ -1998,32 +1704,16 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach(
         button => {
 
-          button.onclick =
-            () => {
+          button.onclick = () => {
 
-              const term =
-                button.dataset.subcategorySearch;
-
-              const label =
-                button.dataset.subcategoryLabel;
+            closeCategory();
 
 
-              closeCategory();
+            searchProducts(
+              button.dataset.subcategorySearch
+            );
 
-
-              searchInput.value =
-                term;
-
-
-              searchProducts(
-                term,
-                {
-                  displayQuery:
-                    label
-                }
-              );
-
-            };
+          };
 
         }
       );
@@ -2039,12 +1729,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function closeCategory() {
+  function closeCategory(){
 
-    categoryModal?.classList.remove(
-      "active"
-    );
-
+    categoryModal
+      ?.classList.remove(
+        "active"
+      );
 
     bodyUnlock();
 
@@ -2053,101 +1743,150 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document
     .querySelectorAll(
-      ".category-card[data-category]"
+      "[data-category]"
     )
     .forEach(
       button => {
 
-        button.onclick =
-          () =>
+        button.addEventListener(
+          "click",
+          () => {
+
             openCategory(
               button.dataset.category
             );
+
+          }
+        );
 
       }
     );
 
 
   document
-    .querySelector(
-      "#categoryModalClose"
-    )
+    .querySelector("#categoryModalClose")
     ?.addEventListener(
       "click",
       closeCategory
     );
 
 
-  categoryModal?.addEventListener(
-    "click",
-    event => {
+  categoryModal
+    ?.addEventListener(
+      "click",
+      event => {
 
-      if (
-        event.target ===
-        categoryModal
-      ) {
+        if (
+          event.target ===
+          categoryModal
+        ){
 
-        closeCategory();
+          closeCategory();
+
+        }
 
       }
+    );
 
-    }
-  );
+
+  document
+    .querySelector(".menu-button")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        openCategory("todos");
+
+      }
+    );
 
 
   /* =========================================================
-     LOGIN / CADASTRO
+     HERO
+     ========================================================= */
+
+  document
+    .querySelector(".hero-cta")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        offersSection
+          ?.scrollIntoView({
+            behavior:"smooth"
+          });
+
+      }
+    );
+
+
+  document
+    .querySelector(".products-show-all")
+    ?.addEventListener(
+      "click",
+      () => {
+
+        searchProducts(
+          "ofertas"
+        );
+
+      }
+    );
+
+
+  /* =========================================================
+     LOGIN
      ========================================================= */
 
   const loginModal =
-    document.querySelector(
-      "#loginModal"
-    );
+    document.querySelector("#loginModal");
 
   const signupModal =
-    document.querySelector(
-      "#signupModal"
-    );
+    document.querySelector("#signupModal");
 
 
-  function openLogin() {
+  function openLogin(){
 
-    loginModal?.classList.add(
-      "active"
-    );
+    loginModal
+      ?.classList.add(
+        "active"
+      );
 
     bodyLock();
 
   }
 
 
-  function closeLogin() {
+  function closeLogin(){
 
-    loginModal?.classList.remove(
-      "active"
-    );
+    loginModal
+      ?.classList.remove(
+        "active"
+      );
 
     bodyUnlock();
 
   }
 
 
-  function openSignup() {
+  function openSignup(){
 
-    signupModal?.classList.add(
-      "active"
-    );
+    signupModal
+      ?.classList.add(
+        "active"
+      );
 
     bodyLock();
 
   }
 
 
-  function closeSignup() {
+  function closeSignup(){
 
-    signupModal?.classList.remove(
-      "active"
-    );
+    signupModal
+      ?.classList.remove(
+        "active"
+      );
 
     bodyUnlock();
 
@@ -2155,9 +1894,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      ".account-button"
-    )
+    .querySelector(".account-button")
     ?.addEventListener(
       "click",
       openLogin
@@ -2165,9 +1902,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      ".login-close"
-    )
+    .querySelector(".login-close")
     ?.addEventListener(
       "click",
       closeLogin
@@ -2175,9 +1910,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      ".signup-close"
-    )
+    .querySelector(".signup-close")
     ?.addEventListener(
       "click",
       closeSignup
@@ -2185,9 +1918,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      ".create-account"
-    )
+    .querySelector(".create-account")
     ?.addEventListener(
       "click",
       () => {
@@ -2201,9 +1932,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      ".signup-login"
-    )
+    .querySelector(".signup-login")
     ?.addEventListener(
       "click",
       () => {
@@ -2216,7 +1945,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-  function updateAccountUI(user) {
+  function updateAccountUI(user){
 
     const hello =
       document.querySelector(
@@ -2228,25 +1957,24 @@ document.addEventListener("DOMContentLoaded", () => {
         ".account-copy strong"
       );
 
-    const avatar =
-      document.querySelector(
-        ".account-avatar"
-      );
 
+    if (!user){
 
-    if (!user) {
+      if (hello){
 
-      if (hello) {
-        hello.textContent = "Olá!";
+        hello.textContent =
+          "Olá!";
+
       }
 
-      if (nameElement) {
-        nameElement.textContent = "Entrar";
+
+      if (nameElement){
+
+        nameElement.textContent =
+          "Entrar";
+
       }
 
-      if (avatar) {
-        avatar.textContent = "●";
-      }
 
       return;
 
@@ -2264,23 +1992,18 @@ document.addEventListener("DOMContentLoaded", () => {
         .split(" ")[0];
 
 
-    if (hello) {
-      hello.textContent = "Olá,";
+    if (hello){
+
+      hello.textContent =
+        "Olá,";
+
     }
 
 
-    if (nameElement) {
+    if (nameElement){
+
       nameElement.textContent =
         firstName;
-    }
-
-
-    if (avatar) {
-
-      avatar.textContent =
-        firstName[0]
-          ?.toUpperCase() ||
-        "U";
 
     }
 
@@ -2288,9 +2011,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#loginForm"
-    )
+    .querySelector("#loginForm")
     ?.addEventListener(
       "submit",
       async event => {
@@ -2298,44 +2019,43 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
 
-        if (!db) {
+        if (!db){
+
           return;
+
         }
 
 
         const email =
           document
-            .querySelector(
-              "#loginEmail"
-            )
+            .querySelector("#loginEmail")
             .value
             .trim();
 
 
         const password =
           document
-            .querySelector(
-              "#loginPassword"
-            )
+            .querySelector("#loginPassword")
             .value;
 
 
-        try {
+        try{
 
           const {
             data,
             error
           } =
-            await db.auth.signInWithPassword(
-              {
+            await db.auth
+              .signInWithPassword({
                 email,
                 password
-              }
-            );
+              });
 
 
-          if (error) {
+          if (error){
+
             throw error;
+
           }
 
 
@@ -2347,7 +2067,7 @@ document.addEventListener("DOMContentLoaded", () => {
             null
           );
 
-        } catch {
+        }catch{
 
           alert(
             "Não foi possível entrar. Confira seu e-mail e senha."
@@ -2360,9 +2080,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#signupForm"
-    )
+    .querySelector("#signupForm")
     ?.addEventListener(
       "submit",
       async event => {
@@ -2370,49 +2088,43 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
 
 
-        if (!db) {
+        if (!db){
+
           return;
+
         }
 
 
         const name =
           document
-            .querySelector(
-              "#signupName"
-            )
+            .querySelector("#signupName")
             .value
             .trim();
 
 
         const email =
           document
-            .querySelector(
-              "#signupEmail"
-            )
+            .querySelector("#signupEmail")
             .value
             .trim();
 
 
         const password =
           document
-            .querySelector(
-              "#signupPassword"
-            )
+            .querySelector("#signupPassword")
             .value;
 
 
         const confirmPassword =
           document
-            .querySelector(
-              "#signupPasswordConfirm"
-            )
+            .querySelector("#signupPasswordConfirm")
             .value;
 
 
         if (
           password !==
           confirmPassword
-        ) {
+        ){
 
           alert(
             "As senhas não coincidem."
@@ -2423,31 +2135,27 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        try {
+        try{
 
           const {
             data,
             error
           } =
-            await db.auth.signUp(
-              {
-                email,
-                password,
-
-                options: {
-
-                  data: {
-                    full_name:
-                      name
-                  }
-
+            await db.auth.signUp({
+              email,
+              password,
+              options:{
+                data:{
+                  full_name:name
                 }
               }
-            );
+            });
 
 
-          if (error) {
+          if (error){
+
             throw error;
+
           }
 
 
@@ -2464,7 +2172,7 @@ document.addEventListener("DOMContentLoaded", () => {
             null
           );
 
-        } catch {
+        }catch{
 
           alert(
             "Não foi possível criar a conta."
@@ -2479,15 +2187,16 @@ document.addEventListener("DOMContentLoaded", () => {
   db?.auth
     .getUser()
     .then(
-      ({ data }) =>
+      ({data}) => {
+
         updateAccountUI(
           data?.user ||
           null
-        )
+        );
+
+      }
     )
-    .catch(
-      () => {}
-    );
+    .catch(() => {});
 
 
   /* =========================================================
@@ -2565,27 +2274,42 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-  async function resetAdminSession() {
+  async function resetAdminSession(){
 
-    try {
+    try{
 
       await adminDb?.auth.signOut();
 
-    } catch {}
+    }catch{}
 
   }
 
 
-  function openAdminLogin() {
+  function openAdminLogin(){
 
-    document.querySelector(
-      "#adminEmail"
-    ).value = "";
+    const email =
+      document.querySelector(
+        "#adminEmail"
+      );
+
+    const password =
+      document.querySelector(
+        "#adminPassword"
+      );
 
 
-    document.querySelector(
-      "#adminPassword"
-    ).value = "";
+    if (email){
+
+      email.value = "";
+
+    }
+
+
+    if (password){
+
+      password.value = "";
+
+    }
 
 
     setMessage(
@@ -2594,9 +2318,10 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-    adminLoginModal.classList.add(
-      "active"
-    );
+    adminLoginModal
+      ?.classList.add(
+        "active"
+      );
 
 
     bodyLock();
@@ -2604,32 +2329,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  function closeAdminLogin() {
+  function closeAdminLogin(){
 
-    adminLoginModal.classList.remove(
-      "active"
-    );
-
+    adminLoginModal
+      ?.classList.remove(
+        "active"
+      );
 
     bodyUnlock();
 
   }
 
 
-  function openAdminPanel() {
+  function openAdminPanel(){
 
-    adminLoginModal.classList.remove(
-      "active"
-    );
+    adminLoginModal
+      ?.classList.remove(
+        "active"
+      );
 
 
-    adminPanelModal.classList.add(
-      "active"
-    );
+    adminPanelModal
+      ?.classList.add(
+        "active"
+      );
 
 
     bodyLock();
-
 
     renderAdminProducts();
 
@@ -2638,37 +2364,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  async function closeAdminPanel() {
+  async function closeAdminPanel(){
 
-    adminPanelModal.classList.remove(
-      "active"
-    );
+    adminPanelModal
+      ?.classList.remove(
+        "active"
+      );
 
 
     await resetAdminSession();
-
 
     bodyUnlock();
 
   }
 
 
-  adminSecretButton?.addEventListener(
-    "click",
-    async () => {
+  adminSecretButton
+    ?.addEventListener(
+      "click",
+      async () => {
 
-      await resetAdminSession();
+        await resetAdminSession();
 
-      openAdminLogin();
+        openAdminLogin();
 
-    }
-  );
+      }
+    );
 
 
   document
-    .querySelector(
-      "#adminLoginClose"
-    )
+    .querySelector("#adminLoginClose")
     ?.addEventListener(
       "click",
       async () => {
@@ -2682,9 +2407,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#adminPanelClose"
-    )
+    .querySelector("#adminPanelClose")
     ?.addEventListener(
       "click",
       closeAdminPanel
@@ -2692,27 +2415,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#adminLogoutButton"
-    )
+    .querySelector("#adminLogoutButton")
     ?.addEventListener(
       "click",
       closeAdminPanel
     );
 
 
-  async function getCurrentAdmin() {
+  async function getCurrentAdmin(){
 
-    if (!adminDb) {
+    if (!adminDb){
+
       return null;
+
     }
 
 
-    try {
+    try{
 
       const {
-        data: userData,
-        error: userError
+        data:userData,
+        error:userError
       } =
         await adminDb.auth.getUser();
 
@@ -2720,7 +2443,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (
         userError ||
         !userData?.user
-      ) {
+      ){
 
         return null;
 
@@ -2732,12 +2455,8 @@ document.addEventListener("DOMContentLoaded", () => {
         error
       } =
         await adminDb
-          .from(
-            "admin_users"
-          )
-          .select(
-            "user_id"
-          )
+          .from("admin_users")
+          .select("user_id")
           .eq(
             "user_id",
             userData.user.id
@@ -2745,16 +2464,19 @@ document.addEventListener("DOMContentLoaded", () => {
           .maybeSingle();
 
 
-      return (
+      if (
         error ||
         !data
-      )
+      ){
 
-        ? null
+        return null;
 
-        : userData.user;
+      }
 
-    } catch {
+
+      return userData.user;
+
+    }catch{
 
       return null;
 
@@ -2764,9 +2486,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#adminLoginForm"
-    )
+    .querySelector("#adminLoginForm")
     ?.addEventListener(
       "submit",
       async event => {
@@ -2776,18 +2496,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const email =
           document
-            .querySelector(
-              "#adminEmail"
-            )
+            .querySelector("#adminEmail")
             .value
             .trim();
 
 
         const password =
           document
-            .querySelector(
-              "#adminPassword"
-            )
+            .querySelector("#adminPassword")
             .value;
 
 
@@ -2800,24 +2516,23 @@ document.addEventListener("DOMContentLoaded", () => {
         await resetAdminSession();
 
 
-        try {
+        try{
 
           const {
             data,
             error
           } =
-            await adminDb.auth.signInWithPassword(
-              {
+            await adminDb.auth
+              .signInWithPassword({
                 email,
                 password
-              }
-            );
+              });
 
 
           if (
             error ||
             !data?.user
-          ) {
+          ){
 
             throw new Error();
 
@@ -2825,16 +2540,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
           const {
-            data: adminData,
-            error: adminError
+            data:adminData,
+            error:adminError
           } =
             await adminDb
-              .from(
-                "admin_users"
-              )
-              .select(
-                "user_id"
-              )
+              .from("admin_users")
+              .select("user_id")
               .eq(
                 "user_id",
                 data.user.id
@@ -2845,7 +2556,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (
             adminError ||
             !adminData
-          ) {
+          ){
 
             await resetAdminSession();
 
@@ -2856,7 +2567,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           openAdminPanel();
 
-        } catch {
+        }catch{
 
           await resetAdminSession();
 
@@ -2874,22 +2585,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================================
-     PRODUTOS NO ADMIN
+     ADMIN PRODUTOS
      ========================================================= */
 
-  function renderAdminProducts() {
+  function renderAdminProducts(){
 
-    if (!adminProductsList) {
+    if (!adminProductsList){
+
       return;
+
     }
 
 
-    if (!products.length) {
+    if (!products.length){
 
       adminProductsList.innerHTML =
         `
           <div class="admin-empty">
-            Faça uma busca no ACHOU! para carregar os produtos.
+            Faça uma busca para carregar produtos.
           </div>
         `;
 
@@ -2900,7 +2613,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     adminProductsList.innerHTML =
       products.map(
-        (product, index) => {
+        (product,index) => {
 
           const affiliate =
             findAffiliateForProduct(
@@ -2923,7 +2636,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       >
                     `
 
-                    : "sem imagem"
+                    : ""
                 }
 
               </div>
@@ -2955,6 +2668,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <button
                 class="admin-select-product"
                 data-admin-product="${index}"
+                type="button"
               >
 
                 ${
@@ -2980,15 +2694,17 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach(
         button => {
 
-          button.onclick =
-            () =>
-              fillAdminFormFromProduct(
-                products[
-                  Number(
-                    button.dataset.adminProduct
-                  )
-                ]
-              );
+          button.onclick = () => {
+
+            fillAdminFormFromProduct(
+              products[
+                Number(
+                  button.dataset.adminProduct
+                )
+              ]
+            );
+
+          };
 
         }
       );
@@ -2998,7 +2714,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function fillAdminFormFromProduct(
     product
-  ) {
+  ){
 
     const affiliate =
       findAffiliateForProduct(
@@ -3039,11 +2755,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setMessage(
       adminFormMessage,
-
       affiliate
-        ? "Link existente carregado para edição."
-        : "Produto selecionado. Cole o link afiliado.",
-
+        ? "Produto carregado para edição."
+        : "Produto selecionado. Cole o link parceiro.",
       affiliate
         ? "success"
         : ""
@@ -3053,9 +2767,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#adminRefreshProducts"
-    )
+    .querySelector("#adminRefreshProducts")
     ?.addEventListener(
       "click",
       renderAdminProducts
@@ -3063,9 +2775,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#adminClearForm"
-    )
+    .querySelector("#adminClearForm")
     ?.addEventListener(
       "click",
       () => {
@@ -3087,27 +2797,11 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
 
-  async function refreshAfterAffiliate() {
+  async function refreshAfterAffiliate(){
 
     await loadAffiliateLinks();
 
-
-    products =
-      applyAffiliateLinks(
-        products
-      );
-
-
-    groupedProducts =
-      groupProducts(
-        products
-      );
-
-
-    renderGroupedProducts(
-      groupedProducts
-    );
-
+    renderProducts(products);
 
     renderAdminProducts();
 
@@ -3115,229 +2809,217 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================================
-     SALVA LINK AFILIADO
+     SALVAR LINK
      ========================================================= */
 
-  adminAffiliateForm?.addEventListener(
-    "submit",
-    async event => {
+  adminAffiliateForm
+    ?.addEventListener(
+      "submit",
+      async event => {
 
-      event.preventDefault();
-
-
-      if (
-        !await getCurrentAdmin()
-      ) {
-
-        setMessage(
-          adminFormMessage,
-          "Sua sessão administrativa expirou.",
-          "error"
-        );
-
-        return;
-
-      }
+        event.preventDefault();
 
 
-      const id =
-        adminAffiliateId.value.trim();
+        if (
+          !await getCurrentAdmin()
+        ){
 
-      const itemId =
-        adminItemId.value.trim();
+          setMessage(
+            adminFormMessage,
+            "Sua sessão administrativa expirou.",
+            "error"
+          );
 
-      const productId =
-        adminProductId.value.trim();
-
-      const title =
-        adminProductTitle.value.trim();
-
-      const url =
-        adminAffiliateUrl.value.trim();
-
-      const active =
-        adminAffiliateActive.checked;
-
-
-      if (
-        !validAffiliateLink(url)
-      ) {
-
-        setMessage(
-          adminFormMessage,
-          "Cole um link válido do Mercado Livre.",
-          "error"
-        );
-
-        return;
-
-      }
-
-
-      const payload = {
-
-        marketplace:
-          "mercadolivre",
-
-        item_id:
-          itemId,
-
-        catalog_product_id:
-          productId ||
-          null,
-
-        product_title:
-          title,
-
-        affiliate_url:
-          url,
-
-        active,
-
-        updated_at:
-          new Date().toISOString()
-
-      };
-
-
-      try {
-
-        if (id) {
-
-          const {
-            error
-          } =
-            await adminDb
-              .from(
-                "affiliate_links"
-              )
-              .update(
-                payload
-              )
-              .eq(
-                "id",
-                id
-              );
-
-
-          if (error) {
-            throw error;
-          }
-
-        } else {
-
-          const {
-            data: existing,
-            error: findError
-          } =
-            await adminDb
-              .from(
-                "affiliate_links"
-              )
-              .select(
-                "id"
-              )
-              .eq(
-                "item_id",
-                itemId
-              )
-              .limit(1)
-              .maybeSingle();
-
-
-          if (findError) {
-            throw findError;
-          }
-
-
-          if (
-            existing?.id
-          ) {
-
-            const {
-              error
-            } =
-              await adminDb
-                .from(
-                  "affiliate_links"
-                )
-                .update(
-                  payload
-                )
-                .eq(
-                  "id",
-                  existing.id
-                );
-
-
-            if (error) {
-              throw error;
-            }
-
-          } else {
-
-            const {
-              error
-            } =
-              await adminDb
-                .from(
-                  "affiliate_links"
-                )
-                .insert(
-                  payload
-                );
-
-
-            if (error) {
-              throw error;
-            }
-
-          }
+          return;
 
         }
 
 
-        setMessage(
-          adminFormMessage,
-          "Link salvo com sucesso.",
-          "success"
-        );
+        const id =
+          adminAffiliateId.value.trim();
+
+        const itemId =
+          adminItemId.value.trim();
+
+        const productId =
+          adminProductId.value.trim();
+
+        const title =
+          adminProductTitle.value.trim();
+
+        const url =
+          adminAffiliateUrl.value.trim();
+
+        const active =
+          adminAffiliateActive.checked;
 
 
-        await refreshAfterAffiliate();
+        if (
+          !validPartnerLink(url)
+        ){
 
-        await loadAdminLinks();
+          setMessage(
+            adminFormMessage,
+            "Cole um link HTTPS válido.",
+            "error"
+          );
 
-      } catch (error) {
+          return;
 
-        console.error(
-          error
-        );
+        }
 
 
-        setMessage(
-          adminFormMessage,
-          "Não foi possível salvar o link.",
-          "error"
-        );
+        const payload = {
+
+          marketplace:
+            "mercadolivre",
+
+          item_id:
+            itemId,
+
+          catalog_product_id:
+            productId ||
+            null,
+
+          product_title:
+            title,
+
+          affiliate_url:
+            url,
+
+          active,
+
+          updated_at:
+            new Date().toISOString()
+
+        };
+
+
+        try{
+
+          if (id){
+
+            const {
+              error
+            } =
+              await adminDb
+                .from("affiliate_links")
+                .update(payload)
+                .eq("id",id);
+
+
+            if (error){
+
+              throw error;
+
+            }
+
+          }else{
+
+            const {
+              data:existing,
+              error:findError
+            } =
+              await adminDb
+                .from("affiliate_links")
+                .select("id")
+                .eq(
+                  "item_id",
+                  itemId
+                )
+                .limit(1)
+                .maybeSingle();
+
+
+            if (findError){
+
+              throw findError;
+
+            }
+
+
+            if (existing?.id){
+
+              const {
+                error
+              } =
+                await adminDb
+                  .from("affiliate_links")
+                  .update(payload)
+                  .eq(
+                    "id",
+                    existing.id
+                  );
+
+
+              if (error){
+
+                throw error;
+
+              }
+
+            }else{
+
+              const {
+                error
+              } =
+                await adminDb
+                  .from("affiliate_links")
+                  .insert(payload);
+
+
+              if (error){
+
+                throw error;
+
+              }
+
+            }
+
+          }
+
+
+          setMessage(
+            adminFormMessage,
+            "Produto salvo com sucesso.",
+            "success"
+          );
+
+
+          await refreshAfterAffiliate();
+
+          await loadAdminLinks();
+
+        }catch(error){
+
+          console.error(error);
+
+
+          setMessage(
+            adminFormMessage,
+            "Não foi possível salvar.",
+            "error"
+          );
+
+        }
 
       }
-
-    }
-  );
+    );
 
 
   /* =========================================================
-     LINKS CADASTRADOS NO ADMIN
+     ADMIN LINKS
      ========================================================= */
 
-  async function loadAdminLinks() {
+  async function loadAdminLinks(){
 
     if (
       !adminLinksList ||
       !await getCurrentAdmin()
-    ) {
+    ){
+
       return;
+
     }
 
 
@@ -3346,26 +3028,24 @@ document.addEventListener("DOMContentLoaded", () => {
       error
     } =
       await adminDb
-        .from(
-          "affiliate_links"
-        )
+        .from("affiliate_links")
         .select(
-          "id, item_id, product_title, affiliate_url, active"
+          "id, item_id, catalog_product_id, product_title, affiliate_url, active"
         )
         .order(
           "updated_at",
           {
-            ascending: false
+            ascending:false
           }
         );
 
 
-    if (error) {
+    if (error){
 
       adminLinksList.innerHTML =
         `
           <div class="admin-empty">
-            Não foi possível carregar os links.
+            Não foi possível carregar.
           </div>
         `;
 
@@ -3421,12 +3101,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     <button
                       data-admin-edit="${link.id}"
+                      type="button"
                     >
                       EDITAR
                     </button>
 
+
                     <button
                       data-admin-delete="${link.id}"
+                      type="button"
                     >
                       EXCLUIR
                     </button>
@@ -3440,7 +3123,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         : `
           <div class="admin-empty">
-            Nenhum link cadastrado.
+            Nenhum produto cadastrado.
           </div>
         `;
 
@@ -3457,17 +3140,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
               if (
                 !confirm(
-                  "Excluir este link afiliado?"
+                  "Excluir este produto?"
                 )
-              ) {
+              ){
+
                 return;
+
               }
 
 
               await adminDb
-                .from(
-                  "affiliate_links"
-                )
+                .from("affiliate_links")
                 .delete()
                 .eq(
                   "id",
@@ -3492,49 +3175,54 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach(
         button => {
 
-          button.onclick =
-            () => {
+          button.onclick = () => {
 
-              const link =
-                list.find(
-                  item =>
-                    String(
-                      item.id
-                    ) ===
-                    String(
-                      button.dataset.adminEdit
-                    )
-                );
+            const link =
+              list.find(
+                item =>
+                  String(item.id) ===
+                  String(
+                    button.dataset.adminEdit
+                  )
+              );
 
 
-              if (!link) {
-                return;
-              }
+            if (!link){
+
+              return;
+
+            }
 
 
-              adminAffiliateId.value =
-                link.id;
+            adminAffiliateId.value =
+              link.id ||
+              "";
 
 
-              adminItemId.value =
-                link.item_id ||
-                "";
+            adminItemId.value =
+              link.item_id ||
+              "";
 
 
-              adminProductTitle.value =
-                link.product_title ||
-                "";
+            adminProductId.value =
+              link.catalog_product_id ||
+              "";
 
 
-              adminAffiliateUrl.value =
-                link.affiliate_url ||
-                "";
+            adminProductTitle.value =
+              link.product_title ||
+              "";
 
 
-              adminAffiliateActive.checked =
-                link.active !== false;
+            adminAffiliateUrl.value =
+              link.affiliate_url ||
+              "";
 
-            };
+
+            adminAffiliateActive.checked =
+              link.active !== false;
+
+          };
 
         }
       );
@@ -3543,9 +3231,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   document
-    .querySelector(
-      "#adminRefreshLinks"
-    )
+    .querySelector("#adminRefreshLinks")
     ?.addEventListener(
       "click",
       loadAdminLinks
@@ -3553,7 +3239,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================================
-     MENU INFERIOR
+     MENU MOBILE
      ========================================================= */
 
   document
@@ -3563,148 +3249,90 @@ document.addEventListener("DOMContentLoaded", () => {
     .forEach(
       item => {
 
-        item.onclick =
-          () => {
+        item.onclick = () => {
 
-            document
-              .querySelectorAll(
-                ".bottom-nav-item"
-              )
-              .forEach(
-                nav =>
-                  nav.classList.remove(
-                    "active"
-                  )
-              );
-
-
-            item.classList.add(
-              "active"
+          document
+            .querySelectorAll(
+              ".bottom-nav-item"
+            )
+            .forEach(
+              nav =>
+                nav.classList.remove(
+                  "active"
+                )
             );
 
 
-            const action =
-              item.dataset.nav;
+          item.classList.add(
+            "active"
+          );
 
 
-            if (
-              action === "home"
-            ) {
+          const action =
+            item.dataset.nav;
 
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth"
+
+          if (
+            action === "home"
+          ){
+
+            window.scrollTo({
+              top:0,
+              behavior:"smooth"
+            });
+
+          }
+
+
+          if (
+            action === "categories"
+          ){
+
+            categoriesSection
+              ?.scrollIntoView({
+                behavior:"smooth"
               });
 
-            }
+          }
 
 
-            if (
-              action === "categories"
-            ) {
+          if (
+            action === "search"
+          ){
 
-              categoriesSection
-                ?.scrollIntoView({
-                  behavior: "smooth"
-                });
+            focusSearch();
 
-            }
+          }
 
 
-            if (
-              action === "search"
-            ) {
+          if (
+            action === "favorites"
+          ){
 
-              focusSearch();
+            scrollToOffers();
 
-            }
-
-
-            if (
-              action === "favorites"
-            ) {
-
-              scrollToOffers();
-
-            }
+          }
 
 
-            if (
-              action === "profile"
-            ) {
+          if (
+            action === "cart"
+          ){
 
-              openLogin();
+            openCart();
 
-            }
+          }
 
-          };
+        };
 
       }
     );
 
 
-  /* =========================================================
-     OUTROS BOTÕES
-     ========================================================= */
-
   document
-    .querySelector(
-      ".header-heart"
-    )
+    .querySelector(".header-heart")
     ?.addEventListener(
       "click",
       scrollToOffers
-    );
-
-
-  document
-    .querySelector(
-      ".menu-button"
-    )
-    ?.addEventListener(
-      "click",
-      () =>
-        categoriesSection
-          ?.scrollIntoView({
-            behavior: "smooth"
-          })
-    );
-
-
-  document
-    .querySelector(
-      ".highlight-button"
-    )
-    ?.addEventListener(
-      "click",
-      scrollToOffers
-    );
-
-
-  document
-    .querySelector(
-      ".products-show-all"
-    )
-    ?.addEventListener(
-      "click",
-      () =>
-        searchProducts(
-          CONFIG.initialQuery
-        )
-    );
-
-
-  document
-    .querySelector(
-      ".category-show-all"
-    )
-    ?.addEventListener(
-      "click",
-      () =>
-        categoriesSection
-          ?.scrollIntoView({
-            behavior: "smooth"
-          })
     );
 
 
@@ -3718,8 +3346,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (
         event.key !== "Escape"
-      ) {
+      ){
+
         return;
+
       }
 
 
@@ -3729,13 +3359,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       closeSignup();
 
+      closeCart();
+
 
       if (
         adminLoginModal
           ?.classList.contains(
             "active"
           )
-      ) {
+      ){
 
         await resetAdminSession();
 
@@ -3749,7 +3381,7 @@ document.addEventListener("DOMContentLoaded", () => {
           ?.classList.contains(
             "active"
           )
-      ) {
+      ){
 
         await closeAdminPanel();
 
@@ -3760,57 +3392,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* =========================================================
-     INICIALIZAÇÃO DO ACHOU!
+     INICIALIZAÇÃO
      ========================================================= */
 
   updateFavoriteCounter();
 
+  updateCartCounter();
 
-  searchInput.value =
-    "";
-
+  renderCart();
 
   resetAdminSession();
 
 
-  /*
-   * A página agora NÃO começa vazia.
-   *
-   * Ela começa com PlayStation 5.
-   */
-
-  const firstFeatured =
-    HOME_FEATURED_SEARCHES[0];
-
-
   searchProducts(
-    firstFeatured.query,
+    "ofertas eletrônicos moda",
     {
-      scroll: false,
-      automatic: true,
-      displayQuery:
-        firstFeatured.label
+      scroll:false
     }
-  )
-    .finally(
-      () => {
-
-        /*
-         * Depois começa a alternância:
-         *
-         * PS5
-         * Moda masculina
-         * Moda feminina
-         * Ferramentas
-         * Notebook
-         * Celulares
-         * Air Fryer
-         * Fones
-         */
-
-        startFeaturedRotation();
-
-      }
-    );
+  );
 
 });
