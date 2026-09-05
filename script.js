@@ -306,5 +306,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.addEventListener("keydown",async e=>{if(e.key!=="Escape")return;closeCategory();closeLogin();closeSignup();if(adminLoginModal?.classList.contains("active")){await resetAdminSession();closeAdminLogin();}if(adminPanelModal?.classList.contains("active"))await closeAdminPanel();});
 
-  updateFavoriteCounter();searchInput.value="";resetAdminSession();searchProducts(CONFIG.initialQuery,{scroll:false});
+
+  /* ========================================================
+     HERO CARROSSEL
+     ======================================================== */
+  const heroSlides = [...document.querySelectorAll("[data-hero-slide]")];
+  const heroDots = [...document.querySelectorAll(".hero-dot")];
+  const heroPrev = document.querySelector(".hero-prev");
+  const heroNext = document.querySelector(".hero-next");
+  let heroIndex = 0;
+  let heroTimer = null;
+
+  function showHeroSlide(index){
+    if(!heroSlides.length)return;
+    heroIndex = (index + heroSlides.length) % heroSlides.length;
+    heroSlides.forEach((slide,i)=>slide.classList.toggle("active",i===heroIndex));
+    heroDots.forEach((dot,i)=>dot.classList.toggle("active",i===heroIndex));
+  }
+
+  function restartHeroTimer(){
+    clearInterval(heroTimer);
+    heroTimer = setInterval(()=>showHeroSlide(heroIndex+1),5000);
+  }
+
+  heroPrev?.addEventListener("click",()=>{showHeroSlide(heroIndex-1);restartHeroTimer();});
+  heroNext?.addEventListener("click",()=>{showHeroSlide(heroIndex+1);restartHeroTimer();});
+  heroDots.forEach((dot,i)=>dot.addEventListener("click",()=>{showHeroSlide(i);restartHeroTimer();}));
+  showHeroSlide(0);
+  restartHeroTimer();
+
+
+    updateFavoriteCounter();searchInput.value="";resetAdminSession();searchProducts(CONFIG.initialQuery,{scroll:false});
 });
