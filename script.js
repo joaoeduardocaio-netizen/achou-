@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const CONFIG = {
     locale: "pt-BR",
     currency: "BRL",
-    initialQuery: "tênis",
+    initialQuery: "camiseta roupa",
     heroInterval: 5000,
     api: "https://wulhcgkphclwgidqlvtr.supabase.co/functions/v1/mercadolivre-search",
     supabaseUrl: "https://wulhcgkphclwgidqlvtr.supabase.co",
@@ -113,6 +113,28 @@ document.addEventListener("DOMContentLoaded", () => {
     if (value === "eletrônicos" || value === "eletronicos") return "celular";
 
     return term;
+  }
+
+
+  function relevantProduct(product, query) {
+    const text = `${product.title || ""}`.toLowerCase();
+
+    const rules = [
+      { test: /camiseta/, must: /(camiseta|camisa|blusa|t-shirt)/ },
+      { test: /moletom/, must: /(moletom|hoodie|casaco)/ },
+      { test: /calça|jeans/, must: /(calça|jeans|legging)/ },
+      { test: /vestido/, must: /(vestido)/ },
+      { test: /tênis/, must: /(tênis|tenis|sapatênis|sapatenis|calçado|calcado)/ },
+      { test: /infantil|criança/, must: /(infantil|criança|crianca|menino|menina|kids|camiseta|roupa)/ },
+      { test: /celular|smartphone/, must: /(celular|smartphone|iphone|galaxy|motorola|redmi|xiaomi)/ },
+      { test: /fone/, must: /(fone|headphone|headset|earbuds|auricular)/ },
+      { test: /caixa de som/, must: /(caixa de som|speaker|jbl|bluetooth)/ },
+      { test: /carregador/, must: /(carregador|fonte|charger|usb-c|usb c|tipo c)/ },
+      { test: /smartwatch|relógio inteligente/, must: /(smartwatch|relógio inteligente|relogio inteligente|watch)/ }
+    ];
+
+    const rule = rules.find(item => item.test.test(String(query).toLowerCase()));
+    return rule ? rule.must.test(text) : true;
   }
 
   function renderStatus(title, text) {
@@ -245,6 +267,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const products = data.results
         .map(normalizeProduct)
         .filter(product => product.id && product.price > 0)
+        .filter(product => relevantProduct(product, query))
         .sort((a, b) => a.price - b.price);
 
       renderProducts(products, query);
