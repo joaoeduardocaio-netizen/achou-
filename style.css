@@ -585,3 +585,35 @@ footer{
   }
 
 }
+/* =========================================================
+   ACHOU! — CORREÇÃO DEFINITIVA DO HOMEM NO BANNER MOBILE
+   Mantém todo o restante do banner exatamente como está.
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .hero-man-image {
+    position: absolute !important;
+
+    left: 5% !important;
+    right: auto !important;
+
+    bottom: -3% !important;
+
+    width: auto !important;
+    height: 105% !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain !important;
+    object-position: center bottom !important;
+
+    z-index: 5 !important;
+
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+}
