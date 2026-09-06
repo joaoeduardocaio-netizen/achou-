@@ -4,52 +4,54 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#050505">
-  <meta name="description" content="ACHOU! Compare ofertas e encontre o melhor preço.">
-  <title>ACHOU! — Moda e tecnologia em um só lugar</title>
-  <link rel="stylesheet" href="style.css?v=20260906-01">
+  <meta name="description" content="ACHOU! Compare preços e encontre ofertas.">
+  <title>ACHOU! — Moda e tecnologia</title>
+  <link rel="stylesheet" href="style.css?v=20260906-02">
 </head>
 <body>
 
   <div class="utility-bar">
-    <div class="utility-left">⌖ <span>Entregar em Criciúma - SC</span>⌄</div>
-    <div class="utility-center"><span>Frete rápido</span><i>•</i><span>Lojas parceiras</span><i>•</i><span>Compra segura</span></div>
-    <div class="utility-right"><span>Atendimento</span><i>|</i><span>Meus pedidos</span></div>
+    <div>⌖ Entregar em Criciúma - SC</div>
+    <div>Frete rápido &nbsp; • &nbsp; Lojas parceiras &nbsp; • &nbsp; Compra segura</div>
+    <div>Atendimento &nbsp; | &nbsp; Meus pedidos</div>
   </div>
 
-  <header class="main-header">
-    <button class="hamburger" type="button" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+  <header class="top-header">
+    <button class="menu-button" type="button" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
 
-    <a class="brand" href="#" aria-label="ACHOU início">
+    <a class="brand" href="#">
       <strong>ACHOU<span>!</span></strong>
     </a>
 
     <form class="header-search" id="searchForm">
       <input id="searchInput" type="search" placeholder="O que você está procurando?" autocomplete="off">
-      <button type="submit" aria-label="Buscar">⌕</button>
+      <button type="submit">⌕</button>
     </form>
 
     <div class="header-actions">
       <button class="account-button" type="button">
-        <span class="action-icon">♙</span>
-        <span class="action-copy"><strong>Entrar</strong><small>ou cadastrar</small></span>
+        <span class="header-icon">♙</span>
+        <span><strong>Entrar</strong><small>ou cadastrar</small></span>
       </button>
 
-      <button class="favorite-shortcut" type="button">
-        <span class="action-icon">♡</span>
-        <span class="action-copy"><strong>Favoritos</strong></span>
+      <button class="header-action favorites-shortcut" type="button">
+        <span class="header-icon">♡</span>
+        <span><strong>Favoritos</strong></span>
         <i class="favorite-count">0</i>
       </button>
 
-      <button class="cart-button" type="button">
-        <span class="action-icon">🛒</span>
-        <span class="action-copy"><strong>Carrinho</strong></span>
+      <button class="header-action cart-button" type="button">
+        <span class="header-icon">🛒</span>
+        <span><strong>Carrinho</strong></span>
         <i>0</i>
       </button>
     </div>
   </header>
 
-  <nav class="main-nav" aria-label="Categorias principais">
-    <button data-search="ofertas">☰ &nbsp;Todas as categorias</button>
+  <nav class="main-nav">
+    <button data-search="ofertas">☰ &nbsp; Todas as categorias</button>
     <button data-search="moda feminina">Moda Feminina</button>
     <button data-search="moda masculina">Moda Masculina</button>
     <button data-search="moda infantil">Infantil</button>
@@ -60,11 +62,54 @@
   </nav>
 
   <main>
-    <section class="hero-section">
-      <button class="hero-click" type="button" aria-label="Comprar agora">
-        <img src="hero-achou-fashion.png?v=20260906-01" alt="ACHOU! Moda e tecnologia em um só lugar, com homem e mulher de óculos, celular, fone e tênis">
-      </button>
-      <div class="hero-dots" aria-hidden="true"><span class="active"></span><span></span><span></span></div>
+
+    <section class="hero">
+      <div class="hero-copy">
+        <h1>
+          ACHOU<span>!</span>
+          <small>Moda e tecnologia</small>
+          <em>em um só lugar.</em>
+        </h1>
+
+        <p>Qualidade, variedade e as melhores ofertas<br>com fornecedores confiáveis.</p>
+
+        <button class="hero-cta" type="button" data-search="ofertas">
+          COMPRAR AGORA <b>›</b>
+        </button>
+
+        <div class="hero-benefits">
+          <article>
+            <span>🚚</span>
+            <div><strong>Entrega rápida</strong><small>em Criciúma e região</small></div>
+          </article>
+
+          <article>
+            <span>♢</span>
+            <div><strong>Compra segura</strong><small>seus dados protegidos</small></div>
+          </article>
+
+          <article>
+            <span>▤</span>
+            <div><strong>Lojas parceiras</strong><small>e produtos originais</small></div>
+          </article>
+        </div>
+      </div>
+
+      <div class="hero-art">
+        <div class="hero-yellow"></div>
+
+        <div class="hero-photo-window">
+          <img src="hero-achou-fashion.png?v=20260906-01" alt="">
+        </div>
+
+        <div class="hero-side-text">
+          AS<br>MELHORES<br>MARCAS<br>VOCÊ<br>ENCONTRA<br>AQUI
+        </div>
+      </div>
+
+      <div class="hero-dots">
+        <span class="active"></span><span></span><span></span>
+      </div>
     </section>
 
     <section class="category-strip" id="categoriesSection">
@@ -82,8 +127,8 @@
 
     <section class="trust-strip">
       <article><span>🚚</span><div><strong>FRETE RÁPIDO</strong><small>Criciúma e região</small></div></article>
-      <article><span>♢</span><div><strong>COMPRA SEGURA</strong><small>Você compra direto na loja</small></div></article>
-      <article><span>▣</span><div><strong>COMPARE OFERTAS</strong><small>Veja preços antes de decidir</small></div></article>
+      <article><span>♢</span><div><strong>COMPRA SEGURA</strong><small>Direto na loja parceira</small></div></article>
+      <article><span>▣</span><div><strong>PARCELE EM ATÉ 12X</strong><small>Conforme condições da loja</small></div></article>
     </section>
 
     <section class="offers-section" id="offersSection">
@@ -94,20 +139,30 @@
 
       <div class="achou-search-summary" hidden></div>
       <div class="product-row" id="productList"></div>
-      <p class="affiliate-note">Alguns links podem gerar comissão para o ACHOU!, sem custo extra para você.</p>
+
+      <p class="affiliate-note">
+        Alguns links podem gerar comissão para o ACHOU!, sem custo extra para você.
+      </p>
     </section>
 
     <section class="promo-grid">
-      <button class="promo-card promo-fashion" type="button" data-search="moda feminina">
-        <div><strong>Moda para<br>todas as ocasiões</strong><span>VER COLEÇÃO ›</span></div>
+      <button class="promo-card promo-fashion" data-search="moda feminina" type="button">
+        <strong>Moda para<br>todas as ocasiões</strong>
+        <span>VER COLEÇÃO ›</span>
       </button>
-      <button class="promo-card promo-tech" type="button" data-search="eletrônicos">
-        <div><strong>Eletrônicos<br>que conectam você</strong><span>VER OFERTAS ›</span></div>
+
+      <button class="promo-card promo-tech" data-search="eletrônicos" type="button">
+        <strong>Eletrônicos<br>que conectam você</strong>
+        <span>VER OFERTAS ›</span>
       </button>
     </section>
 
     <section class="partners-section">
-      <div class="section-heading"><h2>Lojas parceiras</h2><span>Ver todas ›</span></div>
+      <div class="section-heading">
+        <h2>Lojas parceiras</h2>
+        <span>Ver todas ›</span>
+      </div>
+
       <div class="partner-row">
         <div>Mercado Livre</div>
         <div>Amazon</div>
@@ -123,12 +178,16 @@
     </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-brand"><strong>ACHOU<span>!</span></strong><small>A gente procura.<br>Você economiza tempo.</small></div>
-    <div class="footer-item"><span>🎧</span><div><strong>Atendimento</strong><small>Seg a Sex - 8h às 18h</small></div></div>
-    <div class="footer-item"><span>◇</span><div><strong>Troca fácil</strong><small>Conforme a loja parceira</small></div></div>
-    <div class="footer-item"><span>♢</span><div><strong>Compra segura</strong><small>Direto no parceiro</small></div></div>
-    <div class="footer-social">◎ &nbsp; f &nbsp; ♪ &nbsp; ▶</div>
+  <footer>
+    <div class="footer-brand">
+      <strong>ACHOU<span>!</span></strong>
+      <small>A gente procura.<br>Você economiza tempo.</small>
+    </div>
+
+    <div class="footer-info">🎧 <span><strong>Atendimento</strong><small>Seg a Sex - 8h às 18h</small></span></div>
+    <div class="footer-info">◇ <span><strong>Troca fácil</strong><small>Conforme a loja</small></span></div>
+    <div class="footer-info">♢ <span><strong>Compra segura</strong><small>Direto no parceiro</small></span></div>
+    <div class="social">◎ &nbsp; f &nbsp; ♪ &nbsp; ▶</div>
   </footer>
 
   <nav class="bottom-nav">
@@ -141,7 +200,7 @@
 
   <div class="modal" id="loginModal">
     <div class="modal-box">
-      <button class="modal-close" type="button">×</button>
+      <button class="modal-close login-close" type="button">×</button>
       <div class="modal-logo">ACHOU<span>!</span></div>
       <h2>Entrar</h2>
       <form id="loginForm">
@@ -174,6 +233,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="script.js?v=20260906-01"></script>
+  <script src="script.js?v=20260906-02"></script>
 </body>
 </html>
