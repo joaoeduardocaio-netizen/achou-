@@ -1,12 +1,18 @@
-ACHOU! — atualização do banner
+ACHOU! — CORREÇÃO DEFINITIVA DO HERO
 
-Substitua o script.js atual por este.
+Substitua estes 2 arquivos no GitHub:
+- index.html
+- script.js
 
-Alterações nos 3 slides:
-- removidos visualmente os 3 mini textos/ícones abaixo do botão;
-- botão amarelo maior;
-- botão mais próximo da borda inferior;
-- mesma estrutura nos 3 banners;
-- carrossel e correções anteriores mantidos.
+O index agora:
+- remove de verdade os 3 mini-benefícios dos 3 banners;
+- força nova versão do script (v=20260906-16), evitando cache;
+- mantém os 3 slides;
+- mantém os botões COMPRAR AGORA / VER OFERTAS / VER MODA;
+- corrige textos de loja/parceria no restante da página.
 
-Não precisa alterar as imagens do banner.
+O script:
+- aumenta o botão amarelo;
+- posiciona o botão mais perto da borda inferior.
+
+Não altere as imagens.
