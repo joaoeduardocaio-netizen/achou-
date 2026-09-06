@@ -541,24 +541,28 @@ footer{
 
 @media (max-width: 768px) {
 
+  
   .hero-man-image {
   position: absolute !important;
-  left: 2% !important;
+
+  left: 5% !important;
   right: auto !important;
-  bottom: -4% !important;
+  bottom: -12% !important;
 
   width: auto !important;
-  height: 118% !important;
+  height: 155% !important;
+
   max-width: none !important;
   max-height: none !important;
 
   object-fit: contain !important;
+
   z-index: 5 !important;
 
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
-  }
+}
  
 
     .hero-woman-image {
