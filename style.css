@@ -535,24 +535,48 @@ footer{
   }
 
 }
+/* =========================================================
+   ACHOU! — POSIÇÃO FINAL DOS MODELOS NO MOBILE
+   ========================================================= */
+
 @media (max-width: 768px) {
 
   .hero-man-image {
-    left: 18% !important;
+    position: absolute !important;
+    left: 14% !important;
+    right: auto !important;
     bottom: -3% !important;
-    width: 62% !important;
+
+    width: auto !important;
+    height: 94% !important;
+    max-width: none !important;
     max-height: none !important;
-    height: auto !important;
-    z-index: 7 !important;
+
+    object-fit: contain !important;
+    z-index: 5 !important;
+
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
   .hero-woman-image {
-    left: 43% !important;
-    bottom: -4% !important;
-    width: 68% !important;
+    position: absolute !important;
+    left: auto !important;
+    right: -3% !important;
+    bottom: -3% !important;
+
+    width: auto !important;
+    height: 102% !important;
+    max-width: none !important;
     max-height: none !important;
-    height: auto !important;
+
+    object-fit: contain !important;
     z-index: 6 !important;
+
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
 }
