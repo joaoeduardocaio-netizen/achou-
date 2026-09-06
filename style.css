@@ -1504,9 +1504,9 @@ footer{
 
   .hero-man-image{
     left:-36% !important;
-    bottom:10% !important;
+    bottom:0% !important;
     width:auto !important;
-    height:73% !important;
+    height:83% !important;
     z-index:5 !important
   }
 
