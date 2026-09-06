@@ -535,3 +535,24 @@ footer{
   }
 
 }
+@media (max-width: 768px) {
+
+  .hero-man-image {
+    left: 18% !important;
+    bottom: -3% !important;
+    width: 62% !important;
+    max-height: none !important;
+    height: auto !important;
+    z-index: 7 !important;
+  }
+
+  .hero-woman-image {
+    left: 43% !important;
+    bottom: -4% !important;
+    width: 68% !important;
+    max-height: none !important;
+    height: auto !important;
+    z-index: 6 !important;
+  }
+
+}
