@@ -343,14 +343,14 @@ footer{
 
   .hero{
     margin:0;
-    min-height:240px;
-    height:240px;
+    min-height:285px;
+    height:285px;
     background:#050505
   }
   .hero-copy{
-    width:46%;
-    min-height:240px;
-    padding:17px 0 14px 14px
+    width:47%;
+    min-height:285px;
+    padding:22px 0 18px 14px
   }
   .hero h1{font-size:31px;letter-spacing:-2px}
   .hero h1 small,.hero h1 em{font-size:17px;letter-spacing:-.7px}
@@ -362,8 +362,8 @@ footer{
   }
   .hero-cta b{font-size:13px;margin-left:6px}
   .hero-benefits{
-    width:205px;grid-template-columns:repeat(3,1fr);
-    gap:4px;margin-top:12px;
+    width:210px;grid-template-columns:repeat(3,1fr);
+    gap:4px;margin-top:15px;
     position:relative;
     z-index:12
   }
@@ -372,39 +372,39 @@ footer{
   .hero-benefits strong{font-size:4.7px}
   .hero-benefits small{font-size:3.8px}
 
-  .hero-art{width:65%;height:100%}
+  .hero-art{width:66%;height:100%}
   .hero-phone-image{
-    left:-1%;
-    top:18%;
-    width:21%;
-    max-height:58%
+    left:1%;
+    top:17%;
+    width:18%;
+    max-height:52%
   }
   .hero-headphone-image{
-    left:-6%;
-    bottom:11%;
-    width:28%;
-    max-height:64%
+    left:-3%;
+    bottom:9%;
+    width:24%;
+    max-height:57%
   }
   .hero-man-image{
-    left:24%;
-    bottom:-2%;
-    width:49%;
-    max-height:110%
+    left:25%;
+    bottom:-1%;
+    width:52%;
+    max-height:112%
   }
   .hero-woman-image{
-    left:50%;
-    bottom:-2%;
-    width:46%;
-    max-height:108%
+    left:48%;
+    bottom:-1%;
+    width:50%;
+    max-height:110%
   }
   .hero-shoe-image{
-    right:1%;
-    bottom:3%;
-    width:31%;
-    max-height:46%
+    right:-2%;
+    bottom:2%;
+    width:25%;
+    max-height:38%
   }
   .hero-side-text{
-    right:9px;top:13px;font-size:5.7px;line-height:1
+    right:9px;top:9px;font-size:5.7px;line-height:1
   }
   .hero-dots{bottom:6px;left:51%;gap:4px}
   .hero-dots span{width:5px;height:5px}
@@ -499,14 +499,14 @@ footer{
 }
 
 @media(max-width:390px){
-  .hero{height:226px;min-height:226px}
-  .hero-copy{min-height:226px}
+  .hero{height:270px;min-height:270px}
+  .hero-copy{min-height:270px}
   .hero h1{font-size:29px}
   .hero h1 small,.hero h1 em{font-size:16px}
-  .hero-phone-image{left:-2%;top:18%;width:22%}
-  .hero-headphone-image{left:-7%;bottom:11%;width:29%}
-  .hero-man-image{left:23%;bottom:-2%;width:50%}
-  .hero-woman-image{left:49%;bottom:-2%;width:47%}
-  .hero-shoe-image{right:1%;bottom:3%;width:32%}
+  .hero-phone-image{left:1%;top:17%;width:19%}
+  .hero-headphone-image{left:-4%;bottom:9%;width:25%}
+  .hero-man-image{left:24%;bottom:-1%;width:53%}
+  .hero-woman-image{left:47%;bottom:-1%;width:51%}
+  .hero-shoe-image{right:-3%;bottom:2%;width:26%}
   .hero-side-text{font-size:5.2px}
 }
