@@ -686,7 +686,7 @@ footer{
 
 }
 /* =========================================================
-   ACHOU! — TESTE DE POSIÇÃO DO HOMEM NO MOBILE
+   ACHOU! — POSIÇÃO DO HOMEM NO HERO MOBILE
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -694,13 +694,13 @@ footer{
   .hero-man-image {
     position: absolute !important;
 
-    left: -15% !important;
+    left: -22% !important;
     right: auto !important;
 
     bottom: 0 !important;
 
     width: auto !important;
-    height: 70% !important;
+    height: 77% !important;
 
     max-width: none !important;
     max-height: none !important;
