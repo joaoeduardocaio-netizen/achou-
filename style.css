@@ -365,43 +365,43 @@ footer{
     width:205px;grid-template-columns:repeat(3,1fr);
     gap:4px;margin-top:12px;
     position:relative;
-    z-index:8
+    z-index:12
   }
   .hero-benefits article{gap:3px}
   .hero-benefits article>span{font-size:13px}
   .hero-benefits strong{font-size:4.7px}
   .hero-benefits small{font-size:3.8px}
 
-  .hero-art{width:63%;height:100%}
+  .hero-art{width:65%;height:100%}
   .hero-phone-image{
-    left:-2%;
-    top:12%;
-    width:23%;
-    max-height:62%
+    left:-1%;
+    top:18%;
+    width:21%;
+    max-height:58%
   }
   .hero-headphone-image{
-    left:-8%;
-    bottom:4%;
-    width:31%;
-    max-height:70%
+    left:-6%;
+    bottom:11%;
+    width:28%;
+    max-height:64%
   }
   .hero-man-image{
-    left:29%;
-    bottom:-1%;
-    width:42%;
-    max-height:105%
+    left:24%;
+    bottom:-2%;
+    width:49%;
+    max-height:110%
   }
   .hero-woman-image{
-    left:53%;
-    bottom:-1%;
-    width:38%;
-    max-height:101%
+    left:50%;
+    bottom:-2%;
+    width:46%;
+    max-height:108%
   }
   .hero-shoe-image{
-    right:-2%;
-    bottom:0%;
-    width:28%;
-    max-height:42%
+    right:1%;
+    bottom:3%;
+    width:31%;
+    max-height:46%
   }
   .hero-side-text{
     right:9px;top:13px;font-size:5.7px;line-height:1
@@ -503,10 +503,10 @@ footer{
   .hero-copy{min-height:226px}
   .hero h1{font-size:29px}
   .hero h1 small,.hero h1 em{font-size:16px}
-  .hero-phone-image{left:-3%;width:24%}
-  .hero-headphone-image{left:-9%;width:32%}
-  .hero-man-image{left:28%;width:43%}
-  .hero-woman-image{left:52%;width:39%}
-  .hero-shoe-image{right:-3%;width:29%}
+  .hero-phone-image{left:-2%;top:18%;width:22%}
+  .hero-headphone-image{left:-7%;bottom:11%;width:29%}
+  .hero-man-image{left:23%;bottom:-2%;width:50%}
+  .hero-woman-image{left:49%;bottom:-2%;width:47%}
+  .hero-shoe-image{right:1%;bottom:3%;width:32%}
   .hero-side-text{font-size:5.2px}
 }
