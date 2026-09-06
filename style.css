@@ -545,7 +545,7 @@ footer{
   .hero-man-image {
   position: absolute !important;
 
-  left: 5% !important;
+  left: -42% !important;
   right: auto !important;
   bottom: -12% !important;
 
