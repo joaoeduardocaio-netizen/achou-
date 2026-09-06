@@ -2,11 +2,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const CONFIG = {
     locale: "pt-BR",
     currency: "BRL",
-    initialQuery: "PlayStation 5",
+    initialQuery: "tênis",
     heroInterval: 5000,
     api: "https://wulhcgkphclwgidqlvtr.supabase.co/functions/v1/mercadolivre-search",
     supabaseUrl: "https://wulhcgkphclwgidqlvtr.supabase.co",
     supabaseKey: "sb_publishable_Wi0Kz5aB4LeLnlxQE_34Yw_1KwA8ebc"
+  };
+
+  const CATEGORY_GROUPS = {
+    moda: [
+      "moda feminina",
+      "moda masculina",
+      "moda infantil",
+      "moletom",
+      "camiseta",
+      "calça jeans",
+      "tênis"
+    ],
+    eletronicos: [
+      "celular",
+      "fone bluetooth",
+      "caixa de som bluetooth",
+      "carregador celular",
+      "smartwatch",
+      "acessórios para celular"
+    ]
   };
 
   let db = null;
@@ -84,6 +104,15 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch {
       return false;
     }
+  }
+
+  function resolveSearchTerm(term) {
+    const value = String(term || "").trim().toLowerCase();
+
+    if (value === "moda") return "tênis";
+    if (value === "eletrônicos" || value === "eletronicos") return "celular";
+
+    return term;
   }
 
   function renderStatus(title, text) {
@@ -187,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   async function searchProducts(term = null, scroll = true) {
-    const query = String(term ?? searchInput?.value ?? "").trim();
+    const query = String(resolveSearchTerm(term ?? searchInput?.value ?? "")).trim();
 
     if (!query) {
       searchInput?.focus();

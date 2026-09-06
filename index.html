@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#050505">
   <meta name="description" content="ACHOU! Compare preços e encontre ofertas.">
   <title>ACHOU! — Moda e tecnologia</title>
-  <link rel="stylesheet" href="style.css?v=20260906-12">
+  <link rel="stylesheet" href="style.css?v=20260906-13">
 </head>
 <body>
 
@@ -51,13 +51,16 @@
   </header>
 
   <nav class="main-nav">
-    <button data-search="ofertas">☰ &nbsp; Todas as categorias</button>
+    <button data-search="ofertas moda eletrônicos">☰ &nbsp; Todas as categorias</button>
     <button data-search="moda feminina">Moda Feminina</button>
     <button data-search="moda masculina">Moda Masculina</button>
-    <button data-search="moda infantil">Infantil</button>
+    <button data-search="moda infantil">Moda Infantil</button>
+    <button data-search="moletom">Moletons</button>
+    <button data-search="camiseta">Camisetas</button>
     <button data-search="tênis">Tênis e Calçados</button>
-    <button data-search="eletrônicos">Eletrônicos</button>
-    <button data-search="acessórios">Acessórios</button>
+    <button data-search="celular">Celulares</button>
+    <button data-search="fone bluetooth">Fones</button>
+    <button data-search="carregador">Carregadores</button>
     <button class="nav-offers" data-search="ofertas">Ofertas</button>
   </nav>
 
@@ -138,16 +141,143 @@
     </section>
 
     <section class="category-strip" id="categoriesSection">
-      <button type="button" data-search="moda feminina"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10L9 16L3 29L14 34L18 27V55H46V27L50 34L61 29L55 16L44 10C41 15 37 17 32 17C27 17 23 15 20 10Z"/></svg></span><strong>Moda Feminina</strong></button>
-      <button type="button" data-search="moda masculina"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M20 10L9 16L3 29L14 34L18 27V55H46V27L50 34L61 29L55 16L44 10C41 15 37 17 32 17C27 17 23 15 20 10Z"/></svg></span><strong>Moda Masculina</strong></button>
-      <button type="button" data-search="moda infantil"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="none" d="M21 10L10 16L4 28L14 33L19 25V54H45V25L50 33L60 28L54 16L43 10M21 10C23 15 27 17 32 17C37 17 41 15 43 10"/></svg></span><strong>Infantil</strong></button>
-      <button type="button" data-search="tênis"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="none" d="M11 35C17 35 22 31 25 23L33 28C37 33 41 35 50 37C56 38 60 41 60 46V49H7V44C7 39 8 37 11 35ZM21 31L27 36M27 28L33 34M8 49H60"/></svg></span><strong>Tênis e Calçados</strong></button>
-      <button type="button" data-search="fone bluetooth"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="none" d="M10 34V29C10 17 20 8 32 8C44 8 54 17 54 29V34M10 33H16C19 33 21 35 21 38V49C21 52 19 54 16 54H10V33ZM54 33H48C45 33 43 35 43 38V49C43 52 45 54 48 54H54V33Z"/></svg></span><strong>Eletrônicos</strong></button>
-      <button type="button" data-search="notebook"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="none" d="M8 10H56V44H8ZM32 44V54M21 54H43"/></svg></span><strong>Informática</strong></button>
-      <button type="button" data-search="PlayStation 5"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="none" d="M20 22H44C51 22 55 26 57 33L60 44C61 48 58 52 54 52C52 52 50 51 48 49L42 43H22L16 49C14 51 12 52 10 52C6 52 3 48 4 44L7 33C9 26 13 22 20 22ZM18 29V39M13 34H23"/><circle fill="#FFD400" stroke="none" cx="45" cy="31" r="2.5"/><circle fill="#FFD400" stroke="none" cx="51" cy="37" r="2.5"/></svg></span><strong>Gamer</strong></button>
-      <button type="button" data-search="smartwatch"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path fill="none" d="M24 12L27 5H37L40 12M24 52L27 59H37L40 52"/><rect fill="none" x="18" y="12" width="28" height="40" rx="10"/><circle fill="none" cx="32" cy="32" r="7"/><path fill="none" d="M32 27V32L36 35"/></svg></span><strong>Smartwatches</strong></button>
-      <button type="button" data-search="bolsa"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><rect fill="none" x="10" y="20" width="44" height="36" rx="4"/><path fill="none" d="M22 20V16C22 10 26 7 32 7C38 7 42 10 42 16V20"/></svg></span><strong>Acessórios</strong></button>
-      <button type="button" data-search="ofertas"><span class="category-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 28L30 6H56V32L34 54L8 28ZM45 14C41.7 14 39 16.7 39 20C39 23.3 41.7 26 45 26C48.3 26 51 23.3 51 20C51 16.7 48.3 14 45 14Z"/></svg></span><strong>Ofertas</strong></button>
+
+      <button type="button" data-search="moda feminina">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true">
+            <path d="M20 10L9 16L3 29L14 34L18 27V55H46V27L50 34L61 29L55 16L44 10C41 15 37 17 32 17C27 17 23 15 20 10Z" fill="#FFD400"/>
+          </svg>
+        </span>
+        <strong>Moda Feminina</strong>
+      </button>
+
+      <button type="button" data-search="moda masculina">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true">
+            <path d="M20 10L9 16L3 29L14 34L18 27V55H46V27L50 34L61 29L55 16L44 10C41 15 37 17 32 17C27 17 23 15 20 10Z" fill="#FFD400"/>
+          </svg>
+        </span>
+        <strong>Moda Masculina</strong>
+      </button>
+
+      <button type="button" data-search="moda infantil">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 10L10 16L4 28L14 33L19 25V54H45V25L50 33L60 28L54 16L43 10"/>
+            <path d="M21 10C23 15 27 17 32 17C37 17 41 15 43 10"/>
+          </svg>
+        </span>
+        <strong>Moda Infantil</strong>
+      </button>
+
+      <button type="button" data-search="moletom">
+        <span>
+          <svg viewBox="0 0 64 64" width="31" height="31" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M22 12c2-5 5-7 10-7s8 2 10 7l8 6-6 10-5-4v31H25V24l-5 4-6-10 8-6Z"/>
+            <path d="M25 20c2 3 4 4 7 4s5-1 7-4"/>
+          </svg>
+        </span>
+        <strong>Moletons</strong>
+      </button>
+
+      <button type="button" data-search="camiseta">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" aria-hidden="true">
+            <path d="M20 10L9 16L3 29L14 34L18 27V55H46V27L50 34L61 29L55 16L44 10C41 15 37 17 32 17C27 17 23 15 20 10Z" fill="#FFD400"/>
+          </svg>
+        </span>
+        <strong>Camisetas</strong>
+      </button>
+
+      <button type="button" data-search="calça jeans">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" fill="none" stroke="#FFD400" stroke-width="4" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 7h24l-2 50H31L28 31l-3 26H14L20 7Z"/>
+            <path d="M20 16h22"/>
+          </svg>
+        </span>
+        <strong>Calças</strong>
+      </button>
+
+      <button type="button" data-search="tênis">
+        <span>
+          <svg viewBox="0 0 64 64" width="32" height="32" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 35C17 35 22 31 25 23L33 28C37 33 41 35 50 37C56 38 60 41 60 46V49H7V44C7 39 8 37 11 35Z"/>
+            <path d="M21 31L27 36"/>
+            <path d="M27 28L33 34"/>
+            <path d="M8 49H60"/>
+          </svg>
+        </span>
+        <strong>Tênis e Calçados</strong>
+      </button>
+
+      <button type="button" data-search="celular">
+        <span>
+          <svg viewBox="0 0 64 64" width="29" height="29" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="18" y="5" width="28" height="54" rx="5"/>
+            <path d="M28 12h8"/>
+            <circle cx="32" cy="51" r="2"/>
+          </svg>
+        </span>
+        <strong>Celulares</strong>
+      </button>
+
+      <button type="button" data-search="fone bluetooth">
+        <span>
+          <svg viewBox="0 0 64 64" width="31" height="31" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 34V29C10 17 20 8 32 8C44 8 54 17 54 29V34"/>
+            <path d="M10 33H16C19 33 21 35 21 38V49C21 52 19 54 16 54H10V33Z"/>
+            <path d="M54 33H48C45 33 43 35 43 38V49C43 52 45 54 48 54H54V33Z"/>
+          </svg>
+        </span>
+        <strong>Fones</strong>
+      </button>
+
+      <button type="button" data-search="caixa de som bluetooth">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="13" y="7" width="38" height="50" rx="5"/>
+            <circle cx="32" cy="38" r="10"/>
+            <circle cx="32" cy="19" r="4"/>
+          </svg>
+        </span>
+        <strong>Caixas de Som</strong>
+      </button>
+
+      <button type="button" data-search="carregador celular">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="18" y="16" width="28" height="28" rx="5"/>
+            <path d="M25 16V8M39 16V8"/>
+            <path d="M32 25l-5 8h5l-3 7 8-10h-5l3-5"/>
+          </svg>
+        </span>
+        <strong>Carregadores</strong>
+      </button>
+
+      <button type="button" data-search="smartwatch">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M24 12L27 5H37L40 12"/>
+            <rect x="18" y="12" width="28" height="40" rx="10"/>
+            <path d="M24 52L27 59H37L40 52"/>
+            <circle cx="32" cy="32" r="7"/>
+            <path d="M32 27V32L36 35"/>
+          </svg>
+        </span>
+        <strong>Smartwatches</strong>
+      </button>
+
+      <button type="button" data-search="acessórios para celular">
+        <span>
+          <svg viewBox="0 0 64 64" width="30" height="30" fill="none" stroke="#FFD400" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="20" y="8" width="24" height="48" rx="5"/>
+            <path d="M27 15h10M28 48h8"/>
+          </svg>
+        </span>
+        <strong>Acessórios</strong>
+      </button>
+
     </section>
 
     <section class="trust-strip">
@@ -212,14 +342,14 @@
     </section>
 
     <section class="promo-grid">
-      <button class="promo-card promo-fashion" data-search="moda feminina" type="button">
-        <strong>Moda para<br>todas as ocasiões</strong>
-        <span>VER COLEÇÃO ›</span>
+      <button class="promo-card promo-fashion" data-search="moda" type="button">
+        <strong>Moda em alta<br>para toda a família</strong>
+        <span>VER MODA ›</span>
       </button>
 
       <button class="promo-card promo-tech" data-search="eletrônicos" type="button">
-        <strong>Eletrônicos<br>que conectam você</strong>
-        <span>VER OFERTAS ›</span>
+        <strong>Eletrônicos<br>para o dia a dia</strong>
+        <span>VER ELETRÔNICOS ›</span>
       </button>
     </section>
 
@@ -299,6 +429,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="script.js?v=20260906-12"></script>
+  <script src="script.js?v=20260906-13"></script>
 </body>
 </html>
