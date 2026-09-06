@@ -59,7 +59,6 @@ img{
 }
 
 .utility-bar>div:nth-child(2){text-align:center}
-
 .utility-bar>div:last-child{text-align:right}
 
 
@@ -318,9 +317,7 @@ img{
   min-width:0
 }
 
-.hero-benefits article>span{
-  font-size:28px
-}
+.hero-benefits article>span{font-size:28px}
 
 .hero-benefits strong{
   display:block;
@@ -467,9 +464,7 @@ img{
   gap:8px
 }
 
-.category-strip span{
-  font-size:28px
-}
+.category-strip span{font-size:28px}
 
 .category-strip strong{
   font-size:9px;
@@ -500,9 +495,7 @@ img{
   padding:14px 20px
 }
 
-.trust-strip article>span{
-  font-size:32px
-}
+.trust-strip article>span{font-size:32px}
 
 .trust-strip strong{
   display:block;
@@ -581,9 +574,7 @@ img{
   padding-bottom:4px
 }
 
-.product-row::-webkit-scrollbar{
-  display:none
-}
+.product-row::-webkit-scrollbar{display:none}
 
 .product-card{
   flex:0 0 196px;
@@ -844,9 +835,7 @@ footer{
   flex-direction:column
 }
 
-.footer-info strong{
-  font-size:11px
-}
+.footer-info strong{font-size:11px}
 
 .footer-info small{
   font-size:9px;
@@ -859,9 +848,7 @@ footer{
   white-space:nowrap
 }
 
-.bottom-nav{
-  display:none
-}
+.bottom-nav{display:none}
 
 
 /* =========================================================
@@ -879,9 +866,7 @@ footer{
   padding:18px
 }
 
-.modal.active{
-  display:flex
-}
+.modal.active{display:flex}
 
 .modal-box{
   width:min(390px,100%);
@@ -908,9 +893,7 @@ footer{
   font-weight:950
 }
 
-.modal-box h2{
-  margin:13px 0
-}
+.modal-box h2{margin:13px 0}
 
 .modal-box label{
   display:block;
@@ -1018,7 +1001,9 @@ footer{
   }
 
 
-  /* HERO MOBILE */
+  /* =========================================================
+     HERO MOBILE
+     ========================================================= */
 
   .hero{
     margin:0;
@@ -1099,7 +1084,9 @@ footer{
   }
 
 
-  /* ARTE MOBILE */
+  /* =========================================================
+     ARTE MOBILE
+     ========================================================= */
 
   .hero-art{
     width:66%;
@@ -1112,63 +1099,70 @@ footer{
     z-index:1
   }
 
-  .hero-phone-image{
-    left:1%;
-    top:17%;
-    width:18%;
-    max-height:52%;
-    z-index:11
+  /* REMOVE CELULAR, FONE E TÊNIS NO MOBILE */
+
+  .hero-phone-image,
+  .hero-headphone-image,
+  .hero-shoe-image{
+    display:none !important
   }
 
-  .hero-headphone-image{
-    left:-3%;
-    bottom:9%;
-    width:24%;
-    max-height:57%;
-    z-index:11
-  }
+
+  /* HOMEM */
 
   .hero-man-image{
-    position:absolute;
-    left:-28%;
-    right:auto;
-    bottom:-1%;
-    width:auto;
-    height:73%;
-    max-width:none;
-    max-height:none;
-    object-fit:contain;
-    object-position:center bottom;
-    z-index:5;
-    display:block;
-    opacity:1;
-    visibility:visible
+    position:absolute !important;
+
+    left:-34% !important;
+    right:auto !important;
+
+    bottom:2% !important;
+
+    width:auto !important;
+    height:73% !important;
+
+    max-width:none !important;
+    max-height:none !important;
+
+    object-fit:contain !important;
+    object-position:center bottom !important;
+
+    z-index:5 !important;
+
+    display:block !important;
+    opacity:1 !important;
+    visibility:visible !important
   }
+
+
+  /* MULHER */
 
   .hero-woman-image{
-    position:absolute;
-    left:auto;
-    right:-3%;
-    bottom:-3%;
-    width:auto;
-    height:102%;
-    max-width:none;
-    max-height:none;
-    object-fit:contain;
-    object-position:center bottom;
-    z-index:6;
-    display:block;
-    opacity:1;
-    visibility:visible
+    position:absolute !important;
+
+    left:auto !important;
+    right:-3% !important;
+
+    bottom:-3% !important;
+
+    width:auto !important;
+    height:102% !important;
+
+    max-width:none !important;
+    max-height:none !important;
+
+    object-fit:contain !important;
+    object-position:center bottom !important;
+
+    z-index:6 !important;
+
+    display:block !important;
+    opacity:1 !important;
+    visibility:visible !important
   }
 
-  .hero-shoe-image{
-    right:-2%;
-    bottom:2%;
-    width:25%;
-    max-height:38%;
-    z-index:12
-  }
+
+  /* TEXTO LATERAL */
 
   .hero-side-text{
     right:9px;
@@ -1177,6 +1171,9 @@ footer{
     line-height:1;
     z-index:15
   }
+
+
+  /* BOLINHAS */
 
   .hero-dots{
     bottom:6px;
@@ -1191,7 +1188,9 @@ footer{
   }
 
 
-  /* CATEGORIES MOBILE */
+  /* =========================================================
+     CATEGORIES MOBILE
+     ========================================================= */
 
   .category-strip{
     display:flex;
@@ -1218,7 +1217,9 @@ footer{
   }
 
 
-  /* TRUST MOBILE */
+  /* =========================================================
+     TRUST MOBILE
+     ========================================================= */
 
   .trust-strip{
     gap:6px;
@@ -1247,7 +1248,9 @@ footer{
   }
 
 
-  /* OFFERS MOBILE */
+  /* =========================================================
+     OFFERS MOBILE
+     ========================================================= */
 
   .offers-section,
   .partners-section{
@@ -1282,7 +1285,9 @@ footer{
   }
 
 
-  /* PRODUCTS MOBILE */
+  /* =========================================================
+     PRODUCTS MOBILE
+     ========================================================= */
 
   .product-row{
     gap:6px
@@ -1355,7 +1360,9 @@ footer{
   }
 
 
-  /* PROMO MOBILE */
+  /* =========================================================
+     PROMO MOBILE
+     ========================================================= */
 
   .promo-grid{
     gap:7px;
@@ -1380,7 +1387,9 @@ footer{
   }
 
 
-  /* PARTNERS MOBILE */
+  /* =========================================================
+     PARTNERS MOBILE
+     ========================================================= */
 
   .partner-row{
     display:flex;
@@ -1395,7 +1404,9 @@ footer{
   }
 
 
-  /* FOOTER MOBILE */
+  /* =========================================================
+     FOOTER MOBILE
+     ========================================================= */
 
   footer{
     grid-template-columns:1fr;
@@ -1432,7 +1443,9 @@ footer{
   }
 
 
-  /* BOTTOM NAV */
+  /* =========================================================
+     BOTTOM NAV
+     ========================================================= */
 
   .bottom-nav{
     position:fixed;
@@ -1502,42 +1515,27 @@ footer{
     font-size:16px
   }
 
-  .hero-phone-image{
-    left:1%;
-    top:17%;
-    width:19%;
-    z-index:11
-  }
-
-  .hero-headphone-image{
-    left:-4%;
-    bottom:9%;
-    width:25%;
-    z-index:11
+  .hero-phone-image,
+  .hero-headphone-image,
+  .hero-shoe-image{
+    display:none !important
   }
 
   .hero-man-image{
-    left:-28%;
-    bottom:-1%;
-    width:auto;
-    height:73%;
-    z-index:5
+    left:-34% !important;
+    bottom:2% !important;
+    width:auto !important;
+    height:73% !important;
+    z-index:5 !important
   }
 
   .hero-woman-image{
-    left:auto;
-    right:-3%;
-    bottom:-3%;
-    width:auto;
-    height:102%;
-    z-index:6
-  }
-
-  .hero-shoe-image{
-    right:-3%;
-    bottom:2%;
-    width:26%;
-    z-index:12
+    left:auto !important;
+    right:-3% !important;
+    bottom:-3% !important;
+    width:auto !important;
+    height:102% !important;
+    z-index:6 !important
   }
 
   .hero-side-text{
