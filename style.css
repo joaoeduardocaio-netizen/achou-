@@ -654,12 +654,22 @@ footer{
 
 @media (max-width: 768px) {
 
+/* =========================================================
+   ACHOU! — POSIÇÃO DO HOMEM MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
   .hero-man-image {
-    left: -8% !important;
-    bottom: -1% !important;
+    position: absolute !important;
+
+    left: -32% !important;
+    right: auto !important;
+
+    bottom: -2% !important;
 
     width: auto !important;
-    height: 96% !important;
+    height: 94% !important;
 
     max-width: none !important;
     max-height: none !important;
@@ -668,6 +678,10 @@ footer{
     object-position: center bottom !important;
 
     z-index: 5 !important;
+
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 
 }
