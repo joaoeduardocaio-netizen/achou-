@@ -1,14 +1,12 @@
-ACHOU! — atualização 06/09/2026
+ACHOU! — atualização do banner
 
-Substitua somente o arquivo script.js do repositório pelo arquivo deste ZIP.
+Substitua o script.js atual por este.
 
-Inclui:
-- busca com filtro mais rígido;
-- favoritos com lista própria;
-- menu lateral mobile;
-- remoção das avaliações fictícias;
-- identificação da loja/origem quando disponível;
-- texto corrigido para não afirmar parceria formal com todas as marcas/lojas;
-- aviso do carrinho ajustado para 'loja onde a oferta está disponível'.
+Alterações nos 3 slides:
+- removidos visualmente os 3 mini textos/ícones abaixo do botão;
+- botão amarelo maior;
+- botão mais próximo da borda inferior;
+- mesma estrutura nos 3 banners;
+- carrossel e correções anteriores mantidos.
 
-O index.html e o style.css atuais podem permanecer como estão.
+Não precisa alterar as imagens do banner.

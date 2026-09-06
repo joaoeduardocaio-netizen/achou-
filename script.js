@@ -52,6 +52,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const style = document.createElement("style");
     style.id = "achouEnhancementStyles";
     style.textContent = `
+      /* HERO — propaganda limpa */
+      .hero-slide .hero-benefits{display:none!important}
+      .hero-slide .hero-copy{justify-content:flex-start!important}
+      .hero-slide .hero-cta{
+        width:300px!important;height:58px!important;
+        margin-top:auto!important;margin-bottom:26px!important;
+        border-radius:10px!important;font-size:16px!important;flex:0 0 auto!important
+      }
+      .hero-slide .hero-cta b{font-size:25px!important;margin-left:18px!important}
+      @media(max-width:820px){
+        .hero-slide .hero-copy{
+          justify-content:flex-start!important;
+          padding-top:22px!important;padding-bottom:10px!important
+        }
+        .hero-slide .hero-cta{
+          width:145px!important;height:37px!important;
+          margin-top:auto!important;margin-bottom:10px!important;
+          border-radius:6px!important;font-size:8px!important;
+          position:relative!important;z-index:25!important
+        }
+        .hero-slide .hero-cta b{font-size:15px!important;margin-left:8px!important}
+      }
+      @media(max-width:390px){
+        .hero-slide .hero-cta{
+          width:140px!important;height:36px!important;margin-bottom:9px!important
+        }
+      }
+
       .achou-source{
         display:inline-flex;align-items:center;gap:5px;width:max-content;
         margin:0 0 7px;padding:4px 7px;border:1px solid #292929;border-radius:999px;
