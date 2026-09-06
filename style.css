@@ -542,25 +542,26 @@ footer{
 @media (max-width: 768px) {
 
   .hero-man-image {
-    position: absolute !important;
-    left: 14% !important;
-    right: auto !important;
-    bottom: -3% !important;
+  position: absolute !important;
+  left: 2% !important;
+  right: auto !important;
+  bottom: -4% !important;
 
-    width: auto !important;
-    height: 94% !important;
-    max-width: none !important;
-    max-height: none !important;
+  width: auto !important;
+  height: 118% !important;
+  max-width: none !important;
+  max-height: none !important;
 
-    object-fit: contain !important;
-    z-index: 5 !important;
+  object-fit: contain !important;
+  z-index: 5 !important;
 
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
   }
+ 
 
-  .hero-woman-image {
+    .hero-woman-image {
     position: absolute !important;
     left: auto !important;
     right: -3% !important;
