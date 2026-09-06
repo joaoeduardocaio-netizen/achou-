@@ -510,3 +510,28 @@ footer{
   .hero-shoe-image{right:-3%;bottom:2%;width:26%}
   .hero-side-text{font-size:5.2px}
 }
+/* =========================================================
+   ACHOU! — AJUSTE FINAL DO HOMEM E MULHER NO BANNER MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .hero-man-image {
+    left: 15% !important;
+    bottom: -4% !important;
+    width: 72% !important;
+    max-height: none !important;
+    height: auto !important;
+    z-index: 4 !important;
+  }
+
+  .hero-woman-image {
+    left: 39% !important;
+    bottom: -4% !important;
+    width: 68% !important;
+    max-height: none !important;
+    height: auto !important;
+    z-index: 5 !important;
+  }
+
+}
