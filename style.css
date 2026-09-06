@@ -617,3 +617,34 @@ footer{
   }
 
 }
+/* =========================================================
+   ACHOU! — AJUSTE FINAL DO HOMEM NO BANNER MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .hero-man-image {
+    position: absolute !important;
+
+    left: -22% !important;
+    right: auto !important;
+
+    bottom: -4% !important;
+
+    width: auto !important;
+    height: 91% !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain !important;
+    object-position: center bottom !important;
+
+    z-index: 5 !important;
+
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+}
