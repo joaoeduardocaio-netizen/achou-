@@ -386,16 +386,16 @@ footer{
     max-height:57%
   }
   .hero-man-image{
-    left:25%;
-    bottom:-1%;
-    width:52%;
-    max-height:112%
+    left:20%;
+    bottom:-2%;
+    width:64%;
+    max-height:122%
   }
   .hero-woman-image{
-    left:48%;
-    bottom:-1%;
-    width:50%;
-    max-height:110%
+    left:43%;
+    bottom:-2%;
+    width:61%;
+    max-height:120%
   }
   .hero-shoe-image{
     right:-2%;
@@ -505,8 +505,8 @@ footer{
   .hero h1 small,.hero h1 em{font-size:16px}
   .hero-phone-image{left:1%;top:17%;width:19%}
   .hero-headphone-image{left:-4%;bottom:9%;width:25%}
-  .hero-man-image{left:24%;bottom:-1%;width:53%}
-  .hero-woman-image{left:47%;bottom:-1%;width:51%}
+  .hero-man-image{left:19%;bottom:-2%;width:65%}
+  .hero-woman-image{left:42%;bottom:-2%;width:62%}
   .hero-shoe-image{right:-3%;bottom:2%;width:26%}
   .hero-side-text{font-size:5.2px}
 }
