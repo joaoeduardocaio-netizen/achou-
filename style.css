@@ -648,3 +648,26 @@ footer{
   }
 
 }
+/* =========================================================
+   ACHOU! — AJUSTE FINO FINAL DO HOMEM NO MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .hero-man-image {
+    left: -8% !important;
+    bottom: -1% !important;
+
+    width: auto !important;
+    height: 96% !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain !important;
+    object-position: center bottom !important;
+
+    z-index: 5 !important;
+  }
+
+}
