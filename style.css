@@ -685,3 +685,34 @@ footer{
   }
 
 }
+/* =========================================================
+   ACHOU! — HOMEM DO HERO MOBILE
+   Compensa a margem transparente interna do PNG
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  .hero-man-image {
+    position: absolute !important;
+
+    left: -68% !important;
+    right: auto !important;
+
+    bottom: -2% !important;
+
+    width: auto !important;
+    height: 94% !important;
+
+    max-width: none !important;
+    max-height: none !important;
+
+    object-fit: contain !important;
+
+    z-index: 5 !important;
+
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+}
