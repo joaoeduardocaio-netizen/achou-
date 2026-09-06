@@ -200,6 +200,18 @@ img{display:block;max-width:100%}
   display:flex;align-items:center;gap:17px;padding:14px 20px
 }
 .trust-strip article>span{font-size:32px}
+.trust-icon{
+  width:40px;height:40px;flex:0 0 40px;
+  display:grid;place-items:center
+}
+.trust-icon svg{
+  width:34px;height:34px;
+  fill:none;
+  stroke:var(--yellow);
+  stroke-width:4;
+  stroke-linecap:round;
+  stroke-linejoin:round
+}
 .trust-strip strong{display:block;font-size:14px}
 .trust-strip small{display:block;font-size:11px;color:#aaa;margin-top:3px}
 
