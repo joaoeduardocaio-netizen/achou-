@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelector(".cart-button")?.addEventListener("click", () => {
-    alert("O ACHOU! direciona você para a loja parceira. A compra é finalizada no parceiro.");
+    openPartnerInfo();
   });
 
   document.querySelector(".menu-button")?.addEventListener("click", () => {
@@ -295,13 +295,31 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (action === "cart") {
-        alert("A compra é concluída diretamente na loja parceira.");
+        openPartnerInfo();
       }
     });
   });
 
   const loginModal = document.querySelector("#loginModal");
   const signupModal = document.querySelector("#signupModal");
+  const partnerInfoModal = document.querySelector("#partnerInfoModal");
+
+  function openPartnerInfo() {
+    if (!partnerInfoModal) return;
+    partnerInfoModal.classList.add("active");
+    partnerInfoModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closePartnerInfo() {
+    if (!partnerInfoModal) return;
+    partnerInfoModal.classList.remove("active");
+    partnerInfoModal.setAttribute("aria-hidden", "true");
+
+    if (!document.querySelector(".modal.active")) {
+      document.body.classList.remove("modal-open");
+    }
+  }
 
   function openModal(modal) {
     modal?.classList.add("active");
@@ -326,6 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelector(".signup-close")?.addEventListener("click", () => {
     closeModal(signupModal);
+    closePartnerInfo();
   });
 
   document.querySelector(".create-account")?.addEventListener("click", () => {
@@ -433,11 +452,19 @@ document.addEventListener("DOMContentLoaded", () => {
       updateAccountUI(null);
     });
 
+  document.querySelector(".partner-info-close")?.addEventListener("click", closePartnerInfo);
+  document.querySelector(".partner-info-ok")?.addEventListener("click", closePartnerInfo);
+
+  partnerInfoModal?.addEventListener("click", event => {
+    if (event.target === partnerInfoModal) closePartnerInfo();
+  });
+
   document.addEventListener("keydown", event => {
     if (event.key !== "Escape") return;
 
     closeModal(loginModal);
     closeModal(signupModal);
+    closePartnerInfo();
   });
 
 
