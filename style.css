@@ -121,34 +121,52 @@ img{display:block;max-width:100%}
   position:absolute;inset:0;background:var(--yellow);
   clip-path:polygon(16% 0,100% 0,100% 100%,0 100%)
 }
-.hero-device-image,
-.hero-model-image,
+.hero-phone-image,
+.hero-headphone-image,
+.hero-man-image,
+.hero-woman-image,
 .hero-shoe-image{
   position:absolute;
-  z-index:3;
   pointer-events:none;
-  user-select:none
-}
-.hero-device-image{
-  left:8%;
-  bottom:7%;
-  width:29%;
-  max-height:76%;
+  user-select:none;
   object-fit:contain
 }
-.hero-model-image{
-  left:25%;
-  bottom:-1%;
-  width:66%;
+.hero-phone-image{
+  left:5%;
+  top:16%;
+  width:20%;
+  max-height:67%;
+  z-index:2
+}
+.hero-headphone-image{
+  left:-1%;
+  bottom:5%;
+  width:28%;
+  max-height:72%;
+  z-index:4
+}
+.hero-man-image{
+  left:22%;
+  bottom:-4%;
+  width:45%;
   max-height:103%;
-  object-fit:contain;
-  object-position:center bottom
+  object-position:center bottom;
+  z-index:4
+}
+.hero-woman-image{
+  left:48%;
+  bottom:-4%;
+  width:42%;
+  max-height:101%;
+  object-position:center bottom;
+  z-index:5
 }
 .hero-shoe-image{
-  right:-1%;
-  bottom:10%;
-  width:27%;
-  object-fit:contain
+  right:-4%;
+  bottom:3%;
+  width:30%;
+  max-height:50%;
+  z-index:6
 }
 .hero-side-text{
   position:absolute;right:28px;top:26px;z-index:4;color:#000;
@@ -353,21 +371,35 @@ footer{
   .hero-benefits small{font-size:3.8px}
 
   .hero-art{width:63%;height:100%}
-  .hero-device-image{
-    left:3%;
-    bottom:7%;
-    width:32%;
+  .hero-phone-image{
+    left:-1%;
+    top:19%;
+    width:25%;
+    max-height:60%
   }
-  .hero-model-image{
-    left:19%;
-    bottom:-1%;
-    width:74%;
-    max-height:100%;
+  .hero-headphone-image{
+    left:-7%;
+    bottom:7%;
+    width:34%;
+    max-height:68%
+  }
+  .hero-man-image{
+    left:18%;
+    bottom:-3%;
+    width:51%;
+    max-height:100%
+  }
+  .hero-woman-image{
+    left:48%;
+    bottom:-3%;
+    width:49%;
+    max-height:98%
   }
   .hero-shoe-image{
-    right:-4%;
-    bottom:10%;
-    width:30%;
+    right:-13%;
+    bottom:4%;
+    width:39%;
+    max-height:45%
   }
   .hero-side-text{
     right:9px;top:13px;font-size:5.7px;line-height:1
@@ -469,5 +501,10 @@ footer{
   .hero-copy{min-height:226px}
   .hero h1{font-size:29px}
   .hero h1 small,.hero h1 em{font-size:16px}
+  .hero-phone-image{left:-2%;width:27%}
+  .hero-headphone-image{left:-9%;width:36%}
+  .hero-man-image{left:16%;width:53%}
+  .hero-woman-image{left:47%;width:51%}
+  .hero-shoe-image{right:-15%;width:41%}
   .hero-side-text{font-size:5.2px}
 }
