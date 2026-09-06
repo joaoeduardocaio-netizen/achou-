@@ -11,7 +11,6 @@
 }
 
 *{box-sizing:border-box}
-
 html{scroll-behavior:smooth}
 
 body{
@@ -23,23 +22,10 @@ body{
 }
 
 body.modal-open{overflow:hidden}
-
 button,input{font:inherit}
-
-button{
-  cursor:pointer;
-  color:inherit
-}
-
-a{
-  text-decoration:none;
-  color:inherit
-}
-
-img{
-  display:block;
-  max-width:100%
-}
+button{cursor:pointer;color:inherit}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
 
 
 /* =========================================================
@@ -1002,19 +988,19 @@ footer{
 
 
   /* =========================================================
-     HERO MOBILE
+     HERO MOBILE — COMPACTADO
      ========================================================= */
 
   .hero{
     margin:0;
-    min-height:285px;
-    height:285px;
+    min-height:272px !important;
+    height:272px !important;
     background:#050505
   }
 
   .hero-copy{
     width:47%;
-    min-height:285px;
+    min-height:272px !important;
     padding:22px 0 18px 14px;
     position:relative;
     z-index:20
@@ -1099,7 +1085,7 @@ footer{
     z-index:1
   }
 
-  /* REMOVE CELULAR, FONE E TÊNIS NO MOBILE */
+  /* CELULAR, FONE E TÊNIS REMOVIDOS */
 
   .hero-phone-image,
   .hero-headphone-image,
@@ -1108,7 +1094,7 @@ footer{
   }
 
 
-  /* HOMEM */
+  /* HOMEM — MESMA POSIÇÃO LATERAL, MAIS ALTO */
 
   .hero-man-image{
     position:absolute !important;
@@ -1116,7 +1102,7 @@ footer{
     left:-34% !important;
     right:auto !important;
 
-    bottom:2% !important;
+    bottom:8% !important;
 
     width:auto !important;
     height:73% !important;
@@ -1162,8 +1148,6 @@ footer{
   }
 
 
-  /* TEXTO LATERAL */
-
   .hero-side-text{
     right:9px;
     top:9px;
@@ -1171,9 +1155,6 @@ footer{
     line-height:1;
     z-index:15
   }
-
-
-  /* BOLINHAS */
 
   .hero-dots{
     bottom:6px;
@@ -1498,12 +1479,12 @@ footer{
 @media(max-width:390px){
 
   .hero{
-    height:270px;
-    min-height:270px
+    height:260px !important;
+    min-height:260px !important
   }
 
   .hero-copy{
-    min-height:270px
+    min-height:260px !important
   }
 
   .hero h1{
@@ -1523,7 +1504,7 @@ footer{
 
   .hero-man-image{
     left:-34% !important;
-    bottom:2% !important;
+    bottom:8% !important;
     width:auto !important;
     height:73% !important;
     z-index:5 !important
